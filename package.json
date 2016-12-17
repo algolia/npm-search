@@ -19,7 +19,8 @@
     "babel-preset-stage-2": "^6.18.0",
     "bunyan": "^1.8.5",
     "got": "^6.6.3",
-    "number-is-nan": "^1.0.1"
+    "number-is-nan": "^1.0.1",
+    "os-homedir": "^1.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
