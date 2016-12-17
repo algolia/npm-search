@@ -14,7 +14,7 @@ Available env variables (see [config.js](./config.js)):
 - apiKey
 - indexName
 - maximumConcurrency: How many packages to save at the same time to Algolia
-- registryEndpoint: NPM registry endpoint, not sure today which one to use
+- registryEndpoint: NPM registry endpoint
 - reset: force replication to start over, useful in dev (reset=true yarn start..)
 
 ## Flow and status
@@ -31,11 +31,8 @@ The goal being: provide an always up to date search in term of data.
 
 Done: 1, 2, 3, 4, 5.
 
-I am not yet sure which registry endpoint to use as for replication and watching.
-I asked different people and will get answers soon. I have the tooling, but not the right data today.
-
-Pointers for watch
-https://github.com/npm/registry/issues/44
-https://github.com/npm/registry-follower-tutorial
-https://github.com/npm/concurrent-couch-follower
-https://github.com/npm/normalize-registry-metadata
+Next steps:
+- Use https://replicate.npmjs.com/registry
+- https://replicate.npmjs.com/registry/_all_docs?include_docs=true
+- include docs, stream like, use normalize, then watch
+- https://github.com/npm/normalize-registry-metadata
