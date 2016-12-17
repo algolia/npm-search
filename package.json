@@ -18,7 +18,8 @@
     "babel-preset-env": "^1.1.4",
     "babel-preset-stage-2": "^6.18.0",
     "bunyan": "^1.8.5",
-    "got": "^6.6.3"
+    "got": "^6.6.3",
+    "number-is-nan": "^1.0.1"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
