@@ -15,7 +15,7 @@ Available env variables (see [config.js](./config.js)):
 - indexName
 - maximumConcurrency: How many packages to save at the same time to Algolia
 - registryEndpoint: NPM registry endpoint, not sure today which one to use
-- reset: force replication to start over, useful in dev
+- reset: force replication to start over, useful in dev (reset=true yarn start..)
 
 ## Flow and status
 
