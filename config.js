@@ -1,13 +1,12 @@
 const defaultConfig = {
-  registryEndpoint: 'http://registry.npmjs.org',
+  npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
+  npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
+  popularDownloadRange: 0.2,
   appId: 'OFCNCOG2CU',
   apiKey: '',
   indexName: 'npm-search',
-  maximumConcurrency: 200,
-  reset: false,
-  connectTimeout: 60 * 1000,
-  writeTimeout: 60 * 1000,
-  readTimeout: 60 * 1000,
+  concurrency: 50,
+  seq: null,
 };
 
 export default Object

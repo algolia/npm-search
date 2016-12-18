@@ -1,14 +1,7 @@
 import algoliasearch from 'algoliasearch';
-import errors from './errors.js';
 import c from './config.js';
 
-if (!c.apiKey) throw new Error(errors.noApiKey);
+if (!c.apiKey) throw new Error('npm-search: Please provide the `apiKey` env variable and restart');
 
-const client = algoliasearch(c.appId, c.apiKey, {
-  timeouts: {
-    connect: c.connectTimeout,
-    read: c.readTimeout,
-    write: c.writeTimeout,
-  },
-});
+const client = algoliasearch(c.appId, c.apiKey);
 export default client.initIndex(c.indexName);
