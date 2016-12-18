@@ -1,3 +1,14 @@
 import bunyan from 'bunyan';
-const logger = bunyan.createLogger({name: 'npm-search'});
+import PrettyStream from 'bunyan-prettystream';
+
+const stream = new PrettyStream();
+stream.pipe(process.stdout);
+
+const logger = bunyan.createLogger({
+  name: 'npm-search',
+  streams: [{
+    stream,
+  }],
+});
+
 export default logger;
