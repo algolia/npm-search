@@ -1,11 +1,11 @@
 # 🗿 npm-search 🛰
 
-[npm](https://www.npmjs.com/) => [Algolia](https://www.algolia.com/) replication.
+[npm](https://www.npmjs.com/) ↔️ [Algolia](https://www.algolia.com/) replication tool.
 
 * * *
 
-This is a failure resilient npm registry to Algolia index replication program. It will replicate all npm
-packages to an Algolia index and keep it up to date.
+This is a failure resilient npm registry to Algolia index replication process.
+It will replicate all npm packages to an Algolia index and keep it up to date.
 
 The state of the replication is saved in Algolia index settings.
 
