@@ -8,6 +8,7 @@ const logger = bunyan.createLogger({
   name: 'npm-search',
   streams: [{
     stream,
+    type: raw,
   }],
 });
 
