@@ -1,15 +1,18 @@
 import bunyan from 'bunyan';
-import PrettyStream from 'bunyan-prettystream';
+import bunyanDebugStream from 'bunyan-debug-stream';
 
-const stream = new PrettyStream();
-stream.pipe(process.stdout);
+const stream = bunyanDebugStream({
+  basepath: __dirname,
+});
 
 const logger = bunyan.createLogger({
   name: 'npm-search',
   streams: [{
-    stream,
+    level: 'debug',
     type: 'raw',
+    stream,
   }],
+  serializers: bunyanDebugStream.serializers,
 });
 
 export default logger;
