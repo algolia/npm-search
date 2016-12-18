@@ -18,7 +18,7 @@ export default {
     // thus we just force to always have at least to downloads we know exists to ask
     encodedPackageNames.unshift('jquery');
     encodedPackageNames.unshift('lodash');
-    const pkgsNamesChunks = chunk(encodedPackageNames, 2).map(names => names.join(','));
+    const pkgsNamesChunks = chunk(encodedPackageNames, 100).map(names => names.join(','));
     return Promise
       .all([
         got(`${c.npmDownloadsEndpoint}/range/last-month`, {json: true}),
