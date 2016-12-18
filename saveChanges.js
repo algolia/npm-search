@@ -1,17 +1,17 @@
 import algoliaIndex from './algoliaIndex.js';
-import formatPackage from './formatPackage.js';
+import formatPkg from './formatPkg.js';
 import log from './log.js';
 import npm from './npm.js';
 
 export default function saveChangesAndState(seq, changes) {
   const rawPkgs = changes
     .filter(result => result.doc.name !== undefined) // must be a document
-    .map(result => formatPackage(result.doc))
+    .map(result => formatPkg(result.doc))
     .filter(pkg => pkg !== undefined);
 
   if (rawPkgs.length === 0) {
     log.info('No pkgs found in changes.');
-    return true;
+    return Promise.resolve();
   }
 
   return addMetaData(rawPkgs)

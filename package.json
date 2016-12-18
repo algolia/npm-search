@@ -22,6 +22,7 @@
     "bunyan": "^1.8.5",
     "bunyan-prettystream": "^0.1.3",
     "got": "^6.6.3",
+    "lodash": "^4.17.2",
     "nice-package": "^2.0.0",
     "pouchdb": "^6.1.0"
   },

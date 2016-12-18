@@ -1,7 +1,7 @@
-import Package from 'nice-package';
+import NicePackage from 'nice-package';
 
-export default function formatPackage(pkg) {
-  const formatted = new Package(pkg);
+export default function formatPkg(pkg) {
+  const formatted = new NicePackage(pkg);
   return {
     objectID: formatted.name,
     name: formatted.name,
