@@ -23,6 +23,7 @@ const defaultConfig = {
       'desc(popular)',
       'typo', 'geo', 'words', 'filters', 'proximity', 'attribute', 'exact', 'custom',
     ],
+    optionalWords: ['js', 'javascript'],
   },
 };
 
