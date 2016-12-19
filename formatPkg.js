@@ -6,7 +6,7 @@ export default function formatPkg(pkg) {
     objectID: formatted.name,
     name: formatted.name,
     downloadsLast30Days: 0,
-    downloadsRange: 0,
+    downloadsRatio: 0,
     popular: false,
     version: formatted.version,
     description: formatted.description,

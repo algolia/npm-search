@@ -53,12 +53,13 @@ See [config.js](./config.js):
 - `indexName`: [Algolia](https://www.algolia.com/) indexName - *default `npm-search`*
 - `concurrency`: How many changes to grab for npm registry at once - *default 200*
 - `seq`: npm registry first [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
-  to start replication. In normal operations you should never have to use this. - *default 0*
-- `npmRegistryEndpoint`: default `https://replicate.npmjs.com/registry` - This should be the only valid
-  endpoint, see [this comment](https://github.com/npm/registry/issues/44#issuecomment-267732513).
-- `npmDownloadsEndpoint`: Where to look for the last 30 days download of packages
-- `popularDownloadRange`: % of total npm downloads for a package to be considered as popular
-  how much % of it is needed for a package to be popular
+  to start replication. In normal operations you should never have to use this. - *default `0`*
+- `npmRegistryEndpoint`: npm registry endpoint to replicate from - *default `https://replicate.npmjs.com/registry`*
+  This should be the only valid endpoint to replicate (even if a bit slow), see [this comment](https://github.com/npm/registry/issues/44#issuecomment-267732513).
+- `npmDownloadsEndpoint`: Where to look for the last 30 days download of packages - *default `https://api.npmjs.org/downloads`*
+- `popularDownloadsRatio`: % of total npm downloads for a package to be considered as popular
+  how much % of it is needed for a package to be popular - *default 0.2* This is a bit lower than
+  the jQuery download range.
 
 ## Test
 

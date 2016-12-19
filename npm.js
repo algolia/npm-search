@@ -39,12 +39,12 @@ export default {
           if (downloadsPerPkgName[pkg.name] === undefined) return pkg;
 
           const downloadsLast30Days = downloadsPerPkgName[pkg.name].downloads;
-          const downloadsRange = downloadsLast30Days / totalNpmDownloads * 100;
-          const popular = downloadsRange > c.popularDownloadRange;
+          const downloadsRatio = downloadsLast30Days / totalNpmDownloads * 100;
+          const popular = downloadsRatio > c.popularDownloadsRatio;
           return {
             ...pkg,
             downloadsLast30Days,
-            downloadsRange,
+            downloadsRatio,
             popular,
           };
         });

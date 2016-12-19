@@ -1,7 +1,7 @@
 const defaultConfig = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
   npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
-  popularDownloadRange: 0.2,
+  popularDownloadsRatio: 0.2,
   appId: 'OFCNCOG2CU',
   apiKey: '',
   indexName: 'npm-search',
