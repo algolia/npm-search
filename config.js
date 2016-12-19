@@ -7,6 +7,21 @@ const defaultConfig = {
   indexName: 'npm-search',
   concurrency: 500,
   seq: null,
+  indexSettings: {
+    searchableAttributes: [
+      'unordered(name)',
+      'unordered(description)',
+      'unordered(keywords)',
+      'author.name',
+      'owners.name',
+    ],
+    customRanking: ['desc(downloadsLast30Days)'],
+    exactOnSingleWordQuery: 'word',
+    ranking: [
+      'asc(popular)',
+      'typo', 'geo', 'words', 'filters', 'proximity', 'attribute', 'exact', 'custom',
+    ],
+  },
 };
 
 export default Object
