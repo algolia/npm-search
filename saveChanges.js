@@ -16,7 +16,6 @@ export default function saveChangesAndState(seq, changes) {
 
   return addMetaData(rawPkgs)
     .then(pkgs => algoliaIndex.saveObjects(pkgs))
-    .then(({taskID}) => algoliaIndex.waitTask(taskID))
     .then(() => log.info('Found and saved %d packages', rawPkgs.length));
 }
 
