@@ -2,6 +2,11 @@ import NicePackage from 'nice-package';
 
 export default function formatPkg(pkg) {
   const formatted = new NicePackage(pkg);
+
+  if (formatted.valid === false) {
+    return undefined;
+  }
+
   return {
     objectID: formatted.name,
     name: formatted.name,
