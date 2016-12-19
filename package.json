@@ -15,7 +15,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "algoliasearch": "^3.20.1",
+    "algoliasearch": "^3.20.2",
     "babel-cli": "^6.18.0",
     "babel-preset-env": "^1.1.4",
     "babel-preset-stage-2": "^6.18.0",
@@ -23,7 +23,7 @@
     "bunyan-debug-stream": "^1.0.7",
     "got": "^6.6.3",
     "lodash": "^4.17.2",
-    "nice-package": "^2.0.0",
+    "nice-package": "^2.1.0",
     "pouchdb": "^6.1.0"
   },
   "devDependencies": {
