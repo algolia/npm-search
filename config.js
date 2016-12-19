@@ -5,7 +5,7 @@ const defaultConfig = {
   appId: 'OFCNCOG2CU',
   apiKey: '',
   indexName: 'npm-search',
-  concurrency: 200,
+  concurrency: 500,
   seq: null,
 };
 
