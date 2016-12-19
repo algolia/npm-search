@@ -76,7 +76,7 @@ function watch({seq}) {
     });
 
     changes.on('change', change => {
-      chain = chain.then(() => saveChanges(change.seq, [change]).catch(reject));
+      chain = chain.then(() => saveChanges(change.seq, [change]).then(() => info(change.seq, 1)).catch(reject));
     });
     changes.on('error', reject);
   });
