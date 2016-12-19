@@ -26,7 +26,7 @@ const defaultConfig = {
     optionalWords: ['js', 'javascript'],
     separatorsToIndex: '_',
     synonyms: [
-      ['_', 'underscore', 'lodash'],
+      ['_', 'underscore'],
     ],
     replaceSynonymsInHighlight: false,
   },
