@@ -28,6 +28,7 @@ const defaultConfig = {
     synonyms: [
       ['_', 'underscore', 'lodash'],
     ],
+    replaceSynonymsInHighlight: false,
   },
 };
 
