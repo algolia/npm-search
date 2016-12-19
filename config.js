@@ -18,7 +18,7 @@ const defaultConfig = {
     customRanking: ['desc(downloadsLast30Days)'],
     exactOnSingleWordQuery: 'word',
     ranking: [
-      'asc(popular)',
+      'desc(popular)',
       'typo', 'geo', 'words', 'filters', 'proximity', 'attribute', 'exact', 'custom',
     ],
   },
