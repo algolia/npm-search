@@ -1,5 +1,6 @@
 import stateManager from './stateManager.js';
 import saveChanges from './saveChanges.js';
+import algoliaIndex from './algoliaIndex.js';
 import c from './config.js';
 import PouchDB from 'pouchdb';
 import npm from './npm.js';
@@ -18,8 +19,9 @@ const defaultOptions = {
 
 let loopStart = Date.now();
 
-stateManager
-  .check()
+algoliaIndex
+  .setSettings(c.indexSettings)
+  .then(() => stateManager.check())
   .then(state => info(state, 0))
   .then(replicate)
   .then(watch)
