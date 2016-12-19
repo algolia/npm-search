@@ -16,7 +16,9 @@ const defaultConfig = {
       'owners.name',
     ],
     customRanking: ['desc(downloadsLast30Days)'],
-    exactOnSingleWordQuery: 'word',
+    disablePrefixOnAttributes: ['description', 'keywords', 'author.name', 'owners.name'],
+    disableExactOnAttributes: ['description', 'keywords', 'author.name', 'owners.name'],
+    exactOnSingleWordQuery: 'attribute',
     ranking: [
       'desc(popular)',
       'typo', 'geo', 'words', 'filters', 'proximity', 'attribute', 'exact', 'custom',
