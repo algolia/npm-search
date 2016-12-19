@@ -24,6 +24,10 @@ const defaultConfig = {
       'typo', 'geo', 'words', 'filters', 'proximity', 'attribute', 'exact', 'custom',
     ],
     optionalWords: ['js', 'javascript'],
+    separatorsToIndex: '_',
+    synonyms: [
+      ['_', 'underscore', 'lodash'],
+    ],
   },
 };
 
