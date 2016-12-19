@@ -7,7 +7,7 @@ export default function saveChangesAndState(seq, changes) {
   const rawPkgs = changes
     .filter(result => result.doc.name !== undefined) // must be a document
     .map(result => formatPkg(result.doc))
-    .filter(pkg => pkg !== undefined);
+    .filter(pkg => pkg !== undefined && pkg.objectID); // we're using the name as an objectID, might be blank
 
   if (rawPkgs.length === 0) {
     log.info('No pkgs found in changes.');
@@ -16,7 +16,6 @@ export default function saveChangesAndState(seq, changes) {
 
   return addMetaData(rawPkgs)
     .then(pkgs => algoliaIndex.saveObjects(pkgs))
-    .then(({taskID}) => algoliaIndex.waitTask(taskID))
     .then(() => log.info('Found and saved %d packages', rawPkgs.length));
 }
 

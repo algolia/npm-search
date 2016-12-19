@@ -22,8 +22,7 @@ export default {
   set(state) {
     return algoliaIndex
       .setSettings({userData: state})
-      .then(({taskID}) => algoliaIndex.waitTask(taskID))
-      .then(this.get);
+      .then(() => state);
   },
   reset() {
     return this.set(defaultState);
