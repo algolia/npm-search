@@ -1,4 +1,4 @@
-# 🗿 npm-search 🛰
+# 🗿 npm-search ⛷ 🐌 🛰
 
 [npm](https://www.npmjs.com/) ↔️ [Algolia](https://www.algolia.com/) replication tool.
 
@@ -51,7 +51,8 @@ See [config.js](./config.js):
 - `apiKey`: [Algolia](https://www.algolia.com/) apiKey - **required**
 - `appId`: [Algolia](https://www.algolia.com/) appId - *default `OFCNCOG2CU`*
 - `indexName`: [Algolia](https://www.algolia.com/) indexName - *default `npm-search`*
-- `concurrency`: How many changes to grab for npm registry at once - *default `500`*
+- `bootstrapConcurrency`: How many docs to grab from npm registry at once in the bootstrap phase - *default `100`*
+- `replicateConcurrency`: How many changes to grab from npm registry at once in the replicate phase - *default `10`*
 - `seq`: npm registry first [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
   to start replication. In normal operations you should never have to use this. - *default `0`*
 - `npmRegistryEndpoint`: npm registry endpoint to replicate from - *default `https://replicate.npmjs.com/registry`*
@@ -60,6 +61,10 @@ See [config.js](./config.js):
 - `popularDownloadsRatio`: % of total npm downloads for a package to be considered as popular
   how much % of it is needed for a package to be popular - *default 0.2* This is a bit lower than
   the jQuery download range.
+
+## How does it works
+
+
 
 ## Test
 

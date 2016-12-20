@@ -5,7 +5,8 @@ const defaultConfig = {
   appId: 'OFCNCOG2CU',
   apiKey: '',
   indexName: 'npm-search',
-  concurrency: 500,
+  replicateConcurrency: 10,
+  bootstrapConcurrency: 100,
   seq: null,
   indexSettings: {
     searchableAttributes: [
