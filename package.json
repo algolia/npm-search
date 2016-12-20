@@ -22,6 +22,7 @@
     "bunyan": "^1.8.5",
     "bunyan-debug-stream": "^1.0.7",
     "got": "^6.6.3",
+    "gravatar-url": "^1.1.0",
     "lodash": "^4.17.2",
     "ms": "^0.7.2",
     "nice-package": "^2.2.0",
