@@ -71,14 +71,15 @@ function bootstrap(state) {
 
   if (state.bootstrapLastId) {
     log.info('⛷ Bootstrap: starting at doc %s', state.bootstrapLastId);
+    return loop(state.bootstrapLastId);
   } else {
     log.info('⛷ Bootstrap: starting from the first doc');
+    return npm
+      .info()
+      // first time this launches, we need to remember the last seq our bootstrap can trust
+      .then(({seq}) => stateManager.save({seq}))
+      .then(() => loop(state.bootstrapLastId));
   }
-
-  return npm
-    .info()
-    .then(({seq}) => stateManager.save({seq}))
-    .then(() => loop(state.bootstrapLastId));
 
   function loop(lastId) {
     const options = lastId === undefined ? {} : {startkey: lastId, skip: 1};
