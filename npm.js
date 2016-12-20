@@ -1,6 +1,7 @@
 import got from 'got';
 import c from './config.js';
 import {chunk} from 'lodash';
+import numeral from 'numeral';
 
 export default {
   info() {
@@ -41,6 +42,7 @@ export default {
           return {
             ...pkg,
             downloadsLast30Days,
+            humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
             downloadsRatio,
             popular,
           };
