@@ -147,6 +147,7 @@ function watch({seq}) {
       chain = chain
         .then(() => saveDocs([change]), reject)
         .then(() => infoChange(change.seq, 1, '🛰'))
+        .then(() => stateManager.save({seq: change.seq}))
         .catch(reject);
     });
     changes.on('error', reject);
