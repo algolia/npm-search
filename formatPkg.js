@@ -60,8 +60,11 @@ function getGitHubRepoInfo(repository) {
   if (!repository || typeof repository !== 'string') return null;
 
   const result = repository
-    .replace(/^https:\/\/www.github.com/, 'https://github.com')
-    .match(/^https:\/\/github.com\/(.*)?\/(.*)?$/);
+    .match(/^https:\/\/(?:www\.)?github.com\/(.*)?\/(.*)?$/);
+
+  if (!result) {
+    return null;
+  }
 
   if (result.length !== 3) {
     return null;
