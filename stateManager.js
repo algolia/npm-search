@@ -3,7 +3,11 @@ import c from './config.js';
 
 const defaultState = {
   seq: c.seq,
+  bootstrapDone: false,
+  bootstrapLastId: undefined,
 };
+
+let currentState;
 
 export default {
   check() {
@@ -17,9 +21,13 @@ export default {
       );
   },
   get() {
-    return algoliaIndex.getSettings().then(({userData}) => userData);
+    return currentState ?
+      Promise.resolve(currentState) :
+      algoliaIndex.getSettings().then(({userData}) => userData);
   },
   set(state) {
+    currentState = state;
+
     return algoliaIndex
       .setSettings({userData: state})
       .then(() => state);
