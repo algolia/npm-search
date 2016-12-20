@@ -16,9 +16,9 @@ export default function formatPkg(pkg) {
     popular: false,
     version: formatted.version,
     description: formatted.description,
-    repository: formatted.repository,
     homepage: formatted.homepage,
     author: addGravatar(formatted.author),
+    githubRepo: getGitHubRepoInfo(formatted.repository),
     license: formatted.license,
     keywords: formatted.keywords,
     created: formatted.created,
@@ -52,4 +52,21 @@ function addGravatar(obj) {
   }
 
   return obj;
+}
+
+function getGitHubRepoInfo(repository) {
+  if (!repository || typeof repository !== 'string') return null;
+
+  const result = repository
+    .replace(/^https:\/\/www.github.com/, 'https://github.com')
+    .match(/^https:\/\/github.com\/(.*)?\/(.*)?$/);
+
+  if (result.length !== 3) {
+    return null;
+  }
+
+  return {
+    user: result[1],
+    project: result[2],
+  };
 }
