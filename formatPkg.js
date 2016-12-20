@@ -18,9 +18,9 @@ export default function formatPkg(pkg) {
     popular: false,
     version: formatted.version,
     description: formatted.description,
-    homepage: formatted.homepage,
     author: addAvatar(formatted.author),
     githubRepo: getGitHubRepoInfo(formatted.repository),
+    homepage: getHomePage(formatted.homepage, formatted.repository),
     license: formatted.license,
     keywords: formatted.keywords,
     created: formatted.created,
@@ -71,4 +71,15 @@ function getGitHubRepoInfo(repository) {
     user: result[1],
     project: result[2],
   };
+
+function getHomePage(homepage, repository) {
+  if (homepage && typeof homepage === 'string' && // if there's a homepage
+    (!repository || // and there's no repo,
+      typeof repository !== 'string' || // or repo is not a string
+      repository !== homepage // or repo is different than homepage
+    )) {
+    return homepage; // then we consider it a valuable homepage
+  }
+
+  return null;
 }
