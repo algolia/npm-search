@@ -37,10 +37,17 @@ function addGravatars(arrayObjs) {
 }
 
 function addGravatar(obj) {
-  if (obj && obj.email) {
+  if (obj) {
+    let gravatar;
+    if (obj.email && obj.email.indexOf('@') !== -1) {
+      gravatar = gravatarUrl(obj.email, {size: 180});
+    } else {
+      gravatar = 'https://www.gravatar.com/avatar/?size=180';
+    }
+
     return {
       ...obj,
-      gravatar: gravatarUrl(obj.email),
+      gravatar,
     };
   }
 
