@@ -19,37 +19,37 @@ export default function formatPkg(pkg) {
     version: formatted.version,
     description: formatted.description,
     homepage: formatted.homepage,
-    author: addGravatar(formatted.author),
+    author: addAvatar(formatted.author),
     githubRepo: getGitHubRepoInfo(formatted.repository),
     license: formatted.license,
     keywords: formatted.keywords,
     created: formatted.created,
     modified: formatted.modified,
-    lastPublisher: addGravatar(formatted.lastPublisher),
-    owners: addGravatars(formatted.owners),
+    lastPublisher: addAvatar(formatted.lastPublisher),
+    owners: addAvatars(formatted.owners),
   };
 }
 
-function addGravatars(arrayObjs) {
+function addAvatars(arrayObjs) {
   if (Array.isArray(arrayObjs) && arrayObjs.length > 0) {
-    return arrayObjs.map(addGravatar);
+    return arrayObjs.map(addAvatar);
   }
 
   return arrayObjs;
 }
 
-function addGravatar(obj) {
+function addAvatar(obj) {
   if (obj) {
-    let gravatar;
+    let avatar;
     if (obj.email && obj.email.indexOf('@') !== -1) {
-      gravatar = gravatarUrl(obj.email, {size: 180});
+      avatar = gravatarUrl(obj.email, {size: 180});
     } else {
-      gravatar = 'https://www.gravatar.com/avatar/?size=180';
+      avatar = 'https://www.gravatar.com/avatar/?size=180';
     }
 
     return {
       ...obj,
-      gravatar,
+      avatar,
     };
   }
 
