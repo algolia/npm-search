@@ -71,6 +71,7 @@ function getGitHubRepoInfo(repository) {
     user: result[1],
     project: result[2],
   };
+}
 
 function getHomePage(homepage, repository) {
   if (homepage && typeof homepage === 'string' && // if there's a homepage
