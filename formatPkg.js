@@ -1,5 +1,6 @@
 import NicePackage from 'nice-package';
 import gravatarUrl from 'gravatar-url';
+import numeral from 'numeral';
 
 export default function formatPkg(pkg) {
   const formatted = new NicePackage(pkg);
@@ -13,6 +14,7 @@ export default function formatPkg(pkg) {
     name: formatted.name,
     downloadsLast30Days: 0,
     downloadsRatio: 0,
+    humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
     popular: false,
     version: formatted.version,
     description: formatted.description,
