@@ -133,8 +133,9 @@ function replicate({seq}) {
 function watch({seq}) {
   log.info('🛰 Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates');
 
+  let chain = Promise.resolve();
+
   return new Promise((resolve, reject) => {
-    let chain = Promise.resolve();
     const changes = db.changes({
       ...defaultOptions,
       since: seq,
@@ -143,7 +144,10 @@ function watch({seq}) {
     });
 
     changes.on('change', change => {
-      chain = chain.then(() => saveDocs([change]).then(() => infoChange(change.seq, 1, '🛰')).catch(reject));
+      chain = chain
+        .then(() => saveDocs([change]), reject)
+        .then(() => infoChange(change.seq, 1, '🛰'))
+        .catch(reject);
     });
     changes.on('error', reject);
   });
