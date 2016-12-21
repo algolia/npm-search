@@ -28,14 +28,14 @@ export default function formatPkg(pkg) {
     downloadsRatio: 0,
     humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
     popular: false,
-    version: escape(cleaned.version) || '0.0.0',
-    description: escape(cleaned.description) || 'No description in package.',
+    version: cleaned.version ? escape(cleaned.version) : '0.0.0',
+    description: cleaned.description ? escape(cleaned.description) : 'No description found in package.json.',
     originalAuthor: cleaned.author,
     githubRepo,
     owner,
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
-    license: escape(cleaned.license) || 'No license',
-    keywords: keywords.map(keyword => escape(keyword)),
+    license: cleaned.license ? escape(cleaned.license) : null,
+    keywords: keywords.length > 0 ? keywords.map(keyword => escape(keyword)) : keywords,
     created: Date.parse(cleaned.created),
     modified: Date.parse(cleaned.modified),
     lastPublisher,
@@ -56,7 +56,7 @@ function getOwner(githubRepo, lastPublisher) {
 }
 
 function getGravatar(obj) {
-  if (!obj.email || typeof obj.email !== 'string' || obj.email.indexOf('@') !== -1) {
+  if (!obj.email || typeof obj.email !== 'string' || obj.email.indexOf('@') === -1) {
     return defaultGravatar;
   }
 
