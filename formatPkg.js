@@ -13,6 +13,7 @@ export default function formatPkg(pkg) {
 
   const githubRepo = cleaned.repository ? getGitHubRepoInfo(cleaned.repository) : null;
   const lastPublisher = cleaned.lastPublisher ? formatUser(cleaned.lastPublisher) : null;
+  const author = cleaned.author && typeof cleaned.author === 'object' ? formatUser(cleaned.author) : null;
   let license = null;
 
   if (license) {
@@ -24,11 +25,11 @@ export default function formatPkg(pkg) {
     }
   }
 
-  if (!githubRepo && !lastPublisher) {
+  if (!githubRepo && !lastPublisher && !author) {
     return undefined; // ignore this package, we cannot link it to anyone
   }
 
-  const owner = getOwner(githubRepo, lastPublisher); // always favor the GitHub owner
+  const owner = getOwner(githubRepo, lastPublisher, author); // always favor the GitHub owner
   let keywords = [];
 
   if (cleaned.keywords) {
@@ -59,7 +60,7 @@ export default function formatPkg(pkg) {
   };
 }
 
-function getOwner(githubRepo, lastPublisher) {
+function getOwner(githubRepo, lastPublisher, author) {
   if (githubRepo) {
     return {
       name: githubRepo.user,
@@ -68,7 +69,11 @@ function getOwner(githubRepo, lastPublisher) {
     };
   }
 
-  return lastPublisher;
+  if (lastPublisher) {
+    return lastPublisher;
+  }
+
+  return author;
 }
 
 function getGravatar(obj) {
