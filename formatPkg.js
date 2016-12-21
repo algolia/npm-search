@@ -1,19 +1,24 @@
 import NicePackage from 'nice-package';
 import gravatarUrl from 'gravatar-url';
 import numeral from 'numeral';
-const defaultGravatar = 'https://www.gravatar.com/avatar/?size=180';
+const defaultGravatar = 'https://www.gravatar.com/avatar/';
 import escape from 'escape-html';
 
 export default function formatPkg(pkg) {
   const cleaned = new NicePackage(pkg);
 
-  if (cleaned.valid === false || cleaned.lastPublisher === undefined) {
-    return undefined;
+  if (cleaned.valid === false) {
+    return undefined; // ignore this package
   }
 
-  const githubRepo = getGitHubRepoInfo(cleaned.repository);
-  const lastPublisher = formatUser(cleaned.lastPublisher);
-  const owner = getOwner(githubRepo, lastPublisher);
+  const githubRepo = cleaned.repository ? getGitHubRepoInfo(cleaned.repository) : null;
+  const lastPublisher = cleaned.lastPublisher ? formatUser(cleaned.lastPublisher) : null;
+
+  if (!githubRepo && !lastPublisher) {
+    return undefined; // ignore this package, we cannot link it to anyone
+  }
+
+  const owner = getOwner(githubRepo, lastPublisher); // always favor the GitHub owner
   let keywords = [];
 
   if (cleaned.keywords) {
@@ -60,7 +65,7 @@ function getGravatar(obj) {
     return defaultGravatar;
   }
 
-  return gravatarUrl(obj.email, {size: 180});
+  return gravatarUrl(obj.email);
 }
 
 function getGitHubRepoInfo(repository) {
