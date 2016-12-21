@@ -21,6 +21,7 @@
     "babel-preset-stage-2": "^6.18.0",
     "bunyan": "^1.8.5",
     "bunyan-debug-stream": "^1.0.7",
+    "escape-html": "^1.0.3",
     "got": "^6.6.3",
     "gravatar-url": "^1.1.0",
     "lodash": "^4.17.2",
