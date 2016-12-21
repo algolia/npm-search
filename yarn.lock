@@ -2713,9 +2713,9 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-numeral@^2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/numeral/-/numeral-2.0.3.tgz#18f2ffb78312cadca116b7bbf7a7591146ea1912"
+numeral@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/numeral/-/numeral-2.0.4.tgz#545a0c709e090a9cf79bebec802b93f60061f038"
 
 oauth-sign@~0.8.1:
   version "0.8.2"
