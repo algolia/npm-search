@@ -7,12 +7,22 @@ import escape from 'escape-html';
 export default function formatPkg(pkg) {
   const cleaned = new NicePackage(pkg);
 
-  if (cleaned.valid === false) {
-    return undefined; // ignore this package
+  if (!cleaned.name) {
+    return undefined;
   }
 
   const githubRepo = cleaned.repository ? getGitHubRepoInfo(cleaned.repository) : null;
   const lastPublisher = cleaned.lastPublisher ? formatUser(cleaned.lastPublisher) : null;
+  let license = null;
+
+  if (license) {
+    if (typeof cleaned.license === 'object' && typeof cleaned.license.type === 'string') {
+      license = escape(cleaned.license.type);
+    }
+    if (typeof cleaned.license === 'string') {
+      license = escape(cleaned.license);
+    }
+  }
 
   if (!githubRepo && !lastPublisher) {
     return undefined; // ignore this package, we cannot link it to anyone
@@ -34,17 +44,18 @@ export default function formatPkg(pkg) {
     humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
     popular: false,
     version: cleaned.version ? escape(cleaned.version) : '0.0.0',
-    description: cleaned.description ? escape(cleaned.description) : 'No description found in package.json.',
+    description: cleaned.description ? escape(cleaned.description) : null,
     originalAuthor: cleaned.author,
     githubRepo,
     owner,
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
-    license: cleaned.license ? escape(cleaned.license) : null,
+    license,
     keywords: keywords.length > 0 ? keywords.map(keyword => escape(keyword)) : keywords,
     created: Date.parse(cleaned.created),
     modified: Date.parse(cleaned.modified),
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
+    lastCrawl: (new Date()).toISOString(),
   };
 }
 
