@@ -3,6 +3,7 @@ import gravatarUrl from 'gravatar-url';
 import numeral from 'numeral';
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 import escape from 'escape-html';
+import traverse from 'traverse';
 
 export default function formatPkg(pkg) {
   const cleaned = new NicePackage(pkg);
@@ -18,10 +19,10 @@ export default function formatPkg(pkg) {
 
   if (license) {
     if (typeof cleaned.license === 'object' && typeof cleaned.license.type === 'string') {
-      license = escape(cleaned.license.type);
+      license = cleaned.license.type;
     }
     if (typeof cleaned.license === 'string') {
-      license = escape(cleaned.license);
+      license = cleaned.license;
     }
   }
 
@@ -37,27 +38,34 @@ export default function formatPkg(pkg) {
     if (typeof cleaned.keywords === 'string') keywords = [cleaned.keywords];
   }
 
-  return {
+  return traverse({
     objectID: cleaned.name,
-    name: escape(cleaned.name),
+    name: cleaned.name,
     downloadsLast30Days: 0,
     downloadsRatio: 0,
     humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
     popular: false,
-    version: cleaned.version ? escape(cleaned.version) : '0.0.0',
-    description: cleaned.description ? escape(cleaned.description) : null,
+    version: cleaned.version ? cleaned.version : '0.0.0',
+    description: cleaned.description ? cleaned.description : null,
     originalAuthor: cleaned.author,
     githubRepo,
     owner,
+    deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
     license,
-    keywords: keywords.length > 0 ? keywords.map(keyword => escape(keyword)) : keywords,
+    keywords,
     created: Date.parse(cleaned.created),
     modified: Date.parse(cleaned.modified),
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
     lastCrawl: (new Date()).toISOString(),
-  };
+  }).forEach(maybeEscape);
+}
+
+function maybeEscape(node) {
+  if (this.isLeaf && typeof node === 'string') {
+    this.update(escape(node));
+  }
 }
 
 function getOwner(githubRepo, lastPublisher, author) {
@@ -99,8 +107,8 @@ function getGitHubRepoInfo(repository) {
   }
 
   return {
-    user: escape(result[1]),
-    project: escape(result[2]),
+    user: result[1],
+    project: result[2],
     path: result[3] || '',
   };
 }
@@ -111,7 +119,7 @@ function getHomePage(homepage, repository) {
       typeof repository !== 'string' || // or repo is not a string
       repository !== homepage // or repo is different than homepage
     )) {
-    return escape(homepage); // then we consider it a valuable homepage
+    return homepage; // then we consider it a valuable homepage
   }
 
   return null;
