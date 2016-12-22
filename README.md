@@ -16,17 +16,17 @@ If the process fails, restart it and the replication process will continue at th
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [📖 Usage](#%F0%9F%93%96-usage)
+- [Usage](#usage)
   - [Production](#production)
   - [Restart](#restart)
   - [Development](#development)
-- [⚙ Env variables](#%E2%9A%99-env-variables)
-- [🤔 How does it works?](#%F0%9F%A4%94-how-does-it-works)
-- [✅ Tests](#%E2%9C%85-tests)
+- [Env variables](#env-variables)
+- [How does it works?](#how-does-it-works)
+- [Tests](#tests)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## 📖 Usage
+## Usage
 
 ### Production
 
@@ -62,7 +62,7 @@ seq=0 apiKey=... yarn dev
 
 Be careful to develop on a different index than the production one when necessary.
 
-## ⚙ Env variables
+## Env variables
 
 See [config.js](./config.js):
 - `apiKey`: [Algolia](https://www.algolia.com/) apiKey - **required**
@@ -79,7 +79,7 @@ See [config.js](./config.js):
   how much % of it is needed for a package to be popular - *default 0.2* This is a bit lower than
   the jQuery download range.
 
-## 🤔 How does it works?
+## How does it works?
 
 Our goal with this project is to:
 - be able to quickly do a complete rebuild
@@ -92,7 +92,7 @@ When the process starts with `seq=0`:
 - replicate registry changes since the current sequence
 - watch for registry changes continuously and replicate them
 
-## ✅ Tests
+## Tests
 
 ```sh
 yarn test
