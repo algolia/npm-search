@@ -79,7 +79,7 @@ See [config.js](./config.js):
   how much % of it is needed for a package to be popular - *default 0.2* This is a bit lower than
   the jQuery download range.
 
-## How does it works
+## 🤔 How does it works?
 
 Our goal with this project is to:
 - be able to quickly do a complete rebuild
@@ -92,7 +92,7 @@ When the process starts with `seq=0`:
 - replicate registry changes since the current sequence
 - watch for registry changes continuously and replicate them
 
-## Test
+## ✅ Tests
 
 ```sh
 yarn test
