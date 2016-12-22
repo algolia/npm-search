@@ -21,8 +21,8 @@ If the process fails, restart it and the replication process will continue at th
   - [Restart](#restart)
   - [Development](#development)
 - [⚙ Env variables](#%E2%9A%99-env-variables)
-- [How does it works](#how-does-it-works)
-- [Test](#test)
+- [🤔 How does it works?](#%F0%9F%A4%94-how-does-it-works)
+- [✅ Tests](#%E2%9C%85-tests)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
