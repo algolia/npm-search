@@ -11,7 +11,8 @@
     "start": "node lib/index.js",
     "install": "npm run build",
     "build": "babel *.js -d lib",
-    "test": "eslint ."
+    "test": "eslint .",
+    "doctoc": "doctoc --notitle --maxlevel 3 README.md"
   },
   "license": "MIT",
   "dependencies": {
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
+    "doctoc": "^1.2.0",
     "eslint": "^3.12.2",
     "eslint-config-algolia": "^6.0.1",
     "eslint-import-resolver-webpack": "^0.8.0",

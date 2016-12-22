@@ -12,6 +12,20 @@ The state of the replication is saved in Algolia index settings.
 The replication should always be running. **Only one instance per Algolia index must run at the same time**.
 If the process fails, restart it and the replication process will continue at the last point it remembers.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+- [📖 Usage](#%F0%9F%93%96-usage)
+  - [Production](#production)
+  - [Restart](#restart)
+  - [Development](#development)
+- [⚙ Env variables](#%E2%9A%99-env-variables)
+- [How does it works](#how-does-it-works)
+- [Test](#test)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## 📖 Usage
 
 ### Production
@@ -33,6 +47,9 @@ This is useful when you want to completely resync the npm registry because:
 - you changed the way you format packages
 - you added more metadata (like GitHub stars)
 - you are in an unsure state and you just want to restart everything
+
+`seq` represents a [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
+in CouchDB lingo.
 
 ### Development
 
@@ -64,7 +81,16 @@ See [config.js](./config.js):
 
 ## How does it works
 
+Our goal with this project is to:
+- be able to quickly do a complete rebuild
+- be resilient to failures
+- clean the package data
 
+When the process starts with `seq=0`:
+- save the [current sequence](https://replicate.npmjs.com/) of the npm registry in the state (Algolia settings)
+- bootstrap the initial index content by using [/_all_docs](http://docs.couchdb.org/en/2.0.0/api/database/bulk-api.html)
+- replicate registry changes since the current sequence
+- watch for registry changes continuously and replicate them
 
 ## Test
 

@@ -64,8 +64,8 @@ function getOwner(githubRepo, lastPublisher, author) {
   if (githubRepo) {
     return {
       name: githubRepo.user,
-      avatar: `http://github.com/${githubRepo.user}.png`,
-      link: `http://github.com/${githubRepo.user}`,
+      avatar: `https://github.com/${githubRepo.user}.png`,
+      link: `https://github.com/${githubRepo.user}`,
     };
   }
 
@@ -88,7 +88,7 @@ function getGitHubRepoInfo(repository) {
   if (!repository || typeof repository !== 'string') return null;
 
   const result = repository
-    .match(/^https:\/\/(?:www\.)?github.com\/(.*)?\/(.*)?$/);
+    .match(/^https:\/\/(?:www\.)?github.com\/(.*?)\/([^/]?)\/?(.*?)$/);
 
   if (!result) {
     return null;
@@ -101,6 +101,7 @@ function getGitHubRepoInfo(repository) {
   return {
     user: escape(result[1]),
     project: escape(result[2]),
+    path: result[3] || '',
   };
 }
 
