@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@risingstack/trace@risingstack/trace-nodejs":
-  version "2.33.0"
-  resolved "https://codeload.github.com/risingstack/trace-nodejs/tar.gz/7a168e8766703d1c4a7e9ec66bc01b9866e5afa0"
+"@risingstack/trace@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@risingstack/trace/-/trace-3.0.1.tgz#0ff4e23ca1249b335c71315cfff14b272c3c1bb2"
   dependencies:
     bl "1.1.2"
     continuation-local-storage "3.2.0"
