@@ -6,6 +6,7 @@ import PouchDB from 'pouchdb';
 import npm from './npm.js';
 import log from './log.js';
 import ms from 'ms';
+import '@risingstack/trace';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
