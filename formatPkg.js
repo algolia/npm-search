@@ -88,13 +88,13 @@ function getGitHubRepoInfo(repository) {
   if (!repository || typeof repository !== 'string') return null;
 
   const result = repository
-    .match(/^https:\/\/(?:www\.)?github.com\/([^/]+)\/([^/]+)(\/.+)?/);
+    .match(/^https:\/\/(?:www\.)?github.com\/([^/]+)\/([^/]+)(\/.+)?$/);
 
   if (!result) {
     return null;
   }
 
-  if (result.length !== 3) {
+  if (result.length < 3) {
     return null;
   }
 
