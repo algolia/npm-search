@@ -17,7 +17,7 @@ export default function formatPkg(pkg) {
   const author = cleaned.author && typeof cleaned.author === 'object' ? formatUser(cleaned.author) : null;
   let license = null;
 
-  if (license) {
+  if (cleaned.license) {
     if (typeof cleaned.license === 'object' && typeof cleaned.license.type === 'string') {
       license = cleaned.license.type;
     }
