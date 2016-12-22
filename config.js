@@ -13,13 +13,13 @@ const defaultConfig = {
       'unordered(name)',
       'unordered(description)',
       'unordered(keywords)',
-      'author.name',
+      'owner.name',
       'owners.name',
     ],
     attributesForFaceting: ['onlyFilter(name)', 'keywords'], // optionalFacetFilters to boost the name
     customRanking: ['desc(downloadsLast30Days)'],
-    disablePrefixOnAttributes: ['keywords', 'author.name', 'owners.name'],
-    disableExactOnAttributes: ['description', 'keywords', 'author.name', 'owners.name'],
+    disablePrefixOnAttributes: ['keywords', 'owner.name', 'owners.name'],
+    disableExactOnAttributes: ['description', 'keywords', 'owner.name', 'owners.name'],
     disableTypoToleranceOnAttributes: ['keywords'],
     exactOnSingleWordQuery: 'attribute',
     ranking: [
