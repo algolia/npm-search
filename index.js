@@ -2,7 +2,7 @@ import stateManager from './stateManager.js';
 import saveDocs from './saveDocs.js';
 import algoliaIndex from './algoliaIndex.js';
 import c from './config.js';
-import PouchDB from 'pouchdb';
+import PouchDB from 'pouchdb-http';
 import npm from './npm.js';
 import log from './log.js';
 import ms from 'ms';
