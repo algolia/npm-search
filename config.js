@@ -10,6 +10,7 @@ const defaultConfig = {
   seq: null,
   indexSettings: {
     searchableAttributes: [
+      'unordered(popularName)',
       'unordered(name)',
       'unordered(description)',
       'unordered(keywords)',

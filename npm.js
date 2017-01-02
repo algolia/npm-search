@@ -39,8 +39,13 @@ export default {
           const downloadsLast30Days = downloadsPerPkgName[pkg.name].downloads;
           const downloadsRatio = downloadsLast30Days / totalNpmDownloads * 100;
           const popular = downloadsRatio > c.popularDownloadsRatio;
+          // if the package is popular, we copy its name to a dedicated attribute
+          // which will make popular records' `name` matches to be ranked higher than other matches
+          // see the `searchableAttributes` index setting
+          const popularAttributes = popular ? {popularName: pkg.name} : {};
           return {
             ...pkg,
+            ...popularAttributes,
             downloadsLast30Days,
             humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
             downloadsRatio,
