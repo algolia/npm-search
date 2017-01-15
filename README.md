@@ -21,7 +21,7 @@ If the process fails, restart it and the replication process will continue at th
   - [Restart](#restart)
   - [Development](#development)
 - [Env variables](#env-variables)
-- [How does it works?](#how-does-it-works)
+- [How does it work?](#how-does-it-work)
 - [Tests](#tests)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -79,7 +79,7 @@ See [config.js](./config.js):
   how much % of it is needed for a package to be popular - *default 0.2* This is a bit lower than
   the jQuery download range.
 
-## How does it works?
+## How does it work?
 
 Our goal with this project is to:
 - be able to quickly do a complete rebuild
