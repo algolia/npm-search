@@ -16,6 +16,9 @@ If the process fails, restart it and the replication process will continue at th
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
+- [Algolia Index](#algolia-index)
+  - [Schema](#schema)
+  - [Ranking](#ranking)
 - [Usage](#usage)
   - [Production](#production)
   - [Restart](#restart)
@@ -25,6 +28,99 @@ If the process fails, restart it and the replication process will continue at th
 - [Tests](#tests)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Algolia Index
+
+### Schema
+
+For every single NPM package, we create a record in the Algolia index. The resulting records have the following schema:
+
+```json
+{
+  "name": "babel-core",
+  "downloadsLast30Days": 4679830,
+  "downloadsRatio": 0.08367903104553133,
+  "humanDownloadsLast30Days": "4.7m",
+  "popular": true,
+  "version": "6.21.0",
+  "description": "Babel compiler core.",
+  "githubRepo": {
+    "user": "babel",
+    "project": "babel",
+    "path": "/tree/master/packages/babel-core"
+  },
+  "owner": {
+    "name": "babel",
+    "avatar": "https://github.com/babel.png",
+    "link": "https://github.com/babel"
+  },
+  "deprecated": false,
+  "homepage": "https://babeljs.io/",
+  "license": "MIT",
+  "keywords": ["6to5", "babel", "classes", "const", "es6", "harmony", "let", "modules", "transpile", "transpiler", "var"],
+  "created": 1424009748555,
+  "modified": 1483473493821,
+  "lastPublisher": {
+    "name": "hzoo",
+    "email": "hi@henryzoo.com",
+    "avatar": "https://gravatar.com/avatar/851fb4fa7ca479bce1ae0cdf80d6e042",
+    "link": "https://www.npmjs.com/~hzoo"
+  },
+  "owners": [
+    {
+      "name": "amasad",
+      "email": "amjad.masad@gmail.com",
+      "avatar": "https://gravatar.com/avatar/03637ef1a5121222c8db0ed48c34e124",
+      "link": "https://www.npmjs.com/~amasad"
+    },
+    [...]
+  ],
+  "lastCrawl": "2017-01-03T19:58:19.674Z",
+  "popularName": "babel-core",
+  "objectID": "babel-core"
+}
+```
+
+### Ranking
+
+If you want to learn more about how Algolia's ranking algorithm is working, you can read [this blog post](https://blog.algolia.com/search-ranking-algorithm-unveiled/).
+
+#### Textual relevance
+
+##### Searchable Attributes
+
+We're restricting the search to use a subset of the attributes only:
+
+ - `popularName`
+ - `name`
+ - `description`
+ - `keywords`
+ - `owner.name`
+ - `owners.name`
+
+##### Prefix Search
+
+Algolia provides default prefix search capabilities (matching words with only the beginning). This is disabled for the `keywords`, `owner.name` and `owners.name` attributes.
+
+##### Typo-tolerance
+
+Algolia provides default typo-tolerance. Typo-tolerance is disabled for the `keywords` attribute.
+
+##### Exact Boosting
+
+Using the `optionalFacetFilters` feature of Algolia, we're boosting exact matches on the name of a package to always be on top of the results.
+
+#### Custom/Business relevance
+
+##### Number of downloads
+
+For each package, we use the number of downloads in the last 30 days as Algolia's `customRanking` setting. This will be used to sort the results having the same textual-relevance against each others.
+
+For instance, search for `babel` with match both `babel-core` and `babel-messages`. From a textual-relevance point of view, those 2 packages are exactly matching in the same way. In such case, Algolia will rely on the `customRanking` setting and therefore put the package with the highest number of downloads in the past 30 days first.
+
+##### Popular packages
+
+Some packages will be considered as popular if they have been downloaded "more" than others. We currently consider the packages having more than `0.005%` of the total number of downloads on the whole registry as the popular packages. This `popular` flag is also used to boost some records over non-popular ones.
 
 ## Usage
 
