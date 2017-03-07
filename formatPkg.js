@@ -16,7 +16,6 @@ export default function formatPkg(pkg) {
   const lastPublisher = cleaned.lastPublisher ? formatUser(cleaned.lastPublisher) : null;
   const author = cleaned.author && typeof cleaned.author === 'object' ? formatUser(cleaned.author) : null;
   let license = null;
-
   if (cleaned.license) {
     if (typeof cleaned.license === 'object' && typeof cleaned.license.type === 'string') {
       license = cleaned.license.type;
@@ -25,6 +24,9 @@ export default function formatPkg(pkg) {
       license = cleaned.license;
     }
   }
+
+  const version = cleaned.version ? cleaned.version : '0.0.0';
+  const gitHead = pkg.versions ? pkg.versions[version] ? pkg.versions[version].gitHead : undefined : undefined;
 
   if (!githubRepo && !lastPublisher && !author) {
     return undefined; // ignore this package, we cannot link it to anyone
@@ -45,10 +47,12 @@ export default function formatPkg(pkg) {
     downloadsRatio: 0,
     humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
     popular: false,
-    version: cleaned.version ? cleaned.version : '0.0.0',
+    version,
     description: cleaned.description ? cleaned.description : null,
     originalAuthor: cleaned.author,
     githubRepo,
+    gitHead,
+    readme: pkg.readme,
     owner,
     deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
@@ -117,7 +121,7 @@ function getHomePage(homepage, repository) {
   if (homepage && typeof homepage === 'string' && // if there's a homepage
     (!repository || // and there's no repo,
       typeof repository !== 'string' || // or repo is not a string
-      repository !== homepage // or repo is different than homepage
+      homepage.indexOf(repository) < 0  // or repo is different than homepage
     )) {
     return homepage; // then we consider it a valuable homepage
   }
