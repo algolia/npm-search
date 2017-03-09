@@ -87,16 +87,15 @@ const prefixURL = (url, { base, user, project, head, path }) => {
   if (url.indexOf('//') > 0) {
     return url;
   } else {
-    console.log(
-      (path ? path.replace(/^\//, '') + '/' : '') +
-        url.replace(/^(\.?\/?)/, ''),
-      `${base}/${user}/${project}/${path ? '' : `${head}/`}`,
-    )
-    return new URL(
-      (path ? path.replace(/^\//, '') + '/' : '') +
-        url.replace(/^(\.?\/?)/, ''),
-      `${base}/${user}/${project}/${path ? '' : `${head}/`}`,
-    );
+    try {
+      return new URL(
+        (path ? path.replace(/^\//, '') + '/' : '') +
+          url.replace(/^(\.?\/?)/, ''),
+        `${base}/${user}/${project}/${path ? '' : `${head}/`}`,
+      );
+    } catch (e) {
+      return url;
+    }
   }
 };
 
