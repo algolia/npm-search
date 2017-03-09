@@ -53,6 +53,7 @@ export default function formatPkg(pkg) {
     githubRepo,
     gitHead,
     readme: pkg.readme,
+    readmeFilename: pkg.readmeFilename,
     owner,
     deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
