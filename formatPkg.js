@@ -87,7 +87,6 @@ const prefixURL = (url, { base, user, project, head, path }) => {
   if (url.indexOf('//') > 0) {
     return url;
   } else {
-    return url
     return new URL(
       (path ? path.replace(/^\//, '') + '/' : '') +
         url.replace(/^(\.?\/?)/, ''),
