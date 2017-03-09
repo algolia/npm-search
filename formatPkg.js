@@ -1,4 +1,4 @@
-import URL from 'url';
+import {URL} from 'url';
 import NicePackage from 'nice-package';
 import gravatarUrl from 'gravatar-url';
 import numeral from 'numeral';

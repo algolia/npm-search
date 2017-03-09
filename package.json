@@ -33,7 +33,6 @@
     "numeral": "^2.0.4",
     "pouchdb-http": "^6.0.2",
     "traverse": "^0.6.6",
-    "url": "https://github.com/webcomponents/URL",
     "xss": "^0.3.3"
   },
   "devDependencies": {
