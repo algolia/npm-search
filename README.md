@@ -195,3 +195,16 @@ yarn test
 ```
 
 Only linting.
+
+## Forcing a complete re-index
+
+This will force a reindex, without removing any existing package
+
+```sh
+heroku config:add seq=0
+# check logs to see if it re-started
+heroku logs -t
+heroku config:remove seq
+# check logs to see if it re-started
+heroku logs -t
+```
