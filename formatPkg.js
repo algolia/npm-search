@@ -1,8 +1,11 @@
+import URL from 'url';
 import NicePackage from 'nice-package';
 import gravatarUrl from 'gravatar-url';
 import numeral from 'numeral';
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 import escape from 'escape-html';
+import marked from 'marked';
+import xss from 'xss';
 import traverse from 'traverse';
 
 export default function formatPkg(pkg) {
@@ -40,6 +43,10 @@ export default function formatPkg(pkg) {
     if (typeof cleaned.keywords === 'string') keywords = [cleaned.keywords];
   }
 
+  const _readme = pkg.readme;
+  // todo: fetch from github if _readme is undefined
+  const readme = _readme && html({ markdown:_readme, githubRepo, gitHead });
+
   return traverse({
     objectID: cleaned.name,
     name: cleaned.name,
@@ -52,8 +59,7 @@ export default function formatPkg(pkg) {
     originalAuthor: cleaned.author,
     githubRepo,
     gitHead,
-    readme: pkg.readme,
-    readmeFilename: pkg.readmeFilename,
+    readme,
     owner,
     deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
@@ -69,8 +75,56 @@ export default function formatPkg(pkg) {
 
 function maybeEscape(node) {
   if (this.isLeaf && typeof node === 'string') {
-    this.update(escape(node));
+    if (this.key === 'readme') {
+      this.update(node);
+    } else {
+      this.update(escape(node));
+    }
   }
+}
+
+const prefixURL = (url, { base, user, project, head, path }) => {
+  if (url.indexOf('//') > 0) {
+    return url;
+  } else {
+    return url
+    return new URL(
+      (path ? path.replace(/^\//, '') + '/' : '') +
+        url.replace(/^(\.?\/?)/, ''),
+      `${base}/${user}/${project}/${path ? '' : `${head}/`}`,
+    );
+  }
+};
+
+function html({markdown, githubRepo, gitHead }) {
+  const renderer = new marked.Renderer();
+
+  if (githubRepo) {
+    const { user, project, path } = githubRepo;
+    renderer.image = function(href, title, text) {
+      return `<img src="${prefixURL(href, {
+        base: 'https://raw.githubusercontent.com',
+        user,
+        project,
+        head: gitHead ? gitHead : 'master',
+        path,
+      })}" title="${title}" alt="${text}"/>`;
+    }
+
+    renderer.link = function(href, title, text) {
+      return `<a href="${prefixURL(href, {
+        base: 'https://github.com',
+        user,
+        project,
+        head: gitHead ? `tree/${gitHead}` : 'tree/master',
+        path,
+      })}" title="${title}">${text}</a>`;
+    }
+  }
+
+  const html = marked(markdown, { renderer });
+  const escaped = xss(html);
+  return escaped;
 }
 
 function getOwner(githubRepo, lastPublisher, author) {

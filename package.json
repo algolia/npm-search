@@ -27,11 +27,14 @@
     "got": "^6.7.1",
     "gravatar-url": "^1.1.0",
     "lodash": "^4.17.4",
+    "marked": "^0.3.6",
     "ms": "^0.7.2",
     "nice-package": "^3.0.1",
     "numeral": "^2.0.4",
     "pouchdb-http": "^6.0.2",
-    "traverse": "^0.6.6"
+    "traverse": "^0.6.6",
+    "url": "https://github.com/webcomponents/URL",
+    "xss": "^0.3.3"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
