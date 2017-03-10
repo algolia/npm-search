@@ -30,6 +30,7 @@
     "ms": "^0.7.2",
     "nice-package": "^3.0.1",
     "numeral": "^2.0.4",
+    "object-sizeof": "^1.1.1",
     "pouchdb-http": "^6.0.2",
     "traverse": "^0.6.6"
   },

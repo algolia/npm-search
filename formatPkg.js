@@ -1,10 +1,12 @@
-import {URL} from 'url';
+import sizeof from 'object-sizeof';
 import NicePackage from 'nice-package';
 import gravatarUrl from 'gravatar-url';
 import numeral from 'numeral';
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 import escape from 'escape-html';
 import traverse from 'traverse';
+
+import c from './config';
 
 export default function formatPkg(pkg) {
   const cleaned = new NicePackage(pkg);
@@ -45,7 +47,7 @@ export default function formatPkg(pkg) {
   // todo: fetch from github if _readme is undefined
   const readme = _readme;
 
-  return traverse({
+  const _package = {
     objectID: cleaned.name,
     name: cleaned.name,
     downloadsLast30Days: 0,
@@ -68,7 +70,37 @@ export default function formatPkg(pkg) {
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
     lastCrawl: (new Date()).toISOString(),
-  }).forEach(maybeEscape);
+  };
+
+  const totalSize = sizeof(_package);
+  if (totalSize > c.maxObjSize) {
+    const sizeDiff = sizeof(_package.readme) - totalSize;
+
+    _package.readme = truncateByBytesUTF8(
+      _package.readme,
+      c.maxObjSize - sizeDiff
+    ) + ' **TRUNCATED**';
+  }
+
+  return traverse(_package).forEach(maybeEscape);
+}
+
+//http://stackoverflow.com/a/1516420
+function toBytesUTF8(chars) {
+  return unescape(encodeURIComponent(chars));
+}
+function fromBytesUTF8(bytes) {
+  return decodeURIComponent(escape(bytes));
+}
+
+function truncateByBytesUTF8(chars, n) {
+  var bytes = toBytesUTF8(chars).substring(0, n);
+  while (true) {
+    try {
+      return fromBytesUTF8(bytes);
+    } catch (e) {}
+    bytes = bytes.substring(0, bytes.length - 1);
+  }
 }
 
 function maybeEscape(node) {
