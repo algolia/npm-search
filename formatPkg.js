@@ -30,7 +30,11 @@ export default function formatPkg(pkg) {
   }
 
   const version = cleaned.version ? cleaned.version : '0.0.0';
-  const gitHead = pkg.versions ? pkg.versions[version] ? pkg.versions[version].gitHead : undefined : undefined;
+
+  let gitHead = undefined;
+  if (pkg.versions && pkg.versions[version] && pkg.versions[version].gitHead) {
+    gitHead = pkg.versions[version].gitHead;
+  }
 
   if (!githubRepo && !lastPublisher && !author) {
     return undefined; // ignore this package, we cannot link it to anyone
