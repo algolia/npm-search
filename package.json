@@ -32,7 +32,8 @@
     "numeral": "^2.0.4",
     "object-sizeof": "^1.1.1",
     "pouchdb-http": "^6.0.2",
-    "traverse": "^0.6.6"
+    "traverse": "^0.6.6",
+    "truncate-utf8-bytes": "^1.0.2"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
