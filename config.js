@@ -21,7 +21,12 @@ const defaultConfig = {
     attributesForFaceting: ['onlyFilter(name)', 'keywords'], // optionalFacetFilters to boost the name
     customRanking: ['desc(downloadsLast30Days)'],
     disablePrefixOnAttributes: ['keywords', 'owner.name', 'owners.name'],
-    disableExactOnAttributes: ['description', 'keywords', 'owner.name', 'owners.name'],
+    disableExactOnAttributes: [
+      'description',
+      'keywords',
+      'owner.name',
+      'owners.name',
+    ],
     disableTypoToleranceOnAttributes: ['keywords'],
     exactOnSingleWordQuery: 'attribute',
     ranking: [
@@ -36,22 +41,21 @@ const defaultConfig = {
     ],
     optionalWords: ['js', 'javascript'],
     separatorsToIndex: '_',
-    synonyms: [
-      ['_', 'underscore'],
-    ],
+    synonyms: [['_', 'underscore']],
     replaceSynonymsInHighlight: false,
   },
 };
 
-export default Object
-  .entries(defaultConfig)
-  .reduce((res, [key, defaultValue]) => ({
+export default Object.entries(defaultConfig).reduce(
+  (res, [key, defaultValue]) => ({
     ...res,
-    [key]: key in process.env ?
-      JSON.parse(
-        typeof defaultValue === 'string' ?
-          `"${process.env[key]}"`
-          : process.env[key]
-      )
+    [key]: key in process.env
+      ? JSON.parse(
+          typeof defaultValue === 'string'
+            ? `"${process.env[key]}"`
+            : process.env[key]
+        )
       : defaultValue,
-  }), {});
+  }),
+  {}
+);

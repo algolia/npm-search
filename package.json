@@ -12,13 +12,21 @@
     "install": "npm run build",
     "build": "babel *.js -d lib",
     "test": "eslint .",
-    "doctoc": "doctoc --notitle --maxlevel 3 README.md"
+    "doctoc": "doctoc --notitle --maxlevel 3 README.md",
+    "lint:staged": "lint-staged"
   },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write --single-quote --trailing-comma --bracket-spacing=false",
+      "git add"
+    ]
+  },
+  "pre-commit": "lint:staged",
   "license": "MIT",
   "dependencies": {
     "@risingstack/trace": "^3.0.2",
-    "algoliasearch": "^3.20.2",
-    "babel-cli": "^6.18.0",
+    "algoliasearch": "^3.22.1",
+    "babel-cli": "^6.24.0",
     "babel-preset-env": "^1.1.4",
     "babel-preset-stage-2": "^6.18.0",
     "bunyan": "^1.8.5",
@@ -43,7 +51,10 @@
     "eslint-import-resolver-webpack": "^0.8.0",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jasmine": "^2.2.0",
-    "eslint-plugin-react": "^6.8.0"
+    "eslint-plugin-react": "^6.10.0",
+    "lint-staged": "^3.4.0",
+    "pre-commit": "^1.2.2",
+    "prettier": "^0.22.0"
   },
   "engines": {
     "node": ">=7"
