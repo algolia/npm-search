@@ -20,5 +20,5 @@ export default function saveDocs(docs) {
 }
 
 function addMetaData(pkgs) {
-  return npm.getDownloads(pkgs);
+  return Promise.all([npm.getDownloads(pkgs), npm.getDependents(pkgs)]);
 }

@@ -1,3 +1,4 @@
+import url from 'url';
 import got from 'got';
 import c from './config.js';
 import {chunk} from 'lodash';
@@ -73,11 +74,7 @@ export default {
         // if the package is popular, we copy its name to a dedicated attribute
         // which will make popular records' `name` matches to be ranked higher than other matches
         // see the `searchableAttributes` index setting
-        const popularAttributes = popular
-          ? {
-              popularName: pkg.name,
-            }
-          : {};
+        const popularAttributes = popular ? {popularName: pkg.name} : {};
         return {
           ...pkg,
           ...popularAttributes,
@@ -89,6 +86,34 @@ export default {
           popular,
         };
       });
+    });
+  },
+  getDependents(pkgs, options = {}) {
+    return pkgs.map(pkg => {
+      const dependedUponUrl = url.format({
+        protocol: 'https',
+        host: c.npmdependedUponEndpoint,
+        query: {
+          group_level: 2, // eslint-disable-line camelcase
+          startkey: `["${pkg.name}"]`,
+          endkey: `["${pkg.name}",{}]`,
+          skip: options.skip || 0,
+          limit: options.limit || 1000,
+        },
+      });
+      return got(dependedUponUrl, {json: true})
+        .then(({rows}) =>
+          rows.reduce(
+            (prev, {key: [name]}) => {
+              prev.push(name);
+              return prev;
+            },
+            [],
+          ))
+        .then(dependents => ({
+          ...pkg,
+          dependents,
+        }));
     });
   },
 };
