@@ -16,12 +16,21 @@ export default function formatPkg(pkg) {
     return undefined;
   }
 
-  const githubRepo = cleaned.repository ? getGitHubRepoInfo(cleaned.repository) : null;
-  const lastPublisher = cleaned.lastPublisher ? formatUser(cleaned.lastPublisher) : null;
-  const author = cleaned.author && typeof cleaned.author === 'object' ? formatUser(cleaned.author) : null;
+  const githubRepo = cleaned.repository
+    ? getGitHubRepoInfo(cleaned.repository)
+    : null;
+  const lastPublisher = cleaned.lastPublisher
+    ? formatUser(cleaned.lastPublisher)
+    : null;
+  const author = cleaned.author && typeof cleaned.author === 'object'
+    ? formatUser(cleaned.author)
+    : null;
   let license = null;
   if (cleaned.license) {
-    if (typeof cleaned.license === 'object' && typeof cleaned.license.type === 'string') {
+    if (
+      typeof cleaned.license === 'object' &&
+      typeof cleaned.license.type === 'string'
+    ) {
       license = cleaned.license.type;
     }
     if (typeof cleaned.license === 'string') {
@@ -70,7 +79,7 @@ export default function formatPkg(pkg) {
     modified: Date.parse(cleaned.modified),
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
-    lastCrawl: (new Date()).toISOString(),
+    lastCrawl: new Date().toISOString(),
   };
 
   const totalSize = sizeof(rawPkg);
@@ -109,7 +118,9 @@ function getOwner(githubRepo, lastPublisher, author) {
 }
 
 function getGravatar(obj) {
-  if (!obj.email || typeof obj.email !== 'string' || obj.email.indexOf('@') === -1) {
+  if (
+    !obj.email || typeof obj.email !== 'string' || obj.email.indexOf('@') === -1
+  ) {
     return defaultGravatar;
   }
 
@@ -119,8 +130,9 @@ function getGravatar(obj) {
 function getGitHubRepoInfo(repository) {
   if (!repository || typeof repository !== 'string') return null;
 
-  const result = repository
-    .match(/^https:\/\/(?:www\.)?github.com\/([^/]+)\/([^/]+)(\/.+)?$/);
+  const result = repository.match(
+    /^https:\/\/(?:www\.)?github.com\/([^/]+)\/([^/]+)(\/.+)?$/,
+  );
 
   if (!result) {
     return null;
@@ -138,11 +150,13 @@ function getGitHubRepoInfo(repository) {
 }
 
 function getHomePage(homepage, repository) {
-  if (homepage && typeof homepage === 'string' && // if there's a homepage
+  if (
+    homepage &&
+    typeof homepage === 'string' && // if there's a homepage
     (!repository || // and there's no repo,
       typeof repository !== 'string' || // or repo is not a string
-      homepage.indexOf(repository) < 0  // or repo is different than homepage
-    )) {
+      homepage.indexOf(repository) < 0) // or repo is different than homepage
+  ) {
     return homepage; // then we consider it a valuable homepage
   }
 
