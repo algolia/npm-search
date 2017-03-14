@@ -5,6 +5,7 @@ import numeral from 'numeral';
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 import escape from 'escape-html';
 import traverse from 'traverse';
+import truncate from 'truncate-utf8-bytes';
 
 import c from './config';
 
@@ -29,7 +30,11 @@ export default function formatPkg(pkg) {
   }
 
   const version = cleaned.version ? cleaned.version : '0.0.0';
-  const gitHead = pkg.versions ? pkg.versions[version] ? pkg.versions[version].gitHead : undefined : undefined;
+
+  let gitHead = undefined;
+  if (pkg.versions && pkg.versions[version] && pkg.versions[version].gitHead) {
+    gitHead = pkg.versions[version].gitHead;
+  }
 
   if (!githubRepo && !lastPublisher && !author) {
     return undefined; // ignore this package, we cannot link it to anyone
@@ -43,11 +48,7 @@ export default function formatPkg(pkg) {
     if (typeof cleaned.keywords === 'string') keywords = [cleaned.keywords];
   }
 
-  const _readme = pkg.readme;
-  // todo: fetch from github if _readme is undefined
-  const readme = _readme;
-
-  const _package = {
+  const rawPkg = {
     objectID: cleaned.name,
     name: cleaned.name,
     downloadsLast30Days: 0,
@@ -59,7 +60,7 @@ export default function formatPkg(pkg) {
     originalAuthor: cleaned.author,
     githubRepo,
     gitHead,
-    readme,
+    readme: pkg.readme,
     owner,
     deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
@@ -72,35 +73,13 @@ export default function formatPkg(pkg) {
     lastCrawl: (new Date()).toISOString(),
   };
 
-  const totalSize = sizeof(_package);
+  const totalSize = sizeof(rawPkg);
   if (totalSize > c.maxObjSize) {
-    const sizeDiff = sizeof(_package.readme) - totalSize;
-
-    _package.readme = truncateByBytesUTF8(
-      _package.readme,
-      c.maxObjSize - sizeDiff
-    ) + ' **TRUNCATED**';
+    const sizeDiff = sizeof(rawPkg.readme) - totalSize;
+    rawPkg.readme = `${truncate(rawPkg.readme, c.maxObjSize - sizeDiff)} **TRUNCATED**`;
   }
 
-  return traverse(_package).forEach(maybeEscape);
-}
-
-//http://stackoverflow.com/a/1516420
-function toBytesUTF8(chars) {
-  return unescape(encodeURIComponent(chars));
-}
-function fromBytesUTF8(bytes) {
-  return decodeURIComponent(escape(bytes));
-}
-
-function truncateByBytesUTF8(chars, n) {
-  var bytes = toBytesUTF8(chars).substring(0, n);
-  while (true) {
-    try {
-      return fromBytesUTF8(bytes);
-    } catch (e) {}
-    bytes = bytes.substring(0, bytes.length - 1);
-  }
+  return traverse(rawPkg).forEach(maybeEscape);
 }
 
 function maybeEscape(node) {
