@@ -1,4 +1,3 @@
-import url from 'url';
 import got from 'got';
 import c from './config.js';
 import {chunk} from 'lodash';
@@ -85,27 +84,4 @@ export function getDownloads(pkgs) {
       };
     });
   });
-}
-
-export function getDependents(pkgs, options = {}) {
-  return Promise.all(
-    pkgs.map(pkg => {
-      const dependedUponUrl = url.format({
-        protocol: 'https',
-        host: c.npmdependedUponEndpoint,
-        query: {
-          group_level: 2, // eslint-disable-line camelcase
-          startkey: `["${pkg.name}"]`,
-          endkey: `["${pkg.name}",{}]`,
-          skip: options.skip || 0,
-          limit: options.limit || 1000,
-        },
-      });
-      return got(dependedUponUrl, {json: true}).then(({
-        body: {rows = []},
-      }) =>
-        rows.reduce((prev, {key: [base, dependent]}) => [...prev, dependent], [
-        ])); // eslint-disable-line no-unused-vars
-    }),
-  );
 }
