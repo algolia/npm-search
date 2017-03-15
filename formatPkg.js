@@ -57,6 +57,8 @@ export default function formatPkg(pkg) {
     if (typeof cleaned.keywords === 'string') keywords = [cleaned.keywords];
   }
 
+  const dependencies = cleaned.dependencies || {};
+
   const rawPkg = {
     objectID: cleaned.name,
     name: cleaned.name,
@@ -66,6 +68,7 @@ export default function formatPkg(pkg) {
     popular: false,
     version,
     description: cleaned.description ? cleaned.description : null,
+    dependencies,
     originalAuthor: cleaned.author,
     githubRepo,
     gitHead,
