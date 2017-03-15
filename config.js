@@ -1,7 +1,6 @@
 const defaultConfig = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
   npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
-  npmdependedUponEndpoint: 'registry.npmjs.org/-/_view/dependedUpon',
   maxObjSize: 450000,
   popularDownloadsRatio: 0.005,
   appId: 'OFCNCOG2CU',
