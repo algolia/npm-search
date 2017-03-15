@@ -3,6 +3,7 @@ import formatPkg from './formatPkg.js';
 import log from './log.js';
 import * as npm from './npm.js';
 import * as npms from './npms.js';
+import {getChangelogs} from './github.js';
 
 export default function saveDocs(docs) {
   const rawPkgs = docs
@@ -21,13 +22,15 @@ export default function saveDocs(docs) {
 }
 
 function addMetaData(pkgs) {
-  return Promise.all([npm.getDownloads(pkgs), npms.getInfo(pkgs)]).then(([
+  return Promise.all([npm.getDownloads(pkgs), npms.getInfo(pkgs), getChangelogs(pkgs)]).then(([
     downloads,
+    changelogs,
     npmsInfo,
   ]) =>
     pkgs.map((pkg, index) => ({
       ...pkg,
       ...downloads[index],
       ...npmsInfo[index],
+      ...changelogs[index],
     })));
 }
