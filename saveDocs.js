@@ -2,6 +2,7 @@ import algoliaIndex from './algoliaIndex.js';
 import formatPkg from './formatPkg.js';
 import log from './log.js';
 import npm from './npm.js';
+import {getChangelogs} from './github.js';
 
 export default function saveDocs(docs) {
   const rawPkgs = docs
@@ -20,5 +21,13 @@ export default function saveDocs(docs) {
 }
 
 function addMetaData(pkgs) {
-  return npm.getDownloads(pkgs);
+  return Promise.all([npm.getDownloads(pkgs), getChangelogs(pkgs)]).then(([
+    downloads,
+    changelogs,
+  ]) =>
+    pkgs.map((pkg, index) => ({
+      ...pkg,
+      ...downloads[index],
+      ...changelogs[index],
+    })));
 }

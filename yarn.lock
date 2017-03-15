@@ -3380,6 +3380,10 @@ progress@^1.1.8:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/progress/-/progress-1.1.8.tgz#e260c78f6161cdd9b0e56cc3e0a85de17c7a57be"
 
+promise-rat-race@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/promise-rat-race/-/promise-rat-race-1.5.1.tgz#bb6ba6d2d419c8cac7813afd43bb9e428283ad93"
+
 promise@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/promise/-/promise-7.1.1.tgz#489654c692616b8aa55b0724fa809bb7db49c5bf"
