@@ -85,3 +85,18 @@ export function getDownloads(pkgs) {
     });
   });
 }
+
+export function getDependents(pkgs) {
+  return Promise.all(
+    pkgs.map(({name}) =>
+      got(
+        `${c.npmRegistryEndpoint}/_design/app/_view/dependedUpon?startkey=%5B%22${name}%22%5D&endkey=%5B%22${name}%22%2C%22%EF%BF%B0%22%5D&limit=1&reduce=true&stale=update_after`,
+        {json: true},
+      )
+        .then(res => res.body.rows[0] || {value: 0})
+        .then(({value}) => ({
+          dependents: value,
+          humanDependents: numeral(value).format('0.[0]a'),
+        }))),
+  );
+}

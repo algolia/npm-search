@@ -19,7 +19,7 @@ const defaultConfig = {
       'owners.name',
     ],
     attributesForFaceting: ['onlyFilter(name)', 'keywords'], // optionalFacetFilters to boost the name
-    customRanking: ['desc(downloadsLast30Days)'],
+    customRanking: ['desc(downloadsLast30Days)', 'desc(dependents)'],
     disablePrefixOnAttributes: ['keywords', 'owner.name', 'owners.name'],
     disableExactOnAttributes: [
       'description',
