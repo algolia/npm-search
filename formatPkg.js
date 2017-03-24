@@ -62,6 +62,7 @@ export default function formatPkg(pkg) {
   const rawPkg = {
     objectID: cleaned.name,
     name: cleaned.name,
+    numberOfWordsInName: cleaned.name.split(/[-/@_]+/).length,
     downloadsLast30Days: 0,
     downloadsRatio: 0,
     humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
