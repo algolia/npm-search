@@ -13,12 +13,17 @@ const defaultConfig = {
     searchableAttributes: [
       'unordered(popularName)',
       'unordered(name)',
+      'unordered(concatenatedName)',
       'unordered(description)',
       'unordered(keywords)',
       'owner.name',
       'owners.name',
     ],
-    attributesForFaceting: ['onlyFilter(name)', 'keywords'], // optionalFacetFilters to boost the name
+    attributesForFaceting: [
+      'onlyFilter(name)' /* to be removed when frontend concatenates */,
+      'onlyFilter(concatenatedName)' /* optionalFacetFilters to boost the name */,
+      'keywords',
+    ],
     customRanking: ['desc(downloadsLast30Days)'],
     disablePrefixOnAttributes: ['keywords', 'owner.name', 'owners.name'],
     disableExactOnAttributes: [

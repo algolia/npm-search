@@ -58,11 +58,12 @@ export default function formatPkg(pkg) {
   }
 
   const dependencies = cleaned.dependencies || {};
+  const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
 
   const rawPkg = {
     objectID: cleaned.name,
     name: cleaned.name,
-    numberOfWordsInName: cleaned.name.split(/[-/@_]+/).length,
+    concatenatedName,
     downloadsLast30Days: 0,
     downloadsRatio: 0,
     humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
