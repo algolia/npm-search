@@ -58,6 +58,7 @@ export default function formatPkg(pkg) {
   }
 
   const dependencies = cleaned.dependencies || {};
+  const devDependencies = cleaned.devDependencies || {};
   const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
 
   const rawPkg = {
@@ -71,6 +72,7 @@ export default function formatPkg(pkg) {
     version,
     description: cleaned.description ? cleaned.description : null,
     dependencies,
+    devDependencies,
     originalAuthor: cleaned.author,
     githubRepo,
     gitHead,
