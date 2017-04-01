@@ -26,6 +26,8 @@ If the process fails, restart it and the replication process will continue at th
 - [Env variables](#env-variables)
 - [How does it work?](#how-does-it-work)
 - [Tests](#tests)
+- [Deploying new version](#deploying-new-version)
+- [Forcing a complete re-index](#forcing-a-complete-re-index)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -195,6 +197,14 @@ yarn test
 ```
 
 Only linting.
+
+## Deploying new version
+
+[Setup heroku](https://devcenter.heroku.com/articles/git), then:
+
+```sh
+git push heroku master
+```
 
 ## Forcing a complete re-index
 
