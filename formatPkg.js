@@ -138,7 +138,7 @@ function getGitHubRepoInfo(repository) {
   if (!repository || typeof repository !== 'string') return null;
 
   const result = repository.match(
-    /^https:\/\/(?:www\.)?github.com\/([^/]+)\/([^/]+)(\/.+)?$/,
+    /^https:\/\/(?:www\.)?github.com\/([^/]+)\/([^/]+)(\/.+)?$/
   );
 
   if (!result) {

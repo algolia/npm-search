@@ -2,7 +2,7 @@ import algoliaIndex from './algoliaIndex.js';
 import formatPkg from './formatPkg.js';
 import log from './log.js';
 import * as npm from './npm.js';
-import {getChangelogs} from './github.js';
+import { getChangelogs } from './github.js';
 
 export default function saveDocs(docs) {
   const rawPkgs = docs

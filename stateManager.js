@@ -21,8 +21,8 @@ export default {
           (
             {
               userData,
-            },
-          ) => userData,
+            }
+          ) => userData
         );
   },
   set(state) {

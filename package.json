@@ -13,31 +13,30 @@
     "build": "babel *.js -d lib",
     "test": "eslint .",
     "doctoc": "doctoc --notitle --maxlevel 3 README.md",
-    "lint:staged": "lint-staged"
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.js": [
-      "prettier --write --single-quote --trailing-comma all --bracket-spacing false",
+      "prettier --write --single-quote --trailing-comma es5",
       "git add"
     ]
   },
-  "pre-commit": "lint:staged",
   "license": "MIT",
   "dependencies": {
-    "@risingstack/trace": "^3.0.2",
+    "@risingstack/trace": "^3.5.3",
     "algoliasearch": "^3.22.1",
     "babel-cli": "^6.24.0",
-    "babel-preset-env": "^1.1.4",
+    "babel-preset-env": "^1.3.2",
     "babel-preset-stage-2": "^6.18.0",
-    "bunyan": "^1.8.5",
+    "bunyan": "^1.8.9",
     "bunyan-debug-stream": "^1.0.7",
     "escape-html": "^1.0.3",
     "got": "^6.7.1",
     "gravatar-url": "^2.0.0",
     "lodash": "^4.17.4",
-    "ms": "^0.7.2",
+    "ms": "^1.0.0",
     "nice-package": "^3.0.1",
-    "numeral": "^2.0.4",
+    "numeral": "^2.0.6",
     "object-sizeof": "^1.1.1",
     "pouchdb-http": "^6.0.2",
     "promise-rat-race": "^1.5.1",
@@ -45,14 +44,17 @@
     "truncate-utf8-bytes": "^1.0.2"
   },
   "devDependencies": {
-    "babel-eslint": "^7.1.1",
+    "babel-eslint": "^7.2.1",
     "doctoc": "^1.2.0",
-    "eslint": "^3.12.2",
-    "eslint-config-algolia": "^6.0.1",
-    "eslint-import-resolver-webpack": "^0.8.0",
+    "eslint": "^3.19.0",
+    "eslint-config-algolia": "^7.0.2",
+    "eslint-config-prettier": "^1.5.0",
+    "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jasmine": "^2.2.0",
-    "eslint-plugin-react": "^6.10.0",
+    "eslint-plugin-jest": "^19.0.1",
+    "eslint-plugin-react": "^6.10.3",
+    "husky": "^0.13.3",
     "lint-staged": "^3.4.0",
     "pre-commit": "^1.2.2",
     "prettier": "^0.22.0"

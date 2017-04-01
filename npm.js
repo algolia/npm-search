@@ -1,6 +1,6 @@
 import got from 'got';
 import c from './config.js';
-import {chunk} from 'lodash';
+import { chunk } from 'lodash';
 import numeral from 'numeral';
 
 export function info() {
@@ -46,9 +46,9 @@ export function getDownloads(pkgs) {
         total,
         {
           downloads: dayDownloads,
-        },
+        }
       ) => total + dayDownloads,
-      0,
+      0
     );
 
     const downloadsPerPkgName = downloadsPerPkgNameChunks.reduce(
@@ -56,12 +56,12 @@ export function getDownloads(pkgs) {
         res,
         {
           body: downloadsPerPkgNameChunk,
-        },
+        }
       ) => ({
         ...res,
         ...downloadsPerPkgNameChunk,
       }),
-      {},
+      {}
     );
 
     return pkgs.map(pkg => {
@@ -73,7 +73,7 @@ export function getDownloads(pkgs) {
       // if the package is popular, we copy its name to a dedicated attribute
       // which will make popular records' `name` matches to be ranked higher than other matches
       // see the `searchableAttributes` index setting
-      const popularAttributes = popular ? {popularName: pkg.name} : {};
+      const popularAttributes = popular ? { popularName: pkg.name } : {};
       return {
         ...pkg,
         ...popularAttributes,
@@ -88,15 +88,15 @@ export function getDownloads(pkgs) {
 
 export function getDependents(pkgs) {
   return Promise.all(
-    pkgs.map(({name}) =>
+    pkgs.map(({ name }) =>
       got(
         `${c.npmRegistryEndpoint}/_design/app/_view/dependedUpon?startkey=%5B%22${name}%22%5D&endkey=%5B%22${name}%22%2C%22%EF%BF%B0%22%5D&limit=1&reduce=true&stale=update_after`,
-        {json: true},
+        { json: true }
       )
-        .then(res => res.body.rows[0] || {value: 0})
-        .then(({value}) => ({
+        .then(res => res.body.rows[0] || { value: 0 })
+        .then(({ value }) => ({
           dependents: value,
           humanDependents: numeral(value).format('0.[0]a'),
-        }))),
+        })))
   );
 }

@@ -58,9 +58,9 @@ export default Object.entries(defaultConfig).reduce(
       ? JSON.parse(
           typeof defaultValue === 'string'
             ? `"${process.env[key]}"`
-            : process.env[key],
+            : process.env[key]
         )
       : defaultValue,
   }),
-  {},
+  {}
 );

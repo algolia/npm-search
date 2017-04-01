@@ -41,7 +41,7 @@ function infoChange(seq, nbChanges, emoji) {
       npmInfo.seq,
       Math.floor(Math.max(seq, 1) / npmInfo.seq * 100),
       Math.round(ratePerSecond),
-      ms((npmInfo.seq - seq) / ratePerSecond * 1000),
+      ms((npmInfo.seq - seq) / ratePerSecond * 1000)
     );
     loopStart = Date.now();
   });
@@ -58,7 +58,7 @@ function infoDocs(offset, nbDocs, emoji) {
       totalDocs,
       Math.floor(Math.max(offset + nbDocs, 1) / totalDocs * 100),
       Math.round(ratePerSecond),
-      ms((totalDocs - offset - nbDocs) / ratePerSecond * 1000),
+      ms((totalDocs - offset - nbDocs) / ratePerSecond * 1000)
     );
     loopStart = Date.now();
   });
@@ -127,12 +127,12 @@ function bootstrap(state) {
 function replicate(
   {
     seq,
-  },
+  }
 ) {
   log.info(
     '🐌 Replicate: Asking for %d changes since sequence %d',
     c.replicateConcurrency,
-    seq,
+    seq
   );
 
   return db
@@ -163,10 +163,10 @@ function replicate(
 function watch(
   {
     seq,
-  },
+  }
 ) {
   log.info(
-    '🛰 Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates',
+    '🛰 Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates'
   );
 
   let chain = Promise.resolve();

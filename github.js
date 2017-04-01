@@ -9,15 +9,15 @@ function getChangelog(
       path: '',
     },
     gitHead = 'master',
-  },
+  }
 ) {
   if (githubRepo === null) {
-    return {changelogFilename: null};
+    return { changelogFilename: null };
   }
 
-  const {user, project, path} = githubRepo;
+  const { user, project, path } = githubRepo;
   if (user.length < 1 || project.length < 1) {
-    return {changelogFilename: null};
+    return { changelogFilename: null };
   }
 
   const baseGithubURL = `https://raw.githubusercontent.com/${user}/${project}/${gitHead}/${`${path.replace('/tree/', '')}`}`;
@@ -40,9 +40,9 @@ function getChangelog(
     'history',
   ].map(file => [baseGithubURL.replace(/\/$/, ''), file].join('/'));
 
-  return race(files.map(got, {method: 'HEAD'}))
-    .then(({url}) => ({changelogFilename: url}))
-    .catch(() => ({changelogFilename: null}));
+  return race(files.map(got, { method: 'HEAD' }))
+    .then(({ url }) => ({ changelogFilename: url }))
+    .catch(() => ({ changelogFilename: null }));
 }
 
 export function getChangelogs(pkgs) {
