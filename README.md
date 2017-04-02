@@ -40,17 +40,27 @@ For every single NPM package, we create a record in the Algolia index. The resul
 ```json
 {
   "name": "babel-core",
-  "downloadsLast30Days": 4679830,
-  "downloadsRatio": 0.08367903104553133,
-  "humanDownloadsLast30Days": "4.7m",
+  "concatenatedName": "babelcore",
+  "downloadsLast30Days": 7729599,
+  "downloadsRatio": 0.0877900252270115,
+  "humanDownloadsLast30Days": "7.7m",
   "popular": true,
-  "version": "6.21.0",
+  "version": "6.24.0",
   "description": "Babel compiler core.",
+  "dependencies": {
+    "babel-code-frame": "^6.22.0",
+    [...]
+  },
+  "devDependencies": {
+    "babel-helper-fixtures": "^6.22.0",
+    [...]
+  },
   "githubRepo": {
     "user": "babel",
     "project": "babel",
     "path": "/tree/master/packages/babel-core"
   },
+  "readme": "# babel-core\n> Babel compiler core.\n```javascript\nvar babel = require(\"babel-core\");\nimport { transform } from 'babel-core';\nimport * as babel from 'babel-core';\n```\nAll transformations will use your local configuration files (.babelrc or in package.json). See [options](#options) to disable it.\n## babel.transform(code: string, [options?](#options): Object)\nTransforms the passed in `code`. Returning an object with the generated code,\nsource map, and AST.\n```js\nbabel.transform(code, options)", //truncated at 200kb with **TRUNCATED**
   "owner": {
     "name": "babel",
     "avatar": "https://github.com/babel.png",
@@ -61,7 +71,7 @@ For every single NPM package, we create a record in the Algolia index. The resul
   "license": "MIT",
   "keywords": ["6to5", "babel", "classes", "const", "es6", "harmony", "let", "modules", "transpile", "transpiler", "var"],
   "created": 1424009748555,
-  "modified": 1483473493821,
+  "modified": 1490641779463,
   "lastPublisher": {
     "name": "hzoo",
     "email": "hi@henryzoo.com",
@@ -77,8 +87,11 @@ For every single NPM package, we create a record in the Algolia index. The resul
     },
     [...]
   ],
-  "lastCrawl": "2017-01-03T19:58:19.674Z",
+  "lastCrawl": "2017-04-01T13:41:14.220Z",
   "popularName": "babel-core",
+  "dependents": 3321,
+  "humanDependents": "3.3k",
+  "changelogFilename": null,
   "objectID": "babel-core"
 }
 ```
