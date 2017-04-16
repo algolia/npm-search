@@ -53,7 +53,9 @@ export function getDownloads(pkgs) {
     return pkgs.map(pkg => {
       if (downloadsPerPkgName[pkg.name] === undefined) return pkg;
 
-      const downloadsLast30Days = downloadsPerPkgName[pkg.name].downloads;
+      const downloadsLast30Days = downloadsPerPkgName[pkg.name]
+        ? downloadsPerPkgName[pkg.name].downloads
+        : 0;
       const downloadsRatio = downloadsLast30Days / totalNpmDownloads * 100;
       const popular = downloadsRatio > c.popularDownloadsRatio;
       // if the package is popular, we copy its name to a dedicated attribute
