@@ -20,7 +20,10 @@ export function info() {
 export function getDownloads(pkgs) {
   // npm has a weird API to get downloads via GET params, so we split pkgs into chunks
   // and do multiple requests to avoid weird cases when concurrency is high
-  const encodedPackageNames = pkgs.map(pkg => encodeURIComponent(pkg.name));
+  const encodedPackageNames = pkgs
+    .map(pkg => pkg.name)
+    .filter(name => name[0] !== '@' /*downloads for scoped packages fails */)
+    .map(name => encodeURIComponent(name));
   // why do we do this? see https://github.com/npm/registry/issues/104
   encodedPackageNames.unshift('');
   const pkgsNamesChunks = chunk(encodedPackageNames, 100).map(names =>
