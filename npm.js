@@ -1,7 +1,9 @@
 import got from 'got';
-import c from './config.js';
 import { chunk } from 'lodash';
 import numeral from 'numeral';
+
+import c from './config.js';
+import log from './log.js';
 
 export function info() {
   return got(c.npmRegistryEndpoint, {
@@ -31,6 +33,19 @@ export function getDownloads(pkgs) {
     ...pkgsNamesChunks.map(pkgsNames =>
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`, {
         json: true,
+      }).catch(e => {
+        log.warn(
+          `Something went wrong asking the downloads for \n${Array.from(pkgsNames).join(',')} \n${e}`
+        );
+        return {
+          body: Array.from(pkgsNames).reduce((acc, current) => {
+            acc[current] = {
+              downloads: 0,
+              package: current,
+            };
+            return acc;
+          }, {}),
+        };
       })
     ),
   ]).then(([
