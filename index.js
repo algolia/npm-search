@@ -21,9 +21,7 @@ let loopStart = Date.now();
 
 algoliaIndex
   .setSettings(c.indexSettings)
-  .then(({
-    taskID,
-  }) => algoliaIndex.waitTask(taskID))
+  .then(({ taskID }) => algoliaIndex.waitTask(taskID))
   .then(() => stateManager.check())
   .then(bootstrap)
   .then(() => stateManager.get())
@@ -48,9 +46,7 @@ function infoChange(seq, nbChanges, emoji) {
 }
 
 function infoDocs(offset, nbDocs, emoji) {
-  return npm.info().then(({
-    nbDocs: totalDocs,
-  }) => {
+  return npm.info().then(({ nbDocs: totalDocs }) => {
     const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);
     log.info(
       `${emoji} Synced %d/%d docs (%d%), current rate: %d docs/s (%s remaining)`,
@@ -79,12 +75,11 @@ function bootstrap(state) {
       npm
         .info()
         // first time this launches, we need to remember the last seq our bootstrap can trust
-        .then(({
-          seq,
-        }) =>
+        .then(({ seq }) =>
           stateManager.save({
             seq,
-          }))
+          })
+        )
         .then(() => loop(state.bootstrapLastId))
     );
   }
@@ -117,18 +112,15 @@ function bootstrap(state) {
           .then(() =>
             stateManager.save({
               bootstrapLastId: newLastId,
-            }))
+            })
+          )
           .then(() => infoDocs(res.offset, res.rows.length, '⛷'))
           .then(() => loop(newLastId));
       });
   }
 }
 
-function replicate(
-  {
-    seq,
-  }
-) {
+function replicate({ seq }) {
   log.info(
     '🐌 Replicate: Asking for %d changes since sequence %d',
     c.replicateConcurrency,
@@ -146,7 +138,8 @@ function replicate(
         .then(() =>
           stateManager.save({
             seq: res.last_seq,
-          }))
+          })
+        )
         .then(() => infoChange(res.last_seq, res.results.length, '🐌'))
         .then(() => {
           if (res.results.length < c.replicateConcurrency) {
@@ -157,14 +150,11 @@ function replicate(
           return replicate({
             seq: res.last_seq,
           });
-        }));
+        })
+    );
 }
 
-function watch(
-  {
-    seq,
-  }
-) {
+function watch({ seq }) {
   log.info(
     '🛰 Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates'
   );
@@ -186,7 +176,8 @@ function watch(
         .then(() =>
           stateManager.save({
             seq: change.seq,
-          }))
+          })
+        )
         .catch(reject);
     });
     changes.on('error', reject);

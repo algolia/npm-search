@@ -31,5 +31,6 @@ function addMetaData(pkgs) {
       ...downloads[index],
       ...dependents[index],
       ...changelogs[index],
-    })));
+    }))
+  );
 }

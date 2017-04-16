@@ -6,12 +6,7 @@ import numeral from 'numeral';
 export function info() {
   return got(c.npmRegistryEndpoint, {
     json: true,
-  }).then(({
-    body: {
-      doc_count: nbDocs,
-      update_seq: seq,
-    },
-  }) => ({
+  }).then(({ body: { doc_count: nbDocs, update_seq: seq } }) => ({
     nbDocs,
     seq,
   }));
@@ -27,7 +22,8 @@ export function getDownloads(pkgs) {
   // why do we do this? see https://github.com/npm/registry/issues/104
   encodedPackageNames.unshift('');
   const pkgsNamesChunks = chunk(encodedPackageNames, 100).map(names =>
-    names.join(','));
+    names.join(',')
+  );
   return Promise.all([
     got(`${c.npmDownloadsEndpoint}/range/last-month`, {
       json: true,
@@ -35,32 +31,19 @@ export function getDownloads(pkgs) {
     ...pkgsNamesChunks.map(pkgsNames =>
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`, {
         json: true,
-      })),
+      })
+    ),
   ]).then(([
-    {
-      body: {
-        downloads: totalNpmDownloadsPerDay,
-      },
-    },
+    { body: { downloads: totalNpmDownloadsPerDay } },
     ...downloadsPerPkgNameChunks
   ]) => {
     const totalNpmDownloads = totalNpmDownloadsPerDay.reduce(
-      (
-        total,
-        {
-          downloads: dayDownloads,
-        }
-      ) => total + dayDownloads,
+      (total, { downloads: dayDownloads }) => total + dayDownloads,
       0
     );
 
     const downloadsPerPkgName = downloadsPerPkgNameChunks.reduce(
-      (
-        res,
-        {
-          body: downloadsPerPkgNameChunk,
-        }
-      ) => ({
+      (res, { body: downloadsPerPkgNameChunk }) => ({
         ...res,
         ...downloadsPerPkgNameChunk,
       }),
@@ -100,6 +83,7 @@ export function getDependents(pkgs) {
         .then(({ value }) => ({
           dependents: value,
           humanDependents: numeral(value).format('0.[0]a'),
-        })))
+        }))
+    )
   );
 }

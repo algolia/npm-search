@@ -12,18 +12,14 @@ let currentState;
 export default {
   check() {
     if (c.seq !== null) return this.reset();
-    return this.get().then(state => state === undefined ? this.reset() : state);
+    return this.get().then(
+      state => (state === undefined ? this.reset() : state)
+    );
   },
   get() {
     return currentState
       ? Promise.resolve(currentState)
-      : algoliaIndex.getSettings().then(
-          (
-            {
-              userData,
-            }
-          ) => userData
-        );
+      : algoliaIndex.getSettings().then(({ userData }) => userData);
   },
   set(state) {
     currentState = state;
@@ -42,6 +38,7 @@ export default {
       this.set({
         ...current,
         ...partial,
-      }));
+      })
+    );
   },
 };

@@ -161,7 +161,7 @@ function getHomePage(homepage, repository) {
     homepage &&
     typeof homepage === 'string' && // if there's a homepage
     (!repository || // and there's no repo,
-      typeof repository !== 'string' || // or repo is not a string
+    typeof repository !== 'string' || // or repo is not a string
       homepage.indexOf(repository) < 0) // or repo is different than homepage
   ) {
     return homepage; // then we consider it a valuable homepage
