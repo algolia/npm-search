@@ -61,6 +61,13 @@ export default function formatPkg(pkg) {
   const devDependencies = cleaned.devDependencies || {};
   const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
 
+  const versions = Object.keys(cleaned.other.time)
+    .filter(key => !['modified', 'created'].includes(key))
+    .reduce((obj, key) => {
+      obj[key] = cleaned.other.time[key];
+      return obj;
+    }, {});
+
   const rawPkg = {
     objectID: cleaned.name,
     name: cleaned.name,
@@ -70,6 +77,7 @@ export default function formatPkg(pkg) {
     humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
     popular: false,
     version,
+    versions,
     description: cleaned.description ? cleaned.description : null,
     dependencies,
     devDependencies,
