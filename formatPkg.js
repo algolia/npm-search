@@ -61,12 +61,16 @@ export default function formatPkg(pkg) {
   const devDependencies = cleaned.devDependencies || {};
   const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
 
-  const versions = Object.keys(cleaned.other.time)
-    .filter(key => !['modified', 'created'].includes(key))
-    .reduce((obj, key) => {
-      obj[key] = cleaned.other.time[key];
-      return obj;
-    }, {});
+  let versions = {};
+
+  if (cleaned.other && cleaned.other.time) {
+    versions = Object.keys(cleaned.other.time)
+      .filter(key => !['modified', 'created'].includes(key))
+      .reduce((obj, key) => {
+        obj[key] = cleaned.other.time[key];
+        return obj;
+      }, {});
+  }
 
   const rawPkg = {
     objectID: cleaned.name,
