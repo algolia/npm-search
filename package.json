@@ -47,7 +47,7 @@
     "babel-eslint": "^7.2.2",
     "doctoc": "^1.2.0",
     "eslint": "^3.19.0",
-    "eslint-config-algolia": "^7.0.2",
+    "eslint-config-algolia": "^7.0.3",
     "eslint-config-prettier": "^1.6.0",
     "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-plugin-import": "^2.2.0",
