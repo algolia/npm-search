@@ -31,6 +31,7 @@ algoliaIndex
   .catch(error);
 
 function infoChange(seq, nbChanges, emoji) {
+  console.log(seq, nbChanges, emoji);
   return npm.info().then(npmInfo => {
     const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
     log.info(
