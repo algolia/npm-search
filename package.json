@@ -44,20 +44,20 @@
     "truncate-utf8-bytes": "^1.0.2"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.2",
+    "babel-eslint": "^7.2.3",
     "doctoc": "^1.2.0",
     "eslint": "^3.19.0",
     "eslint-config-algolia": "^7.0.3",
-    "eslint-config-prettier": "^1.6.0",
+    "eslint-config-prettier": "^1.7.0",
     "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jasmine": "^2.2.0",
     "eslint-plugin-jest": "^19.0.1",
     "eslint-plugin-react": "^6.10.3",
     "husky": "^0.13.3",
-    "lint-staged": "^3.4.0",
+    "lint-staged": "^3.4.1",
     "pre-commit": "^1.2.2",
-    "prettier": "^1.1.0"
+    "prettier": "^1.2.2"
   },
   "engines": {
     "node": ">=7"
