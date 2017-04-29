@@ -22,55 +22,25 @@ export default function formatPkg(pkg) {
   const lastPublisher = cleaned.lastPublisher
     ? formatUser(cleaned.lastPublisher)
     : null;
-  const author = cleaned.author && typeof cleaned.author === 'object'
-    ? formatUser(cleaned.author)
-    : null;
-  let license = null;
-  if (cleaned.license) {
-    if (
-      typeof cleaned.license === 'object' &&
-      typeof cleaned.license.type === 'string'
-    ) {
-      license = cleaned.license.type;
-    }
-    if (typeof cleaned.license === 'string') {
-      license = cleaned.license;
-    }
-  }
+  const author = getAuthor(cleaned);
+  const license = getLicense(cleaned);
 
   const version = cleaned.version ? cleaned.version : '0.0.0';
 
-  let gitHead = undefined;
-  if (pkg.versions && pkg.versions[version] && pkg.versions[version].gitHead) {
-    gitHead = pkg.versions[version].gitHead;
-  }
+  const gitHead = getGitHead(pkg, version);
 
   if (!githubRepo && !lastPublisher && !author) {
     return undefined; // ignore this package, we cannot link it to anyone
   }
 
   const owner = getOwner(githubRepo, lastPublisher, author); // always favor the GitHub owner
-  let keywords = [];
-
-  if (cleaned.keywords) {
-    if (Array.isArray(cleaned.keywords)) keywords = [...cleaned.keywords];
-    if (typeof cleaned.keywords === 'string') keywords = [cleaned.keywords];
-  }
+  const keywords = getKeywords(cleaned);
 
   const dependencies = cleaned.dependencies || {};
   const devDependencies = cleaned.devDependencies || {};
   const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
 
-  let versions = {};
-
-  if (cleaned.other && cleaned.other.time) {
-    versions = Object.keys(cleaned.other.time)
-      .filter(key => !['modified', 'created'].includes(key))
-      .reduce((obj, key) => {
-        obj[key] = cleaned.other.time[key];
-        return obj;
-      }, {});
-  }
+  const versions = getVersions(cleaned);
 
   const rawPkg = {
     objectID: cleaned.name,
@@ -120,6 +90,27 @@ function maybeEscape(node) {
   }
 }
 
+function getAuthor(cleaned) {
+  return cleaned.author && typeof cleaned.author === 'object'
+    ? formatUser(cleaned.author)
+    : null;
+}
+
+function getLicense(cleaned) {
+  if (cleaned.license) {
+    if (
+      typeof cleaned.license === 'object' &&
+      typeof cleaned.license.type === 'string'
+    ) {
+      return cleaned.license.type;
+    }
+    if (typeof cleaned.license === 'string') {
+      return cleaned.license;
+    }
+  }
+  return null;
+}
+
 function getOwner(githubRepo, lastPublisher, author) {
   if (githubRepo) {
     return {
@@ -138,12 +129,45 @@ function getOwner(githubRepo, lastPublisher, author) {
 
 function getGravatar(obj) {
   if (
-    !obj.email || typeof obj.email !== 'string' || obj.email.indexOf('@') === -1
+    !obj.email ||
+    typeof obj.email !== 'string' ||
+    obj.email.indexOf('@') === -1
   ) {
     return defaultGravatar;
   }
 
   return gravatarUrl(obj.email);
+}
+
+function getGitHead(pkg, version) {
+  if (pkg.versions && pkg.versions[version] && pkg.versions[version].gitHead) {
+    return pkg.versions[version].gitHead;
+  }
+  return null;
+}
+
+function getVersions(cleaned) {
+  if (cleaned.other && cleaned.other.time) {
+    return Object.keys(cleaned.other.time)
+      .filter(key => !['modified', 'created'].includes(key))
+      .reduce((obj, key) => {
+        obj[key] = cleaned.other.time[key];
+        return obj;
+      }, {});
+  }
+  return {};
+}
+
+function getKeywords(cleaned) {
+  if (cleaned.keywords) {
+    if (Array.isArray(cleaned.keywords)) {
+      return [...cleaned.keywords];
+    }
+    if (typeof cleaned.keywords === 'string') {
+      return [cleaned.keywords];
+    }
+  }
+  return [];
 }
 
 function getGitHubRepoInfo(repository) {
