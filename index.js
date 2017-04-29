@@ -104,6 +104,7 @@ function bootstrap(state) {
           log.info('⛷ Bootstrap: done');
           return stateManager.save({
             bootstrapDone: true,
+            bootstrapLastDone: new Date().toISOString(),
           });
         }
 
@@ -179,6 +180,17 @@ function watch({ seq }) {
             seq: change.seq,
           })
         )
+        .then(stateManager.get)
+        .then(({ bootstrapLastDone }) => {
+          const now = new Date();
+          const lastBootstrapped = new Date(bootstrapLastDone);
+          if (now - lastBootstrapped > c.timeToRedoBootstrap) {
+            stateManager.set({
+              seq: 0,
+              bootstrapDone: false,
+            });
+          }
+        })
         .catch(reject);
     });
     changes.on('error', reject);
