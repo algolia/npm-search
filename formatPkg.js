@@ -159,15 +159,18 @@ function getVersions(cleaned) {
 }
 
 function getKeywords(cleaned) {
+  const extraKeywords = cleaned.name.startsWith('create-')
+    ? ['yarn-create']
+    : [];
   if (cleaned.keywords) {
     if (Array.isArray(cleaned.keywords)) {
-      return [...cleaned.keywords];
+      return [...cleaned.keywords, ...extraKeywords];
     }
     if (typeof cleaned.keywords === 'string') {
-      return [cleaned.keywords];
+      return [cleaned.keywords, ...extraKeywords];
     }
   }
-  return [];
+  return [...extraKeywords];
 }
 
 function getGitHubRepoInfo(repository) {
