@@ -184,6 +184,9 @@ function watch({ seq }) {
         .then(({ bootstrapLastDone }) => {
           const now = Date.now();
           const lastBootstrapped = new Date(bootstrapLastDone);
+          // when the process is running longer than a certain time
+          // we want to start over and get all info again
+          // we do this by exiting and letting Heroku start over
           if (now - lastBootstrapped > c.timeToRedoBootstrap) {
             stateManager.set({
               seq: 0,
