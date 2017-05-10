@@ -104,7 +104,7 @@ function bootstrap(state) {
           log.info('⛷ Bootstrap: done');
           return stateManager.save({
             bootstrapDone: true,
-            bootstrapLastDone: new Date().toISOString(),
+            bootstrapLastDone: new Date(),
           });
         }
 
