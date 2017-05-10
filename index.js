@@ -188,6 +188,8 @@ function watch({ seq }) {
             stateManager.set({
               seq: 0,
               bootstrapDone: false,
+            }).then(() => {
+              process.exit(0);
             });
           }
         })
