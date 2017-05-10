@@ -42,7 +42,8 @@ function infoChange(seq, nbChanges, emoji) {
       Math.round(ratePerSecond),
       ms(remaining)
     );
-    loopStart = Date.now();
+    loopStart = 
+      .now();
   });
 }
 
@@ -104,7 +105,7 @@ function bootstrap(state) {
           log.info('⛷ Bootstrap: done');
           return stateManager.save({
             bootstrapDone: true,
-            bootstrapLastDone: new Date(),
+            bootstrapLastDone: Date.now(),
           });
         }
 
@@ -182,7 +183,7 @@ function watch({ seq }) {
         )
         .then(stateManager.get)
         .then(({ bootstrapLastDone }) => {
-          const now = new Date();
+          const now = Date.now();
           const lastBootstrapped = new Date(bootstrapLastDone);
           if (now - lastBootstrapped > c.timeToRedoBootstrap) {
             stateManager.set({
