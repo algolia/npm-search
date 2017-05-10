@@ -8,6 +8,7 @@ const defaultConfig = {
   indexName: 'npm-search',
   replicateConcurrency: 10,
   bootstrapConcurrency: 100,
+  timeToRedoBootstrap: 7 * 24 * 3600 * 1000 /* one week */,
   seq: null,
   indexSettings: {
     searchableAttributes: [
@@ -20,7 +21,6 @@ const defaultConfig = {
       'owners.name',
     ],
     attributesForFaceting: [
-      'onlyFilter(name)' /* to be removed when frontend concatenates */,
       'onlyFilter(concatenatedName)' /* optionalFacetFilters to boost the name */,
       'keywords',
     ],

@@ -104,6 +104,7 @@ function bootstrap(state) {
           log.info('⛷ Bootstrap: done');
           return stateManager.save({
             bootstrapDone: true,
+            bootstrapLastDone: Date.now(),
           });
         }
 
@@ -179,6 +180,22 @@ function watch({ seq }) {
             seq: change.seq,
           })
         )
+        .then(stateManager.get)
+        .then(({ bootstrapLastDone }) => {
+          const now = Date.now();
+          const lastBootstrapped = new Date(bootstrapLastDone);
+          // when the process is running longer than a certain time
+          // we want to start over and get all info again
+          // we do this by exiting and letting Heroku start over
+          if (now - lastBootstrapped > c.timeToRedoBootstrap) {
+            stateManager.set({
+              seq: 0,
+              bootstrapDone: false,
+            }).then(() => {
+              process.exit(0);
+            });
+          }
+        })
         .catch(reject);
     });
     changes.on('error', reject);
