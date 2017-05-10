@@ -42,8 +42,7 @@ function infoChange(seq, nbChanges, emoji) {
       Math.round(ratePerSecond),
       ms(remaining)
     );
-    loopStart = 
-      .now();
+    loopStart = Date.now();
   });
 }
 
