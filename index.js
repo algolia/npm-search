@@ -188,12 +188,14 @@ function watch({ seq }) {
           // we want to start over and get all info again
           // we do this by exiting and letting Heroku start over
           if (now - lastBootstrapped > c.timeToRedoBootstrap) {
-            stateManager.set({
-              seq: 0,
-              bootstrapDone: false,
-            }).then(() => {
-              process.exit(0);
-            });
+            stateManager
+              .set({
+                seq: 0,
+                bootstrapDone: false,
+              })
+              .then(() => {
+                process.exit(0); // eslint-disable-line no-process-exit
+              });
           }
         })
         .catch(reject);

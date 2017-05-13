@@ -48,45 +48,51 @@ export function getDownloads(pkgs) {
         };
       })
     ),
-  ]).then(([
-    { body: { downloads: totalNpmDownloadsPerDay } },
-    ...downloadsPerPkgNameChunks
-  ]) => {
-    const totalNpmDownloads = totalNpmDownloadsPerDay.reduce(
-      (total, { downloads: dayDownloads }) => total + dayDownloads,
-      0
-    );
+  ]).then(
+    (
+      [
+        { body: { downloads: totalNpmDownloadsPerDay } },
+        ...downloadsPerPkgNameChunks
+      ]
+    ) => {
+      const totalNpmDownloads = totalNpmDownloadsPerDay.reduce(
+        (total, { downloads: dayDownloads }) => total + dayDownloads,
+        0
+      );
 
-    const downloadsPerPkgName = downloadsPerPkgNameChunks.reduce(
-      (res, { body: downloadsPerPkgNameChunk }) => ({
-        ...res,
-        ...downloadsPerPkgNameChunk,
-      }),
-      {}
-    );
+      const downloadsPerPkgName = downloadsPerPkgNameChunks.reduce(
+        (res, { body: downloadsPerPkgNameChunk }) => ({
+          ...res,
+          ...downloadsPerPkgNameChunk,
+        }),
+        {}
+      );
 
-    return pkgs.map(pkg => {
-      if (downloadsPerPkgName[pkg.name] === undefined) return pkg;
+      return pkgs.map(pkg => {
+        if (downloadsPerPkgName[pkg.name] === undefined) return pkg;
 
-      const downloadsLast30Days = downloadsPerPkgName[pkg.name]
-        ? downloadsPerPkgName[pkg.name].downloads
-        : 0;
-      const downloadsRatio = downloadsLast30Days / totalNpmDownloads * 100;
-      const popular = downloadsRatio > c.popularDownloadsRatio;
-      // if the package is popular, we copy its name to a dedicated attribute
-      // which will make popular records' `name` matches to be ranked higher than other matches
-      // see the `searchableAttributes` index setting
-      const popularAttributes = popular ? { popularName: pkg.name } : {};
-      return {
-        ...pkg,
-        ...popularAttributes,
-        downloadsLast30Days,
-        humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
-        downloadsRatio,
-        popular,
-      };
-    });
-  });
+        const downloadsLast30Days = downloadsPerPkgName[pkg.name]
+          ? downloadsPerPkgName[pkg.name].downloads
+          : 0;
+        const downloadsRatio = downloadsLast30Days / totalNpmDownloads * 100;
+        const popular = downloadsRatio > c.popularDownloadsRatio;
+        // if the package is popular, we copy its name to a dedicated attribute
+        // which will make popular records' `name` matches to be ranked higher than other matches
+        // see the `searchableAttributes` index setting
+        const popularAttributes = popular ? { popularName: pkg.name } : {};
+        return {
+          ...pkg,
+          ...popularAttributes,
+          downloadsLast30Days,
+          humanDownloadsLast30Days: numeral(downloadsLast30Days).format(
+            '0.[0]a'
+          ),
+          downloadsRatio,
+          popular,
+        };
+      });
+    }
+  );
 }
 
 export function getDependents(pkgs) {
