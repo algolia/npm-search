@@ -53,7 +53,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jasmine": "^2.2.0",
     "eslint-plugin-jest": "^20.0.1",
-    "eslint-plugin-react": "^7.0.0",
+    "eslint-plugin-react": "^7.0.1",
     "husky": "^0.13.3",
     "lint-staged": "^3.4.1",
     "pre-commit": "^1.2.2",
