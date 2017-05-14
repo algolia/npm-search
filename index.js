@@ -160,8 +160,6 @@ function watch({ seq }) {
     '🛰 Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates'
   );
 
-  let chain = Promise.resolve();
-
   return new Promise((resolve, reject) => {
     const changes = db.changes({
       ...defaultOptions,
@@ -171,7 +169,7 @@ function watch({ seq }) {
     });
 
     changes.on('change', change => {
-      chain = chain
+      Promise.resolve()
         .then(() => saveDocs([change]), reject)
         .then(() => infoChange(change.seq, 1, '🛰'))
         .then(() =>
