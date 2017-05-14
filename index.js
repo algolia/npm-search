@@ -6,6 +6,7 @@ import PouchDB from 'pouchdb-http';
 import * as npm from './npm.js';
 import log from './log.js';
 import ms from 'ms';
+import queue from 'async/queue';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
@@ -168,9 +169,8 @@ function watch({ seq }) {
       limit: undefined,
     });
 
-    changes.on('change', change => {
-      Promise.resolve()
-        .then(() => saveDocs([change]), reject)
+    const q = queue((change, done) => {
+      saveDocs([change])
         .then(() => infoChange(change.seq, 1, '🛰'))
         .then(() =>
           stateManager.save({
@@ -195,7 +195,12 @@ function watch({ seq }) {
               });
           }
         })
-        .catch(reject);
+        .then(() => done(null))
+        .catch(done);
+    }, 1);
+
+    changes.on('change', change => {
+      q.push(change);
     });
     changes.on('error', reject);
   });
