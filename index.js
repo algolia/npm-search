@@ -6,7 +6,6 @@ import PouchDB from 'pouchdb-http';
 import * as npm from './npm.js';
 import log from './log.js';
 import ms from 'ms';
-import '@risingstack/trace';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
@@ -188,12 +187,14 @@ function watch({ seq }) {
           // we want to start over and get all info again
           // we do this by exiting and letting Heroku start over
           if (now - lastBootstrapped > c.timeToRedoBootstrap) {
-            stateManager.set({
-              seq: 0,
-              bootstrapDone: false,
-            }).then(() => {
-              process.exit(0);
-            });
+            stateManager
+              .set({
+                seq: 0,
+                bootstrapDone: false,
+              })
+              .then(() => {
+                process.exit(0);
+              });
           }
         })
         .catch(reject);
