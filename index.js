@@ -193,7 +193,7 @@ function watch({ seq }) {
                 bootstrapDone: false,
               })
               .then(() => {
-                process.exit(0);
+                process.exit(0); // eslint-disable-line no-process-exit
               });
           }
         })
