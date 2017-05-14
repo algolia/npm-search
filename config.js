@@ -40,6 +40,7 @@ const defaultConfig = {
       'words',
       'proximity',
       'attribute',
+      'asc(deprecated)',
       'desc(popular)',
       'exact',
       'custom',
