@@ -23,7 +23,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@risingstack/trace": "^3.10.0",
     "algoliasearch": "^3.22.1",
     "babel-cli": "^6.24.1",
     "babel-preset-env": "^1.4.0",
