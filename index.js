@@ -15,6 +15,7 @@ const defaultOptions = {
   include_docs: true, // eslint-disable-line camelcase
   conflicts: false,
   attachments: false,
+  return_docs: false,
 };
 
 let loopStart = Date.now();
@@ -167,6 +168,7 @@ function watch({ seq }) {
       since: seq,
       live: true,
       limit: undefined,
+      return_docs: false,
     });
 
     const q = queue((change, done) => {
@@ -194,8 +196,10 @@ function watch({ seq }) {
                 process.exit(0); // eslint-disable-line no-process-exit
               });
           }
+
+          return null;
         })
-        .then(() => done(null))
+        .then(done)
         .catch(done);
     }, 1);
 
