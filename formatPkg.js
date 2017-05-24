@@ -143,7 +143,7 @@ function getGitHead(pkg, version) {
   if (pkg.versions && pkg.versions[version] && pkg.versions[version].gitHead) {
     return pkg.versions[version].gitHead;
   }
-  return null;
+  return 'master';
 }
 
 function getVersions(cleaned) {
