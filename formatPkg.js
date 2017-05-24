@@ -16,9 +16,6 @@ export default function formatPkg(pkg) {
     return undefined;
   }
 
-  const githubRepo = cleaned.repository
-    ? getGitHubRepoInfo(cleaned.repository)
-    : null;
   const lastPublisher = cleaned.lastPublisher
     ? formatUser(cleaned.lastPublisher)
     : null;
@@ -26,8 +23,10 @@ export default function formatPkg(pkg) {
   const license = getLicense(cleaned);
 
   const version = cleaned.version ? cleaned.version : '0.0.0';
-
-  const gitHead = getGitHead(pkg, version);
+  const versions = getVersions(cleaned);
+  const githubRepo = cleaned.repository
+    ? getGitHubRepoInfo({ repository: cleaned.repository, versions, version })
+    : null;
 
   if (!githubRepo && !lastPublisher && !author) {
     return undefined; // ignore this package, we cannot link it to anyone
@@ -39,8 +38,6 @@ export default function formatPkg(pkg) {
   const dependencies = cleaned.dependencies || {};
   const devDependencies = cleaned.devDependencies || {};
   const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
-
-  const versions = getVersions(cleaned);
 
   const rawPkg = {
     objectID: cleaned.name,
@@ -57,7 +54,6 @@ export default function formatPkg(pkg) {
     devDependencies,
     originalAuthor: cleaned.author,
     githubRepo,
-    gitHead,
     readme: pkg.readme,
     owner,
     deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
@@ -139,13 +135,6 @@ function getGravatar(obj) {
   return gravatarUrl(obj.email);
 }
 
-function getGitHead(pkg, version) {
-  if (pkg.versions && pkg.versions[version] && pkg.versions[version].gitHead) {
-    return pkg.versions[version].gitHead;
-  }
-  return 'master';
-}
-
 function getVersions(cleaned) {
   if (cleaned.other && cleaned.other.time) {
     return Object.keys(cleaned.other.time)
@@ -170,7 +159,14 @@ function getKeywords(cleaned) {
   return [];
 }
 
-function getGitHubRepoInfo(repository) {
+function getGitHead({ versions, version }) {
+  if (versions[version] && versions[version].gitHead) {
+    return versions[version].gitHead;
+  }
+  return 'master';
+}
+
+function getGitHubRepoInfo({ repository, versions, version }) {
   if (!repository || typeof repository !== 'string') return null;
 
   const result = repository.match(
@@ -185,10 +181,13 @@ function getGitHubRepoInfo(repository) {
     return null;
   }
 
+  const head = getGitHead({ versions, version });
+
   return {
     user: result[1],
     project: result[2],
     path: result[3] || '',
+    head,
   };
 }
 

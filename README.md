@@ -58,7 +58,8 @@ For every single NPM package, we create a record in the Algolia index. The resul
   "githubRepo": {
     "user": "babel",
     "project": "babel",
-    "path": "/tree/master/packages/babel-core"
+    "path": "/tree/master/packages/babel-core",
+    "head": "f6ad789eba27db50d25cc7eac062bbb0dde19c16"
   },
   "readme": "# babel-core\n> Babel compiler core.\n```javascript\nvar babel = require(\"babel-core\");\nimport { transform } from 'babel-core';\nimport * as babel from 'babel-core';\n```\nAll transformations will use your local configuration files (.babelrc or in package.json). See [options](#options) to disable it.\n## babel.transform(code: string, [options?](#options): Object)\nTransforms the passed in `code`. Returning an object with the generated code,\nsource map, and AST.\n```js\nbabel.transform(code, options)", //truncated at 200kb with **TRUNCATED**
   "owner": {

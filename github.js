@@ -1,17 +1,17 @@
 import got from 'got';
 import race from 'promise-rat-race';
 
-function getChangelog({ githubRepo, gitHead }) {
+function getChangelog(githubRepo) {
   if (githubRepo === null) {
     return { changelogFilename: null };
   }
 
-  const { user, project, path } = githubRepo;
+  const { user, project, path, head } = githubRepo;
   if (user.length < 1 || project.length < 1) {
     return { changelogFilename: null };
   }
 
-  const baseGithubURL = `https://raw.githubusercontent.com/${user}/${project}/${gitHead}/${`${path.replace('/tree/', '')}`}`;
+  const baseGithubURL = `https://raw.githubusercontent.com/${user}/${project}/${head}/${`${path.replace('/tree/', '')}`}`;
   const files = [
     'CHANGELOG.md',
     'ChangeLog.md',
