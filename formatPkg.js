@@ -34,6 +34,7 @@ export default function formatPkg(pkg) {
   }
 
   const owner = getOwner(githubRepo, lastPublisher, author); // always favor the GitHub owner
+  const badPackage = isBadPackage(owner);
   const keywords = getKeywords(cleaned);
 
   const dependencies = cleaned.dependencies || {};
@@ -61,6 +62,7 @@ export default function formatPkg(pkg) {
     readme: pkg.readme,
     owner,
     deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
+    badPackage,
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
     license,
     keywords,
@@ -78,6 +80,16 @@ export default function formatPkg(pkg) {
   }
 
   return traverse(rawPkg).forEach(maybeEscape);
+}
+
+function isBadPackage(owner) {
+  // the organisations `npmtest` and `npmdoc` are just republishing everything
+  // this is a total mess, and shouldn't ever be used, because it makes results
+  // messy. We're ignoring packages by those "authors"
+  if (owner === 'npmdoc' || owner === 'npmtest') {
+    return true;
+  }
+  return false;
 }
 
 function maybeEscape(node) {
