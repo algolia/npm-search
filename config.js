@@ -23,6 +23,7 @@ const defaultConfig = {
     attributesForFaceting: [
       'onlyFilter(concatenatedName)' /* optionalFacetFilters to boost the name */,
       'keywords',
+      'owner.name',
     ],
     customRanking: ['desc(downloadsLast30Days)'],
     disablePrefixOnAttributes: ['keywords', 'owner.name', 'owners.name'],
