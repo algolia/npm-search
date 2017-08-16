@@ -42,6 +42,8 @@ export default function formatPkg(pkg) {
 
   const versions = getVersions(cleaned);
 
+  const tags = pkg['dist-tags'];
+
   const rawPkg = {
     objectID: cleaned.name,
     name: cleaned.name,
@@ -52,6 +54,7 @@ export default function formatPkg(pkg) {
     popular: false,
     version,
     versions,
+    tags,
     description: cleaned.description ? cleaned.description : null,
     dependencies,
     devDependencies,

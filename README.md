@@ -46,6 +46,14 @@ For every single NPM package, we create a record in the Algolia index. The resul
   "humanDownloadsLast30Days": "7.7m",
   "popular": true,
   "version": "6.24.0",
+  "versions": {
+    "4.0.1": "2015-02-15T14:15:48.555Z",
+    "4.0.2": "2015-02-17T02:14:19.635Z",
+    "4.1.1": "2015-02-17T13:05:27.250Z",
+    "4.2.0": "2015-02-18T00:32:53.715Z",
+    [...]
+  },
+  "tags": {"latest":"6.25.0","old":"5.8.38","next":"7.0.0-alpha.19"},
   "description": "Babel compiler core.",
   "dependencies": {
     "babel-code-frame": "^6.22.0",
