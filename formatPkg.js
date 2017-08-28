@@ -40,8 +40,6 @@ export default function formatPkg(pkg) {
   const devDependencies = cleaned.devDependencies || {};
   const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
 
-  const versions = getVersions(cleaned);
-
   const tags = pkg['dist-tags'];
 
   const rawPkg = {
