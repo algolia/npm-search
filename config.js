@@ -22,7 +22,8 @@ const defaultConfig = {
     ],
     attributesForFaceting: [
       'onlyFilter(concatenatedName)' /* optionalFacetFilters to boost the name */,
-      'keywords',
+      'searchable(keywords)',
+      'searchable(owner.name)',
     ],
     customRanking: ['desc(downloadsLast30Days)'],
     disablePrefixOnAttributes: ['keywords', 'owner.name', 'owners.name'],
@@ -41,6 +42,7 @@ const defaultConfig = {
       'proximity',
       'attribute',
       'asc(deprecated)',
+      'asc(badPackage)',
       'desc(popular)',
       'exact',
       'custom',
