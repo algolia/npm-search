@@ -58,7 +58,7 @@ export default function formatPkg(pkg) {
     devDependencies,
     originalAuthor: cleaned.author,
     githubRepo,
-    gitHead: githubRepo.head, // remove this when we update to the new schema frontend
+    gitHead: githubRepo && githubRepo.head, // remove this when we update to the new schema frontend
     readme: pkg.readme,
     owner,
     deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
