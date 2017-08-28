@@ -97,18 +97,20 @@ export function getDownloads(pkgs) {
 
 export function getDependents(pkgs) {
   return Promise.all(
-    pkgs.map(({ name }) => {
-      const startKey = JSON.stringify([name]);
-      const endKey = JSON.stringify([name, {}]);
-      return got(
-        `${c.npmRegistryEndpoint}/_design/app/_view/dependedUpon?startkey=${startKey}&endkey=${endKey}&stale=update_after`,
-        { json: true }
-      )
+    pkgs.map(({ name }) =>
+      got(`${c.npmRegistryEndpoint}/_design/app/_view/dependedUpon`, {
+        json: true,
+        query: {
+          startKey: JSON.stringify([name]),
+          endKey: JSON.stringify([name, {}]),
+          stale: 'update_after',
+        },
+      })
         .then(res => res.body.rows[0] || { value: 0 })
         .then(({ value }) => ({
           dependents: value,
           humanDependents: numeral(value).format('0.[0]a'),
-        }));
-    })
+        }))
+    )
   );
 }
