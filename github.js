@@ -1,7 +1,7 @@
 import got from 'got';
 import race from 'promise-rat-race';
 
-function getChangelog(githubRepo) {
+function getChangelog({ githubRepo }) {
   if (githubRepo === null) {
     return { changelogFilename: null };
   }
