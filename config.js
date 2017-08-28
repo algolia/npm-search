@@ -42,6 +42,7 @@ const defaultConfig = {
       'proximity',
       'attribute',
       'asc(deprecated)',
+      'asc(badPackage)',
       'desc(popular)',
       'exact',
       'custom',
