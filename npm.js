@@ -35,7 +35,9 @@ export function getDownloads(pkgs) {
         json: true,
       }).catch(e => {
         log.warn(
-          `Something went wrong asking the downloads for \n${Array.from(pkgsNames).join(',')} \n${e}`
+          `Something went wrong asking the downloads for \n${Array.from(
+            pkgsNames
+          ).join(',')} \n${e}`
         );
         return {
           body: Array.from(pkgsNames).reduce((acc, current) => {

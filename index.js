@@ -87,12 +87,13 @@ function bootstrap(state) {
   }
 
   function loop(lastId) {
-    const options = lastId === undefined
-      ? {}
-      : {
-          startkey: lastId,
-          skip: 1,
-        };
+    const options =
+      lastId === undefined
+        ? {}
+        : {
+            startkey: lastId,
+            skip: 1,
+          };
 
     return db
       .allDocs({

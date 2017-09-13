@@ -57,13 +57,14 @@ const defaultConfig = {
 export default Object.entries(defaultConfig).reduce(
   (res, [key, defaultValue]) => ({
     ...res,
-    [key]: key in process.env
-      ? JSON.parse(
-          typeof defaultValue === 'string'
-            ? `"${process.env[key]}"`
-            : process.env[key]
-        )
-      : defaultValue,
+    [key]:
+      key in process.env
+        ? JSON.parse(
+            typeof defaultValue === 'string'
+              ? `"${process.env[key]}"`
+              : process.env[key]
+          )
+        : defaultValue,
   }),
   {}
 );

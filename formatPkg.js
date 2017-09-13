@@ -76,7 +76,10 @@ export default function formatPkg(pkg) {
   const totalSize = sizeof(rawPkg);
   if (totalSize > c.maxObjSize) {
     const sizeDiff = sizeof(rawPkg.readme) - totalSize;
-    rawPkg.readme = `${truncate(rawPkg.readme, c.maxObjSize - sizeDiff)} **TRUNCATED**`;
+    rawPkg.readme = `${truncate(
+      rawPkg.readme,
+      c.maxObjSize - sizeDiff
+    )} **TRUNCATED**`;
   }
 
   return traverse(rawPkg).forEach(maybeEscape);
