@@ -25,7 +25,10 @@ export default function formatPkg(pkg) {
   const version = cleaned.version ? cleaned.version : '0.0.0';
   const versions = getVersions(cleaned);
   const githubRepo = cleaned.repository
-    ? getGitHubRepoInfo({ repository: cleaned.repository, versions, version })
+    ? getGitHubRepoInfo({
+        repository: cleaned.repository,
+        gitHead: cleaned.gitHead,
+      })
     : null;
 
   if (!githubRepo && !lastPublisher && !author) {
@@ -178,14 +181,7 @@ function getKeywords(cleaned) {
   return [];
 }
 
-function getGitHead({ versions, version }) {
-  if (versions[version] && versions[version].gitHead) {
-    return versions[version].gitHead;
-  }
-  return 'master';
-}
-
-function getGitHubRepoInfo({ repository, versions, version }) {
+function getGitHubRepoInfo({ repository, gitHead = 'master' }) {
   if (!repository || typeof repository !== 'string') return null;
 
   const result = repository.match(
@@ -200,7 +196,7 @@ function getGitHubRepoInfo({ repository, versions, version }) {
     return null;
   }
 
-  const head = getGitHead({ versions, version });
+  const head = gitHead;
 
   return {
     user: result[1],
