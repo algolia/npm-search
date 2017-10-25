@@ -41,46 +41,62 @@ For every single NPM package, we create a record in the Algolia index. The resul
 {
   "name": "babel-core",
   "concatenatedName": "babelcore",
-  "downloadsLast30Days": 7729599,
-  "downloadsRatio": 0.0877900252270115,
-  "humanDownloadsLast30Days": "7.7m",
+  "downloadsLast30Days": 10978749,
+  "downloadsRatio": 0.08310651682685861,
+  "humanDownloadsLast30Days": "11m",
   "popular": true,
-  "version": "6.24.0",
+  "version": "6.26.0",
   "versions": {
-    "4.0.1": "2015-02-15T14:15:48.555Z",
-    "4.0.2": "2015-02-17T02:14:19.635Z",
-    "4.1.1": "2015-02-17T13:05:27.250Z",
-    "4.2.0": "2015-02-18T00:32:53.715Z",
     [...]
+    "7.0.0-beta.3": "2017-10-15T13:12:35.166Z"
   },
-  "tags": {"latest":"6.25.0","old":"5.8.38","next":"7.0.0-alpha.19"},
+  "tags": {
+    "latest": "6.26.0",
+    "old": "5.8.38",
+    "next": "7.0.0-beta.3"
+  },
   "description": "Babel compiler core.",
   "dependencies": {
-    "babel-code-frame": "^6.22.0",
+    "babel-code-frame": "^6.26.0",
     [...]
   },
   "devDependencies": {
-    "babel-helper-fixtures": "^6.22.0",
+    "babel-helper-fixtures": "^6.26.0",
     [...]
   },
   "githubRepo": {
     "user": "babel",
     "project": "babel",
     "path": "/tree/master/packages/babel-core",
-    "head": "f6ad789eba27db50d25cc7eac062bbb0dde19c16"
+    "head": "master"
   },
-  "readme": "# babel-core\n> Babel compiler core.\n```javascript\nvar babel = require(\"babel-core\");\nimport { transform } from 'babel-core';\nimport * as babel from 'babel-core';\n```\nAll transformations will use your local configuration files (.babelrc or in package.json). See [options](#options) to disable it.\n## babel.transform(code: string, [options?](#options): Object)\nTransforms the passed in `code`. Returning an object with the generated code,\nsource map, and AST.\n```js\nbabel.transform(code, options)", //truncated at 200kb with **TRUNCATED**
-  "owner": {
+  "readme": "# babel-core\n\n> Babel compiler core.\n\n\n [... truncated at 200kb]",
+  "owner": { // either GitHub owner or npm owner
     "name": "babel",
     "avatar": "https://github.com/babel.png",
     "link": "https://github.com/babel"
   },
   "deprecated": false,
+  "badPackage": false,
   "homepage": "https://babeljs.io/",
   "license": "MIT",
-  "keywords": ["6to5", "babel", "classes", "const", "es6", "harmony", "let", "modules", "transpile", "transpiler", "var"],
+  "keywords": [
+    "6to5",
+    "babel",
+    "classes",
+    "const",
+    "es6",
+    "harmony",
+    "let",
+    "modules",
+    "transpile",
+    "transpiler",
+    "var",
+    "babel-core",
+    "compiler"
+  ],
   "created": 1424009748555,
-  "modified": 1490641779463,
+  "modified": 1508833762239,
   "lastPublisher": {
     "name": "hzoo",
     "email": "hi@henryzoo.com",
@@ -89,18 +105,18 @@ For every single NPM package, we create a record in the Algolia index. The resul
   },
   "owners": [
     {
-      "name": "amasad",
-      "email": "amjad.masad@gmail.com",
-      "avatar": "https://gravatar.com/avatar/03637ef1a5121222c8db0ed48c34e124",
-      "link": "https://www.npmjs.com/~amasad"
-    },
+      "email": "me@thejameskyle.com",
+      "name": "thejameskyle",
+      "avatar": "https://gravatar.com/avatar/8a00efb48d632ae449794c094f7d5c38",
+      "link": "https://www.npmjs.com/~thejameskyle"
+    }
     [...]
   ],
-  "lastCrawl": "2017-04-01T13:41:14.220Z",
+  "lastCrawl": "2017-10-24T08:29:24.672Z",
   "popularName": "babel-core",
   "dependents": 3321,
   "humanDependents": "3.3k",
-  "changelogFilename": null,
+  "changelogFilename": null, // if babel-core had a changelog, it would be the raw GitHub url here
   "objectID": "babel-core"
 }
 ```

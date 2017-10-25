@@ -16,10 +16,7 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write --single-quote --trailing-comma es5",
-      "git add"
-    ]
+    "*.js": ["prettier --write --single-quote --trailing-comma es5", "git add"]
   },
   "license": "MIT",
   "dependencies": {
