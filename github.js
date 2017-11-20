@@ -19,6 +19,7 @@ function getChangelog({ githubRepo }) {
     'CHANGELOG.md',
     'ChangeLog.md',
     'changelog.md',
+    'changelog.markdown',
     'CHANGELOG',
     'ChangeLog',
     'changelog',
