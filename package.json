@@ -36,6 +36,7 @@
     "lodash": "^4.17.4",
     "ms": "^1.0.0",
     "nice-package": "^3.0.1",
+    "nsp": "^3.1.0",
     "numeral": "^2.0.6",
     "object-sizeof": "^1.2.0",
     "pouchdb-http": "^6.0.2",

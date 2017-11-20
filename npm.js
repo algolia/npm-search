@@ -21,11 +21,13 @@ export function getDownloads(pkgs) {
     .map(pkg => pkg.name)
     .filter(name => name[0] !== '@' /*downloads for scoped packages fails */)
     .map(name => encodeURIComponent(name));
+
   // why do we do this? see https://github.com/npm/registry/issues/104
   encodedPackageNames.unshift('');
   const pkgsNamesChunks = chunk(encodedPackageNames, 100).map(names =>
     names.join(',')
   );
+
   return Promise.all([
     got(`${c.npmDownloadsEndpoint}/range/last-month`, {
       json: true,
