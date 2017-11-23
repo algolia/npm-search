@@ -1,0 +1,16 @@
+{
+  "pinVersions": true,
+  "semanticCommits": true,
+  "extends": [":library"],
+  "depTypes": [
+    {
+      "depType": "dependencies",
+      "pinVersions": false,
+      "semanticPrefix": "chore(deps): "
+    }
+  ],
+  "automerge": true,
+  "major": {
+    "automerge": false
+  }
+}
