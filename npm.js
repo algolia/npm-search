@@ -19,7 +19,7 @@ export function getDownloads(pkgs) {
   // and do multiple requests to avoid weird cases when concurrency is high
   const encodedPackageNames = pkgs
     .map(pkg => pkg.name)
-    .filter(name => name[0] !== '@' /*downloads for scoped packages fails */)
+    .filter(name => name[0] !== '@' /* downloads for scoped packages fails */)
     .map(name => encodeURIComponent(name));
   // why do we do this? see https://github.com/npm/registry/issues/104
   encodedPackageNames.unshift('');
@@ -40,13 +40,16 @@ export function getDownloads(pkgs) {
           ).join(',')} \n${e}`
         );
         return {
-          body: Array.from(pkgsNames).reduce((acc, current) => {
-            acc[current] = {
-              downloads: 0,
-              package: current,
-            };
-            return acc;
-          }, {}),
+          body: Array.from(pkgsNames).reduce(
+            (acc, current) => ({
+              ...acc,
+              [current]: {
+                downloads: 0,
+                package: current,
+              },
+            }),
+            {}
+          ),
         };
       })
     ),
