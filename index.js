@@ -15,7 +15,7 @@ const defaultOptions = {
   include_docs: true, // eslint-disable-line camelcase
   conflicts: false,
   attachments: false,
-  return_docs: false,
+  return_docs: false, // eslint-disable-line camelcase
 };
 
 let loopStart = Date.now();
@@ -173,7 +173,7 @@ function watch({ seq }) {
       since: seq,
       live: true,
       limit: undefined,
-      return_docs: false,
+      return_docs: false, // eslint-disable-line camelcase
     });
 
     const q = queue((change, done) => {

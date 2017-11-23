@@ -26,7 +26,7 @@ export function getDownloads(pkgs) {
   // and do multiple requests to avoid weird cases when concurrency is high
   const encodedPackageNames = pkgs
     .map(pkg => pkg.name)
-    .filter(name => name[0] !== '@' /*downloads for scoped packages fails */)
+    .filter(name => name[0] !== '@' /* downloads for scoped packages fails */)
     .map(name => encodeURIComponent(name));
   const encodedScopedPackageNames = pkgs
     .map(pkg => pkg.name)

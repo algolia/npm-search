@@ -161,10 +161,13 @@ function getVersions(cleaned) {
   if (cleaned.other && cleaned.other.time) {
     return Object.keys(cleaned.other.time)
       .filter(key => !['modified', 'created'].includes(key))
-      .reduce((obj, key) => {
-        obj[key] = cleaned.other.time[key];
-        return obj;
-      }, {});
+      .reduce(
+        (obj, key) => ({
+          ...obj,
+          [key]: cleaned.other.time[key],
+        }),
+        {}
+      );
   }
   return {};
 }
