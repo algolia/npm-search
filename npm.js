@@ -75,20 +75,19 @@ export function getDownloads(pkgs) {
         {}
       );
 
-      return pkgs.map(pkg => {
-        if (downloadsPerPkgName[pkg.name] === undefined) return pkg;
+      return pkgs.map(({ name }) => {
+        if (downloadsPerPkgName[name] === undefined) return {};
 
-        const downloadsLast30Days = downloadsPerPkgName[pkg.name]
-          ? downloadsPerPkgName[pkg.name].downloads
+        const downloadsLast30Days = downloadsPerPkgName[name]
+          ? downloadsPerPkgName[name].downloads
           : 0;
         const downloadsRatio = downloadsLast30Days / totalNpmDownloads * 100;
         const popular = downloadsRatio > c.popularDownloadsRatio;
         // if the package is popular, we copy its name to a dedicated attribute
         // which will make popular records' `name` matches to be ranked higher than other matches
         // see the `searchableAttributes` index setting
-        const popularAttributes = popular ? { popularName: pkg.name } : {};
+        const popularAttributes = popular ? { popularName: name } : {};
         return {
-          ...pkg,
           ...popularAttributes,
           downloadsLast30Days,
           humanDownloadsLast30Days: numeral(downloadsLast30Days).format(

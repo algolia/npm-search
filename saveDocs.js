@@ -27,12 +27,13 @@ function addMetaData(pkgs) {
     getDependents(pkgs),
     getChangelogs(pkgs),
     getSecurity(pkgs),
-  ]).then(([downloads, dependents, changelogs]) =>
+  ]).then(([downloads, dependents, changelogs, security]) =>
     pkgs.map((pkg, index) => ({
       ...pkg,
       ...downloads[index],
       ...dependents[index],
       ...changelogs[index],
+      ...security[index],
     }))
   );
 }

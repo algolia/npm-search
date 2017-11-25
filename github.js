@@ -14,6 +14,7 @@ function getChangelog({ githubRepo }) {
   const baseGithubURL = `https://raw.githubusercontent.com/${user}/${project}/${
     head
   }/${`${path.replace('/tree/', '')}`}`;
+
   const files = [
     'CHANGELOG.md',
     'ChangeLog.md',
