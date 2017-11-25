@@ -1,5 +1,7 @@
 import nsp from 'nsp/lib/api';
 import { chunk } from 'lodash';
+
+// eslint-disable-next-line new-cap
 const api = new nsp({
   baseUrl: 'https://api.nodesecurity.io',
 });

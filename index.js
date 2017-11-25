@@ -15,7 +15,7 @@ const defaultOptions = {
   include_docs: true, // eslint-disable-line camelcase
   conflicts: false,
   attachments: false,
-  return_docs: false,
+  return_docs: false, // eslint-disable-line camelcase
 };
 
 let loopStart = Date.now();
@@ -36,7 +36,9 @@ function infoChange(seq, nbChanges, emoji) {
     const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
     const remaining = (npmInfo.seq - seq) / ratePerSecond * 1000 || 0;
     log.info(
-      `${emoji} Synced %d/%d changes (%d%), current rate: %d changes/s (%s remaining)`,
+      `${
+        emoji
+      } Synced %d/%d changes (%d%), current rate: %d changes/s (%s remaining)`,
       seq,
       npmInfo.seq,
       Math.floor(Math.max(seq, 1) / npmInfo.seq * 100),
@@ -51,7 +53,9 @@ function infoDocs(offset, nbDocs, emoji) {
   return npm.info().then(({ nbDocs: totalDocs }) => {
     const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);
     log.info(
-      `${emoji} Synced %d/%d docs (%d%), current rate: %d docs/s (%s remaining)`,
+      `${
+        emoji
+      } Synced %d/%d docs (%d%), current rate: %d docs/s (%s remaining)`,
       offset + nbDocs,
       totalDocs,
       Math.floor(Math.max(offset + nbDocs, 1) / totalDocs * 100),
@@ -169,7 +173,7 @@ function watch({ seq }) {
       since: seq,
       live: true,
       limit: undefined,
-      return_docs: false,
+      return_docs: false, // eslint-disable-line camelcase
     });
 
     const q = queue((change, done) => {
