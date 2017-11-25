@@ -30,6 +30,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "bunyan": "^1.8.10",
     "bunyan-debug-stream": "^1.0.7",
+    "dotenv": "^4.0.0",
     "escape-html": "^1.0.3",
     "got": "^6.7.1",
     "gravatar-url": "^2.0.0",

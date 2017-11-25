@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+config();
+
 const defaultConfig = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
   npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
