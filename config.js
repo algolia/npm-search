@@ -36,6 +36,7 @@ const defaultConfig = {
     disableTypoToleranceOnAttributes: ['keywords'],
     exactOnSingleWordQuery: 'attribute',
     ranking: [
+      'desc(popular)',
       'filters',
       'typo',
       'words',
@@ -43,7 +44,6 @@ const defaultConfig = {
       'attribute',
       'asc(deprecated)',
       'asc(badPackage)',
-      'desc(popular)',
       'exact',
       'custom',
     ],
