@@ -14,6 +14,15 @@ export function info() {
   }));
 }
 
+const suppressError = (e, packages, returnValue) => {
+  log.warn(
+    `Something went wrong asking the downloads for \n${Array.from(
+      packages
+    ).join(',')} \n${e}`
+  );
+  return returnValue;
+};
+
 export function getDownloads(pkgs) {
   // npm has a weird API to get downloads via GET params, so we split pkgs into chunks
   // and do multiple requests to avoid weird cases when concurrency is high
@@ -21,6 +30,11 @@ export function getDownloads(pkgs) {
     .map(pkg => pkg.name)
     .filter(name => name[0] !== '@' /* downloads for scoped packages fails */)
     .map(name => encodeURIComponent(name));
+  const encodedScopedPackageNames = pkgs
+    .map(pkg => pkg.name)
+    .filter(name => name[0] === '@')
+    .map(name => encodeURIComponent(name));
+
   // why do we do this? see https://github.com/npm/registry/issues/104
   encodedPackageNames.unshift('');
   const pkgsNamesChunks = chunk(encodedPackageNames, 100).map(names =>
@@ -33,25 +47,14 @@ export function getDownloads(pkgs) {
     ...pkgsNamesChunks.map(pkgsNames =>
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`, {
         json: true,
-      }).catch(e => {
-        log.warn(
-          `Something went wrong asking the downloads for \n${Array.from(
-            pkgsNames
-          ).join(',')} \n${e}`
-        );
-        return {
-          body: Array.from(pkgsNames).reduce(
-            (acc, current) => ({
-              ...acc,
-              [current]: {
-                downloads: 0,
-                package: current,
-              },
-            }),
-            {}
-          ),
-        };
+      }).catch(e => suppressError(e, pkgsNames, { body: {} }))
+    ),
+    ...encodedScopedPackageNames.map(pkg =>
+      got(`${c.npmDownloadsEndpoint}/point/last-month/${pkg}`, {
+        json: true,
       })
+        .then(res => ({ body: { [res.body.package]: res.body } }))
+        .catch(e => suppressError(e, [pkg], { body: {} }))
     ),
   ]).then(
     (
@@ -116,6 +119,12 @@ export function getDependents(pkgs) {
           dependents: value,
           humanDependents: numeral(value).format('0.[0]a'),
         }))
+        .catch(e =>
+          suppressError(e, [name], {
+            dependents: 0,
+            humanDependents: '0',
+          })
+        )
     )
   );
 }
