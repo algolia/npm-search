@@ -51,7 +51,7 @@ export function getDownloads(pkgs) {
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkg}`, {
         json: true,
       })
-        .then(res => ({ [res.body.package]: res.body }))
+        .then(res => ({ body: { [res.body.package]: res.body } }))
         .catch(e => suppressError(e, [pkg]))
     ),
   ]).then(
