@@ -24,7 +24,7 @@ const defaultConfig = {
       'owners.name',
     ],
     attributesForFaceting: [
-      'onlyFilter(concatenatedName)' /* optionalFacetFilters to boost the name */,
+      'filterOnly(concatenatedName)' /* optionalFacetFilters to boost the name */,
       'searchable(keywords)',
       'searchable(owner.name)',
     ],
