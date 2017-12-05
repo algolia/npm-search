@@ -12,14 +12,12 @@
     "install": "npm run build",
     "build": "babel *.js -d lib",
     "test": "eslint .",
+    "format": "prettier --write *.{js,md,json}",
     "doctoc": "doctoc --notitle --maxlevel 3 README.md",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write --single-quote --trailing-comma es5",
-      "git add"
-    ]
+    "*.js": ["prettier --write", "git add"]
   },
   "license": "MIT",
   "dependencies": {
