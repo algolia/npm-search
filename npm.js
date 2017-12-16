@@ -57,12 +57,10 @@ export function getDownloads(pkgs) {
         .catch(e => suppressError(e, [pkg], { body: {} }))
     ),
   ]).then(
-    (
-      [
-        { body: { downloads: totalNpmDownloadsPerDay } },
-        ...downloadsPerPkgNameChunks
-      ]
-    ) => {
+    ([
+      { body: { downloads: totalNpmDownloadsPerDay } },
+      ...downloadsPerPkgNameChunks
+    ]) => {
       const totalNpmDownloads = totalNpmDownloadsPerDay.reduce(
         (total, { downloads: dayDownloads }) => total + dayDownloads,
         0
