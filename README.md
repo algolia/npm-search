@@ -2,7 +2,7 @@
 
 [npm](https://www.npmjs.com/) ↔️ [Algolia](https://www.algolia.com/) replication tool.
 
-* * *
+---
 
 This is a failure resilient npm registry to Algolia index replication process.
 It will replicate all npm packages to an Algolia index and keep it up to date.
@@ -13,21 +13,21 @@ The replication should always be running. **Only one instance per Algolia index 
 If the process fails, restart it and the replication process will continue at the last point it remembers.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
-- [Algolia Index](#algolia-index)
-  - [Schema](#schema)
-  - [Ranking](#ranking)
-- [Usage](#usage)
-  - [Production](#production)
-  - [Restart](#restart)
-  - [Development](#development)
-- [Env variables](#env-variables)
-- [How does it work?](#how-does-it-work)
-- [Tests](#tests)
-- [Deploying new version](#deploying-new-version)
-- [Forcing a complete re-index](#forcing-a-complete-re-index)
+* [Algolia Index](#algolia-index)
+  * [Schema](#schema)
+  * [Ranking](#ranking)
+* [Usage](#usage)
+  * [Production](#production)
+  * [Restart](#restart)
+  * [Development](#development)
+* [Env variables](#env-variables)
+* [How does it work?](#how-does-it-work)
+* [Tests](#tests)
+* [Deploying new version](#deploying-new-version)
+* [Forcing a complete re-index](#forcing-a-complete-re-index)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -37,7 +37,7 @@ If the process fails, restart it and the replication process will continue at th
 
 For every single NPM package, we create a record in the Algolia index. The resulting records have the following schema:
 
-```json
+```json5
 {
   "name": "babel-core",
   "concatenatedName": "babelcore",
@@ -47,7 +47,7 @@ For every single NPM package, we create a record in the Algolia index. The resul
   "popular": true,
   "version": "6.26.0",
   "versions": {
-    [...]
+    // [...]
     "7.0.0-beta.3": "2017-10-15T13:12:35.166Z"
   },
   "tags": {
@@ -57,12 +57,12 @@ For every single NPM package, we create a record in the Algolia index. The resul
   },
   "description": "Babel compiler core.",
   "dependencies": {
-    "babel-code-frame": "^6.26.0",
-    [...]
+    "babel-code-frame": "^6.26.0"
+    // [...]
   },
   "devDependencies": {
-    "babel-helper-fixtures": "^6.26.0",
-    [...]
+    "babel-helper-fixtures": "^6.26.0"
+    // [...]
   },
   "githubRepo": {
     "user": "babel",
@@ -70,8 +70,10 @@ For every single NPM package, we create a record in the Algolia index. The resul
     "path": "/tree/master/packages/babel-core",
     "head": "master"
   },
-  "readme": "# babel-core\n\n> Babel compiler core.\n\n\n [... truncated at 200kb]",
-  "owner": { // either GitHub owner or npm owner
+  "readme":
+    "# babel-core\n\n> Babel compiler core.\n\n\n [... truncated at 200kb]",
+  "owner": {
+    // either GitHub owner or npm owner
     "name": "babel",
     "avatar": "https://github.com/babel.png",
     "link": "https://github.com/babel"
@@ -110,7 +112,7 @@ For every single NPM package, we create a record in the Algolia index. The resul
       "avatar": "https://gravatar.com/avatar/8a00efb48d632ae449794c094f7d5c38",
       "link": "https://www.npmjs.com/~thejameskyle"
     }
-    [...]
+    // [...]
   ],
   "lastCrawl": "2017-10-24T08:29:24.672Z",
   "popularName": "babel-core",
@@ -131,12 +133,12 @@ If you want to learn more about how Algolia's ranking algorithm is working, you 
 
 We're restricting the search to use a subset of the attributes only:
 
- - `popularName`
- - `name`
- - `description`
- - `keywords`
- - `owner.name`
- - `owners.name`
+* `popularName`
+* `name`
+* `description`
+* `keywords`
+* `owner.name`
+* `owners.name`
 
 ##### Prefix Search
 
@@ -180,9 +182,10 @@ seq=0 apiKey=... yarn start
 ```
 
 This is useful when you want to completely resync the npm registry because:
-- you changed the way you format packages
-- you added more metadata (like GitHub stars)
-- you are in an unsure state and you just want to restart everything
+
+* you changed the way you format packages
+* you added more metadata (like GitHub stars)
+* you are in an unsure state and you just want to restart everything
 
 `seq` represents a [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
 in CouchDB lingo.
@@ -201,32 +204,35 @@ Be careful to develop on a different index than the production one when necessar
 ## Env variables
 
 See [config.js](./config.js):
-- `apiKey`: [Algolia](https://www.algolia.com/) apiKey - **required**
-- `appId`: [Algolia](https://www.algolia.com/) appId - *default `OFCNCOG2CU`*
-- `indexName`: [Algolia](https://www.algolia.com/) indexName - *default `npm-search`*
-- `bootstrapConcurrency`: How many docs to grab from npm registry at once in the bootstrap phase - *default `100`*
-- `replicateConcurrency`: How many changes to grab from npm registry at once in the replicate phase - *default `10`*
-- `seq`: npm registry first [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
-  to start replication. In normal operations you should never have to use this. - *default `0`*
-- `npmRegistryEndpoint`: npm registry endpoint to replicate from - *default `https://replicate.npmjs.com/registry`*
+
+* `apiKey`: [Algolia](https://www.algolia.com/) apiKey - **required**
+* `appId`: [Algolia](https://www.algolia.com/) appId - _default `OFCNCOG2CU`_
+* `indexName`: [Algolia](https://www.algolia.com/) indexName - _default `npm-search`_
+* `bootstrapConcurrency`: How many docs to grab from npm registry at once in the bootstrap phase - _default `100`_
+* `replicateConcurrency`: How many changes to grab from npm registry at once in the replicate phase - _default `10`_
+* `seq`: npm registry first [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
+  to start replication. In normal operations you should never have to use this. - _default `0`_
+* `npmRegistryEndpoint`: npm registry endpoint to replicate from - _default `https://replicate.npmjs.com/registry`_
   This should be the only valid endpoint to replicate (even if a bit slow), see [this comment](https://github.com/npm/registry/issues/44#issuecomment-267732513).
-- `npmDownloadsEndpoint`: Where to look for the last 30 days download of packages - *default `https://api.npmjs.org/downloads`*
-- `popularDownloadsRatio`: % of total npm downloads for a package to be considered as popular
-  how much % of it is needed for a package to be popular - *default 0.2* This is a bit lower than
+* `npmDownloadsEndpoint`: Where to look for the last 30 days download of packages - _default `https://api.npmjs.org/downloads`_
+* `popularDownloadsRatio`: % of total npm downloads for a package to be considered as popular
+  how much % of it is needed for a package to be popular - _default 0.2_ This is a bit lower than
   the jQuery download range.
 
 ## How does it work?
 
 Our goal with this project is to:
-- be able to quickly do a complete rebuild
-- be resilient to failures
-- clean the package data
+
+* be able to quickly do a complete rebuild
+* be resilient to failures
+* clean the package data
 
 When the process starts with `seq=0`:
-- save the [current sequence](https://replicate.npmjs.com/) of the npm registry in the state (Algolia settings)
-- bootstrap the initial index content by using [/_all_docs](http://docs.couchdb.org/en/2.0.0/api/database/bulk-api.html)
-- replicate registry changes since the current sequence
-- watch for registry changes continuously and replicate them
+
+* save the [current sequence](https://replicate.npmjs.com/) of the npm registry in the state (Algolia settings)
+* bootstrap the initial index content by using [/\_all_docs](http://docs.couchdb.org/en/2.0.0/api/database/bulk-api.html)
+* replicate registry changes since the current sequence
+* watch for registry changes continuously and replicate them
 
 ## Tests
 
