@@ -1,0 +1,1959 @@
+[
+  {
+    "_id": "@atomic-package/tab",
+    "_rev": "4-fd4ec854b00f2281b1af1528fbe8dbbb",
+    "name": "@atomic-package/tab",
+    "description": "atomic-package - tab",
+    "dist-tags": {
+      "latest": "0.0.4"
+    },
+    "versions": {
+      "0.0.1": {
+        "name": "@atomic-package/tab",
+        "version": "0.0.1",
+        "description": "atomic-package - tab",
+        "main": "dist/atomic-package.toggle.js",
+        "scripts": {
+          "test": "$(npm bin)/mocha test/** -r test/spec_setup.js",
+          "test:watch": "$(npm bin)/mocha -w test/** -r test/spec_setup.js",
+          "start": "concurrently \"npm run webpack:w\" \"gulp\"",
+          "webpack": "webpack",
+          "webpack:w": "webpack --progress --colors --watch",
+          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+ssh://git@github.com/atomic-package/tab.git"
+        },
+        "author": {
+          "name": "daisuke.takayama"
+        },
+        "license": "MIT",
+        "devDependencies": {
+          "@types/node": "^7.0.14",
+          "browser-sync": "^2.18.8",
+          "chai": "^3.5.0",
+          "concurrently": "^3.4.0",
+          "cssmin": "^0.4.3",
+          "del": "^2.2.2",
+          "gulp": "^3.9.1",
+          "gulp-autoprefixer": "^3.1.1",
+          "gulp-concat": "^2.6.1",
+          "gulp-cssmin": "^0.1.7",
+          "gulp-mocha": "^4.3.1",
+          "gulp-plumber": "^1.1.0",
+          "gulp-sass": "^3.1.0",
+          "gulp-uglify": "^2.1.2",
+          "gulp-watch": "^4.3.11",
+          "jsdom": "^10.0.0",
+          "path": "^0.12.7",
+          "power-assert": "^1.4.2",
+          "run-sequence": "^1.2.2",
+          "ts-loader": "^2.0.3",
+          "typescript": "^2.3.1",
+          "typings": "^2.1.1",
+          "webpack": "^2.4.1"
+        },
+        "dependencies": {
+          "@atomic-package/common": "0.0.1",
+          "@atomic-package/utility": "0.0.2"
+        },
+        "gitHead": "cebc5b0c6fb54a73df87f527d7228273596a7d74",
+        "bugs": {
+          "url": "https://github.com/atomic-package/tab/issues"
+        },
+        "homepage": "https://github.com/atomic-package/tab#readme",
+        "_id": "@atomic-package/tab@0.0.1",
+        "_shasum": "ba7b31fe544ff049795e6ab7795c370480dd4b86",
+        "_from": ".",
+        "_npmVersion": "3.10.5",
+        "_nodeVersion": "6.2.1",
+        "_npmUser": {
+          "name": "daisuke.takayama",
+          "email": "d.takayama.web@gmail.com"
+        },
+        "dist": {
+          "shasum": "ba7b31fe544ff049795e6ab7795c370480dd4b86",
+          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.1.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "daisuke.takayama",
+            "email": "d.takayama.web@gmail.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/tab-0.0.1.tgz_1498148375002_0.7422385679092258"
+        }
+      },
+      "0.0.2": {
+        "name": "@atomic-package/tab",
+        "version": "0.0.2",
+        "description": "atomic-package - tab",
+        "main": "dist/atomic-package.toggle.js",
+        "scripts": {
+          "test": "$(npm bin)/mocha test/** -r test/spec_setup.js",
+          "test:watch": "$(npm bin)/mocha -w test/** -r test/spec_setup.js",
+          "start": "concurrently \"npm run webpack:w\" \"gulp\"",
+          "webpack": "webpack",
+          "webpack:w": "webpack --progress --colors --watch",
+          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+ssh://git@github.com/atomic-package/tab.git"
+        },
+        "author": {
+          "name": "daisuke.takayama"
+        },
+        "license": "MIT",
+        "devDependencies": {
+          "@types/node": "^7.0.14",
+          "browser-sync": "^2.18.8",
+          "chai": "^3.5.0",
+          "concurrently": "^3.4.0",
+          "cssmin": "^0.4.3",
+          "del": "^2.2.2",
+          "gulp": "^3.9.1",
+          "gulp-autoprefixer": "^3.1.1",
+          "gulp-concat": "^2.6.1",
+          "gulp-cssmin": "^0.1.7",
+          "gulp-mocha": "^4.3.1",
+          "gulp-plumber": "^1.1.0",
+          "gulp-sass": "^3.1.0",
+          "gulp-uglify": "^2.1.2",
+          "gulp-watch": "^4.3.11",
+          "jsdom": "^10.0.0",
+          "path": "^0.12.7",
+          "power-assert": "^1.4.2",
+          "run-sequence": "^1.2.2",
+          "ts-loader": "^2.0.3",
+          "typescript": "^2.3.1",
+          "typings": "^2.1.1",
+          "webpack": "^2.4.1"
+        },
+        "dependencies": {
+          "@atomic-package/common": "0.0.1",
+          "@atomic-package/utility": "0.0.2"
+        },
+        "gitHead": "77bf493de008e0aaeedeac05e8d40fb37e4a5c0b",
+        "bugs": {
+          "url": "https://github.com/atomic-package/tab/issues"
+        },
+        "homepage": "https://github.com/atomic-package/tab#readme",
+        "_id": "@atomic-package/tab@0.0.2",
+        "_shasum": "7d9b2ac65f53589a50e8c95049e611ab07296960",
+        "_from": ".",
+        "_npmVersion": "3.10.5",
+        "_nodeVersion": "6.2.1",
+        "_npmUser": {
+          "name": "daisuke.takayama",
+          "email": "d.takayama.web@gmail.com"
+        },
+        "dist": {
+          "shasum": "7d9b2ac65f53589a50e8c95049e611ab07296960",
+          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.2.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "daisuke.takayama",
+            "email": "d.takayama.web@gmail.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/tab-0.0.2.tgz_1498153758089_0.7342291567474604"
+        }
+      },
+      "0.0.3": {
+        "name": "@atomic-package/tab",
+        "version": "0.0.3",
+        "description": "atomic-package - tab",
+        "main": "dist/atomic-package.toggle.js",
+        "scripts": {
+          "test": "$(npm bin)/mocha test/** -r test/spec_setup.js",
+          "test:watch": "$(npm bin)/mocha -w test/** -r test/spec_setup.js",
+          "start": "concurrently \"npm run webpack:w\" \"gulp\"",
+          "webpack": "webpack",
+          "webpack:w": "webpack --progress --colors --watch",
+          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+ssh://git@github.com/atomic-package/tab.git"
+        },
+        "author": {
+          "name": "daisuke.takayama"
+        },
+        "license": "MIT",
+        "devDependencies": {
+          "@types/node": "^7.0.14",
+          "browser-sync": "^2.18.8",
+          "chai": "^3.5.0",
+          "concurrently": "^3.4.0",
+          "cssmin": "^0.4.3",
+          "del": "^2.2.2",
+          "gulp": "^3.9.1",
+          "gulp-autoprefixer": "^3.1.1",
+          "gulp-concat": "^2.6.1",
+          "gulp-cssmin": "^0.1.7",
+          "gulp-mocha": "^4.3.1",
+          "gulp-plumber": "^1.1.0",
+          "gulp-sass": "^3.1.0",
+          "gulp-uglify": "^2.1.2",
+          "gulp-watch": "^4.3.11",
+          "jsdom": "^10.0.0",
+          "path": "^0.12.7",
+          "power-assert": "^1.4.2",
+          "run-sequence": "^1.2.2",
+          "ts-loader": "^2.0.3",
+          "typescript": "^2.3.1",
+          "typings": "^2.1.1",
+          "webpack": "^2.4.1"
+        },
+        "dependencies": {
+          "@atomic-package/common": "0.0.1",
+          "@atomic-package/utility": "0.0.2"
+        },
+        "gitHead": "a0954b436ab87538b66d1f1e291c0850e2ed377d",
+        "bugs": {
+          "url": "https://github.com/atomic-package/tab/issues"
+        },
+        "homepage": "https://github.com/atomic-package/tab#readme",
+        "_id": "@atomic-package/tab@0.0.3",
+        "_shasum": "8403f7fccd5418e21786eb84ad33d6b31d6e4299",
+        "_from": ".",
+        "_npmVersion": "3.10.5",
+        "_nodeVersion": "6.2.1",
+        "_npmUser": {
+          "name": "daisuke.takayama",
+          "email": "d.takayama.web@gmail.com"
+        },
+        "dist": {
+          "shasum": "8403f7fccd5418e21786eb84ad33d6b31d6e4299",
+          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.3.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "daisuke.takayama",
+            "email": "d.takayama.web@gmail.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/tab-0.0.3.tgz_1498153876698_0.4712552512064576"
+        }
+      },
+      "0.0.4": {
+        "name": "@atomic-package/tab",
+        "version": "0.0.4",
+        "description": "atomic-package - tab",
+        "main": "dist/atomic-package.tab.js",
+        "scripts": {
+          "test": "$(npm bin)/mocha test/** -r test/spec_setup.js",
+          "test:watch": "$(npm bin)/mocha -w test/** -r test/spec_setup.js",
+          "start": "concurrently \"npm run webpack:w\" \"gulp\"",
+          "webpack": "webpack",
+          "webpack:w": "webpack --progress --colors --watch",
+          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+ssh://git@github.com/atomic-package/tab.git"
+        },
+        "author": {
+          "name": "daisuke.takayama"
+        },
+        "license": "MIT",
+        "devDependencies": {
+          "@types/node": "^7.0.14",
+          "browser-sync": "^2.18.8",
+          "chai": "^3.5.0",
+          "concurrently": "^3.4.0",
+          "cssmin": "^0.4.3",
+          "del": "^2.2.2",
+          "gulp": "^3.9.1",
+          "gulp-autoprefixer": "^3.1.1",
+          "gulp-concat": "^2.6.1",
+          "gulp-cssmin": "^0.1.7",
+          "gulp-mocha": "^4.3.1",
+          "gulp-plumber": "^1.1.0",
+          "gulp-sass": "^3.1.0",
+          "gulp-uglify": "^2.1.2",
+          "gulp-watch": "^4.3.11",
+          "jsdom": "^10.0.0",
+          "path": "^0.12.7",
+          "power-assert": "^1.4.2",
+          "run-sequence": "^1.2.2",
+          "ts-loader": "^2.0.3",
+          "typescript": "^2.3.1",
+          "typings": "^2.1.1",
+          "webpack": "^2.4.1"
+        },
+        "dependencies": {
+          "@atomic-package/common": "0.0.1",
+          "@atomic-package/utility": "0.0.2"
+        },
+        "gitHead": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
+        "bugs": {
+          "url": "https://github.com/atomic-package/tab/issues"
+        },
+        "homepage": "https://github.com/atomic-package/tab#readme",
+        "_id": "@atomic-package/tab@0.0.4",
+        "_shasum": "55786c198383be7ab4986739af2c69ad5bcec495",
+        "_from": ".",
+        "_npmVersion": "3.10.5",
+        "_nodeVersion": "6.2.1",
+        "_npmUser": {
+          "name": "daisuke.takayama",
+          "email": "d.takayama.web@gmail.com"
+        },
+        "dist": {
+          "shasum": "55786c198383be7ab4986739af2c69ad5bcec495",
+          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.4.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "daisuke.takayama",
+            "email": "d.takayama.web@gmail.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/tab-0.0.4.tgz_1498153975888_0.1597996070049703"
+        }
+      }
+    },
+    "readme": "# Atomic Package - tab\n",
+    "maintainers": [
+      {
+        "name": "daisuke.takayama",
+        "email": "d.takayama.web@gmail.com"
+      }
+    ],
+    "time": {
+      "modified": "2017-06-22T17:52:56.616Z",
+      "created": "2017-06-22T16:19:35.102Z",
+      "0.0.1": "2017-06-22T16:19:35.102Z",
+      "0.0.2": "2017-06-22T17:49:18.317Z",
+      "0.0.3": "2017-06-22T17:51:16.866Z",
+      "0.0.4": "2017-06-22T17:52:56.616Z"
+    },
+    "homepage": "https://github.com/atomic-package/tab#readme",
+    "repository": {
+      "type": "git",
+      "url": "git+ssh://git@github.com/atomic-package/tab.git"
+    },
+    "author": {
+      "name": "daisuke.takayama"
+    },
+    "bugs": {
+      "url": "https://github.com/atomic-package/tab/issues"
+    },
+    "license": "MIT",
+    "readmeFilename": "README.md"
+  },
+  {
+    "_id": "@atlaskit/input",
+    "_rev": "31-8e30bdb8faac40e50fac00be93918981",
+    "name": "@atlaskit/input",
+    "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+    "dist-tags": {
+      "latest": "1.6.1"
+    },
+    "versions": {
+      "1.0.0": {
+        "name": "@atlaskit/input",
+        "version": "1.0.0",
+        "config": {
+          "access": "public"
+        },
+        "description": "ak-input component",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2"
+        },
+        "dependencies": {
+          "akutil-shared-styles": "^37.2.0",
+          "babel-runtime": "^6.11.6",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui"
+        ],
+        "gitHead": "b3b4b75fad380312bd08645566e67eb3619f9891",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.0",
+        "_shasum": "1210a9d98b182427dbabdafb0de99029bb5aab02",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.7.0",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "1210a9d98b182427dbabdafb0de99029bb5aab02",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.0.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-18-east.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.0.tgz_1485733637470_0.3589511613827199"
+        }
+      },
+      "1.0.1": {
+        "name": "@atlaskit/input",
+        "version": "1.0.1",
+        "config": {
+          "access": "public"
+        },
+        "description": "ak-input component",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui"
+        ],
+        "gitHead": "6b588c28496ffee04729a4085ffe1beacd674433",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.1",
+        "_shasum": "65a4ae06c47151224cac7a951f30cd41af71cf4f",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.7.0",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "65a4ae06c47151224cac7a951f30cd41af71cf4f",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.1.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-18-east.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.1.tgz_1486365319410_0.4343669516965747"
+        }
+      },
+      "1.0.2": {
+        "name": "@atlaskit/input",
+        "version": "1.0.2",
+        "config": {
+          "access": "public"
+        },
+        "description": "ak-input component",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui"
+        ],
+        "gitHead": "322b552536af8dda6c03da807d24477e0d6bdbce",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.2",
+        "_shasum": "c229de514cece5fa3dd84036d8290360d286e877",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.7.0",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "c229de514cece5fa3dd84036d8290360d286e877",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.2.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-12-west.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.2.tgz_1486685175948_0.722479886142537"
+        }
+      },
+      "1.0.3": {
+        "name": "@atlaskit/input",
+        "version": "1.0.3",
+        "config": {
+          "access": "public"
+        },
+        "description": "ak-input component",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui"
+        ],
+        "gitHead": "47f51e83461ca044f3e03a168beb9a4530c289cc",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.3",
+        "_shasum": "bbaece109bfdd95466828f22ebb3c0ae8ea3e8b6",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.7.0",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "bbaece109bfdd95466828f22ebb3c0ae8ea3e8b6",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.3.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-18-east.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.3.tgz_1487210288174_0.2198437750339508"
+        }
+      },
+      "1.0.4": {
+        "name": "@atlaskit/input",
+        "version": "1.0.4",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui"
+        ],
+        "gitHead": "ed8ddfbb0407a69d280b96afd25a92e57c45687f",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.4",
+        "_shasum": "e4990fc066a44ce14b49aeb4aeaa724488ab07af",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.7.0",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "e4990fc066a44ce14b49aeb4aeaa724488ab07af",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.4.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-12-west.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.4.tgz_1487736644355_0.9128609916660935"
+        }
+      },
+      "1.0.5": {
+        "name": "@atlaskit/input",
+        "version": "1.0.5",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "67fd1ba347dd14960ea17387e08c82bbb610f566",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.5",
+        "_shasum": "58dcd55af581cae3ccf67cd2e27235c45d747b13",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.7.0",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "58dcd55af581cae3ccf67cd2e27235c45d747b13",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.5.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-18-east.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.5.tgz_1488233088326_0.9354425328783691"
+        }
+      },
+      "1.0.6": {
+        "name": "@atlaskit/input",
+        "version": "1.0.6",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "abe6236c118c8ec21d04677032ab29e94a263064",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.6",
+        "_shasum": "e775dbf35197116f791af7ad16d92db33e39a587",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.7.0",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "e775dbf35197116f791af7ad16d92db33e39a587",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.6.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-12-west.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.6.tgz_1488252032018_0.0016964259557425976"
+        }
+      },
+      "1.0.8": {
+        "name": "@atlaskit/input",
+        "version": "1.0.8",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "2ff6f5f3b5461443e55994b31b9c9f0ef2dcf274",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.8",
+        "_shasum": "655206ab58d4235bbec29e813040d425e06d71f0",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.7.0",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "655206ab58d4235bbec29e813040d425e06d71f0",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.8.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-12-west.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.8.tgz_1488262396627_0.6503694064449519"
+        }
+      },
+      "1.0.9": {
+        "name": "@atlaskit/input",
+        "version": "1.0.9",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "038fc044deed2427e3ff6ff0a04d9299b16cb245",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.9",
+        "_shasum": "823e437d4494f626c287fcbf0be1ee6cef5a92a6",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.7.0",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "823e437d4494f626c287fcbf0be1ee6cef5a92a6",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.9.tgz"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-12-west.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.9.tgz_1488326380977_0.7184218664187938"
+        }
+      },
+      "1.0.10": {
+        "name": "@atlaskit/input",
+        "version": "1.0.10",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "a1bb34628ce97650160b276b2b1101148e4118a5",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.10",
+        "_shasum": "a62f64b299e2bb106042e64b4e6b82cbd22a5305",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "a62f64b299e2bb106042e64b4e6b82cbd22a5305",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.10.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "packages-12-west.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.10.tgz_1490139387518_0.5782444269862026"
+        }
+      },
+      "1.0.11": {
+        "name": "@atlaskit/input",
+        "version": "1.0.11",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "glamor": "^2.17.14"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "6e12e296972eab5012746b8f31d203d5618b9d65",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.0.11",
+        "_shasum": "3543a73c76f07155345c9eab30c8e247c6335cc2",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "3543a73c76f07155345c9eab30c8e247c6335cc2",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.11.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "packages-12-west.internal.npmjs.com",
+          "tmp": "tmp/input-1.0.11.tgz_1490139722146_0.0895105479285121"
+        }
+      },
+      "1.1.0": {
+        "name": "@atlaskit/input",
+        "version": "1.1.0",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2",
+          "styled-components": "^1.3.0"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "b5c2777102a510d07d823cc7cb85652a379bebe6",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.1.0",
+        "_shasum": "777a49d4c279f61cd1839dc196ac1b56fec508bd",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "777a49d4c279f61cd1839dc196ac1b56fec508bd",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.0.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "packages-12-west.internal.npmjs.com",
+          "tmp": "tmp/input-1.1.0.tgz_1490768499631_0.17097095074132085"
+        }
+      },
+      "1.1.1": {
+        "name": "@atlaskit/input",
+        "version": "1.1.1",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2",
+          "styled-components": "^1.3.0"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "966450fa3657586ecde3150ee7018c0446c2d3c1",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.1.1",
+        "_shasum": "8a18272a15119ee6acad0cc397184323bdc759e0",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "8a18272a15119ee6acad0cc397184323bdc759e0",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.1.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "packages-18-east.internal.npmjs.com",
+          "tmp": "tmp/input-1.1.1.tgz_1493203628587_0.584586429875344"
+        }
+      },
+      "1.1.2": {
+        "name": "@atlaskit/input",
+        "version": "1.1.2",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2",
+          "styled-components": "^1.3.0"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "cbcdf9230a152321cb85f2ee2be7839bbd6c5585",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.1.2",
+        "_shasum": "13a592775c168dd97ded2274c951b26673bde9b3",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "13a592775c168dd97ded2274c951b26673bde9b3",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.2.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "packages-12-west.internal.npmjs.com",
+          "tmp": "tmp/input-1.1.2.tgz_1493272133076_0.44632506323978305"
+        }
+      },
+      "1.1.3": {
+        "name": "@atlaskit/input",
+        "version": "1.1.3",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "prop-types": "^15.5.10",
+          "styled-components": "^1.3.0"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "cce9f8509ed11eee7c3857153a6e6c0107286876",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.1.3",
+        "_shasum": "916622c9202639b9fac8b9a274d8e5f78248384b",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "916622c9202639b9fac8b9a274d8e5f78248384b",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.3.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/input-1.1.3.tgz_1499934696192_0.004815250867977738"
+        }
+      },
+      "1.5.0": {
+        "name": "@atlaskit/input",
+        "version": "1.5.0",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "jsnext:main": "dist/es/index.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "prop-types": "^15.5.10",
+          "styled-components": "^1.3.0"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "c907bba38297ac05951a717e78c2c2d72c69d47c",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.5.0",
+        "_shasum": "8ba24c1c6cad4bd9b0ef3fc72d8ecd54449d0728",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "8ba24c1c6cad4bd9b0ef3fc72d8ecd54449d0728",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.0.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/input-1.5.0.tgz_1500291448145_0.6640763531904668"
+        }
+      },
+      "1.5.1": {
+        "name": "@atlaskit/input",
+        "version": "1.5.1",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "jsnext:main": "dist/es/index.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "storybook": "../../build/bin/storybook.single.sh",
+          "eslint": "../../build/bin/lint.eslint.sh"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "prop-types": "^15.5.10",
+          "styled-components": "^1.3.0"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "name": "atlaskit",
+            "email": "design-platform@atlassian.com"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "db01d191b1532128a15c674955a5df50a7316624",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.5.1",
+        "_shasum": "ca1b6ae5671916d442d064733d74cfde65edc2ca",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "ca1b6ae5671916d442d064733d74cfde65edc2ca",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.1.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/input-1.5.1.tgz_1500950577025_0.892577902181074"
+        }
+      },
+      "1.5.2": {
+        "name": "@atlaskit/input",
+        "version": "1.5.2",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "jsnext:experimental:main": "dist/es/index.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "storybook": "../../build/bin/storybook.single.sh",
+          "eslint": "../../build/bin/lint.eslint.sh"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "prop-types": "^15.5.10",
+          "styled-components": "^1.3.0"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "email": "lbatchelor@atlassian.com",
+            "name": "atlaskit"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "b3c9f8c9fd2cf4be3d356da7b5b99a5fc6d973bb",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.5.2",
+        "_shasum": "213e24fb4c5aa21ebcd5f7f4e65cd1d03fd310fa",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "lbatchelor@atlassian.com"
+        },
+        "dist": {
+          "shasum": "213e24fb4c5aa21ebcd5f7f4e65cd1d03fd310fa",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.2.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/input-1.5.2.tgz_1501132299559_0.27936181612312794"
+        }
+      },
+      "1.5.3": {
+        "name": "@atlaskit/input",
+        "version": "1.5.3",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "jsnext:experimental:main": "dist/es/index.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "storybook": "../../build/bin/storybook/run.local.js",
+          "eslint": "../../build/bin/lint.eslint.sh",
+          "storybook:static": "../../build/bin/storybook/build.static.js"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2",
+          "react-dom": "^15.3.2"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "prop-types": "^15.5.10",
+          "styled-components": "^1.3.0"
+        },
+        "devDependencies": {
+          "ak-field-base": "^6.4.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "email": "design-platform@atlassian.com",
+            "name": "atlaskit"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "3dafebb243655569887fbb189a3e67ca1de8c5a5",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.5.3",
+        "_shasum": "04fd1240a600861e5fd6de425e18c650f80beba6",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "04fd1240a600861e5fd6de425e18c650f80beba6",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.3.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/input-1.5.3.tgz_1504572056342_0.14202998485416174"
+        }
+      },
+      "1.5.4": {
+        "name": "@atlaskit/input",
+        "version": "1.5.4",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "jsnext:experimental:main": "dist/es/index.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "storybook": "../../build/bin/storybook/run.local.js",
+          "eslint": "../../build/bin/lint.eslint.sh",
+          "storybook:static": "../../build/bin/storybook/build.static.js"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2 || ^16.0.0",
+          "react-dom": "^15.3.2 || ^16.0.0"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "prop-types": "^15.5.10",
+          "styled-components": "^1.4.6"
+        },
+        "devDependencies": {
+          "@atlaskit/field-base": "^8.0.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "email": "design-platform@atlassian.com",
+            "name": "atlaskit"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "5d483548898150cf261e657e375e761ee5d0c273",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.5.4",
+        "_shasum": "2d7ff1da654ad9b47cbd3b5cfb137c15f5678f64",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "2d7ff1da654ad9b47cbd3b5cfb137c15f5678f64",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.4.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/input-1.5.4.tgz_1508714775984_0.8771049338392913"
+        }
+      },
+      "1.6.0": {
+        "name": "@atlaskit/input",
+        "version": "1.6.0",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "jsnext:experimental:main": "dist/es/index.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "storybook": "../../build/bin/storybook/run.local.js",
+          "eslint": "../../build/bin/lint.eslint.sh",
+          "storybook:static": "../../build/bin/storybook/build.static.js",
+          "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2 || ^16.0.0",
+          "react-dom": "^15.3.2 || ^16.0.0"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^1.0.0",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "prop-types": "^15.5.10",
+          "styled-components": "^1.4.6"
+        },
+        "devDependencies": {
+          "@atlaskit/field-base": "^8.0.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "email": "design-platform@atlassian.com",
+            "name": "atlaskit"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "2d37e1c0732aecc965c371d29f7b1278ee2b3638",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.6.0",
+        "_shasum": "f2b3d0d2df54d7a304831a26bd79988ae4d601eb",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "f2b3d0d2df54d7a304831a26bd79988ae4d601eb",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.0.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/input-1.6.0.tgz_1508818964085_0.21248863963410258"
+        }
+      },
+      "1.6.1": {
+        "name": "@atlaskit/input",
+        "version": "1.6.1",
+        "config": {
+          "access": "public"
+        },
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "main": "dist/bundle.js",
+        "webpack": "dist/bundle-cjs.js",
+        "jsnext:experimental:main": "dist/es/index.js",
+        "ak:webpack:raw": "src/index.jsx",
+        "scripts": {
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "storybook": "../../build/bin/storybook/run.local.js",
+          "eslint": "../../build/bin/lint.eslint.sh",
+          "storybook:static": "../../build/bin/storybook/build.static.js",
+          "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+        },
+        "files": [
+          "dist"
+        ],
+        "peerDependencies": {
+          "react": "^15.3.2 || ^16.0.0",
+          "react-dom": "^15.3.2 || ^16.0.0"
+        },
+        "dependencies": {
+          "@atlaskit/util-shared-styles": "^2.10.5",
+          "babel-runtime": "^6.11.6",
+          "keycode": "^2.1.8",
+          "prop-types": "^15.5.10",
+          "styled-components": "^1.4.6"
+        },
+        "devDependencies": {
+          "@atlaskit/field-base": "^8.0.2"
+        },
+        "author": {
+          "name": "Atlassian Pty Ltd"
+        },
+        "maintainers": [
+          {
+            "email": "design-platform@atlassian.com",
+            "name": "atlaskit"
+          }
+        ],
+        "license": "Apache-2.0",
+        "repository": {
+          "type": "git",
+          "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+        },
+        "keywords": [
+          "atlaskit",
+          "ui",
+          "internal"
+        ],
+        "gitHead": "8bee5877efdc84f337a56a047438b8aaac078a2d",
+        "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+        "_id": "@atlaskit/input@1.6.1",
+        "_shasum": "4c20a218048b90b5e30ca183fd1ede95ae6ad497",
+        "_from": "packages/input",
+        "_resolved": "file:packages/input",
+        "_npmVersion": "3.10.7",
+        "_nodeVersion": "6.9.2",
+        "_npmUser": {
+          "name": "atlaskit",
+          "email": "design-platform@atlassian.com"
+        },
+        "dist": {
+          "shasum": "4c20a218048b90b5e30ca183fd1ede95ae6ad497",
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.1.tgz"
+        },
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/input-1.6.1.tgz_1510790341073_0.8378127568867058"
+        }
+      }
+    },
+    "readme": "[![AtlasKit component registry](https://img.shields.io/badge/AtlasKit-components-FF5230.svg)](http://atlaskit.atlassian.com)\n[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://Commitizen.github.io/cz-cli/)\n[![semantic-release](https://img.shields.io/badge/GitHub-semantic_release-ffab00.svg)](https://github.com/semantic-release/semantic-release)\n[![Report an issue](https://img.shields.io/badge/Report-an_issue-6554C0.svg)](http://go.atlassian.com/atlaskit-issues)\n\n# Input\n\n**YOU SHOULD ALMOST DEFINITELY NOT BE USING THIS COMPONENT DIRECTLY**\n\n**USE @atlaskit/field-text INSTEAD**\n\n\n## SingleLineTextInput\nA text input component with extremely basic styling that supports read/edit modes.\n\nDesigned for use within other components, e.g. for the read/edit views required by\nak-inline-edit, or within table cells.\n\nNote: In addition the props described below, all other props passed to this\ncomponent will be forwarded to the underlying HTML 'input'. This allows change\nhandlers, placeholders, etc, to be attached to it.\n\n**Kind**: global variable\n* Properties\n\n*  [SingleLineTextInput](#SingleLineTextInput)\n    *  [.value](#SingleLineTextInput.value) : <code>string</code>\n    *  [.style](#SingleLineTextInput.style) : <code>object</code>\n    *  [.isInitiallySelected](#SingleLineTextInput.isInitiallySelected) : <code>boolean</code>\n    *  [.isEditing](#SingleLineTextInput.isEditing) : <code>boolean</code>\n    *  [.onConfirm](#SingleLineTextInput.onConfirm) : <code>function</code>\n    *  [.onKeyDown](#SingleLineTextInput.onKeyDown) : <code>function</code>\n\n<a name=\"SingleLineTextInput.value\"></a>\n\n### SingleLineTextInput.value : <code>string</code>\nThe value of the input field.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.style\"></a>\n\n### SingleLineTextInput.style : <code>object</code>\nCustom styles that will be applied to the read and edit views.\n\nTypical use would be to specify a custom font size.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.isInitiallySelected\"></a>\n\n### SingleLineTextInput.isInitiallySelected : <code>boolean</code>\nWhether the input text will initially be selected/highlighted.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n**Default**: <code>false</code>\n<a name=\"SingleLineTextInput.isEditing\"></a>\n\n### SingleLineTextInput.isEditing : <code>boolean</code>\nWhether the component is in edit mode or read mode.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.onConfirm\"></a>\n\n### SingleLineTextInput.onConfirm : <code>function</code>\nCalled when the user confirms input by pressing the enter key\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.onKeyDown\"></a>\n\n### SingleLineTextInput.onKeyDown : <code>function</code>\nRegular onKeyDown handler passed to the input\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n\n_* Please note that this module could have dependencies that are governed by the Atlassian Design Guidelines license which will be automatically included on install. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies._\n\n## We're here to help!\n\nLet us know what you think of our components and docs, your feedback is really important for us.\n\nAre you in trouble? Read through our [contribution guidelines](https://bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md) and raise an issue to us.\n\n",
+    "maintainers": [
+      {
+        "email": "design-platform@atlassian.com",
+        "name": "atlaskit"
+      }
+    ],
+    "time": {
+      "modified": "2017-11-15T23:59:01.980Z",
+      "created": "2017-01-29T23:47:18.021Z",
+      "1.0.0": "2017-01-29T23:47:18.021Z",
+      "1.0.1": "2017-02-06T07:15:19.995Z",
+      "1.0.2": "2017-02-10T00:06:17.992Z",
+      "1.0.3": "2017-02-16T01:58:08.818Z",
+      "1.0.4": "2017-02-22T04:10:46.203Z",
+      "1.0.5": "2017-02-27T22:04:48.880Z",
+      "1.0.6": "2017-02-28T03:20:33.829Z",
+      "1.0.8": "2017-02-28T06:13:18.349Z",
+      "1.0.9": "2017-02-28T23:59:42.921Z",
+      "1.0.10": "2017-03-21T23:36:29.545Z",
+      "1.0.11": "2017-03-21T23:42:04.163Z",
+      "1.1.0": "2017-03-29T06:21:41.688Z",
+      "1.1.1": "2017-04-26T10:47:09.649Z",
+      "1.1.2": "2017-04-27T05:48:55.305Z",
+      "1.1.3": "2017-07-13T08:31:37.060Z",
+      "1.2.0": "2017-07-17T05:23:53.444Z",
+      "1.3.0": "2017-07-17T06:38:13.785Z",
+      "1.4.0": "2017-07-17T08:15:21.975Z",
+      "1.5.0": "2017-07-17T11:37:29.134Z",
+      "1.5.1": "2017-07-25T02:42:58.085Z",
+      "1.5.2": "2017-07-27T05:11:40.487Z",
+      "1.5.3": "2017-09-05T00:40:57.454Z",
+      "1.5.4": "2017-10-22T23:26:17.015Z",
+      "1.6.0": "2017-10-24T04:22:45.064Z",
+      "1.6.1": "2017-11-15T23:59:01.980Z"
+    },
+    "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+    "keywords": [
+      "atlaskit",
+      "ui",
+      "internal"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
+    },
+    "author": {
+      "name": "Atlassian Pty Ltd"
+    },
+    "license": "Apache-2.0",
+    "readmeFilename": "README.md"
+  }
+]
