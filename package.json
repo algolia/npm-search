@@ -70,6 +70,6 @@
     "renovate-config-algolia": "2.0.1"
   },
   "engines": {
-    "node": ">=7"
+    "node": "9.3.0"
   }
 }
