@@ -16,13 +16,16 @@ it('truncates long readmes', () => {
   const object = {
     name: 'long-boy',
     lastPublisher: { name: 'unknown' },
-    readme: 'Hello, World!'.repeat(1000000),
+    readme: 'Hello, World! '.repeat(40000),
   };
   const formatted = formatPkg(object);
-  const ending = formatted.readme.substr(formatted.readme.length - 13);
+  const truncatedEnding = '**TRUNCATED**';
+  const ending = formatted.readme.substr(
+    formatted.readme.length - truncatedEnding.length
+  );
 
   expect(formatted.readme).toHaveLength(451050);
-  expect(ending).toBe('**TRUNCATED**');
+  expect(ending).toBe(truncatedEnding);
 
   formatted.lastCrawl = '<!-- date replaced -->';
   expect(formatted).toMatchSnapshot();
