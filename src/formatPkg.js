@@ -46,14 +46,17 @@ export default function formatPkg(pkg) {
     typeof cleaned.repository === 'string'
       ? { url: cleaned.repository }
       : cleaned.repository;
-  const repository = cleaned.repository
-    ? {
-        ...defaultRepository, // Default info: type, url
-        ...getRepositoryInfo(cleaned.repository), // Extra info: host, project, user...
-        head: cleaned.gitHead,
-        branch: cleaned.gitHead || 'master',
-      }
-    : null;
+  // If defaultRepository is undefined or it does not have an URL
+  // we don't include it.
+  const repository =
+    defaultRepository && defaultRepository.url
+      ? {
+          ...defaultRepository, // Default info: type, url
+          ...getRepositoryInfo(cleaned.repository), // Extra info: host, project, user...
+          head: cleaned.gitHead,
+          branch: cleaned.gitHead || 'master',
+        }
+      : null;
 
   const tags = pkg['dist-tags'];
 
