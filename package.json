@@ -7,11 +7,11 @@
     "url": "https://www.algolia.com"
   },
   "scripts": {
-    "dev": "babel-node index.js",
+    "dev": "babel-node src/index.js",
     "start": "node lib/index.js",
     "install": "npm run build",
-    "build": "babel *.js -d lib",
-    "test": "eslint .",
+    "build": "babel src -d lib --ignore test.js",
+    "test": "jest && eslint .",
     "format": "prettier --write *.{js,md,json}",
     "doctoc": "doctoc --notitle --maxlevel 3 README.md",
     "precommit": "lint-staged"
@@ -61,16 +61,18 @@
     "eslint-import-resolver-webpack": "0.8.3",
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jasmine": "2.9.1",
-    "eslint-plugin-jest": "21.5.0",
+    "eslint-plugin-jest": "21.6.2",
     "eslint-plugin-prettier": "2.3.1",
     "eslint-plugin-react": "7.5.1",
     "husky": "0.14.3",
+    "jest": "22.1.0",
     "lint-staged": "6.0.0",
     "pre-commit": "1.2.2",
     "prettier": "1.9.2",
-    "renovate-config-algolia": "2.0.1"
+    "renovate-config-algolia": "2.0.1",
+    "validator": "^9.2.0"
   },
   "engines": {
-    "node": ">=7"
+    "node": "9.3.0"
   }
 }
