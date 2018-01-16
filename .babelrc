@@ -9,5 +9,8 @@
       }
     ],
     "stage-2"
+  ],
+  "plugins": [
+    "rewire"
   ]
 }

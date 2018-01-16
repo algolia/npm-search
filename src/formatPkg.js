@@ -6,6 +6,7 @@ const defaultGravatar = 'https://www.gravatar.com/avatar/';
 import escape from 'escape-html';
 import traverse from 'traverse';
 import truncate from 'truncate-utf8-bytes';
+import hostedGitInfo from 'hosted-git-info';
 
 import c from './config';
 
@@ -41,6 +42,18 @@ export default function formatPkg(pkg) {
   const dependencies = cleaned.dependencies || {};
   const devDependencies = cleaned.devDependencies || {};
   const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
+  const defaultRepository =
+    typeof cleaned.repository === 'string'
+      ? { url: cleaned.repository }
+      : cleaned.repository;
+  const repository = cleaned.repository
+    ? {
+        ...defaultRepository, // Default info: type, url
+        ...getRepositoryInfo(cleaned.repository), // Extra info: host, project, user...
+        head: cleaned.gitHead,
+        branch: cleaned.gitHead || 'master',
+      }
+    : null;
 
   const tags = pkg['dist-tags'];
 
@@ -59,6 +72,7 @@ export default function formatPkg(pkg) {
     dependencies,
     devDependencies,
     originalAuthor: cleaned.author,
+    repository,
     githubRepo,
     gitHead: githubRepo && githubRepo.head, // remove this when we update to the new schema frontend
     readme: pkg.readme,
@@ -220,6 +234,65 @@ function getHomePage(homepage, repository) {
   }
 
   return null;
+}
+
+/**
+ * Get info from urls like this: (has multiple packages in one repo, like babel does)
+ *  https://github.com/babel/babel/tree/master/packages/babel
+ *  https://gitlab.com/user/repo/tree/master/packages/project1
+ *  https://bitbucket.org/user/repo/src/ae8df4cd0e809a789e3f96fd114075191c0d5c8b/packages/project1/
+ *
+ * This function is like getGitHubRepoInfo (above), but support github, gitlab and bitbucket.
+ */
+function getRepositoryInfoFromHttpUrl(repository) {
+  const result = repository.match(
+    /^https?:\/\/(?:www\.)?((?:github|gitlab|bitbucket)).((?:com|org))\/([^/]+)\/([^/]+)(\/.+)?$/
+  );
+
+  if (!result || result.length < 4) {
+    return null;
+  }
+
+  return {
+    host: `${result[1]}.${result[2]}`,
+    user: result[3],
+    project: result[4],
+    path: result[5] || '',
+  };
+}
+
+function getRepositoryInfo(repository) {
+  if (!repository) {
+    return null;
+  }
+
+  const url = typeof repository === 'string' ? repository : repository.url;
+
+  if (!url) {
+    return null;
+  }
+
+  /**
+   * Get information using hosted-git-info.
+   */
+  const repositoryInfo = hostedGitInfo.fromUrl(url);
+
+  if (repositoryInfo) {
+    const { project, user, domain } = repositoryInfo;
+    return {
+      project,
+      user,
+      host: domain,
+      path: '',
+    };
+  }
+
+  /**
+   * Unfortunately, hosted-git-info can't handle URL like this: (has path)
+   *   https://github.com/babel/babel/tree/master/packages/babel-core
+   * so we need to do it
+   */
+  return getRepositoryInfoFromHttpUrl(url);
 }
 
 function formatUser(user) {
