@@ -107,8 +107,8 @@ export function getDependents(pkgs) {
       got(`${c.npmRegistryEndpoint}/_design/app/_view/dependedUpon`, {
         json: true,
         query: {
-          startKey: JSON.stringify([name]),
-          endKey: JSON.stringify([name, {}]),
+          startkey: JSON.stringify([name]),
+          endkey: JSON.stringify([name, {}]),
           stale: 'update_after',
         },
       })
