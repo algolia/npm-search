@@ -11,7 +11,6 @@ import c from './config';
 
 export default function formatPkg(pkg) {
   const cleaned = new NicePackage(pkg);
-
   if (!cleaned.name) {
     return undefined;
   }

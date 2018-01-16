@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`gets the correct keys from env variables 1`] = `
+Object {
+  "apiKey": "fake-api-key",
+  "appId": "fake-app",
+  "bootstrapConcurrency": 100,
+  "indexName": "fake-index",
+  "indexSettings": Object {
+    "attributesForFaceting": Array [
+      "filterOnly(concatenatedName)",
+      "searchable(keywords)",
+      "searchable(owner.name)",
+    ],
+    "customRanking": Array [
+      "desc(downloadsLast30Days)",
+    ],
+    "disableExactOnAttributes": Array [
+      "description",
+      "keywords",
+      "owner.name",
+      "owners.name",
+    ],
+    "disablePrefixOnAttributes": Array [
+      "keywords",
+      "owner.name",
+      "owners.name",
+    ],
+    "disableTypoToleranceOnAttributes": Array [
+      "keywords",
+    ],
+    "exactOnSingleWordQuery": "attribute",
+    "optionalWords": Array [
+      "js",
+      "javascript",
+    ],
+    "ranking": Array [
+      "filters",
+      "typo",
+      "words",
+      "proximity",
+      "attribute",
+      "asc(deprecated)",
+      "asc(badPackage)",
+      "desc(popular)",
+      "exact",
+      "custom",
+    ],
+    "replaceSynonymsInHighlight": false,
+    "searchableAttributes": Array [
+      "unordered(popularName)",
+      "unordered(name)",
+      "unordered(concatenatedName)",
+      "unordered(description)",
+      "unordered(keywords)",
+      "owner.name",
+      "owners.name",
+    ],
+    "separatorsToIndex": "_",
+    "synonyms": Array [
+      Array [
+        "_",
+        "underscore",
+      ],
+    ],
+  },
+  "maxObjSize": 450000,
+  "npmDownloadsEndpoint": "https://api.npmjs.org/downloads",
+  "npmRegistryEndpoint": "https://replicate.npmjs.com/registry",
+  "popularDownloadsRatio": 0.005,
+  "replicateConcurrency": 10,
+  "seq": null,
+  "timeToRedoBootstrap": 604800000,
+}
+`;
