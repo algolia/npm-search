@@ -1,5 +1,5 @@
 import nsp from 'nsp/lib/api';
-import { chunk } from 'lodash';
+import { chunk, flatten } from 'lodash';
 
 // eslint-disable-next-line new-cap
 const api = new nsp({
@@ -70,11 +70,12 @@ async function getSecurityData(packages) {
   );
 
   return packages.map(({ name }) => ({
+    name,
     securityRecommendation: security[name] || false,
   }));
 }
 
 export function getSecurity(packages) {
   const chunks = chunk(packages, 10);
-  return Promise.all(chunks.map(getSecurityData));
+  return Promise.all(chunks.map(getSecurityData)).then(flatten);
 }
