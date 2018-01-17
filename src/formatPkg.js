@@ -216,11 +216,12 @@ function getGitHubRepoInfo({ repository, gitHead = 'master' }) {
   }
 
   const head = gitHead;
+  const [, user, project, path = ''] = result;
 
   return {
-    user: result[1],
-    project: result[2],
-    path: result[3] || '',
+    user,
+    project,
+    path,
     head,
   };
 }
@@ -252,15 +253,17 @@ function getRepositoryInfoFromHttpUrl(repository) {
     /^https?:\/\/(?:www\.)?((?:github|gitlab|bitbucket)).((?:com|org))\/([^/]+)\/([^/]+)(\/.+)?$/
   );
 
-  if (!result || result.length < 4) {
+  if (!result || result.length < 6) {
     return null;
   }
 
+  const [, domain, domainTld, user, project, path = ''] = result;
+
   return {
-    host: `${result[1]}.${result[2]}`,
-    user: result[3],
-    project: result[4],
-    path: result[5] || '',
+    host: `${domain}.${domainTld}`,
+    user,
+    project,
+    path,
   };
 }
 
