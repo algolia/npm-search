@@ -64,11 +64,13 @@ For every single NPM package, we create a record in the Algolia index. The resul
     "babel-helper-fixtures": "^6.26.0"
     // [...]
   },
-  "githubRepo": {
+  "repository": {
+    "url": "https://github.com/babel/babel/tree/master/packages/babel-core",
+    "host": "github.com",
     "user": "babel",
     "project": "babel",
     "path": "/tree/master/packages/babel-core",
-    "head": "master"
+    "branch": "master"
   },
   "readme":
     "# babel-core\n\n> Babel compiler core.\n\n\n [... truncated at 200kb]",
