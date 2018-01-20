@@ -104,7 +104,7 @@ describe('getDownloads()', () => {
     // eslint-disable-next-line no-console
     console.log('downloads', { jest, angular, holmes });
 
-    expect(jest).toBeGreaterThan(3000000);
+    expect(jest).toBeGreaterThan(2500000);
     expect(jest).toBeLessThan(4000000);
 
     expect(angular).toBeGreaterThan(1900000);
