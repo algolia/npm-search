@@ -1,4 +1,4 @@
-import { getChangelogs, __RewireAPI__ } from '../changelog';
+import { getChangelogs, __RewireAPI__ } from '../changelog'; // eslint-disable-line import/named
 
 const gotSnapshotUrls = new Set([
   'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md',
@@ -13,7 +13,7 @@ const gotSnapshotUrls = new Set([
 __RewireAPI__.__Rewire__(
   'got',
   url =>
-    gotSnapshotUrls.has(url) ? Promise.resolve({ url }) : Promise.reject()
+    gotSnapshotUrls.has(url) ? Promise.resolve({ url }) : Promise.reject() // eslint-disable-line prefer-promise-reject-errors
 );
 
 describe('should test baseUrlMap', () => {
