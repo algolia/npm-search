@@ -4,6 +4,7 @@ const gotSnapshotUrls = new Set([
   'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md',
   'https://raw.githubusercontent.com/visionmedia/debug/master/CHANGELOG.md',
   'https://bitbucket.org/atlassian/aui/raw/master/changelog.md',
+  'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md',
 ]);
 
 // Mock 'got' requests.
@@ -147,5 +148,23 @@ it('should get changelog for bitbucket', async () => {
   const [{ changelogFilename }] = await getChangelogs([pkg]);
   expect(changelogFilename).toBe(
     'https://bitbucket.org/atlassian/aui/raw/master/changelog.md'
+  );
+});
+
+it('should work with HISTORY.md', async () => {
+  const pkg = {
+    repository: {
+      host: 'github.com',
+      user: 'expressjs',
+      project: 'body-parser',
+      path: '',
+      head: 'master',
+      branch: 'master',
+    },
+  };
+
+  const [{ changelogFilename }] = await getChangelogs([pkg]);
+  expect(changelogFilename).toBe(
+    'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md'
   );
 });
