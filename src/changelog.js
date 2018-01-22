@@ -30,7 +30,7 @@ function getChangelog({ repository }) {
     return { changelogFilename: null };
   }
 
-  const { user, project, host } = repository;
+  const { user = '', project = '', host = '' } = repository;
   if (user.length < 1 || project.length < 1) {
     return { changelogFilename: null };
   }
