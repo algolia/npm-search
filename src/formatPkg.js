@@ -161,6 +161,7 @@ function getOwner(repository, lastPublisher, author) {
     if (repository.host === 'gitlab.com') {
       return {
         name: user,
+        avatar: lastPublisher && lastPublisher.avatar,
         link: `https://gitlab.com/${user}`,
       };
     }
