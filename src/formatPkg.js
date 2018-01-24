@@ -35,13 +35,6 @@ export default function formatPkg(pkg) {
     return undefined; // ignore this package, we cannot link it to anyone
   }
 
-  const owner = getOwner(githubRepo, lastPublisher, author); // always favor the GitHub owner
-  const badPackage = isBadPackage(owner);
-  const keywords = getKeywords(cleaned);
-
-  const dependencies = cleaned.dependencies || {};
-  const devDependencies = cleaned.devDependencies || {};
-  const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
   const defaultRepository =
     typeof cleaned.repository === 'string'
       ? { url: cleaned.repository }
@@ -57,6 +50,14 @@ export default function formatPkg(pkg) {
           branch: cleaned.gitHead || 'master',
         }
       : null;
+
+  const owner = getOwner(repository, lastPublisher, author); // always favor the repository owner
+  const badPackage = isBadPackage(owner);
+  const keywords = getKeywords(cleaned);
+
+  const dependencies = cleaned.dependencies || {};
+  const devDependencies = cleaned.devDependencies || {};
+  const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
 
   const tags = pkg['dist-tags'];
 
@@ -145,13 +146,33 @@ function getLicense(cleaned) {
   return null;
 }
 
-function getOwner(githubRepo, lastPublisher, author) {
-  if (githubRepo) {
-    return {
-      name: githubRepo.user,
-      avatar: `https://github.com/${githubRepo.user}.png`,
-      link: `https://github.com/${githubRepo.user}`,
-    };
+function getOwner(repository, lastPublisher, author) {
+  if (repository && repository.user) {
+    const { user } = repository;
+
+    if (repository.host === 'github.com') {
+      return {
+        name: user,
+        avatar: `https://github.com/${user}.png`,
+        link: `https://github.com/${user}`,
+      };
+    }
+
+    if (repository.host === 'gitlab.com') {
+      return {
+        name: user,
+        avatar: lastPublisher && lastPublisher.avatar,
+        link: `https://gitlab.com/${user}`,
+      };
+    }
+
+    if (repository.host === 'bitbucket.org') {
+      return {
+        name: user,
+        avatar: `https://bitbucket.org/account/${user}/avatar`,
+        link: `https://bitbucket.org/${user}`,
+      };
+    }
   }
 
   if (lastPublisher) {
