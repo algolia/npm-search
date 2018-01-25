@@ -137,10 +137,9 @@ Array [
     "objectID": "@atlaskit/input",
     "originalAuthor": undefined,
     "owner": Object {
-      "avatar": "https://gravatar.com/avatar/f5f2da89496e4ad75ac1f9d7166e6b99",
-      "email": "design-platform@atlassian.com",
-      "link": "https://www.npmjs.com/~atlaskit",
-      "name": "atlaskit",
+      "avatar": "https://bitbucket.org/account/atlassian/avatar",
+      "link": "https://bitbucket.org/atlassian",
+      "name": "atlassian",
     },
     "owners": Array [
       Object {

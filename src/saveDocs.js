@@ -3,7 +3,7 @@ import formatPkg from './formatPkg.js';
 import log from './log.js';
 import { getDownloads, getDependents } from './npm.js';
 import { getSecurity } from './nsp.js';
-import { getChangelogs } from './github.js';
+import { getChangelogs } from './changelog.js';
 
 export default function saveDocs(docs) {
   const rawPkgs = docs
