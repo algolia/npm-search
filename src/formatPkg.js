@@ -210,15 +210,21 @@ function getVersions(cleaned) {
 }
 
 function getKeywords(cleaned) {
+  const babelPlugins =
+    cleaned.name.startsWith('@babel/plugin') ||
+    cleaned.name.startsWith('babel-plugin-')
+      ? ['babel-plugin']
+      : [];
+
   if (cleaned.keywords) {
     if (Array.isArray(cleaned.keywords)) {
-      return [...cleaned.keywords];
+      return [...cleaned.keywords, ...babelPlugins];
     }
     if (typeof cleaned.keywords === 'string') {
-      return [cleaned.keywords];
+      return [cleaned.keywords, ...babelPlugins];
     }
   }
-  return [];
+  return [...babelPlugins];
 }
 
 function getGitHubRepoInfo({ repository, gitHead = 'master' }) {
