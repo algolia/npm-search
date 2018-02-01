@@ -31,6 +31,23 @@ it('truncates long readmes', () => {
   expect(formatted).toMatchSnapshot();
 });
 
+describe('adds babel plugins', () => {
+  const dogs = {
+    name: '@babel/plugin-dogs',
+    lastPublisher: { name: 'xtuc' },
+  };
+  const unofficialDogs = {
+    name: 'babel-plugin-dogs',
+    lastPublisher: { name: 'unknown' },
+  };
+
+  const formattedDogs = formatPkg(dogs);
+  const formattedUnofficialDogs = formatPkg(unofficialDogs);
+
+  expect(formattedDogs.keywords).toEqual(['babel-plugin']);
+  expect(formattedUnofficialDogs.keywords).toEqual(['babel-plugin']);
+});
+
 describe('test getRepositoryInfo', () => {
   const getRepositoryInfo = formatPkg.__RewireAPI__.__get__(
     'getRepositoryInfo'
