@@ -105,7 +105,7 @@ describe('getDownloads()', () => {
     console.log('downloads', { jest, angular, holmes });
 
     expect(jest).toBeGreaterThan(3800000);
-    expect(jest).toBeLessThan(4300000);
+    expect(jest).toBeLessThan(6000000);
 
     expect(angular).toBeGreaterThan(1900000);
     expect(angular).toBeLessThan(3000000);
