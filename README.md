@@ -236,6 +236,11 @@ When the process starts with `seq=0`:
 * replicate registry changes since the current sequence
 * watch for registry changes continuously and replicate them
 
+Replicate and watch are separated because:
+1. In replicate we want to replicate a batch of documents in a fast way
+2. In watch we want new changes as fast as possible, one by one. If watch was
+asking for batches of 100, new packages would be added too late to the index
+
 ## Tests
 
 ```sh

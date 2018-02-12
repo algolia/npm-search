@@ -6,6 +6,7 @@ import PouchDB from 'pouchdb-http';
 import * as npm from './npm.js';
 import log from './log.js';
 import ms from 'ms';
+import cargo from 'async/cargo';
 import queue from 'async/queue';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
@@ -15,7 +16,6 @@ const defaultOptions = {
   include_docs: true, // eslint-disable-line camelcase
   conflicts: false,
   attachments: false,
-  return_docs: false, // eslint-disable-line camelcase
 };
 
 let loopStart = Date.now();
@@ -105,6 +105,7 @@ async function bootstrap(state) {
       .allDocs({
         ...defaultOptions,
         ...options,
+        return_docs: false, // eslint-disable-line camelcase
         limit: c.bootstrapConcurrency,
       })
       .then(res => {
@@ -146,38 +147,57 @@ async function moveToProduction() {
   await client.deleteIndex(c.bootstrapIndexName);
 }
 
-function replicate({ seq }) {
+async function replicate({ seq }) {
   log.info(
     '🐌 Replicate: Asking for %d changes since sequence %d',
     c.replicateConcurrency,
     seq
   );
 
-  return db
-    .changes({
+  const { seq: npmSeqToReach } = await npm.info();
+
+  return new Promise((resolve, reject) => {
+    const changes = db.changes({
       ...defaultOptions,
       since: seq,
-      limit: c.replicateConcurrency,
-    })
-    .then(res =>
-      saveDocs({ docs: res.results, index: mainIndex })
+      batch_size: c.replicateConcurrency, // eslint-disable-line camelcase
+      live: true,
+      return_docs: true, // eslint-disable-line camelcase
+    });
+
+    const q = cargo((docs, done) => {
+      saveDocs({ docs, index: mainIndex })
+        .then(() => infoChange(docs[docs.length - 1].seq, 1, '🐌'))
         .then(() =>
           stateManager.save({
-            seq: res.last_seq,
+            seq: docs[docs.length - 1].seq,
           })
         )
-        .then(() => infoChange(res.last_seq, res.results.length, '🐌'))
-        .then(() => {
-          if (res.results.length < c.replicateConcurrency) {
-            log.info('🐌 Replicate: done');
-            return true;
+        .then(({ seq: lastDocSeq }) => {
+          if (lastDocSeq >= npmSeqToReach) {
+            log.info('🐌 We reached the npm current sequence');
+            changes.cancel();
           }
-
-          return replicate({
-            seq: res.last_seq,
-          });
         })
-    );
+        .then(done)
+        .catch(done);
+    }, c.replicateConcurrency);
+
+    changes.on('change', async change => {
+      if (change.deleted === true) {
+        await mainIndex.deleteObject(change.id);
+        log.info(`🐌 Deleted ${change.id}`);
+      }
+
+      q.push(change, err => {
+        if (err) {
+          reject(err);
+        }
+      });
+    });
+    changes.on('complete', resolve);
+    changes.on('error', reject);
+  });
 }
 
 function watch({ seq }) {
@@ -191,7 +211,7 @@ function watch({ seq }) {
       since: seq,
       live: true,
       limit: undefined,
-      return_docs: false, // eslint-disable-line camelcase
+      return_docs: true, // eslint-disable-line camelcase
     });
 
     const q = queue((change, done) => {
@@ -226,8 +246,16 @@ function watch({ seq }) {
         .catch(done);
     }, 1);
 
-    changes.on('change', change => {
-      q.push(change);
+    changes.on('change', async change => {
+      if (change.deleted === true) {
+        await mainIndex.deleteObject(change.id);
+        log.info(`🛰 Deleted ${change.id}`);
+      }
+      q.push(change, err => {
+        if (err) {
+          reject(err);
+        }
+      });
     });
     changes.on('error', reject);
   });
