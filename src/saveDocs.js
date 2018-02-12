@@ -1,10 +1,9 @@
-import algoliaIndex from './algoliaIndex.js';
 import formatPkg from './formatPkg.js';
 import log from './log.js';
 import { getDownloads, getDependents } from './npm.js';
 import { getChangelogs } from './changelog.js';
 
-export default function saveDocs(docs) {
+export default function saveDocs({ docs, index }) {
   const rawPkgs = docs
     .filter(result => result.doc.name !== undefined) // must be a document
     .map(result => formatPkg(result.doc))
@@ -16,7 +15,7 @@ export default function saveDocs(docs) {
   }
 
   return addMetaData(rawPkgs)
-    .then(pkgs => algoliaIndex.saveObjects(pkgs))
+    .then(pkgs => index.saveObjects(pkgs))
     .then(() => log.info('🔍 Found and saved %d packages', rawPkgs.length));
 }
 
