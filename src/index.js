@@ -29,7 +29,6 @@ mainIndex
   .then(({ taskID }) => mainIndex.waitTask(taskID))
   .then(() => stateManager.check())
   .then(bootstrap)
-  .then(moveToProduction)
   .then(() => stateManager.get())
   .then(replicate)
   .then(() => stateManager.get())
@@ -108,13 +107,15 @@ async function bootstrap(state) {
         return_docs: false, // eslint-disable-line camelcase
         limit: c.bootstrapConcurrency,
       })
-      .then(res => {
+      .then(async res => {
         if (res.rows.length === 0) {
           log.info('⛷ Bootstrap: done');
-          return stateManager.save({
+          await stateManager.save({
             bootstrapDone: true,
             bootstrapLastDone: Date.now(),
           });
+
+          return moveToProduction();
         }
 
         const newLastId = res.rows[res.rows.length - 1].id;
