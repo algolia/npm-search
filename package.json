@@ -74,6 +74,6 @@
     "validator": "9.4.0"
   },
   "engines": {
-    "node": "9.3.0"
+    "node": "9.4.0"
   }
 }
