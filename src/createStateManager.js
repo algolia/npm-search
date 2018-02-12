@@ -1,15 +1,14 @@
-import algoliaIndex from './algoliaIndex.js';
 import c from './config.js';
 
 const defaultState = {
   seq: c.seq,
   bootstrapDone: false,
-  bootstrapLastId: undefined,
+  bootstrapLastId: 'zzz',
 };
 
 let currentState;
 
-export default {
+export default algoliaIndex => ({
   check() {
     if (c.seq !== null) return this.reset();
     return this.get().then(
@@ -41,4 +40,4 @@ export default {
       })
     );
   },
-};
+});

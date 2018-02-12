@@ -5,6 +5,7 @@ Object {
   "apiKey": "fake-api-key",
   "appId": "fake-app",
   "bootstrapConcurrency": 100,
+  "bootstrapIndexName": "npm-search-bootstrap",
   "indexName": "fake-index",
   "indexSettings": Object {
     "attributesForFaceting": Array [

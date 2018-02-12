@@ -1,6 +1,6 @@
-import stateManager from './stateManager.js';
+import createStateManager from './createStateManager.js';
 import saveDocs from './saveDocs.js';
-import algoliaIndex from './algoliaIndex.js';
+import createAlgoliaIndex from './createAlgoliaIndex.js';
 import c from './config.js';
 import PouchDB from 'pouchdb-http';
 import * as npm from './npm.js';
@@ -20,11 +20,16 @@ const defaultOptions = {
 
 let loopStart = Date.now();
 
-algoliaIndex
+const { index: mainIndex, client } = createAlgoliaIndex(c.indexName);
+const { index: bootstrapIndex } = createAlgoliaIndex(c.bootstrapIndexName);
+const stateManager = createStateManager(mainIndex);
+
+mainIndex
   .setSettings(c.indexSettings)
-  .then(({ taskID }) => algoliaIndex.waitTask(taskID))
+  .then(({ taskID }) => mainIndex.waitTask(taskID))
   .then(() => stateManager.check())
   .then(bootstrap)
+  .then(moveToProduction)
   .then(() => stateManager.get())
   .then(replicate)
   .then(() => stateManager.get())
@@ -62,7 +67,7 @@ function infoDocs(offset, nbDocs, emoji) {
   });
 }
 
-function bootstrap(state) {
+async function bootstrap(state) {
   if (state.seq > 0 && state.bootstrapDone === true) {
     log.info('⛷ Bootstrap: done');
     return state;
@@ -72,6 +77,7 @@ function bootstrap(state) {
     log.info('⛷ Bootstrap: starting at doc %s', state.bootstrapLastId);
     return loop(state.bootstrapLastId);
   } else {
+    await client.deleteIndex(c.bootstrapIndexName);
     log.info('⛷ Bootstrap: starting from the first doc');
     return (
       npm
@@ -112,7 +118,7 @@ function bootstrap(state) {
 
         const newLastId = res.rows[res.rows.length - 1].id;
 
-        return saveDocs(res.rows)
+        return saveDocs({ docs: res.rows, index: bootstrapIndex })
           .then(() =>
             stateManager.save({
               bootstrapLastId: newLastId,
@@ -122,6 +128,22 @@ function bootstrap(state) {
           .then(() => loop(newLastId));
       });
   }
+}
+
+async function moveToProduction() {
+  log.info('🚚 starting move to production');
+  await client.copyIndex(c.indexName, c.bootstrapIndexName, [
+    'settings',
+    'synonyms',
+    'rules',
+  ]);
+
+  const currentState = await stateManager.get();
+  await client.copyIndex(c.bootstrapIndexName, c.indexName);
+  await stateManager.save(currentState);
+
+  log.info('🗑 old bootstrap');
+  await client.deleteIndex(c.bootstrapIndexName);
 }
 
 function replicate({ seq }) {
@@ -138,7 +160,7 @@ function replicate({ seq }) {
       limit: c.replicateConcurrency,
     })
     .then(res =>
-      saveDocs(res.results)
+      saveDocs({ docs: res.results, index: mainIndex })
         .then(() =>
           stateManager.save({
             seq: res.last_seq,
@@ -160,7 +182,7 @@ function replicate({ seq }) {
 
 function watch({ seq }) {
   log.info(
-    '🛰 Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates'
+    `🛰 Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates, since ${seq}`
   );
 
   return new Promise((resolve, reject) => {
@@ -173,7 +195,7 @@ function watch({ seq }) {
     });
 
     const q = queue((change, done) => {
-      saveDocs([change])
+      saveDocs({ docs: [change], index: mainIndex })
         .then(() => infoChange(change.seq, 1, '🛰'))
         .then(() =>
           stateManager.save({
