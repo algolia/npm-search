@@ -23,7 +23,7 @@ const suppressError = (e, packages, returnValue) => {
   return returnValue;
 };
 
-export function getDownloads(pkgs) {
+export async function getDownloads(pkgs) {
   // npm has a weird API to get downloads via GET params, so we split pkgs into chunks
   // and do multiple requests to avoid weird cases when concurrency is high
   const encodedPackageNames = pkgs
@@ -41,10 +41,18 @@ export function getDownloads(pkgs) {
     names.join(',')
   );
 
-  return Promise.all([
-    got(`${c.npmDownloadsEndpoint}/range/last-month`, {
+  const { body: { downloads: totalNpmDownloadsPerDay } } = await got(
+    `${c.npmDownloadsEndpoint}/range/last-month`,
+    {
       json: true,
-    }),
+    }
+  );
+  const totalNpmDownloads = totalNpmDownloadsPerDay.reduce(
+    (total, { downloads: dayDownloads }) => total + dayDownloads,
+    0
+  );
+
+  const downloadsPerPkgNameChunks = await Promise.all([
     ...pkgsNamesChunks.map(pkgsNames =>
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`, {
         json: true,
@@ -57,48 +65,36 @@ export function getDownloads(pkgs) {
         .then(res => ({ body: { [res.body.package]: res.body } }))
         .catch(e => suppressError(e, [pkg], { body: {} }))
     ),
-  ]).then(
-    ([
-      { body: { downloads: totalNpmDownloadsPerDay } },
-      ...downloadsPerPkgNameChunks
-    ]) => {
-      const totalNpmDownloads = totalNpmDownloadsPerDay.reduce(
-        (total, { downloads: dayDownloads }) => total + dayDownloads,
-        0
-      );
+  ]);
 
-      const downloadsPerPkgName = downloadsPerPkgNameChunks.reduce(
-        (res, { body: downloadsPerPkgNameChunk }) => ({
-          ...res,
-          ...downloadsPerPkgNameChunk,
-        }),
-        {}
-      );
-
-      return pkgs.map(({ name }) => {
-        if (downloadsPerPkgName[name] === undefined) return {};
-
-        const downloadsLast30Days = downloadsPerPkgName[name]
-          ? downloadsPerPkgName[name].downloads
-          : 0;
-        const downloadsRatio = downloadsLast30Days / totalNpmDownloads * 100;
-        const popular = downloadsRatio > c.popularDownloadsRatio;
-        // if the package is popular, we copy its name to a dedicated attribute
-        // which will make popular records' `name` matches to be ranked higher than other matches
-        // see the `searchableAttributes` index setting
-        const popularAttributes = popular ? { popularName: name } : {};
-        return {
-          ...popularAttributes,
-          downloadsLast30Days,
-          humanDownloadsLast30Days: numeral(downloadsLast30Days).format(
-            '0.[0]a'
-          ),
-          downloadsRatio,
-          popular,
-        };
-      });
-    }
+  const downloadsPerPkgName = downloadsPerPkgNameChunks.reduce(
+    (res, { body: downloadsPerPkgNameChunk }) => ({
+      ...res,
+      ...downloadsPerPkgNameChunk,
+    }),
+    {}
   );
+
+  return pkgs.map(({ name }) => {
+    if (downloadsPerPkgName[name] === undefined) return {};
+
+    const downloadsLast30Days = downloadsPerPkgName[name]
+      ? downloadsPerPkgName[name].downloads
+      : 0;
+    const downloadsRatio = downloadsLast30Days / totalNpmDownloads * 100;
+    const popular = downloadsRatio > c.popularDownloadsRatio;
+    // if the package is popular, we copy its name to a dedicated attribute
+    // which will make popular records' `name` matches to be ranked higher than other matches
+    // see the `searchableAttributes` index setting
+    const popularAttributes = popular ? { popularName: name } : {};
+    return {
+      ...popularAttributes,
+      downloadsLast30Days,
+      humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
+      downloadsRatio,
+      popular,
+    };
+  });
 }
 
 export function getDependents(pkgs) {
