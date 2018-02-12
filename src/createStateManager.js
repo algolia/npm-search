@@ -3,7 +3,7 @@ import c from './config.js';
 const defaultState = {
   seq: c.seq,
   bootstrapDone: false,
-  bootstrapLastId: 'zzz',
+  bootstrapLastId: undefined,
 };
 
 let currentState;
