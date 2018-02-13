@@ -24,9 +24,8 @@ const { index: mainIndex, client } = createAlgoliaIndex(c.indexName);
 const { index: bootstrapIndex } = createAlgoliaIndex(c.bootstrapIndexName);
 const stateManager = createStateManager(mainIndex);
 
-mainIndex
-  .setSettings(c.indexSettings)
-  .then(({ taskID }) => mainIndex.waitTask(taskID))
+setSettings(mainIndex)
+  .then(() => setSettings(bootstrapIndex))
   .then(() => stateManager.check())
   .then(bootstrap)
   .then(() => stateManager.get())
@@ -34,6 +33,18 @@ mainIndex
   .then(() => stateManager.get())
   .then(watch)
   .catch(error);
+
+async function setSettings(index) {
+  await index.setSettings(c.indexSettings);
+  await index.batchSynonyms(c.indexSynonyms, {
+    replaceExistingSynonyms: true,
+  });
+  const { taskID } = await index.batchRules(c.indexRules, {
+    replaceExistingRules: true,
+  });
+
+  return index.waitTask(taskID);
+}
 
 function infoChange(seq, nbChanges, emoji) {
   return npm.info().then(npmInfo => {
