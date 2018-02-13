@@ -7,6 +7,23 @@ Object {
   "bootstrapConcurrency": 100,
   "bootstrapIndexName": "npm-search-bootstrap",
   "indexName": "fake-index",
+  "indexRules": Array [
+    Object {
+      "condition": Object {
+        "anchoring": "is",
+        "pattern": "{facet:concatenatedName}",
+      },
+      "consequence": Object {
+        "params": Object {
+          "automaticOptionalFacetFilters": Array [
+            "concatenatedName",
+          ],
+        },
+      },
+      "description": "promote exact matches",
+      "objectID": "promote-exact",
+    },
+  ],
   "indexSettings": Object {
     "attributesForFaceting": Array [
       "filterOnly(concatenatedName)",
@@ -58,13 +75,17 @@ Object {
       "owners.name",
     ],
     "separatorsToIndex": "_",
-    "synonyms": Array [
-      Array [
+  },
+  "indexSynonyms": Array [
+    Object {
+      "objectID": "underscore",
+      "synonyms": Array [
         "_",
         "underscore",
       ],
-    ],
-  },
+      "type": "synonym",
+    },
+  ],
   "maxObjSize": 450000,
   "npmDownloadsEndpoint": "https://api.npmjs.org/downloads",
   "npmRegistryEndpoint": "https://replicate.npmjs.com/registry",

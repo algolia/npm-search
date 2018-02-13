@@ -53,9 +53,30 @@ const defaultConfig = {
     ],
     optionalWords: ['js', 'javascript'],
     separatorsToIndex: '_',
-    synonyms: [['_', 'underscore']],
     replaceSynonymsInHighlight: false,
   },
+  indexSynonyms: [
+    {
+      type: 'synonym',
+      synonyms: ['_', 'underscore'],
+      objectID: 'underscore',
+    },
+  ],
+  indexRules: [
+    {
+      objectID: 'promote-exact',
+      description: 'promote exact matches',
+      condition: {
+        pattern: '{facet:concatenatedName}',
+        anchoring: 'is',
+      },
+      consequence: {
+        params: {
+          automaticOptionalFacetFilters: ['concatenatedName'],
+        },
+      },
+    },
+  ],
 };
 
 export default Object.entries(defaultConfig).reduce(
