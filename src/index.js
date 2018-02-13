@@ -115,7 +115,6 @@ async function bootstrap(state) {
       .allDocs({
         ...defaultOptions,
         ...options,
-        return_docs: false, // eslint-disable-line camelcase
         limit: c.bootstrapConcurrency,
       })
       .then(async res => {
@@ -174,7 +173,7 @@ async function replicate({ seq }) {
       since: seq,
       batch_size: c.replicateConcurrency, // eslint-disable-line camelcase
       live: true,
-      return_docs: true, // eslint-disable-line camelcase
+      return_docs: false, // eslint-disable-line camelcase
     });
 
     const q = cargo((docs, done) => {
@@ -207,7 +206,7 @@ async function replicate({ seq }) {
         }
       });
     });
-    changes.on('complete', resolve);
+    changes.on('complete', resolve); // Called when cancel() called
     changes.on('error', reject);
   });
 }
@@ -222,8 +221,8 @@ function watch({ seq }) {
       ...defaultOptions,
       since: seq,
       live: true,
-      limit: undefined,
-      return_docs: true, // eslint-disable-line camelcase
+      batch_size: 1, // eslint-disable-line camelcase
+      return_docs: false, // eslint-disable-line camelcase
     });
 
     const q = queue((change, done) => {
