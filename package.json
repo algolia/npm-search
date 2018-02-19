@@ -71,7 +71,7 @@
     "pre-commit": "1.2.2",
     "prettier": "1.10.2",
     "renovate-config-algolia": "2.0.1",
-    "validator": "9.4.0"
+    "validator": "9.4.1"
   },
   "engines": {
     "node": "9.4.0"
