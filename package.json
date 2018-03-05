@@ -30,7 +30,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "algoliasearch": "3.24.11",
+    "algoliasearch": "3.24.12",
     "async": "2.6.0",
     "babel-cli": "6.26.0",
     "babel-preset-env": "1.6.1",
