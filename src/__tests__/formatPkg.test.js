@@ -48,6 +48,29 @@ describe('adds babel plugins', () => {
   expect(formattedUnofficialDogs.keywords).toEqual(['babel-plugin']);
 });
 
+describe('adds vue-cli plugins', () => {
+  const dogs = {
+    name: '@vue/cli-plugin-dogs',
+    lastPublisher: { name: 'xtuc' },
+  };
+  const unofficialDogs = {
+    name: 'vue-cli-plugin-dogs',
+    lastPublisher: { name: 'unknown' },
+  };
+  const scopedDogs = {
+    name: '@dogs/vue-cli-plugin-dogs',
+    lastPublisher: { name: 'unknown' },
+  };
+
+  const formattedDogs = formatPkg(dogs);
+  const formattedUnofficialDogs = formatPkg(unofficialDogs);
+  const formattedScopedDogs = formatPkg(scopedDogs);
+
+  expect(formattedDogs.keywords).toEqual(['vue-cli-plugin']);
+  expect(formattedUnofficialDogs.keywords).toEqual(['vue-cli-plugin']);
+  expect(formattedScopedDogs.keywords).toEqual(['vue-cli-plugin']);
+});
+
 describe('test getRepositoryInfo', () => {
   const getRepositoryInfo = formatPkg.__RewireAPI__.__get__(
     'getRepositoryInfo'

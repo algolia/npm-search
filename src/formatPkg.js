@@ -216,15 +216,21 @@ function getKeywords(cleaned) {
       ? ['babel-plugin']
       : [];
 
+  const vueCliPlugins = /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(
+    cleaned.name
+  )
+    ? ['vue-cli-plugin']
+    : [];
+
   if (cleaned.keywords) {
     if (Array.isArray(cleaned.keywords)) {
-      return [...cleaned.keywords, ...babelPlugins];
+      return [...cleaned.keywords, ...babelPlugins, ...vueCliPlugins];
     }
     if (typeof cleaned.keywords === 'string') {
-      return [cleaned.keywords, ...babelPlugins];
+      return [cleaned.keywords, ...babelPlugins, ...vueCliPlugins];
     }
   }
-  return [...babelPlugins];
+  return [...babelPlugins, ...vueCliPlugins];
 }
 
 function getGitHubRepoInfo({ repository, gitHead = 'master' }) {
