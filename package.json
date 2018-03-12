@@ -39,7 +39,7 @@
     "bunyan-debug-stream": "1.0.8",
     "dotenv": "5.0.1",
     "escape-html": "1.0.3",
-    "got": "8.2.0",
+    "got": "8.3.0",
     "gravatar-url": "2.0.0",
     "hosted-git-info": "2.5.0",
     "lodash": "4.17.5",
