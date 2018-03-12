@@ -209,28 +209,31 @@ function getVersions(cleaned) {
   return {};
 }
 
-function getKeywords(cleaned) {
-  const babelPlugins =
-    cleaned.name.startsWith('@babel/plugin') ||
-    cleaned.name.startsWith('babel-plugin-')
-      ? ['babel-plugin']
-      : [];
+const forcedKeywords = {
+  'babel-plugin': ({ name }) =>
+    name.startsWith('@babel/plugin') || name.startsWith('babel-plugin-'),
+  'vue-cli-plugin': ({ name }) =>
+    /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
+};
 
-  const vueCliPlugins = /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(
-    cleaned.name
-  )
-    ? ['vue-cli-plugin']
-    : [];
+function getKeywords(cleaned) {
+  // Forced keywords
+  const keywords = [];
+  for (const keyword in forcedKeywords) {
+    if (forcedKeywords[keyword](cleaned)) {
+      keywords.push(keyword);
+    }
+  }
 
   if (cleaned.keywords) {
     if (Array.isArray(cleaned.keywords)) {
-      return [...cleaned.keywords, ...babelPlugins, ...vueCliPlugins];
+      return [...cleaned.keywords, ...keywords];
     }
     if (typeof cleaned.keywords === 'string') {
-      return [cleaned.keywords, ...babelPlugins, ...vueCliPlugins];
+      return [cleaned.keywords, ...keywords];
     }
   }
-  return [...babelPlugins, ...vueCliPlugins];
+  return [...keywords];
 }
 
 function getGitHubRepoInfo({ repository, gitHead = 'master' }) {
