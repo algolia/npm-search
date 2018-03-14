@@ -28,6 +28,7 @@ const defaultConfig = {
       'filterOnly(concatenatedName)' /* optionalFacetFilters to boost the name */,
       'searchable(keywords)',
       'searchable(owner.name)',
+      'deprecated',
     ],
     customRanking: ['desc(downloadsLast30Days)'],
     disablePrefixOnAttributes: ['keywords', 'owner.name', 'owners.name'],
