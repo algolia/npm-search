@@ -29,6 +29,7 @@ Object {
       "filterOnly(concatenatedName)",
       "searchable(keywords)",
       "searchable(owner.name)",
+      "deprecated",
     ],
     "customRanking": Array [
       "desc(downloadsLast30Days)",
