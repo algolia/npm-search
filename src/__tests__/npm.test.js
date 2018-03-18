@@ -111,6 +111,6 @@ describe('getDownloads()', () => {
     expect(angular).toBeLessThan(3000000);
 
     expect(holmes).toBeGreaterThan(250);
-    expect(holmes).toBeLessThan(500);
+    expect(holmes).toBeLessThan(550);
   });
 });
