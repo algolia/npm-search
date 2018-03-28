@@ -14,11 +14,11 @@ export function info() {
   }));
 }
 
-const suppressError = (e, packages, returnValue) => {
+const suppressError = ({ error, things, packages, returnValue }) => {
   log.warn(
-    `Something went wrong asking the downloads for \n${Array.from(
-      packages
-    ).join(',')} \n${e}`
+    `Something went wrong asking the ${things} for \n${packages.join(
+      ','
+    )} \n${error}`
   );
   return returnValue;
 };
@@ -56,14 +56,28 @@ export async function getDownloads(pkgs) {
     ...pkgsNamesChunks.map(pkgsNames =>
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`, {
         json: true,
-      }).catch(e => suppressError(e, pkgsNames, { body: {} }))
+      }).catch(error =>
+        suppressError({
+          error,
+          things: 'downloads',
+          packages: pkgsNames,
+          returnValue: { body: {} },
+        })
+      )
     ),
     ...encodedScopedPackageNames.map(pkg =>
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkg}`, {
         json: true,
       })
         .then(res => ({ body: { [res.body.package]: res.body } }))
-        .catch(e => suppressError(e, [pkg], { body: {} }))
+        .catch(error =>
+          suppressError({
+            error,
+            things: 'scoped downloads',
+            packages: [pkg],
+            returnValue: { body: {} },
+          })
+        )
     ),
   ]);
 
@@ -113,10 +127,15 @@ export function getDependents(pkgs) {
           dependents: value,
           humanDependents: numeral(value).format('0.[0]a'),
         }))
-        .catch(e =>
-          suppressError(e, [name], {
-            dependents: 0,
-            humanDependents: '0',
+        .catch(error =>
+          suppressError({
+            error,
+            things: 'dependents',
+            packages: [name],
+            returnValue: {
+              dependents: 0,
+              humanDependents: '0',
+            },
           })
         )
     )
