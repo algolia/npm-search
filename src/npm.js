@@ -14,13 +14,12 @@ export function info() {
   }));
 }
 
-const suppressError = ({ error, things, packages, returnValue }) => {
+const logError = ({ error, type, packages }) => {
   log.warn(
-    `Something went wrong asking the ${things} for \n${packages.join(
+    `Something went wrong asking the ${type} for \n${packages.join(
       ','
     )} \n${error}`
   );
-  return returnValue;
 };
 
 export async function getDownloads(pkgs) {
@@ -56,28 +55,28 @@ export async function getDownloads(pkgs) {
     ...pkgsNamesChunks.map(pkgsNames =>
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`, {
         json: true,
-      }).catch(error =>
-        suppressError({
+      }).catch(error => {
+        logError({
           error,
-          things: 'downloads',
+          type: 'downloads',
           packages: pkgsNames,
-          returnValue: { body: {} },
-        })
-      )
+        });
+        return { body: {} };
+      })
     ),
     ...encodedScopedPackageNames.map(pkg =>
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkg}`, {
         json: true,
       })
         .then(res => ({ body: { [res.body.package]: res.body } }))
-        .catch(error =>
-          suppressError({
+        .catch(error => {
+          logError({
             error,
-            things: 'scoped downloads',
+            type: 'scoped downloads',
             packages: [pkg],
-            returnValue: { body: {} },
-          })
-        )
+          });
+          return { body: {} };
+        })
     ),
   ]);
 
@@ -127,17 +126,17 @@ export function getDependents(pkgs) {
           dependents: value,
           humanDependents: numeral(value).format('0.[0]a'),
         }))
-        .catch(error =>
-          suppressError({
+        .catch(error => {
+          logError({
             error,
-            things: 'dependents',
+            type: 'dependents',
             packages: [name],
-            returnValue: {
-              dependents: 0,
-              humanDependents: '0',
-            },
-          })
-        )
+          });
+          return {
+            dependents: 0,
+            humanDependents: '0',
+          };
+        })
     )
   );
 }
