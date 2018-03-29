@@ -24,28 +24,46 @@ it('truncates long readmes', () => {
     formatted.readme.length - truncatedEnding.length
   );
 
-  expect(formatted.readme).toHaveLength(451070);
+  expect(formatted.readme).toHaveLength(451100);
   expect(ending).toBe(truncatedEnding);
 
   formatted.lastCrawl = '<!-- date replaced -->';
   expect(formatted).toMatchSnapshot();
 });
 
+describe('adds angular cli schematics', () => {
+  const angularSchema = {
+    name: 'angular-cli-schema-1',
+    schematics: 'bli-blo',
+    keywords: ['hi'],
+    lastPublisher: { name: 'angular-god' },
+  };
+
+  const formatted = formatPkg(angularSchema);
+  expect(formatted.keywords).toEqual(['hi', 'angular-cli-schematic']);
+  expect(formatted.registrySubsets).toEqual(['angular-cli-schematic']);
+});
+
 describe('adds babel plugins', () => {
   const dogs = {
     name: '@babel/plugin-dogs',
+    keywords: 'babel',
     lastPublisher: { name: 'xtuc' },
   };
   const unofficialDogs = {
     name: 'babel-plugin-dogs',
+    keywords: ['dogs'],
     lastPublisher: { name: 'unknown' },
   };
 
   const formattedDogs = formatPkg(dogs);
   const formattedUnofficialDogs = formatPkg(unofficialDogs);
 
-  expect(formattedDogs.keywords).toEqual(['babel-plugin']);
-  expect(formattedUnofficialDogs.keywords).toEqual(['babel-plugin']);
+  expect(formattedDogs.keywords).toEqual(['babel', 'babel-plugin']);
+  expect(formattedUnofficialDogs.keywords).toEqual(['dogs', 'babel-plugin']);
+
+  expect(formattedDogs.registrySubsets).toEqual(['babel-plugin']);
+  expect(formattedUnofficialDogs.registrySubsets).toEqual(['babel-plugin']);
 });
 
 describe('adds vue-cli plugins', () => {
@@ -69,6 +87,10 @@ describe('adds vue-cli plugins', () => {
   expect(formattedDogs.keywords).toEqual(['vue-cli-plugin']);
   expect(formattedUnofficialDogs.keywords).toEqual(['vue-cli-plugin']);
   expect(formattedScopedDogs.keywords).toEqual(['vue-cli-plugin']);
+
+  expect(formattedDogs.registrySubsets).toEqual(['vue-cli-plugin']);
+  expect(formattedUnofficialDogs.registrySubsets).toEqual(['vue-cli-plugin']);
+  expect(formattedScopedDogs.registrySubsets).toEqual(['vue-cli-plugin']);
 });
 
 describe('test getRepositoryInfo', () => {
