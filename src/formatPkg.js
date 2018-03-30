@@ -213,32 +213,28 @@ function getVersions(cleaned) {
 }
 
 const registrySubsetRules = [
-  {
+  ({ name }) => ({
     name: 'babel-plugin',
-    matcher: ({ name }) => ({
-      include:
-        name.startsWith('@babel/plugin') || name.startsWith('babel-plugin-'),
-    }),
-  },
-  {
+    include:
+      name.startsWith('@babel/plugin') || name.startsWith('babel-plugin-'),
+  }),
+
+  ({ name }) => ({
     name: 'vue-cli-plugin',
-    matcher: ({ name }) => ({
-      include: /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
-    }),
-  },
-  {
+    include: /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
+  }),
+
+  (_, { schematics = '' }) => ({
     name: 'angular-cli-schematic',
-    matcher: (_, { schematics = '' }) => ({
-      include: schematics.length > 0,
-      metadata: { schematics },
-    }),
-  },
+    include: schematics.length > 0,
+    metadata: { schematics },
+  }),
 ];
 
 function getComputedData(cleaned, original) {
   const registrySubsets = registrySubsetRules.reduce(
-    (acc, { name, matcher }) => {
-      const { include, metadata } = matcher(cleaned, original);
+    (acc, matcher) => {
+      const { include, metadata, name } = matcher(cleaned, original);
       return include
         ? {
             computedKeywords: [...acc.computedKeywords, name],
