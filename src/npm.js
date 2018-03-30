@@ -14,7 +14,7 @@ export function info() {
   }));
 }
 
-const logError = ({ error, type, packages }) => {
+const logWarning = ({ error, type, packages }) => {
   log.warn(
     `Something went wrong asking the ${type} for \n${packages.join(
       ','
@@ -56,7 +56,7 @@ export async function getDownloads(pkgs) {
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`, {
         json: true,
       }).catch(error => {
-        logError({
+        logWarning({
           error,
           type: 'downloads',
           packages: pkgsNames,
@@ -70,7 +70,7 @@ export async function getDownloads(pkgs) {
       })
         .then(res => ({ body: { [res.body.package]: res.body } }))
         .catch(error => {
-          logError({
+          logWarning({
             error,
             type: 'scoped downloads',
             packages: [pkg],
@@ -127,7 +127,7 @@ export function getDependents(pkgs) {
           humanDependents: numeral(value).format('0.[0]a'),
         }))
         .catch(error => {
-          logError({
+          logWarning({
             error,
             type: 'dependents',
             packages: [name],
