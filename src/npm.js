@@ -14,13 +14,12 @@ export function info() {
   }));
 }
 
-const suppressError = (e, packages, returnValue) => {
+const logWarning = ({ error, type, packages }) => {
   log.warn(
-    `Something went wrong asking the downloads for \n${Array.from(
-      packages
-    ).join(',')} \n${e}`
+    `Something went wrong asking the ${type} for \n${packages.join(
+      ','
+    )} \n${error}`
   );
-  return returnValue;
 };
 
 export async function getDownloads(pkgs) {
@@ -56,14 +55,28 @@ export async function getDownloads(pkgs) {
     ...pkgsNamesChunks.map(pkgsNames =>
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`, {
         json: true,
-      }).catch(e => suppressError(e, pkgsNames, { body: {} }))
+      }).catch(error => {
+        logWarning({
+          error,
+          type: 'downloads',
+          packages: pkgsNames,
+        });
+        return { body: {} };
+      })
     ),
     ...encodedScopedPackageNames.map(pkg =>
       got(`${c.npmDownloadsEndpoint}/point/last-month/${pkg}`, {
         json: true,
       })
         .then(res => ({ body: { [res.body.package]: res.body } }))
-        .catch(e => suppressError(e, [pkg], { body: {} }))
+        .catch(error => {
+          logWarning({
+            error,
+            type: 'scoped downloads',
+            packages: [pkg],
+          });
+          return { body: {} };
+        })
     ),
   ]);
 
@@ -113,12 +126,17 @@ export function getDependents(pkgs) {
           dependents: value,
           humanDependents: numeral(value).format('0.[0]a'),
         }))
-        .catch(e =>
-          suppressError(e, [name], {
+        .catch(error => {
+          logWarning({
+            error,
+            type: 'dependents',
+            packages: [name],
+          });
+          return {
             dependents: 0,
             humanDependents: '0',
-          })
-        )
+          };
+        })
     )
   );
 }
