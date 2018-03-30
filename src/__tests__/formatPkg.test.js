@@ -24,7 +24,7 @@ it('truncates long readmes', () => {
     formatted.readme.length - truncatedEnding.length
   );
 
-  expect(formatted.readme).toHaveLength(451100);
+  expect(formatted.readme).toHaveLength(451134);
   expect(ending).toBe(truncatedEnding);
 
   formatted.lastCrawl = '<!-- date replaced -->';
@@ -41,7 +41,10 @@ describe('adds angular cli schematics', () => {
 
   const formatted = formatPkg(angularSchema);
   expect(formatted.keywords).toEqual(['hi', 'angular-cli-schematic']);
-  expect(formatted.registrySubsets).toEqual(['angular-cli-schematic']);
+  expect(formatted.computedKeywords).toEqual(['angular-cli-schematic']);
+  expect(formatted.computedMetadata).toEqual({
+    schematics: 'bli-blo',
+  });
 });
 
 describe('adds babel plugins', () => {
@@ -62,8 +65,8 @@ describe('adds babel plugins', () => {
   expect(formattedDogs.keywords).toEqual(['babel', 'babel-plugin']);
   expect(formattedUnofficialDogs.keywords).toEqual(['dogs', 'babel-plugin']);
 
-  expect(formattedDogs.registrySubsets).toEqual(['babel-plugin']);
-  expect(formattedUnofficialDogs.registrySubsets).toEqual(['babel-plugin']);
+  expect(formattedDogs.computedKeywords).toEqual(['babel-plugin']);
+  expect(formattedUnofficialDogs.computedKeywords).toEqual(['babel-plugin']);
 });
 
 describe('adds vue-cli plugins', () => {
@@ -88,9 +91,9 @@ describe('adds vue-cli plugins', () => {
   expect(formattedUnofficialDogs.keywords).toEqual(['vue-cli-plugin']);
   expect(formattedScopedDogs.keywords).toEqual(['vue-cli-plugin']);
 
-  expect(formattedDogs.registrySubsets).toEqual(['vue-cli-plugin']);
-  expect(formattedUnofficialDogs.registrySubsets).toEqual(['vue-cli-plugin']);
-  expect(formattedScopedDogs.registrySubsets).toEqual(['vue-cli-plugin']);
+  expect(formattedDogs.computedKeywords).toEqual(['vue-cli-plugin']);
+  expect(formattedUnofficialDogs.computedKeywords).toEqual(['vue-cli-plugin']);
+  expect(formattedScopedDogs.computedKeywords).toEqual(['vue-cli-plugin']);
 });
 
 describe('test getRepositoryInfo', () => {

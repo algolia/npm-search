@@ -27,7 +27,7 @@ const defaultConfig = {
     attributesForFaceting: [
       'filterOnly(concatenatedName)' /* optionalFacetFilters to boost the name */,
       'searchable(keywords)',
-      'searchable(registrySubsets)',
+      'searchable(computedKeywords)',
       'searchable(owner.name)',
       'deprecated',
     ],

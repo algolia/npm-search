@@ -53,8 +53,8 @@ export default function formatPkg(pkg) {
 
   const owner = getOwner(repository, lastPublisher, author); // always favor the repository owner
   const badPackage = isBadPackage(owner);
-  const registrySubsets = getRegistrySubsets(cleaned, pkg);
-  const keywords = [...getKeywords(cleaned), ...registrySubsets]; // concat with the subset for backward compat
+  const { computedKeywords, computedMetadata } = getComputedData(cleaned, pkg);
+  const keywords = [...getKeywords(cleaned), ...computedKeywords]; // concat with the subset for backward compat
 
   const dependencies = cleaned.dependencies || {};
   const devDependencies = cleaned.devDependencies || {};
@@ -87,7 +87,8 @@ export default function formatPkg(pkg) {
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
     license,
     keywords,
-    registrySubsets,
+    computedKeywords,
+    computedMetadata,
     created: Date.parse(cleaned.created),
     modified: Date.parse(cleaned.modified),
     lastPublisher,
@@ -214,24 +215,41 @@ function getVersions(cleaned) {
 const registrySubsetRules = [
   {
     name: 'babel-plugin',
-    matcher: ({ name }) =>
-      name.startsWith('@babel/plugin') || name.startsWith('babel-plugin-'),
+    matcher: ({ name }) => ({
+      include:
+        name.startsWith('@babel/plugin') || name.startsWith('babel-plugin-'),
+    }),
   },
   {
     name: 'vue-cli-plugin',
-    matcher: ({ name }) => /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
+    matcher: ({ name }) => ({
+      include: /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
+    }),
   },
   {
     name: 'angular-cli-schematic',
-    matcher: (_, { schematics = '' }) => schematics.length > 0,
+    matcher: (_, { schematics = '' }) => ({
+      include: schematics.length > 0,
+      metadata: { schematics },
+    }),
   },
 ];
 
-function getRegistrySubsets(cleaned, original) {
+function getComputedData(cleaned, original) {
   const registrySubsets = registrySubsetRules.reduce(
-    (acc, { name, matcher }) =>
-      matcher(cleaned, original) ? [...acc, name] : acc,
-    []
+    (acc, { name, matcher }) => {
+      const { include, metadata } = matcher(cleaned, original);
+      return include
+        ? {
+            computedKeywords: [...acc.computedKeywords, name],
+            computedMetadata: {
+              ...acc.computedMetadata,
+              ...metadata,
+            },
+          }
+        : acc;
+    },
+    { computedKeywords: [], computedMetadata: {} }
   );
   return registrySubsets;
 }
