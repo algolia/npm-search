@@ -53,7 +53,8 @@ export default function formatPkg(pkg) {
 
   const owner = getOwner(repository, lastPublisher, author); // always favor the repository owner
   const badPackage = isBadPackage(owner);
-  const keywords = getKeywords(cleaned);
+  const { computedKeywords, computedMetadata } = getComputedData(cleaned, pkg);
+  const keywords = [...getKeywords(cleaned), ...computedKeywords]; // concat with the subset for backward compat
 
   const dependencies = cleaned.dependencies || {};
   const devDependencies = cleaned.devDependencies || {};
@@ -86,6 +87,8 @@ export default function formatPkg(pkg) {
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
     license,
     keywords,
+    computedKeywords,
+    computedMetadata,
     created: Date.parse(cleaned.created),
     modified: Date.parse(cleaned.modified),
     lastPublisher,
@@ -209,31 +212,54 @@ function getVersions(cleaned) {
   return {};
 }
 
-const forcedKeywords = {
-  'babel-plugin': ({ name }) =>
-    name.startsWith('@babel/plugin') || name.startsWith('babel-plugin-'),
-  'vue-cli-plugin': ({ name }) =>
-    /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
-};
+const registrySubsetRules = [
+  ({ name }) => ({
+    name: 'babel-plugin',
+    include:
+      name.startsWith('@babel/plugin') || name.startsWith('babel-plugin-'),
+  }),
+
+  ({ name }) => ({
+    name: 'vue-cli-plugin',
+    include: /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
+  }),
+
+  (_, { schematics = '' }) => ({
+    name: 'angular-cli-schematic',
+    include: schematics.length > 0,
+    metadata: { schematics },
+  }),
+];
+
+function getComputedData(cleaned, original) {
+  const registrySubsets = registrySubsetRules.reduce(
+    (acc, matcher) => {
+      const { include, metadata, name } = matcher(cleaned, original);
+      return include
+        ? {
+            computedKeywords: [...acc.computedKeywords, name],
+            computedMetadata: {
+              ...acc.computedMetadata,
+              ...metadata,
+            },
+          }
+        : acc;
+    },
+    { computedKeywords: [], computedMetadata: {} }
+  );
+  return registrySubsets;
+}
 
 function getKeywords(cleaned) {
-  // Forced keywords
-  const keywords = [];
-  for (const keyword in forcedKeywords) {
-    if (forcedKeywords[keyword](cleaned)) {
-      keywords.push(keyword);
-    }
-  }
-
   if (cleaned.keywords) {
     if (Array.isArray(cleaned.keywords)) {
-      return [...cleaned.keywords, ...keywords];
+      return [...cleaned.keywords];
     }
     if (typeof cleaned.keywords === 'string') {
-      return [cleaned.keywords, ...keywords];
+      return [cleaned.keywords];
     }
   }
-  return [...keywords];
+  return [];
 }
 
 function getGitHubRepoInfo({ repository, gitHead = 'master' }) {

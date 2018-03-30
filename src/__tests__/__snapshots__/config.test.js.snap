@@ -28,6 +28,7 @@ Object {
     "attributesForFaceting": Array [
       "filterOnly(concatenatedName)",
       "searchable(keywords)",
+      "searchable(computedKeywords)",
       "searchable(owner.name)",
       "deprecated",
     ],
