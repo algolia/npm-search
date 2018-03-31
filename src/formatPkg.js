@@ -53,7 +53,7 @@ export default function formatPkg(pkg) {
 
   const owner = getOwner(repository, lastPublisher, author); // always favor the repository owner
   const badPackage = isBadPackage(owner);
-  const { computedKeywords, computedMetadata } = getComputedData(cleaned, pkg);
+  const { computedKeywords, computedMetadata } = getComputedData(cleaned);
   const keywords = [...getKeywords(cleaned), ...computedKeywords]; // concat with the subset for backward compat
 
   const dependencies = cleaned.dependencies || {};
@@ -224,17 +224,17 @@ const registrySubsetRules = [
     include: /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
   }),
 
-  (_, { schematics = '' }) => ({
+  ({ schematics = '' }) => ({
     name: 'angular-cli-schematic',
     include: schematics.length > 0,
     metadata: { schematics },
   }),
 ];
 
-function getComputedData(cleaned, original) {
+function getComputedData(cleaned) {
   const registrySubsets = registrySubsetRules.reduce(
     (acc, matcher) => {
-      const { include, metadata, name } = matcher(cleaned, original);
+      const { include, metadata, name } = matcher(cleaned);
       return include
         ? {
             computedKeywords: [...acc.computedKeywords, name],
