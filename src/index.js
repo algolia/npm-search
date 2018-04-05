@@ -11,7 +11,11 @@ import queue from 'async/queue';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
-const db = new PouchDB(c.npmRegistryEndpoint);
+const db = new PouchDB(c.npmRegistryEndpoint, {
+  ajax: {
+    timeout: 30000, // default is 10s, but we have higher timeouts regularly
+  },
+});
 const defaultOptions = {
   include_docs: true, // eslint-disable-line camelcase
   conflicts: false,
