@@ -24,7 +24,7 @@ it('truncates long readmes', () => {
     formatted.readme.length - truncatedEnding.length
   );
 
-  expect(formatted.readme).toHaveLength(451134);
+  expect(formatted.readme).toHaveLength(451140);
   expect(ending).toBe(truncatedEnding);
 
   formatted.lastCrawl = '<!-- date replaced -->';

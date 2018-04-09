@@ -117,11 +117,14 @@ For every single NPM package, we create a record in the Algolia index. The resul
     // [...]
   ],
   "lastCrawl": "2017-10-24T08:29:24.672Z",
-  "popularName": "babel-core",
   "dependents": 3321,
   "humanDependents": "3.3k",
   "changelogFilename": null, // if babel-core had a changelog, it would be the raw GitHub url here
-  "objectID": "babel-core"
+  "objectID": "babel-core",
+  "_searchInternal": {
+    "popularName": "babel-core",
+    "downloadsMagnitude": 8
+  }
 }
 ```
 
@@ -135,7 +138,7 @@ If you want to learn more about how Algolia's ranking algorithm is working, you 
 
 We're restricting the search to use a subset of the attributes only:
 
-* `popularName`
+* `_searchInternal.popularName`
 * `name`
 * `description`
 * `keywords`
@@ -237,9 +240,10 @@ When the process starts with `seq=0`:
 * watch for registry changes continuously and replicate them
 
 Replicate and watch are separated because:
-1. In replicate we want to replicate a batch of documents in a fast way
-2. In watch we want new changes as fast as possible, one by one. If watch was
-asking for batches of 100, new packages would be added too late to the index
+
+1.  In replicate we want to replicate a batch of documents in a fast way
+2.  In watch we want new changes as fast as possible, one by one. If watch was
+    asking for batches of 100, new packages would be added too late to the index
 
 ## Tests
 
