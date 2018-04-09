@@ -54,7 +54,7 @@ export default function formatPkg(pkg) {
   const owner = getOwner(repository, lastPublisher, author); // always favor the repository owner
   const badPackage = isBadPackage(owner);
   const { computedKeywords, computedMetadata } = getComputedData(cleaned);
-  const keywords = [...getKeywords(cleaned), ...computedKeywords]; // concat with the subset for backward compat
+  const keywords = getKeywords(cleaned);
 
   const dependencies = cleaned.dependencies || {};
   const devDependencies = cleaned.devDependencies || {};
