@@ -40,7 +40,7 @@ describe('adds angular cli schematics', () => {
   };
 
   const formatted = formatPkg(angularSchema);
-  expect(formatted.keywords).toEqual(['hi', 'angular-cli-schematic']);
+  expect(formatted.keywords).toEqual(['hi']);
   expect(formatted.computedKeywords).toEqual(['angular-cli-schematic']);
   expect(formatted.computedMetadata).toEqual({
     schematics: 'bli-blo',
@@ -62,8 +62,8 @@ describe('adds babel plugins', () => {
   const formattedDogs = formatPkg(dogs);
   const formattedUnofficialDogs = formatPkg(unofficialDogs);
 
-  expect(formattedDogs.keywords).toEqual(['babel', 'babel-plugin']);
-  expect(formattedUnofficialDogs.keywords).toEqual(['dogs', 'babel-plugin']);
+  expect(formattedDogs.keywords).toEqual(['babel']);
+  expect(formattedUnofficialDogs.keywords).toEqual(['dogs']);
 
   expect(formattedDogs.computedKeywords).toEqual(['babel-plugin']);
   expect(formattedUnofficialDogs.computedKeywords).toEqual(['babel-plugin']);
@@ -87,9 +87,9 @@ describe('adds vue-cli plugins', () => {
   const formattedUnofficialDogs = formatPkg(unofficialDogs);
   const formattedScopedDogs = formatPkg(scopedDogs);
 
-  expect(formattedDogs.keywords).toEqual(['vue-cli-plugin']);
-  expect(formattedUnofficialDogs.keywords).toEqual(['vue-cli-plugin']);
-  expect(formattedScopedDogs.keywords).toEqual(['vue-cli-plugin']);
+  expect(formattedDogs.keywords).toEqual([]);
+  expect(formattedUnofficialDogs.keywords).toEqual([]);
+  expect(formattedScopedDogs.keywords).toEqual([]);
 
   expect(formattedDogs.computedKeywords).toEqual(['vue-cli-plugin']);
   expect(formattedUnofficialDogs.computedKeywords).toEqual(['vue-cli-plugin']);
