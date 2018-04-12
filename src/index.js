@@ -13,7 +13,7 @@ log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
 const db = new PouchDB(c.npmRegistryEndpoint, {
   ajax: {
-    timeout: 30000, // default is 10s, but we have higher timeouts regularly
+    timeout: ms('2.5m'), // default is 10s
   },
 });
 const defaultOptions = {
