@@ -96,6 +96,36 @@ describe('adds vue-cli plugins', () => {
   expect(formattedScopedDogs.computedKeywords).toEqual(['vue-cli-plugin']);
 });
 
+describe('adds yeoman generators', () => {
+  it('should add if matches the criterions', () => {
+    const dogs = {
+      name: 'generator-dogs',
+      keywords: ['yeoman-generator'],
+      lastPublisher: { name: 'unknown' },
+    };
+    const formattedDogs = formatPkg(dogs);
+    expect(formattedDogs.computedKeywords).toEqual(['generator']);
+  });
+  it('should not add if does not start with generator-', () => {
+    const dogs = {
+      name: 'foo-dogs',
+      keywords: ['yeoman-generator'],
+      lastPublisher: { name: 'unknown' },
+    };
+    const formattedDogs = formatPkg(dogs);
+    expect(formattedDogs.computedKeywords).toEqual([]);
+  });
+  it('should not add if does not contain yeoman-generator as a keyword', () => {
+    const dogs = {
+      name: 'generator-dogs',
+      keywords: ['foo'],
+      lastPublisher: { name: 'unknown' },
+    };
+    const formattedDogs = formatPkg(dogs);
+    expect(formattedDogs.computedKeywords).toEqual([]);
+  });
+});
+
 describe('test getRepositoryInfo', () => {
   const getRepositoryInfo = formatPkg.__RewireAPI__.__get__(
     'getRepositoryInfo'
