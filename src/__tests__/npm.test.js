@@ -76,27 +76,36 @@ describe('getDownloads()', () => {
       expect.objectContaining({
         downloadsLast30Days: expect.any(Number),
         downloadsRatio: expect.any(Number),
-        popular: true,
-        popularName: 'jest',
         humanDownloadsLast30Days: expect.any(String),
+        popular: true,
+        _searchInternal: {
+          popularName: 'jest',
+          downloadsMagnitude: expect.any(Number),
+        },
       }),
       expect.objectContaining({
         downloadsLast30Days: expect.any(Number),
         downloadsRatio: expect.any(Number),
-        popular: true,
-        popularName: '@angular/core',
         humanDownloadsLast30Days: expect.any(String),
+        popular: true,
+        _searchInternal: {
+          popularName: '@angular/core',
+          downloadsMagnitude: expect.any(Number),
+        },
       }),
       expect.objectContaining({
         downloadsLast30Days: expect.any(Number),
         downloadsRatio: expect.any(Number),
+        humanDownloadsLast30Days: expect.any(String),
         popular: false,
-        humanDownloadsLast30Days: expect.any(String),
+        _searchInternal: {
+          downloadsMagnitude: expect.any(Number),
+        },
       }),
     ]);
   });
 
-  it('has the right approximate value', () => {
+  it('has the right approximate value for downloadsLast30Days', () => {
     const [jest, angular, holmes] = downloads.map(
       pkg => pkg.downloadsLast30Days
     );
@@ -112,5 +121,15 @@ describe('getDownloads()', () => {
 
     expect(holmes).toBeGreaterThan(250);
     expect(holmes).toBeLessThan(550);
+  });
+
+  it('has the right approximate value for downloadsMagnitude', () => {
+    const [jest, angular, holmes] = downloads.map(
+      pkg => pkg._searchInternal.downloadsMagnitude
+    );
+
+    expect(jest).toBe(7);
+    expect(angular).toBe(7);
+    expect(holmes).toBe(3);
   });
 });

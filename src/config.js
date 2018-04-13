@@ -16,22 +16,26 @@ const defaultConfig = {
   seq: null,
   indexSettings: {
     searchableAttributes: [
-      'unordered(popularName)',
+      'unordered(_searchInternal.popularName)',
       'unordered(name)',
-      'unordered(concatenatedName)',
+      'unordered(_searchInternal.concatenatedName)',
       'unordered(description)',
       'unordered(keywords)',
       'owner.name',
       'owners.name',
     ],
     attributesForFaceting: [
-      'filterOnly(concatenatedName)' /* optionalFacetFilters to boost the name */,
+      'filterOnly(_searchInternal.concatenatedName)' /* optionalFacetFilters to boost the name */,
       'searchable(keywords)',
       'searchable(computedKeywords)',
       'searchable(owner.name)',
       'deprecated',
     ],
-    customRanking: ['desc(downloadsLast30Days)'],
+    customRanking: [
+      'desc(_searchInternal.downloadsMagnitude)',
+      'desc(dependents)',
+      'desc(downloadsLast30Days)',
+    ],
     disablePrefixOnAttributes: ['keywords', 'owner.name', 'owners.name'],
     disableExactOnAttributes: [
       'description',
@@ -69,12 +73,12 @@ const defaultConfig = {
       objectID: 'promote-exact',
       description: 'promote exact matches',
       condition: {
-        pattern: '{facet:concatenatedName}',
+        pattern: '{facet:_searchInternal.concatenatedName}',
         anchoring: 'is',
       },
       consequence: {
         params: {
-          automaticOptionalFacetFilters: ['concatenatedName'],
+          automaticOptionalFacetFilters: ['_searchInternal.concatenatedName'],
         },
       },
     },

@@ -52,7 +52,6 @@ export default function formatPkg(pkg) {
       : null;
 
   const owner = getOwner(repository, lastPublisher, author); // always favor the repository owner
-  const badPackage = isBadPackage(owner);
   const { computedKeywords, computedMetadata } = getComputedData(cleaned);
   const keywords = getKeywords(cleaned);
 
@@ -65,7 +64,6 @@ export default function formatPkg(pkg) {
   const rawPkg = {
     objectID: cleaned.name,
     name: cleaned.name,
-    concatenatedName,
     downloadsLast30Days: 0,
     downloadsRatio: 0,
     humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
@@ -83,7 +81,6 @@ export default function formatPkg(pkg) {
     readme: pkg.readme,
     owner,
     deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
-    badPackage,
     homepage: getHomePage(cleaned.homepage, cleaned.repository),
     license,
     keywords,
@@ -94,6 +91,9 @@ export default function formatPkg(pkg) {
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
     lastCrawl: new Date().toISOString(),
+    _searchInternal: {
+      concatenatedName,
+    },
   };
 
   const totalSize = sizeof(rawPkg);
@@ -106,16 +106,6 @@ export default function formatPkg(pkg) {
   }
 
   return traverse(rawPkg).forEach(maybeEscape);
-}
-
-function isBadPackage(owner) {
-  // the organisations `npmtest` and `npmdoc` are just republishing everything
-  // this is a total mess, and shouldn't ever be used, because it makes results
-  // messy. We're ignoring packages by those "authors"
-  if (owner === 'npmdoc' || owner === 'npmtest') {
-    return true;
-  }
-  return false;
 }
 
 function maybeEscape(node) {

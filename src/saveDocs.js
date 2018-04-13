@@ -30,6 +30,12 @@ function addMetaData(pkgs) {
       ...downloads[index],
       ...dependents[index],
       ...changelogs[index],
+      _searchInternal: {
+        ...pkg._searchInternal,
+        ...downloads[index]._searchInternal,
+        ...dependents[index]._searchInternal,
+        ...changelogs[index]._searchInternal,
+      },
     }))
   );
 }

@@ -96,16 +96,20 @@ export async function getDownloads(pkgs) {
       : 0;
     const downloadsRatio = downloadsLast30Days / totalNpmDownloads * 100;
     const popular = downloadsRatio > c.popularDownloadsRatio;
-    // if the package is popular, we copy its name to a dedicated attribute
-    // which will make popular records' `name` matches to be ranked higher than other matches
-    // see the `searchableAttributes` index setting
-    const popularAttributes = popular ? { popularName: name } : {};
+    const downloadsMagnitude = downloadsLast30Days.toString().length;
+
     return {
-      ...popularAttributes,
       downloadsLast30Days,
       humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
       downloadsRatio,
       popular,
+      _searchInternal: {
+        // if the package is popular, we copy its name to a dedicated attribute
+        // which will make popular records' `name` matches to be ranked higher than other matches
+        // see the `searchableAttributes` index setting
+        ...(popular && { popularName: name }),
+        downloadsMagnitude,
+      },
     };
   });
 }

@@ -11,12 +11,12 @@ Object {
     Object {
       "condition": Object {
         "anchoring": "is",
-        "pattern": "{facet:concatenatedName}",
+        "pattern": "{facet:_searchInternal.concatenatedName}",
       },
       "consequence": Object {
         "params": Object {
           "automaticOptionalFacetFilters": Array [
-            "concatenatedName",
+            "_searchInternal.concatenatedName",
           ],
         },
       },
@@ -26,13 +26,15 @@ Object {
   ],
   "indexSettings": Object {
     "attributesForFaceting": Array [
-      "filterOnly(concatenatedName)",
+      "filterOnly(_searchInternal.concatenatedName)",
       "searchable(keywords)",
       "searchable(computedKeywords)",
       "searchable(owner.name)",
       "deprecated",
     ],
     "customRanking": Array [
+      "desc(_searchInternal.downloadsMagnitude)",
+      "desc(dependents)",
       "desc(downloadsLast30Days)",
     ],
     "disableExactOnAttributes": Array [
@@ -68,9 +70,9 @@ Object {
     ],
     "replaceSynonymsInHighlight": false,
     "searchableAttributes": Array [
-      "unordered(popularName)",
+      "unordered(_searchInternal.popularName)",
       "unordered(name)",
-      "unordered(concatenatedName)",
+      "unordered(_searchInternal.concatenatedName)",
       "unordered(description)",
       "unordered(keywords)",
       "owner.name",
