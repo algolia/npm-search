@@ -151,15 +151,9 @@ async function moveToProduction() {
   log.info('🚚 starting move to production');
 
   const currentState = await stateManager.get();
-  await client.copyIndex(c.bootstrapIndexName, c.indexName, [
-    'settings',
-    'synonyms',
-    'rules',
-  ]);
-  await stateManager.save(currentState);
+  await client.copyIndex(c.bootstrapIndexName, c.indexName);
 
-  log.info('🗑 old bootstrap');
-  await client.deleteIndex(c.bootstrapIndexName);
+  return stateManager.save(currentState);
 }
 
 async function replicate({ seq }) {
