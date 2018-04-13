@@ -104,7 +104,7 @@ describe('adds yeoman generators', () => {
       lastPublisher: { name: 'unknown' },
     };
     const formattedDogs = formatPkg(dogs);
-    expect(formattedDogs.computedKeywords).toEqual(['generator']);
+    expect(formattedDogs.computedKeywords).toEqual(['yeoman-generator']);
   });
   it('should not add if does not start with generator-', () => {
     const dogs = {

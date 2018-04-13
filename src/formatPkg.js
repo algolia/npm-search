@@ -215,7 +215,7 @@ const registrySubsetRules = [
   }),
 
   ({ name, keywords = [] }) => ({
-    name: 'generator',
+    name: 'yeoman-generator',
     include:
       name.startsWith('generator-') && keywords.includes('yeoman-generator'),
   }),
