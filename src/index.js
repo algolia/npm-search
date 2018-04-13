@@ -13,7 +13,7 @@ log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
 const db = new PouchDB(c.npmRegistryEndpoint, {
   ajax: {
-    timeout: 30000, // default is 10s, but we have higher timeouts regularly
+    timeout: ms('2.5m'), // default is 10s
   },
 });
 const defaultOptions = {
@@ -28,7 +28,7 @@ const { index: mainIndex, client } = createAlgoliaIndex(c.indexName);
 const { index: bootstrapIndex } = createAlgoliaIndex(c.bootstrapIndexName);
 const stateManager = createStateManager(mainIndex);
 
-setSettings(mainIndex)
+Promise.resolve()
   .then(() => setSettings(bootstrapIndex))
   .then(() => stateManager.check())
   .then(bootstrap)
@@ -83,6 +83,7 @@ function infoDocs(offset, nbDocs, emoji) {
 
 async function bootstrap(state) {
   if (state.seq > 0 && state.bootstrapDone === true) {
+    await setSettings(mainIndex);
     log.info('⛷ Bootstrap: done');
     return state;
   }
@@ -148,18 +149,11 @@ async function bootstrap(state) {
 
 async function moveToProduction() {
   log.info('🚚 starting move to production');
-  await client.copyIndex(c.indexName, c.bootstrapIndexName, [
-    'settings',
-    'synonyms',
-    'rules',
-  ]);
 
   const currentState = await stateManager.get();
   await client.copyIndex(c.bootstrapIndexName, c.indexName);
-  await stateManager.save(currentState);
 
-  log.info('🗑 old bootstrap');
-  await client.deleteIndex(c.bootstrapIndexName);
+  return stateManager.save(currentState);
 }
 
 async function replicate({ seq }) {

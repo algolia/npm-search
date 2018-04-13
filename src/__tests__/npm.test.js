@@ -47,9 +47,9 @@ describe('getDependents()', () => {
     // eslint-disable-next-line no-console
     console.log('dependents', { jest, angular, holmes });
 
-    // real should be 1700
+    // real should be 1800
     expect(jest).toBeGreaterThan(1600);
-    expect(jest).toBeLessThan(1800);
+    expect(jest).toBeLessThan(1850);
 
     // real should be 4900
     expect(angular).toBeGreaterThan(3900);
