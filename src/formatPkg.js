@@ -214,6 +214,12 @@ const registrySubsetRules = [
     include: /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
   }),
 
+  ({ name, keywords = [] }) => ({
+    name: 'yeoman-generator',
+    include:
+      name.startsWith('generator-') && keywords.includes('yeoman-generator'),
+  }),
+
   ({ schematics = '' }) => ({
     name: 'angular-cli-schematic',
     include: schematics.length > 0,
