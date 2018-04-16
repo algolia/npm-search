@@ -29,9 +29,16 @@ const { index: bootstrapIndex } = createAlgoliaIndex(c.bootstrapIndexName);
 const stateManager = createStateManager(mainIndex);
 
 async function main() {
+  // first we make sure the bootstrap index has the correct settings
   await setSettings(bootstrapIndex);
+  // then we run the bootstrap
+  // after a bootstrap is done, it's moved to main (with settings)
+  // if it was already finished, we will set the settings on the main index
   await bootstrap(await stateManager.check());
+  // then we figure out which updates we missed since
+  // the last time main index was updated
   await replicate(await stateManager.get());
+  // then we watch 👀 for all changes happening in the ecosystem
   await watch(await stateManager.get());
 }
 
