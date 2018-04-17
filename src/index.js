@@ -28,15 +28,21 @@ const { index: mainIndex, client } = createAlgoliaIndex(c.indexName);
 const { index: bootstrapIndex } = createAlgoliaIndex(c.bootstrapIndexName);
 const stateManager = createStateManager(mainIndex);
 
-Promise.resolve()
-  .then(() => setSettings(bootstrapIndex))
-  .then(() => stateManager.check())
-  .then(bootstrap)
-  .then(() => stateManager.get())
-  .then(replicate)
-  .then(() => stateManager.get())
-  .then(watch)
-  .catch(error);
+async function main() {
+  // first we make sure the bootstrap index has the correct settings
+  await setSettings(bootstrapIndex);
+  // then we run the bootstrap
+  // after a bootstrap is done, it's moved to main (with settings)
+  // if it was already finished, we will set the settings on the main index
+  await bootstrap(await stateManager.check());
+  // then we figure out which updates we missed since
+  // the last time main index was updated
+  await replicate(await stateManager.get());
+  // then we watch 👀 for all changes happening in the ecosystem
+  return watch(await stateManager.get());
+}
+
+main().catch(error);
 
 async function setSettings(index) {
   await index.setSettings(c.indexSettings);
