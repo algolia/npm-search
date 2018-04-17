@@ -39,7 +39,7 @@ async function main() {
   // the last time main index was updated
   await replicate(await stateManager.get());
   // then we watch 👀 for all changes happening in the ecosystem
-  await watch(await stateManager.get());
+  return watch(await stateManager.get());
 }
 
 main().catch(error);
