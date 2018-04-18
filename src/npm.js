@@ -40,12 +40,11 @@ export async function getDownloads(pkgs) {
     names.join(',')
   );
 
-  const { body: { downloads: totalNpmDownloadsPerDay } } = await got(
-    `${c.npmDownloadsEndpoint}/range/last-month`,
-    {
-      json: true,
-    }
-  );
+  const {
+    body: { downloads: totalNpmDownloadsPerDay },
+  } = await got(`${c.npmDownloadsEndpoint}/range/last-month`, {
+    json: true,
+  });
   const totalNpmDownloads = totalNpmDownloadsPerDay.reduce(
     (total, { downloads: dayDownloads }) => total + dayDownloads,
     0
