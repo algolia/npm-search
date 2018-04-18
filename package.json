@@ -18,16 +18,10 @@
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.js": ["prettier --write", "git add"]
   },
   "renovate": {
-    "extends": [
-      "config:js-app",
-      "algolia"
-    ]
+    "extends": ["config:js-app", "algolia"]
   },
   "license": "MIT",
   "dependencies": {
