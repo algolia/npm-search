@@ -159,9 +159,9 @@ ajv@^5.2.3, ajv@^5.3.0:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.3.0"
 
-algoliasearch@3.26.0:
-  version "3.26.0"
-  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-3.26.0.tgz#5059cfe4b049ae1a1b9b7c25f5dbd3e75db6126a"
+algoliasearch@3.27.0:
+  version "3.27.0"
+  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-3.27.0.tgz#675b7f2d186e5785a1553369b15d47b53d4efb31"
   dependencies:
     agentkeepalive "^2.2.0"
     debug "^2.6.8"
