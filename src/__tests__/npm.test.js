@@ -49,7 +49,7 @@ describe('getDependents()', () => {
 
     // real should be 1800
     expect(jest).toBeGreaterThan(1600);
-    expect(jest).toBeLessThan(1850);
+    expect(jest).toBeLessThan(1900);
 
     // real should be 4900
     expect(angular).toBeGreaterThan(3900);
@@ -119,7 +119,7 @@ describe('getDownloads()', () => {
     expect(angular).toBeGreaterThan(1900000);
     expect(angular).toBeLessThan(3000000);
 
-    expect(holmes).toBeGreaterThan(150);
+    expect(holmes).toBeGreaterThan(100);
     expect(holmes).toBeLessThan(550);
   });
 
