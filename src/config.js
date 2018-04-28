@@ -17,10 +17,7 @@ const defaultConfig = {
   indexSettings: {
     searchableAttributes: [
       'unordered(_searchInternal.popularName)',
-      'unordered(name)',
-      'unordered(_searchInternal.concatenatedName)',
-      'unordered(description)',
-      'unordered(keywords)',
+      'unordered(name), unordered(_searchInternal.concatenatedName), unordered(description), unordered(keywords)',
       'owner.name',
       'owners.name',
     ],
@@ -36,14 +33,8 @@ const defaultConfig = {
       'desc(dependents)',
       'desc(downloadsLast30Days)',
     ],
-    disablePrefixOnAttributes: ['keywords', 'owner.name', 'owners.name'],
-    disableExactOnAttributes: [
-      'description',
-      'keywords',
-      'owner.name',
-      'owners.name',
-    ],
-    disableTypoToleranceOnAttributes: ['keywords'],
+    disablePrefixOnAttributes: ['owner.name', 'owners.name'],
+    disableExactOnAttributes: ['owner.name', 'owners.name'],
     exactOnSingleWordQuery: 'attribute',
     ranking: [
       'filters',

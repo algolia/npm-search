@@ -147,11 +147,11 @@ We're restricting the search to use a subset of the attributes only:
 
 ##### Prefix Search
 
-Algolia provides default prefix search capabilities (matching words with only the beginning). This is disabled for the `keywords`, `owner.name` and `owners.name` attributes.
+Algolia provides default prefix search capabilities (matching words with only the beginning). This is disabled for the `owner.name` and `owners.name` attributes.
 
 ##### Typo-tolerance
 
-Algolia provides default typo-tolerance. Typo-tolerance is disabled for the `keywords` attribute.
+Algolia provides default typo-tolerance.
 
 ##### Exact Boosting
 

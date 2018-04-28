@@ -38,18 +38,12 @@ Object {
       "desc(downloadsLast30Days)",
     ],
     "disableExactOnAttributes": Array [
-      "description",
-      "keywords",
       "owner.name",
       "owners.name",
     ],
     "disablePrefixOnAttributes": Array [
-      "keywords",
       "owner.name",
       "owners.name",
-    ],
-    "disableTypoToleranceOnAttributes": Array [
-      "keywords",
     ],
     "exactOnSingleWordQuery": "attribute",
     "optionalWords": Array [
@@ -71,10 +65,7 @@ Object {
     "replaceSynonymsInHighlight": false,
     "searchableAttributes": Array [
       "unordered(_searchInternal.popularName)",
-      "unordered(name)",
-      "unordered(_searchInternal.concatenatedName)",
-      "unordered(description)",
-      "unordered(keywords)",
+      "unordered(name), unordered(_searchInternal.concatenatedName), unordered(description), unordered(keywords)",
       "owner.name",
       "owners.name",
     ],
