@@ -21,12 +21,28 @@ Object {
         },
       },
       "description": "promote exact matches",
+      "objectID": "promote-exact-concatenated",
+    },
+    Object {
+      "condition": Object {
+        "anchoring": "is",
+        "pattern": "{facet:name}",
+      },
+      "consequence": Object {
+        "params": Object {
+          "automaticOptionalFacetFilters": Array [
+            "_searchInternal.name",
+          ],
+        },
+      },
+      "description": "promote exact matches",
       "objectID": "promote-exact",
     },
   ],
   "indexSettings": Object {
     "attributesForFaceting": Array [
       "filterOnly(_searchInternal.concatenatedName)",
+      "filterOnly(name)",
       "searchable(keywords)",
       "searchable(computedKeywords)",
       "searchable(owner.name)",
