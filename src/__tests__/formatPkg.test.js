@@ -31,7 +31,7 @@ it('truncates long readmes', () => {
   expect(formatted).toMatchSnapshot();
 });
 
-describe('adds angular cli schematics', () => {
+it('adds angular cli schematics', () => {
   const angularSchema = {
     name: 'angular-cli-schema-1',
     schematics: 'bli-blo',
@@ -47,7 +47,7 @@ describe('adds angular cli schematics', () => {
   });
 });
 
-describe('adds babel plugins', () => {
+it('adds babel plugins', () => {
   const dogs = {
     name: '@babel/plugin-dogs',
     keywords: 'babel',
