@@ -17,7 +17,7 @@ const defaultConfig = {
   indexSettings: {
     searchableAttributes: [
       'unordered(_searchInternal.popularName)',
-      'unordered(name), unordered(_searchInternal.concatenatedName), unordered(description), unordered(keywords)',
+      'name, _searchInternal.concatenatedName, description, keywords',
       'owner.name',
       'owners.name',
     ],
