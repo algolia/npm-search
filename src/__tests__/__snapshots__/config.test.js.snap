@@ -11,6 +11,21 @@ Object {
     Object {
       "condition": Object {
         "anchoring": "is",
+        "pattern": "{facet:_searchInternal.splitName}",
+      },
+      "consequence": Object {
+        "params": Object {
+          "automaticOptionalFacetFilters": Array [
+            "_searchInternal.splitName",
+          ],
+        },
+      },
+      "description": "promote exact matches",
+      "objectID": "promote-exact-split",
+    },
+    Object {
+      "condition": Object {
+        "anchoring": "is",
         "pattern": "{facet:_searchInternal.concatenatedName}",
       },
       "consequence": Object {
@@ -27,6 +42,7 @@ Object {
   "indexSettings": Object {
     "attributesForFaceting": Array [
       "filterOnly(_searchInternal.concatenatedName)",
+      "filterOnly(_searchInternal.splitName)",
       "searchable(keywords)",
       "searchable(computedKeywords)",
       "searchable(owner.name)",
