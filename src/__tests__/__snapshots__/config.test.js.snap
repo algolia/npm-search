@@ -80,6 +80,34 @@ Object {
       ],
       "type": "synonym",
     },
+    Object {
+      "objectID": "a11y",
+      "synonyms": Array [
+        "a11y",
+        "accessibility",
+        "accessible",
+      ],
+      "type": "synonym",
+    },
+    Object {
+      "objectID": "i18n",
+      "synonyms": Array [
+        "i18n",
+        "internationalisation",
+        "internationalization",
+        "translation",
+        "translate",
+      ],
+      "type": "synonym",
+    },
+    Object {
+      "objectID": "k8s",
+      "synonyms": Array [
+        "k8s",
+        "kubernetes",
+      ],
+      "type": "synonym",
+    },
   ],
   "maxObjSize": 450000,
   "npmDownloadsEndpoint": "https://api.npmjs.org/downloads",

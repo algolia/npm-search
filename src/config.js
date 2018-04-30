@@ -58,6 +58,27 @@ const defaultConfig = {
       synonyms: ['_', 'underscore'],
       objectID: 'underscore',
     },
+    {
+      type: 'synonym',
+      synonyms: ['a11y', 'accessibility', 'accessible'],
+      objectID: 'a11y',
+    },
+    {
+      type: 'synonym',
+      synonyms: [
+        'i18n',
+        'internationalisation',
+        'internationalization',
+        'translation',
+        'translate',
+      ],
+      objectID: 'i18n',
+    },
+    {
+      type: 'synonym',
+      synonyms: ['k8s', 'kubernetes'],
+      objectID: 'k8s',
+    },
   ],
   indexRules: [
     {
