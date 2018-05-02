@@ -53,7 +53,7 @@ describe('getDependents()', () => {
 
     // real should be 4900
     expect(angular).toBeGreaterThan(3900);
-    expect(angular).toBeLessThan(5000);
+    expect(angular).toBeLessThan(5100);
 
     // real should be 0
     expect(holmes).toBeGreaterThan(-1);
