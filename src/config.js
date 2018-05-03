@@ -23,6 +23,7 @@ const defaultConfig = {
     ],
     attributesForFaceting: [
       'filterOnly(_searchInternal.concatenatedName)' /* optionalFacetFilters to boost the name */,
+      'filterOnly(name)' /* optionalFacetFilters to boost the name */,
       'searchable(keywords)',
       'searchable(computedKeywords)',
       'searchable(owner.name)',
@@ -61,7 +62,7 @@ const defaultConfig = {
   ],
   indexRules: [
     {
-      objectID: 'promote-exact',
+      objectID: 'promote-exact-concatenated',
       description: 'promote exact matches',
       condition: {
         pattern: '{facet:_searchInternal.concatenatedName}',
@@ -70,6 +71,19 @@ const defaultConfig = {
       consequence: {
         params: {
           automaticOptionalFacetFilters: ['_searchInternal.concatenatedName'],
+        },
+      },
+    },
+    {
+      objectID: 'promote-exact',
+      description: 'promote exact matches',
+      condition: {
+        pattern: '{facet:name}',
+        anchoring: 'is',
+      },
+      consequence: {
+        params: {
+          automaticOptionalFacetFilters: ['_searchInternal.name'],
         },
       },
     },
