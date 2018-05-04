@@ -58,6 +58,7 @@ export default function formatPkg(pkg) {
   const dependencies = cleaned.dependencies || {};
   const devDependencies = cleaned.devDependencies || {};
   const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
+  const splitName = cleaned.name.replace(/[-/@_.]+/g, ' ');
 
   const tags = pkg['dist-tags'];
 
@@ -93,6 +94,7 @@ export default function formatPkg(pkg) {
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       concatenatedName,
+      alternativeNames: [concatenatedName, splitName, name],
     },
   };
 

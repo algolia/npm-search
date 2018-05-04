@@ -61,8 +61,8 @@ const defaultConfig = {
   ],
   indexRules: [
     {
-      objectID: 'promote-exact',
-      description: 'promote exact matches',
+      objectID: 'promote-exact-old',
+      description: 'promote exact matches (old, delete me in a next PR)',
       condition: {
         pattern: '{facet:_searchInternal.concatenatedName}',
         anchoring: 'is',
@@ -73,6 +73,21 @@ const defaultConfig = {
         },
       },
     },
+    // not yet enabled, but to be done in a replica after this is merged and
+    // in production
+    // {
+    //   objectID: 'promote-exact',
+    //   description: 'promote exact matches',
+    //   condition: {
+    //     pattern: '{facet:_searchInternal.alternativeNames}',
+    //     anchoring: 'is',
+    //   },
+    //   consequence: {
+    //     params: {
+    //       automaticOptionalFacetFilters: ['_searchInternal.alternativeNames'],
+    //     },
+    //   },
+    // },
   ],
 };
 
