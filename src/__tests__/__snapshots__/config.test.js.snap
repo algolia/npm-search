@@ -11,22 +11,22 @@ Object {
     Object {
       "condition": Object {
         "anchoring": "is",
-        "pattern": "{facet:_searchInternal.concatenatedName}",
+        "pattern": "{facet:_searchInternal.alternativeNames}",
       },
       "consequence": Object {
         "params": Object {
           "automaticOptionalFacetFilters": Array [
-            "_searchInternal.concatenatedName",
+            "_searchInternal.alternativeNames",
           ],
         },
       },
-      "description": "promote exact matches (old, delete me in a next PR)",
-      "objectID": "promote-exact-old",
+      "description": "promote exact matches",
+      "objectID": "promote-exact",
     },
   ],
   "indexSettings": Object {
     "attributesForFaceting": Array [
-      "filterOnly(_searchInternal.concatenatedName)",
+      "filterOnly(_searchInternal.alternativeNames)",
       "searchable(keywords)",
       "searchable(computedKeywords)",
       "searchable(owner.name)",
@@ -65,7 +65,8 @@ Object {
     "replaceSynonymsInHighlight": false,
     "searchableAttributes": Array [
       "unordered(_searchInternal.popularName)",
-      "name, _searchInternal.concatenatedName, description, keywords",
+      "name, description, keywords",
+      "_searchInternal.alternativeNames",
       "owner.name",
       "owners.name",
     ],
