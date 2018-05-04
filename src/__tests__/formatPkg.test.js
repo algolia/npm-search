@@ -24,7 +24,7 @@ it('truncates long readmes', () => {
     formatted.readme.length - truncatedEnding.length
   );
 
-  expect(formatted.readme).toHaveLength(451140);
+  expect(formatted.readme).toHaveLength(451174);
   expect(ending).toBe(truncatedEnding);
 
   formatted.lastCrawl = '<!-- date replaced -->';
@@ -69,7 +69,7 @@ it('adds babel plugins', () => {
   expect(formattedUnofficialDogs.computedKeywords).toEqual(['babel-plugin']);
 });
 
-describe('adds vue-cli plugins', () => {
+it('adds vue-cli plugins', () => {
   const dogs = {
     name: '@vue/cli-plugin-dogs',
     lastPublisher: { name: 'xtuc' },

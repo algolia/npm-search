@@ -23,6 +23,7 @@ const defaultConfig = {
     ],
     attributesForFaceting: [
       'filterOnly(_searchInternal.concatenatedName)' /* optionalFacetFilters to boost the name */,
+      'filterOnly(_searchInternal.splitName)' /* optionalFacetFilters to boost the name */,
       'searchable(keywords)',
       'searchable(computedKeywords)',
       'searchable(owner.name)',
@@ -60,6 +61,19 @@ const defaultConfig = {
     },
   ],
   indexRules: [
+    {
+      objectID: 'promote-exact-split',
+      description: 'promote exact matches',
+      condition: {
+        pattern: '{facet:_searchInternal.splitName}',
+        anchoring: 'is',
+      },
+      consequence: {
+        params: {
+          automaticOptionalFacetFilters: ['_searchInternal.splitName'],
+        },
+      },
+    },
     {
       objectID: 'promote-exact',
       description: 'promote exact matches',
