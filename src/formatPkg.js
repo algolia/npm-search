@@ -94,7 +94,7 @@ export default function formatPkg(pkg) {
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       concatenatedName,
-      alternativeNames: [concatenatedName, splitName, name],
+      alternativeNames: [concatenatedName, splitName, cleaned.name],
     },
   };
 
