@@ -1,5 +1,6 @@
 import { config } from 'dotenv';
 config();
+import ms from 'ms';
 
 const defaultConfig = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
@@ -12,7 +13,7 @@ const defaultConfig = {
   bootstrapIndexName: 'npm-search-bootstrap',
   replicateConcurrency: 10,
   bootstrapConcurrency: 100,
-  timeToRedoBootstrap: 7 * 24 * 3600 * 1000 /* one week */,
+  timeToRedoBootstrap: ms('1 week'),
   seq: null,
   indexSettings: {
     searchableAttributes: [
