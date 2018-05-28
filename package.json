@@ -63,7 +63,7 @@
     "eslint-import-resolver-webpack": "0.10.0",
     "eslint-plugin-import": "2.12.0",
     "eslint-plugin-jasmine": "2.10.1",
-    "eslint-plugin-jest": "21.15.2",
+    "eslint-plugin-jest": "21.17.0",
     "eslint-plugin-prettier": "2.6.0",
     "eslint-plugin-react": "7.8.2",
     "husky": "0.14.3",
