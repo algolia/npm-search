@@ -3,13 +3,20 @@ import rawPackages from './rawPackages.json';
 import isISO8601 from 'validator/lib/isISO8601';
 
 it('transforms correctly', () => {
-  const transformed = rawPackages.map(formatPkg).map(element => {
-    expect(isISO8601(element.lastCrawl)).toBe(true);
-    // eslint-disable-next-line no-param-reassign
-    element.lastCrawl = '<!-- date replaced -->';
-    return element;
-  });
-  expect(transformed).toMatchSnapshot();
+  rawPackages
+    .map(formatPkg)
+    .map(element => {
+      expect(isISO8601(element.lastCrawl)).toBe(true);
+      return element;
+    })
+    .map(formattedPackage =>
+      expect(formattedPackage).toMatchSnapshot(
+        {
+          lastCrawl: expect.any(String),
+        },
+        formattedPackage.objectID
+      )
+    );
 });
 
 it('truncates long readmes', () => {
@@ -27,8 +34,9 @@ it('truncates long readmes', () => {
   expect(formatted.readme).toHaveLength(451224);
   expect(ending).toBe(truncatedEnding);
 
-  formatted.lastCrawl = '<!-- date replaced -->';
-  expect(formatted).toMatchSnapshot();
+  expect(formatted).toMatchSnapshot({
+    lastCrawl: expect.any(String),
+  });
 });
 
 it('adds angular cli schematics', () => {
