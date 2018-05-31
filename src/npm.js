@@ -93,7 +93,7 @@ export async function getDownloads(pkgs) {
     const downloadsLast30Days = downloadsPerPkgName[name]
       ? downloadsPerPkgName[name].downloads
       : 0;
-    const downloadsRatio = downloadsLast30Days / totalNpmDownloads * 100;
+    const downloadsRatio = (downloadsLast30Days / totalNpmDownloads) * 100;
     const popular = downloadsRatio > c.popularDownloadsRatio;
     const downloadsMagnitude = downloadsLast30Days.toString().length;
 

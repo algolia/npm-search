@@ -16,18 +16,18 @@ If the process fails, restart it and the replication process will continue at th
 
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-* [Algolia Index](#algolia-index)
-  * [Schema](#schema)
-  * [Ranking](#ranking)
-* [Usage](#usage)
-  * [Production](#production)
-  * [Restart](#restart)
-  * [Development](#development)
-* [Env variables](#env-variables)
-* [How does it work?](#how-does-it-work)
-* [Tests](#tests)
-* [Deploying new version](#deploying-new-version)
-* [Forcing a complete re-index](#forcing-a-complete-re-index)
+- [Algolia Index](#algolia-index)
+  - [Schema](#schema)
+  - [Ranking](#ranking)
+- [Usage](#usage)
+  - [Production](#production)
+  - [Restart](#restart)
+  - [Development](#development)
+- [Env variables](#env-variables)
+- [How does it work?](#how-does-it-work)
+- [Tests](#tests)
+- [Deploying new version](#deploying-new-version)
+- [Forcing a complete re-index](#forcing-a-complete-re-index)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -138,12 +138,12 @@ If you want to learn more about how Algolia's ranking algorithm is working, you 
 
 We're restricting the search to use a subset of the attributes only:
 
-* `_searchInternal.popularName`
-* `name`
-* `description`
-* `keywords`
-* `owner.name`
-* `owners.name`
+- `_searchInternal.popularName`
+- `name`
+- `description`
+- `keywords`
+- `owner.name`
+- `owners.name`
 
 ##### Prefix Search
 
@@ -188,9 +188,9 @@ seq=0 apiKey=... yarn start
 
 This is useful when you want to completely resync the npm registry because:
 
-* you changed the way you format packages
-* you added more metadata (like GitHub stars)
-* you are in an unsure state and you just want to restart everything
+- you changed the way you format packages
+- you added more metadata (like GitHub stars)
+- you are in an unsure state and you just want to restart everything
 
 `seq` represents a [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
 in CouchDB lingo.
@@ -210,17 +210,17 @@ Be careful to develop on a different index than the production one when necessar
 
 See [config.js](./config.js):
 
-* `apiKey`: [Algolia](https://www.algolia.com/) apiKey - **required**
-* `appId`: [Algolia](https://www.algolia.com/) appId - _default `OFCNCOG2CU`_
-* `indexName`: [Algolia](https://www.algolia.com/) indexName - _default `npm-search`_
-* `bootstrapConcurrency`: How many docs to grab from npm registry at once in the bootstrap phase - _default `100`_
-* `replicateConcurrency`: How many changes to grab from npm registry at once in the replicate phase - _default `10`_
-* `seq`: npm registry first [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
+- `apiKey`: [Algolia](https://www.algolia.com/) apiKey - **required**
+- `appId`: [Algolia](https://www.algolia.com/) appId - _default `OFCNCOG2CU`_
+- `indexName`: [Algolia](https://www.algolia.com/) indexName - _default `npm-search`_
+- `bootstrapConcurrency`: How many docs to grab from npm registry at once in the bootstrap phase - _default `100`_
+- `replicateConcurrency`: How many changes to grab from npm registry at once in the replicate phase - _default `10`_
+- `seq`: npm registry first [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
   to start replication. In normal operations you should never have to use this. - _default `0`_
-* `npmRegistryEndpoint`: npm registry endpoint to replicate from - _default `https://replicate.npmjs.com/registry`_
+- `npmRegistryEndpoint`: npm registry endpoint to replicate from - _default `https://replicate.npmjs.com/registry`_
   This should be the only valid endpoint to replicate (even if a bit slow), see [this comment](https://github.com/npm/registry/issues/44#issuecomment-267732513).
-* `npmDownloadsEndpoint`: Where to look for the last 30 days download of packages - _default `https://api.npmjs.org/downloads`_
-* `popularDownloadsRatio`: % of total npm downloads for a package to be considered as popular
+- `npmDownloadsEndpoint`: Where to look for the last 30 days download of packages - _default `https://api.npmjs.org/downloads`_
+- `popularDownloadsRatio`: % of total npm downloads for a package to be considered as popular
   how much % of it is needed for a package to be popular - _default 0.2_ This is a bit lower than
   the jQuery download range.
 
@@ -228,16 +228,16 @@ See [config.js](./config.js):
 
 Our goal with this project is to:
 
-* be able to quickly do a complete rebuild
-* be resilient to failures
-* clean the package data
+- be able to quickly do a complete rebuild
+- be resilient to failures
+- clean the package data
 
 When the process starts with `seq=0`:
 
-* save the [current sequence](https://replicate.npmjs.com/) of the npm registry in the state (Algolia settings)
-* bootstrap the initial index content by using [/\_all_docs](http://docs.couchdb.org/en/2.0.0/api/database/bulk-api.html)
-* replicate registry changes since the current sequence
-* watch for registry changes continuously and replicate them
+- save the [current sequence](https://replicate.npmjs.com/) of the npm registry in the state (Algolia settings)
+- bootstrap the initial index content by using [/\_all_docs](http://docs.couchdb.org/en/2.0.0/api/database/bulk-api.html)
+- replicate registry changes since the current sequence
+- watch for registry changes continuously and replicate them
 
 Replicate and watch are separated because:
 

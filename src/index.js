@@ -59,12 +59,12 @@ async function setSettings(index) {
 function infoChange(seq, nbChanges, emoji) {
   return npm.info().then(npmInfo => {
     const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
-    const remaining = (npmInfo.seq - seq) / ratePerSecond * 1000 || 0;
+    const remaining = ((npmInfo.seq - seq) / ratePerSecond) * 1000 || 0;
     log.info(
       `${emoji} Synced %d/%d changes (%d%), current rate: %d changes/s (%s remaining)`,
       seq,
       npmInfo.seq,
-      Math.floor(Math.max(seq, 1) / npmInfo.seq * 100),
+      Math.floor((Math.max(seq, 1) / npmInfo.seq) * 100),
       Math.round(ratePerSecond),
       ms(remaining)
     );
@@ -79,9 +79,9 @@ function infoDocs(offset, nbDocs, emoji) {
       `${emoji} Synced %d/%d docs (%d%), current rate: %d docs/s (%s remaining)`,
       offset + nbDocs,
       totalDocs,
-      Math.floor(Math.max(offset + nbDocs, 1) / totalDocs * 100),
+      Math.floor((Math.max(offset + nbDocs, 1) / totalDocs) * 100),
       Math.round(ratePerSecond),
-      ms((totalDocs - offset - nbDocs) / ratePerSecond * 1000)
+      ms(((totalDocs - offset - nbDocs) / ratePerSecond) * 1000)
     );
     loopStart = Date.now();
   });

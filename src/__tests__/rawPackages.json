@@ -19,7 +19,8 @@
           "start": "concurrently \"npm run webpack:w\" \"gulp\"",
           "webpack": "webpack",
           "webpack:w": "webpack --progress --colors --watch",
-          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+          "build":
+            "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
         },
         "repository": {
           "type": "git",
@@ -74,7 +75,8 @@
         },
         "dist": {
           "shasum": "ba7b31fe544ff049795e6ab7795c370480dd4b86",
-          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.1.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.1.tgz"
         },
         "maintainers": [
           {
@@ -98,7 +100,8 @@
           "start": "concurrently \"npm run webpack:w\" \"gulp\"",
           "webpack": "webpack",
           "webpack:w": "webpack --progress --colors --watch",
-          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+          "build":
+            "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
         },
         "repository": {
           "type": "git",
@@ -153,7 +156,8 @@
         },
         "dist": {
           "shasum": "7d9b2ac65f53589a50e8c95049e611ab07296960",
-          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.2.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.2.tgz"
         },
         "maintainers": [
           {
@@ -177,7 +181,8 @@
           "start": "concurrently \"npm run webpack:w\" \"gulp\"",
           "webpack": "webpack",
           "webpack:w": "webpack --progress --colors --watch",
-          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+          "build":
+            "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
         },
         "repository": {
           "type": "git",
@@ -232,7 +237,8 @@
         },
         "dist": {
           "shasum": "8403f7fccd5418e21786eb84ad33d6b31d6e4299",
-          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.3.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.3.tgz"
         },
         "maintainers": [
           {
@@ -256,7 +262,8 @@
           "start": "concurrently \"npm run webpack:w\" \"gulp\"",
           "webpack": "webpack",
           "webpack:w": "webpack --progress --colors --watch",
-          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+          "build":
+            "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
         },
         "repository": {
           "type": "git",
@@ -311,7 +318,8 @@
         },
         "dist": {
           "shasum": "55786c198383be7ab4986739af2c69ad5bcec495",
-          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.4.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.4.tgz"
         },
         "maintainers": [
           {
@@ -358,7 +366,8 @@
     "_id": "@atlaskit/input",
     "_rev": "31-8e30bdb8faac40e50fac00be93918981",
     "name": "@atlaskit/input",
-    "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+    "description":
+      "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
     "dist-tags": {
       "latest": "1.6.1"
     },
@@ -376,9 +385,7 @@
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2"
         },
@@ -398,10 +405,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui"
-        ],
+        "keywords": ["atlaskit", "ui"],
         "gitHead": "b3b4b75fad380312bd08645566e67eb3619f9891",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.0",
@@ -416,7 +420,8 @@
         },
         "dist": {
           "shasum": "1210a9d98b182427dbabdafb0de99029bb5aab02",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.0.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.0.tgz"
         },
         "maintainers": [
           {
@@ -442,9 +447,7 @@
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2"
         },
@@ -464,10 +467,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui"
-        ],
+        "keywords": ["atlaskit", "ui"],
         "gitHead": "6b588c28496ffee04729a4085ffe1beacd674433",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.1",
@@ -482,7 +482,8 @@
         },
         "dist": {
           "shasum": "65a4ae06c47151224cac7a951f30cd41af71cf4f",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.1.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.1.tgz"
         },
         "maintainers": [
           {
@@ -508,9 +509,7 @@
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2"
         },
@@ -530,10 +529,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui"
-        ],
+        "keywords": ["atlaskit", "ui"],
         "gitHead": "322b552536af8dda6c03da807d24477e0d6bdbce",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.2",
@@ -548,7 +544,8 @@
         },
         "dist": {
           "shasum": "c229de514cece5fa3dd84036d8290360d286e877",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.2.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.2.tgz"
         },
         "maintainers": [
           {
@@ -574,9 +571,7 @@
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -598,10 +593,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui"
-        ],
+        "keywords": ["atlaskit", "ui"],
         "gitHead": "47f51e83461ca044f3e03a168beb9a4530c289cc",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.3",
@@ -616,7 +608,8 @@
         },
         "dist": {
           "shasum": "bbaece109bfdd95466828f22ebb3c0ae8ea3e8b6",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.3.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.3.tgz"
         },
         "maintainers": [
           {
@@ -635,16 +628,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -666,10 +658,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui"
-        ],
+        "keywords": ["atlaskit", "ui"],
         "gitHead": "ed8ddfbb0407a69d280b96afd25a92e57c45687f",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.4",
@@ -684,7 +673,8 @@
         },
         "dist": {
           "shasum": "e4990fc066a44ce14b49aeb4aeaa724488ab07af",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.4.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.4.tgz"
         },
         "maintainers": [
           {
@@ -703,16 +693,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -734,11 +723,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "67fd1ba347dd14960ea17387e08c82bbb610f566",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.5",
@@ -753,7 +738,8 @@
         },
         "dist": {
           "shasum": "58dcd55af581cae3ccf67cd2e27235c45d747b13",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.5.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.5.tgz"
         },
         "maintainers": [
           {
@@ -772,16 +758,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -803,11 +788,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "abe6236c118c8ec21d04677032ab29e94a263064",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.6",
@@ -822,7 +803,8 @@
         },
         "dist": {
           "shasum": "e775dbf35197116f791af7ad16d92db33e39a587",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.6.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.6.tgz"
         },
         "maintainers": [
           {
@@ -841,16 +823,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -872,11 +853,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "2ff6f5f3b5461443e55994b31b9c9f0ef2dcf274",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.8",
@@ -891,7 +868,8 @@
         },
         "dist": {
           "shasum": "655206ab58d4235bbec29e813040d425e06d71f0",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.8.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.8.tgz"
         },
         "maintainers": [
           {
@@ -910,16 +888,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -941,11 +918,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "038fc044deed2427e3ff6ff0a04d9299b16cb245",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.9",
@@ -960,7 +933,8 @@
         },
         "dist": {
           "shasum": "823e437d4494f626c287fcbf0be1ee6cef5a92a6",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.9.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.9.tgz"
         },
         "maintainers": [
           {
@@ -979,16 +953,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -1016,11 +989,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "a1bb34628ce97650160b276b2b1101148e4118a5",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.10",
@@ -1035,7 +1004,8 @@
         },
         "dist": {
           "shasum": "a62f64b299e2bb106042e64b4e6b82cbd22a5305",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.10.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.10.tgz"
         },
         "_npmOperationalInternal": {
           "host": "packages-12-west.internal.npmjs.com",
@@ -1048,16 +1018,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -1085,11 +1054,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "6e12e296972eab5012746b8f31d203d5618b9d65",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.0.11",
@@ -1104,7 +1069,8 @@
         },
         "dist": {
           "shasum": "3543a73c76f07155345c9eab30c8e247c6335cc2",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.11.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.11.tgz"
         },
         "_npmOperationalInternal": {
           "host": "packages-12-west.internal.npmjs.com",
@@ -1117,16 +1083,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2",
@@ -1154,11 +1119,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "b5c2777102a510d07d823cc7cb85652a379bebe6",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.1.0",
@@ -1173,7 +1134,8 @@
         },
         "dist": {
           "shasum": "777a49d4c279f61cd1839dc196ac1b56fec508bd",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.0.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.0.tgz"
         },
         "_npmOperationalInternal": {
           "host": "packages-12-west.internal.npmjs.com",
@@ -1186,16 +1148,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2",
@@ -1223,11 +1184,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "966450fa3657586ecde3150ee7018c0446c2d3c1",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.1.1",
@@ -1242,7 +1199,8 @@
         },
         "dist": {
           "shasum": "8a18272a15119ee6acad0cc397184323bdc759e0",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.1.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.1.tgz"
         },
         "_npmOperationalInternal": {
           "host": "packages-18-east.internal.npmjs.com",
@@ -1255,16 +1213,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2",
@@ -1292,11 +1249,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "cbcdf9230a152321cb85f2ee2be7839bbd6c5585",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.1.2",
@@ -1311,7 +1264,8 @@
         },
         "dist": {
           "shasum": "13a592775c168dd97ded2274c951b26673bde9b3",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.2.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.2.tgz"
         },
         "_npmOperationalInternal": {
           "host": "packages-12-west.internal.npmjs.com",
@@ -1324,16 +1278,15 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
           "prepublish": "cd ../.. && npm run prepublish/single @atlaskit/input"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -1362,11 +1315,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "cce9f8509ed11eee7c3857153a6e6c0107286876",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.1.3",
@@ -1381,7 +1330,8 @@
         },
         "dist": {
           "shasum": "916622c9202639b9fac8b9a274d8e5f78248384b",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.3.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.3.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1394,17 +1344,17 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish"
+          "prepublish":
+            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -1433,11 +1383,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "c907bba38297ac05951a717e78c2c2d72c69d47c",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.5.0",
@@ -1452,7 +1398,8 @@
         },
         "dist": {
           "shasum": "8ba24c1c6cad4bd9b0ef3fc72d8ecd54449d0728",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.0.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.0.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1465,19 +1412,19 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish":
+            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook.single.sh",
           "eslint": "../../build/bin/lint.eslint.sh"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -1506,11 +1453,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "db01d191b1532128a15c674955a5df50a7316624",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.5.1",
@@ -1525,7 +1468,8 @@
         },
         "dist": {
           "shasum": "ca1b6ae5671916d442d064733d74cfde65edc2ca",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.1.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.1.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1538,19 +1482,19 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:experimental:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish":
+            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook.single.sh",
           "eslint": "../../build/bin/lint.eslint.sh"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -1579,11 +1523,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "b3c9f8c9fd2cf4be3d356da7b5b99a5fc6d973bb",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.5.2",
@@ -1598,7 +1538,8 @@
         },
         "dist": {
           "shasum": "213e24fb4c5aa21ebcd5f7f4e65cd1d03fd310fa",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.2.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.2.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1611,20 +1552,20 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:experimental:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish":
+            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook/run.local.js",
           "eslint": "../../build/bin/lint.eslint.sh",
           "storybook:static": "../../build/bin/storybook/build.static.js"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2",
           "react-dom": "^15.3.2"
@@ -1653,11 +1594,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "3dafebb243655569887fbb189a3e67ca1de8c5a5",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.5.3",
@@ -1672,7 +1609,8 @@
         },
         "dist": {
           "shasum": "04fd1240a600861e5fd6de425e18c650f80beba6",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.3.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.3.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1685,20 +1623,20 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:experimental:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish":
+            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook/run.local.js",
           "eslint": "../../build/bin/lint.eslint.sh",
           "storybook:static": "../../build/bin/storybook/build.static.js"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2 || ^16.0.0",
           "react-dom": "^15.3.2 || ^16.0.0"
@@ -1727,11 +1665,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "5d483548898150cf261e657e375e761ee5d0c273",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.5.4",
@@ -1746,7 +1680,8 @@
         },
         "dist": {
           "shasum": "2d7ff1da654ad9b47cbd3b5cfb137c15f5678f64",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.4.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.4.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1759,21 +1694,22 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:experimental:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish":
+            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook/run.local.js",
           "eslint": "../../build/bin/lint.eslint.sh",
           "storybook:static": "../../build/bin/storybook/build.static.js",
-          "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+          "test:unit":
+            "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2 || ^16.0.0",
           "react-dom": "^15.3.2 || ^16.0.0"
@@ -1802,11 +1738,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "2d37e1c0732aecc965c371d29f7b1278ee2b3638",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.6.0",
@@ -1821,7 +1753,8 @@
         },
         "dist": {
           "shasum": "f2b3d0d2df54d7a304831a26bd79988ae4d601eb",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.0.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.0.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1834,21 +1767,22 @@
         "config": {
           "access": "public"
         },
-        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description":
+          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:experimental:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish":
+            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook/run.local.js",
           "eslint": "../../build/bin/lint.eslint.sh",
           "storybook:static": "../../build/bin/storybook/build.static.js",
-          "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+          "test:unit":
+            "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
         },
-        "files": [
-          "dist"
-        ],
+        "files": ["dist"],
         "peerDependencies": {
           "react": "^15.3.2 || ^16.0.0",
           "react-dom": "^15.3.2 || ^16.0.0"
@@ -1877,11 +1811,7 @@
           "type": "git",
           "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
         },
-        "keywords": [
-          "atlaskit",
-          "ui",
-          "internal"
-        ],
+        "keywords": ["atlaskit", "ui", "internal"],
         "gitHead": "8bee5877efdc84f337a56a047438b8aaac078a2d",
         "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
         "_id": "@atlaskit/input@1.6.1",
@@ -1896,7 +1826,8 @@
         },
         "dist": {
           "shasum": "4c20a218048b90b5e30ca183fd1ede95ae6ad497",
-          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.1.tgz"
+          "tarball":
+            "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.1.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1904,7 +1835,8 @@
         }
       }
     },
-    "readme": "[![AtlasKit component registry](https://img.shields.io/badge/AtlasKit-components-FF5230.svg)](http://atlaskit.atlassian.com)\n[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://Commitizen.github.io/cz-cli/)\n[![semantic-release](https://img.shields.io/badge/GitHub-semantic_release-ffab00.svg)](https://github.com/semantic-release/semantic-release)\n[![Report an issue](https://img.shields.io/badge/Report-an_issue-6554C0.svg)](http://go.atlassian.com/atlaskit-issues)\n\n# Input\n\n**YOU SHOULD ALMOST DEFINITELY NOT BE USING THIS COMPONENT DIRECTLY**\n\n**USE @atlaskit/field-text INSTEAD**\n\n\n## SingleLineTextInput\nA text input component with extremely basic styling that supports read/edit modes.\n\nDesigned for use within other components, e.g. for the read/edit views required by\nak-inline-edit, or within table cells.\n\nNote: In addition the props described below, all other props passed to this\ncomponent will be forwarded to the underlying HTML 'input'. This allows change\nhandlers, placeholders, etc, to be attached to it.\n\n**Kind**: global variable\n* Properties\n\n*  [SingleLineTextInput](#SingleLineTextInput)\n    *  [.value](#SingleLineTextInput.value) : <code>string</code>\n    *  [.style](#SingleLineTextInput.style) : <code>object</code>\n    *  [.isInitiallySelected](#SingleLineTextInput.isInitiallySelected) : <code>boolean</code>\n    *  [.isEditing](#SingleLineTextInput.isEditing) : <code>boolean</code>\n    *  [.onConfirm](#SingleLineTextInput.onConfirm) : <code>function</code>\n    *  [.onKeyDown](#SingleLineTextInput.onKeyDown) : <code>function</code>\n\n<a name=\"SingleLineTextInput.value\"></a>\n\n### SingleLineTextInput.value : <code>string</code>\nThe value of the input field.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.style\"></a>\n\n### SingleLineTextInput.style : <code>object</code>\nCustom styles that will be applied to the read and edit views.\n\nTypical use would be to specify a custom font size.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.isInitiallySelected\"></a>\n\n### SingleLineTextInput.isInitiallySelected : <code>boolean</code>\nWhether the input text will initially be selected/highlighted.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n**Default**: <code>false</code>\n<a name=\"SingleLineTextInput.isEditing\"></a>\n\n### SingleLineTextInput.isEditing : <code>boolean</code>\nWhether the component is in edit mode or read mode.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.onConfirm\"></a>\n\n### SingleLineTextInput.onConfirm : <code>function</code>\nCalled when the user confirms input by pressing the enter key\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.onKeyDown\"></a>\n\n### SingleLineTextInput.onKeyDown : <code>function</code>\nRegular onKeyDown handler passed to the input\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n\n_* Please note that this module could have dependencies that are governed by the Atlassian Design Guidelines license which will be automatically included on install. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies._\n\n## We're here to help!\n\nLet us know what you think of our components and docs, your feedback is really important for us.\n\nAre you in trouble? Read through our [contribution guidelines](https://bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md) and raise an issue to us.\n\n",
+    "readme":
+      "[![AtlasKit component registry](https://img.shields.io/badge/AtlasKit-components-FF5230.svg)](http://atlaskit.atlassian.com)\n[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://Commitizen.github.io/cz-cli/)\n[![semantic-release](https://img.shields.io/badge/GitHub-semantic_release-ffab00.svg)](https://github.com/semantic-release/semantic-release)\n[![Report an issue](https://img.shields.io/badge/Report-an_issue-6554C0.svg)](http://go.atlassian.com/atlaskit-issues)\n\n# Input\n\n**YOU SHOULD ALMOST DEFINITELY NOT BE USING THIS COMPONENT DIRECTLY**\n\n**USE @atlaskit/field-text INSTEAD**\n\n\n## SingleLineTextInput\nA text input component with extremely basic styling that supports read/edit modes.\n\nDesigned for use within other components, e.g. for the read/edit views required by\nak-inline-edit, or within table cells.\n\nNote: In addition the props described below, all other props passed to this\ncomponent will be forwarded to the underlying HTML 'input'. This allows change\nhandlers, placeholders, etc, to be attached to it.\n\n**Kind**: global variable\n* Properties\n\n*  [SingleLineTextInput](#SingleLineTextInput)\n    *  [.value](#SingleLineTextInput.value) : <code>string</code>\n    *  [.style](#SingleLineTextInput.style) : <code>object</code>\n    *  [.isInitiallySelected](#SingleLineTextInput.isInitiallySelected) : <code>boolean</code>\n    *  [.isEditing](#SingleLineTextInput.isEditing) : <code>boolean</code>\n    *  [.onConfirm](#SingleLineTextInput.onConfirm) : <code>function</code>\n    *  [.onKeyDown](#SingleLineTextInput.onKeyDown) : <code>function</code>\n\n<a name=\"SingleLineTextInput.value\"></a>\n\n### SingleLineTextInput.value : <code>string</code>\nThe value of the input field.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.style\"></a>\n\n### SingleLineTextInput.style : <code>object</code>\nCustom styles that will be applied to the read and edit views.\n\nTypical use would be to specify a custom font size.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.isInitiallySelected\"></a>\n\n### SingleLineTextInput.isInitiallySelected : <code>boolean</code>\nWhether the input text will initially be selected/highlighted.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n**Default**: <code>false</code>\n<a name=\"SingleLineTextInput.isEditing\"></a>\n\n### SingleLineTextInput.isEditing : <code>boolean</code>\nWhether the component is in edit mode or read mode.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.onConfirm\"></a>\n\n### SingleLineTextInput.onConfirm : <code>function</code>\nCalled when the user confirms input by pressing the enter key\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.onKeyDown\"></a>\n\n### SingleLineTextInput.onKeyDown : <code>function</code>\nRegular onKeyDown handler passed to the input\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n\n_* Please note that this module could have dependencies that are governed by the Atlassian Design Guidelines license which will be automatically included on install. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies._\n\n## We're here to help!\n\nLet us know what you think of our components and docs, your feedback is really important for us.\n\nAre you in trouble? Read through our [contribution guidelines](https://bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md) and raise an issue to us.\n\n",
     "maintainers": [
       {
         "email": "design-platform@atlassian.com",
@@ -1941,11 +1873,7 @@
       "1.6.1": "2017-11-15T23:59:01.980Z"
     },
     "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
-    "keywords": [
-      "atlaskit",
-      "ui",
-      "internal"
-    ],
+    "keywords": ["atlaskit", "ui", "internal"],
     "repository": {
       "type": "git",
       "url": "git+https://bitbucket.org/atlassian/atlaskit.git"
