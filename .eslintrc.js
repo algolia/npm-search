@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['algolia/jest'],
+  extends: ['algolia', 'algolia/jest'],
   rules: {
     'valid-jsdoc': 'off',
   },

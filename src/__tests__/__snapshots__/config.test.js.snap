@@ -20,8 +20,8 @@ Object {
           ],
         },
       },
-      "description": "promote exact matches",
-      "objectID": "promote-exact",
+      "description": "promote exact matches (old, delete me in a next PR)",
+      "objectID": "promote-exact-old",
     },
   ],
   "indexSettings": Object {

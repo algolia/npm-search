@@ -3,13 +3,20 @@ import rawPackages from './rawPackages.json';
 import isISO8601 from 'validator/lib/isISO8601';
 
 it('transforms correctly', () => {
-  const transformed = rawPackages.map(formatPkg).map(element => {
-    expect(isISO8601(element.lastCrawl)).toBe(true);
-    // eslint-disable-next-line no-param-reassign
-    element.lastCrawl = '<!-- date replaced -->';
-    return element;
-  });
-  expect(transformed).toMatchSnapshot();
+  rawPackages
+    .map(formatPkg)
+    .map(element => {
+      expect(isISO8601(element.lastCrawl)).toBe(true);
+      return element;
+    })
+    .map(formattedPackage =>
+      expect(formattedPackage).toMatchSnapshot(
+        {
+          lastCrawl: expect.any(String),
+        },
+        formattedPackage.objectID
+      )
+    );
 });
 
 it('truncates long readmes', () => {
@@ -24,14 +31,15 @@ it('truncates long readmes', () => {
     formatted.readme.length - truncatedEnding.length
   );
 
-  expect(formatted.readme).toHaveLength(451140);
+  expect(formatted.readme).toHaveLength(451224);
   expect(ending).toBe(truncatedEnding);
 
-  formatted.lastCrawl = '<!-- date replaced -->';
-  expect(formatted).toMatchSnapshot();
+  expect(formatted).toMatchSnapshot({
+    lastCrawl: expect.any(String),
+  });
 });
 
-describe('adds angular cli schematics', () => {
+it('adds angular cli schematics', () => {
   const angularSchema = {
     name: 'angular-cli-schema-1',
     schematics: 'bli-blo',
@@ -47,7 +55,7 @@ describe('adds angular cli schematics', () => {
   });
 });
 
-describe('adds babel plugins', () => {
+it('adds babel plugins', () => {
   const dogs = {
     name: '@babel/plugin-dogs',
     keywords: 'babel',

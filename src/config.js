@@ -1,5 +1,6 @@
 import { config } from 'dotenv';
 config();
+import ms from 'ms';
 
 const defaultConfig = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
@@ -12,7 +13,7 @@ const defaultConfig = {
   bootstrapIndexName: 'npm-search-bootstrap',
   replicateConcurrency: 10,
   bootstrapConcurrency: 100,
-  timeToRedoBootstrap: 7 * 24 * 3600 * 1000 /* one week */,
+  timeToRedoBootstrap: ms('1 week'),
   seq: null,
   indexSettings: {
     searchableAttributes: [
@@ -82,8 +83,8 @@ const defaultConfig = {
   ],
   indexRules: [
     {
-      objectID: 'promote-exact',
-      description: 'promote exact matches',
+      objectID: 'promote-exact-old',
+      description: 'promote exact matches (old, delete me in a next PR)',
       condition: {
         pattern: '{facet:_searchInternal.concatenatedName}',
         anchoring: 'is',
@@ -94,6 +95,21 @@ const defaultConfig = {
         },
       },
     },
+    // not yet enabled, but to be done in a replica after this is merged and
+    // in production
+    // {
+    //   objectID: 'promote-exact',
+    //   description: 'promote exact matches',
+    //   condition: {
+    //     pattern: '{facet:_searchInternal.alternativeNames}',
+    //     anchoring: 'is',
+    //   },
+    //   consequence: {
+    //     params: {
+    //       automaticOptionalFacetFilters: ['_searchInternal.alternativeNames'],
+    //     },
+    //   },
+    // },
   ],
 };
 
