@@ -75,7 +75,7 @@
     "validator": "10.3.0"
   },
   "engines": {
-    "node": "9.11.1"
+    "node": "9.11.2"
   },
   "jest": {
     "testPathIgnorePatterns": [
