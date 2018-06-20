@@ -47,9 +47,9 @@ describe('getDependents()', () => {
     // eslint-disable-next-line no-console
     console.log('dependents', { jest, angular, holmes });
 
-    // real should be 2000
-    expect(jest).toBeGreaterThan(1900);
-    expect(jest).toBeLessThan(2100);
+    // real should be 2100
+    expect(jest).toBeGreaterThan(2000);
+    expect(jest).toBeLessThan(2200);
 
     // real should be 5200
     expect(angular).toBeGreaterThan(5000);
@@ -115,8 +115,8 @@ describe('getDownloads()', () => {
     expect(jest).toBeGreaterThan(4000000);
     expect(jest).toBeLessThan(6100000);
 
-    expect(angular).toBeGreaterThan(1900000);
-    expect(angular).toBeLessThan(3500000);
+    expect(angular).toBeGreaterThan(2000000);
+    expect(angular).toBeLessThan(4000000);
 
     expect(holmes).toBeGreaterThan(100);
     expect(holmes).toBeLessThan(550);
