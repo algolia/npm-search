@@ -1,6 +1,6 @@
 import formatPkg from './formatPkg.js';
 import log from './log.js';
-import { getDownloads } from './npm.js';
+import { getDownloads, getDependents } from './npm.js';
 import { getChangelogs } from './changelog.js';
 
 export default function saveDocs({ docs, index }) {
@@ -20,17 +20,22 @@ export default function saveDocs({ docs, index }) {
 }
 
 function addMetaData(pkgs) {
-  return Promise.all([getDownloads(pkgs), getChangelogs(pkgs)]).then(
-    ([downloads, changelogs]) =>
-      pkgs.map((pkg, index) => ({
-        ...pkg,
-        ...downloads[index],
-        ...changelogs[index],
-        _searchInternal: {
-          ...pkg._searchInternal,
-          ...downloads[index]._searchInternal,
-          ...changelogs[index]._searchInternal,
-        },
-      }))
+  return Promise.all([
+    getDownloads(pkgs),
+    getDependents(pkgs),
+    getChangelogs(pkgs),
+  ]).then(([downloads, dependents, changelogs]) =>
+    pkgs.map((pkg, index) => ({
+      ...pkg,
+      ...downloads[index],
+      ...dependents[index],
+      ...changelogs[index],
+      _searchInternal: {
+        ...pkg._searchInternal,
+        ...downloads[index]._searchInternal,
+        ...dependents[index]._searchInternal,
+        ...changelogs[index]._searchInternal,
+      },
+    }))
   );
 }

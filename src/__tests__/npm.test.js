@@ -16,7 +16,7 @@ describe('info()', () => {
   });
 });
 
-describe.skip('getDependents()', () => {
+describe('getDependents()', () => {
   let dependents;
   beforeAll(async () => {
     dependents = await getDependents([
@@ -41,7 +41,14 @@ describe.skip('getDependents()', () => {
     );
   });
 
-  it('has the right approximate value', () => {
+  it('has the right fake value', () => {
+    const [jest, angular, holmes] = dependents.map(pkg => pkg.dependents);
+    expect(jest).toBe(0);
+    expect(angular).toBe(0);
+    expect(holmes).toBe(0);
+  });
+
+  it.skip('has the right approximate value', () => {
     const [jest, angular, holmes] = dependents.map(pkg =>
       pkg.dependents.toString()
     );
