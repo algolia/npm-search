@@ -18,12 +18,13 @@ const defaultConfig = {
   indexSettings: {
     searchableAttributes: [
       'unordered(_searchInternal.popularName)',
-      'name, _searchInternal.concatenatedName, description, keywords',
+      'name, description, keywords',
+      '_searchInternal.alternativeNames',
       'owner.name',
       'owners.name',
     ],
     attributesForFaceting: [
-      'filterOnly(_searchInternal.concatenatedName)' /* optionalFacetFilters to boost the name */,
+      'filterOnly(_searchInternal.alternativeNames)' /* optionalFacetFilters to boost the name */,
       'searchable(keywords)',
       'searchable(computedKeywords)',
       'searchable(owner.name)',
@@ -83,33 +84,18 @@ const defaultConfig = {
   ],
   indexRules: [
     {
-      objectID: 'promote-exact-old',
-      description: 'promote exact matches (old, delete me in a next PR)',
+      objectID: 'promote-exact',
+      description: 'promote exact matches',
       condition: {
-        pattern: '{facet:_searchInternal.concatenatedName}',
+        pattern: '{facet:_searchInternal.alternativeNames}',
         anchoring: 'is',
       },
       consequence: {
         params: {
-          automaticOptionalFacetFilters: ['_searchInternal.concatenatedName'],
+          automaticOptionalFacetFilters: ['_searchInternal.alternativeNames'],
         },
       },
     },
-    // not yet enabled, but to be done in a replica after this is merged and
-    // in production
-    // {
-    //   objectID: 'promote-exact',
-    //   description: 'promote exact matches',
-    //   condition: {
-    //     pattern: '{facet:_searchInternal.alternativeNames}',
-    //     anchoring: 'is',
-    //   },
-    //   consequence: {
-    //     params: {
-    //       automaticOptionalFacetFilters: ['_searchInternal.alternativeNames'],
-    //     },
-    //   },
-    // },
   ],
 };
 
