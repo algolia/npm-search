@@ -114,6 +114,7 @@ export async function getDownloads(pkgs) {
 }
 
 export function getDependents(pkgs) {
+  // we return 0, waiting for https://github.com/npm/registry/issues/361
   return Promise.all(
     pkgs.map(() => ({
       dependents: 0,
