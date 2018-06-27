@@ -16,7 +16,7 @@ describe('info()', () => {
   });
 });
 
-describe('getDependents()', () => {
+describe.skip('getDependents()', () => {
   let dependents;
   beforeAll(async () => {
     dependents = await getDependents([
