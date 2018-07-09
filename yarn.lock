@@ -2619,9 +2619,9 @@ globby@^5.0.0:
     pify "^2.0.0"
     pinkie-promise "^2.0.0"
 
-got@8.3.1:
-  version "8.3.1"
-  resolved "https://registry.yarnpkg.com/got/-/got-8.3.1.tgz#093324403d4d955f5a16a7a8d39955d055ae10ed"
+got@8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/got/-/got-8.3.2.tgz#1d23f64390e97f776cac52e5b936e5f514d2e937"
   dependencies:
     "@sindresorhus/is" "^0.7.0"
     cacheable-request "^2.1.1"
