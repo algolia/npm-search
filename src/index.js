@@ -238,26 +238,26 @@ function watch({ seq }) {
           })
         )
         .then(stateManager.get)
-        .then(({ bootstrapLastDone }) => {
-          const now = Date.now();
-          const lastBootstrapped = new Date(bootstrapLastDone);
-          // when the process is running longer than a certain time
-          // we want to start over and get all info again
-          // we do this by exiting and letting Heroku start over
-          // For now we disable this step because we have a bug where the index got misconfigured after bootstrap/move
-          // if (now - lastBootstrapped > c.timeToRedoBootstrap) {
-          //   return stateManager
-          //     .set({
-          //       seq: 0,
-          //       bootstrapDone: false,
-          //     })
-          //     .then(() => {
-          //       process.exit(0); // eslint-disable-line no-process-exit
-          //     });
-          // }
+        // For now we disable this next step because we have a bug where the index got misconfigured after bootstrap/move
+        // .then(({ bootstrapLastDone }) => {
+        //   const now = Date.now();
+        //   const lastBootstrapped = new Date(bootstrapLastDone);
+        //   // when the process is running longer than a certain time
+        //   // we want to start over and get all info again
+        //   // we do this by exiting and letting Heroku start over
+        //   if (now - lastBootstrapped > c.timeToRedoBootstrap) {
+        //     return stateManager
+        //       .set({
+        //         seq: 0,
+        //         bootstrapDone: false,
+        //       })
+        //       .then(() => {
+        //         process.exit(0); // eslint-disable-line no-process-exit
+        //       });
+        //   }
 
-          return null;
-        })
+        //   return null;
+        // })
         .then(done)
         .catch(done);
     }, 1);
