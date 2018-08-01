@@ -1241,9 +1241,9 @@ builtin-status-codes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz#85982878e21b98e1c66425e03d0174788f569ee8"
 
-bunyan-debug-stream@1.0.8:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/bunyan-debug-stream/-/bunyan-debug-stream-1.0.8.tgz#df612852d5d0b6d6df3f30214d8a7e4ee925106d"
+bunyan-debug-stream@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/bunyan-debug-stream/-/bunyan-debug-stream-1.1.0.tgz#04de45e31c0f873ae7e8252d7648760d27eecb35"
   dependencies:
     colors "^1.0.3"
     exception-formatter "^1.0.4"
