@@ -1,112 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`transforms correctly: [object Object] 1`] = `
-Object {
-  "_searchInternal": Object {
-    "alternativeNames": Array [
-      "atomicpackagetab",
-      " atomic package tab",
-      "@atomic-package/tab",
-    ],
-    "concatenatedName": "atomicpackagetab",
-  },
-  "computedKeywords": Array [],
-  "computedMetadata": Object {},
-  "created": 1498148375102,
-  "dependencies": Object {
-    "@atomic-package/common": "0.0.1",
-    "@atomic-package/utility": "0.0.2",
-  },
-  "deprecated": false,
-  "description": "atomic-package - tab",
-  "devDependencies": Object {
-    "@types/node": "^7.0.14",
-    "browser-sync": "^2.18.8",
-    "chai": "^3.5.0",
-    "concurrently": "^3.4.0",
-    "cssmin": "^0.4.3",
-    "del": "^2.2.2",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^3.1.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-cssmin": "^0.1.7",
-    "gulp-mocha": "^4.3.1",
-    "gulp-plumber": "^1.1.0",
-    "gulp-sass": "^3.1.0",
-    "gulp-uglify": "^2.1.2",
-    "gulp-watch": "^4.3.11",
-    "jsdom": "^10.0.0",
-    "path": "^0.12.7",
-    "power-assert": "^1.4.2",
-    "run-sequence": "^1.2.2",
-    "ts-loader": "^2.0.3",
-    "typescript": "^2.3.1",
-    "typings": "^2.1.1",
-    "webpack": "^2.4.1",
-  },
-  "downloadsLast30Days": 0,
-  "downloadsRatio": 0,
-  "gitHead": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
-  "githubRepo": Object {
-    "head": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
-    "path": "",
-    "project": "tab",
-    "user": "atomic-package",
-  },
-  "homepage": null,
-  "humanDownloadsLast30Days": "0",
-  "keywords": Array [],
-  "lastCrawl": "2018-07-20T07:41:00.500Z",
-  "lastPublisher": Object {
-    "avatar": "https://gravatar.com/avatar/7daea8c42c6c43368b212ff96d0cb147",
-    "email": "d.takayama.web@gmail.com",
-    "link": "https://www.npmjs.com/~daisuke.takayama",
-    "name": "daisuke.takayama",
-  },
-  "license": "MIT",
-  "modified": 1498153976616,
-  "name": "@atomic-package/tab",
-  "objectID": "@atomic-package/tab",
-  "originalAuthor": undefined,
-  "owner": Object {
-    "avatar": "https://github.com/atomic-package.png",
-    "link": "https://github.com/atomic-package",
-    "name": "atomic-package",
-  },
-  "owners": Array [
-    Object {
-      "avatar": "https://gravatar.com/avatar/7daea8c42c6c43368b212ff96d0cb147",
-      "email": "d.takayama.web@gmail.com",
-      "link": "https://www.npmjs.com/~daisuke.takayama",
-      "name": "daisuke.takayama",
-    },
-  ],
-  "popular": false,
-  "readme": "# Atomic Package - tab
-",
-  "repository": Object {
-    "branch": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
-    "head": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
-    "host": "github.com",
-    "path": "",
-    "project": "tab",
-    "url": "https://github.com/atomic-package/tab",
-    "user": "atomic-package",
-  },
-  "tags": Object {
-    "latest": "0.0.4",
-  },
-  "version": "0.0.4",
-  "versions": Object {
-    "0.0.1": "2017-06-22T16:19:35.102Z",
-    "0.0.2": "2017-06-22T17:49:18.317Z",
-    "0.0.3": "2017-06-22T17:51:16.866Z",
-    "0.0.4": "2017-06-22T17:52:56.616Z",
-  },
-}
-`;
-
-exports[`transforms correctly: [object Object] 2`] = `
+exports[`transforms correctly: @atlaskit/input 1`] = `
 Object {
   "_searchInternal": Object {
     "alternativeNames": Array [
@@ -142,7 +36,7 @@ Object {
     "ui",
     "internal",
   ],
-  "lastCrawl": "2018-07-20T07:41:00.502Z",
+  "lastCrawl": Any<String>,
   "lastPublisher": Object {
     "avatar": "https://gravatar.com/avatar/f5f2da89496e4ad75ac1f9d7166e6b99",
     "email": "design-platform@atlassian.com",
@@ -294,7 +188,113 @@ Are you in trouble? Read through our [contribution guidelines](https://bitbucket
 }
 `;
 
-exports[`truncates long readmes: [object Object] 1`] = `
+exports[`transforms correctly: @atomic-package/tab 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "atomicpackagetab",
+      " atomic package tab",
+      "@atomic-package/tab",
+    ],
+    "concatenatedName": "atomicpackagetab",
+  },
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": 1498148375102,
+  "dependencies": Object {
+    "@atomic-package/common": "0.0.1",
+    "@atomic-package/utility": "0.0.2",
+  },
+  "deprecated": false,
+  "description": "atomic-package - tab",
+  "devDependencies": Object {
+    "@types/node": "^7.0.14",
+    "browser-sync": "^2.18.8",
+    "chai": "^3.5.0",
+    "concurrently": "^3.4.0",
+    "cssmin": "^0.4.3",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-mocha": "^4.3.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^2.1.2",
+    "gulp-watch": "^4.3.11",
+    "jsdom": "^10.0.0",
+    "path": "^0.12.7",
+    "power-assert": "^1.4.2",
+    "run-sequence": "^1.2.2",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.3.1",
+    "typings": "^2.1.1",
+    "webpack": "^2.4.1",
+  },
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
+  "githubRepo": Object {
+    "head": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
+    "path": "",
+    "project": "tab",
+    "user": "atomic-package",
+  },
+  "homepage": null,
+  "humanDownloadsLast30Days": "0",
+  "keywords": Array [],
+  "lastCrawl": Any<String>,
+  "lastPublisher": Object {
+    "avatar": "https://gravatar.com/avatar/7daea8c42c6c43368b212ff96d0cb147",
+    "email": "d.takayama.web@gmail.com",
+    "link": "https://www.npmjs.com/~daisuke.takayama",
+    "name": "daisuke.takayama",
+  },
+  "license": "MIT",
+  "modified": 1498153976616,
+  "name": "@atomic-package/tab",
+  "objectID": "@atomic-package/tab",
+  "originalAuthor": undefined,
+  "owner": Object {
+    "avatar": "https://github.com/atomic-package.png",
+    "link": "https://github.com/atomic-package",
+    "name": "atomic-package",
+  },
+  "owners": Array [
+    Object {
+      "avatar": "https://gravatar.com/avatar/7daea8c42c6c43368b212ff96d0cb147",
+      "email": "d.takayama.web@gmail.com",
+      "link": "https://www.npmjs.com/~daisuke.takayama",
+      "name": "daisuke.takayama",
+    },
+  ],
+  "popular": false,
+  "readme": "# Atomic Package - tab
+",
+  "repository": Object {
+    "branch": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
+    "head": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
+    "host": "github.com",
+    "path": "",
+    "project": "tab",
+    "url": "https://github.com/atomic-package/tab",
+    "user": "atomic-package",
+  },
+  "tags": Object {
+    "latest": "0.0.4",
+  },
+  "version": "0.0.4",
+  "versions": Object {
+    "0.0.1": "2017-06-22T16:19:35.102Z",
+    "0.0.2": "2017-06-22T17:49:18.317Z",
+    "0.0.3": "2017-06-22T17:51:16.866Z",
+    "0.0.4": "2017-06-22T17:52:56.616Z",
+  },
+}
+`;
+
+exports[`truncates long readmes 1`] = `
 Object {
   "_searchInternal": Object {
     "alternativeNames": Array [
@@ -318,7 +318,7 @@ Object {
   "homepage": null,
   "humanDownloadsLast30Days": "0",
   "keywords": Array [],
-  "lastCrawl": "2018-07-20T07:41:00.507Z",
+  "lastCrawl": Any<String>,
   "lastPublisher": Object {
     "avatar": "https://www.gravatar.com/avatar/",
     "link": "https://www.npmjs.com/~unknown",
