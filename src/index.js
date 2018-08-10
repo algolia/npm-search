@@ -98,7 +98,8 @@ async function bootstrap(state) {
     log.info('⛷ Bootstrap: starting at doc %s', state.bootstrapLastId);
     return loop(state.bootstrapLastId);
   } else {
-    await client.deleteIndex(c.bootstrapIndexName);
+    const { taskID } = await client.deleteIndex(c.bootstrapIndexName);
+    await bootstrapIndex.waitTask(taskID);
     log.info('⛷ Bootstrap: starting from the first doc');
     return (
       npm
@@ -238,26 +239,25 @@ function watch({ seq }) {
           })
         )
         .then(stateManager.get)
-        // For now we disable this next step because we have a bug where the index got misconfigured after bootstrap/move
-        // .then(({ bootstrapLastDone }) => {
-        //   const now = Date.now();
-        //   const lastBootstrapped = new Date(bootstrapLastDone);
-        //   // when the process is running longer than a certain time
-        //   // we want to start over and get all info again
-        //   // we do this by exiting and letting Heroku start over
-        //   if (now - lastBootstrapped > c.timeToRedoBootstrap) {
-        //     return stateManager
-        //       .set({
-        //         seq: 0,
-        //         bootstrapDone: false,
-        //       })
-        //       .then(() => {
-        //         process.exit(0); // eslint-disable-line no-process-exit
-        //       });
-        //   }
+        .then(({ bootstrapLastDone }) => {
+          const now = Date.now();
+          const lastBootstrapped = new Date(bootstrapLastDone);
+          // when the process is running longer than a certain time
+          // we want to start over and get all info again
+          // we do this by exiting and letting Heroku start over
+          if (now - lastBootstrapped > c.timeToRedoBootstrap) {
+            return stateManager
+              .set({
+                seq: 0,
+                bootstrapDone: false,
+              })
+              .then(() => {
+                process.exit(0); // eslint-disable-line no-process-exit
+              });
+          }
 
-        //   return null;
-        // })
+          return null;
+        })
         .then(done)
         .catch(done);
     }, 1);
