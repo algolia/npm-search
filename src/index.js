@@ -101,17 +101,11 @@ async function bootstrap(state) {
     const { taskID } = await client.deleteIndex(c.bootstrapIndexName);
     await bootstrapIndex.waitTask(taskID);
     log.info('⛷ Bootstrap: starting from the first doc');
-    return (
-      npm
-        .info()
-        // first time this launches, we need to remember the last seq our bootstrap can trust
-        .then(({ seq }) =>
-          stateManager.save({
-            seq,
-          })
-        )
-        .then(() => loop(state.bootstrapLastId))
-    );
+    const { seq } = await npm.info();
+    // first time this launches, we need to remember the last seq our bootstrap can trust
+    await stateManager.save({ seq });
+    await setSettings(bootstrapIndex);
+    return loop(state.bootstrapLastId);
   }
 
   function loop(lastId) {
