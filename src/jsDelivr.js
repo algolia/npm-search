@@ -31,5 +31,3 @@ export async function loadHits() {
 export function getHits(pkgs) {
   return pkgs.map(({ name }) => ({ jsDelivrHits: hits.get(name) || 0 }));
 }
-
-setInterval(loadHits, 24 * 60 * 60 * 1000);
