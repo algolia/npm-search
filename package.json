@@ -63,7 +63,7 @@
     "eslint-import-resolver-webpack": "0.10.1",
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jasmine": "2.10.1",
-    "eslint-plugin-jest": "21.21.0",
+    "eslint-plugin-jest": "21.22.0",
     "eslint-plugin-prettier": "2.6.2",
     "eslint-plugin-react": "7.11.1",
     "husky": "0.14.3",
@@ -72,7 +72,7 @@
     "pre-commit": "1.2.2",
     "prettier": "1.14.2",
     "renovate-config-algolia": "2.0.2",
-    "validator": "10.6.0"
+    "validator": "10.7.0"
   },
   "engines": {
     "node": "9.11.2"

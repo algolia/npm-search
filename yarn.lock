@@ -2047,9 +2047,9 @@ eslint-plugin-jasmine@2.10.1:
   version "2.10.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-jasmine/-/eslint-plugin-jasmine-2.10.1.tgz#5733b709e751f4bc40e31e1c16989bd2cdfbec97"
 
-eslint-plugin-jest@21.21.0:
-  version "21.21.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.21.0.tgz#f0afd138c4acb5f0cd7698318fb49c7d49f3bf45"
+eslint-plugin-jest@21.22.0:
+  version "21.22.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-21.22.0.tgz#1b9e49b3e5ce9a3d0a51af4579991d517f33726e"
 
 eslint-plugin-prettier@2.6.2:
   version "2.6.2"
@@ -6367,9 +6367,9 @@ validate.io-undefined@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/validate.io-undefined/-/validate.io-undefined-1.0.3.tgz#7e27fcbb315b841e78243431897671929e20b7f4"
 
-validator@10.6.0:
-  version "10.6.0"
-  resolved "https://registry.yarnpkg.com/validator/-/validator-10.6.0.tgz#a9bdce685b3c3e8480e7ebbb9eb95c54cd9733b0"
+validator@10.7.0:
+  version "10.7.0"
+  resolved "https://registry.yarnpkg.com/validator/-/validator-10.7.0.tgz#2d6443badcf942c86c19dc3deac7b87c0bd9b60d"
 
 verror@1.10.0:
   version "1.10.0"
