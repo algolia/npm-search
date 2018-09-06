@@ -44,6 +44,7 @@ For every single NPM package, we create a record in the Algolia index. The resul
   "downloadsLast30Days": 10978749,
   "downloadsRatio": 0.08310651682685861,
   "humanDownloadsLast30Days": "11m",
+  "jsDelivrHits": 11684192,
   "popular": true,
   "version": "6.26.0",
   "versions": {

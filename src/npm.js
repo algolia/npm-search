@@ -14,11 +14,9 @@ export function info() {
   }));
 }
 
-const logWarning = ({ error, type, packages }) => {
+const logWarning = ({ error, type, packagesStr }) => {
   log.warn(
-    `Something went wrong asking the ${type} for \n${packages.join(
-      ','
-    )} \n${error}`
+    `Something went wrong asking the ${type} for \n${packagesStr} \n${error}`
   );
 };
 
@@ -58,7 +56,7 @@ export async function getDownloads(pkgs) {
         logWarning({
           error,
           type: 'downloads',
-          packages: pkgsNames,
+          packagesStr: pkgsNames,
         });
         return { body: {} };
       })
@@ -72,7 +70,7 @@ export async function getDownloads(pkgs) {
           logWarning({
             error,
             type: 'scoped downloads',
-            packages: [pkg],
+            packagesStr: pkg,
           });
           return { body: {} };
         })
