@@ -124,7 +124,8 @@ For every single NPM package, we create a record in the Algolia index. The resul
   "objectID": "babel-core",
   "_searchInternal": {
     "popularName": "babel-core",
-    "downloadsMagnitude": 8
+    "downloadsMagnitude": 8,
+    "jsDelivrPopularity": 5
   }
 }
 ```
