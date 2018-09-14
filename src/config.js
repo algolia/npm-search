@@ -33,6 +33,7 @@ const defaultConfig = {
     ],
     customRanking: [
       'desc(_searchInternal.downloadsMagnitude)',
+      'desc(_searchInternal.jsDelivrPopularity)',
       'desc(dependents)',
       'desc(downloadsLast30Days)',
     ],

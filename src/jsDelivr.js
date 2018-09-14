@@ -19,5 +19,16 @@ export async function loadHits() {
 }
 
 export function getHits(pkgs) {
-  return pkgs.map(({ name }) => ({ jsDelivrHits: hits.get(name) || 0 }));
+  return pkgs.map(({ name }) => {
+    const jsDelivrHits = hits.get(name) || 0;
+
+    return {
+      jsDelivrHits,
+      _searchInternal: {
+        // anything below 1000 hits/month is likely to mean that
+        // someone just made a few random requests so we count that as 0
+        jsDelivrPopularity: Math.max(jsDelivrHits.toString().length - 3, 0),
+      },
+    };
+  });
 }
