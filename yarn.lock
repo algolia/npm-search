@@ -2535,9 +2535,9 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
-github-url-to-object@^2.2.1:
-  version "2.2.6"
-  resolved "https://registry.yarnpkg.com/github-url-to-object/-/github-url-to-object-2.2.6.tgz#ca9250165149748eeeb30bfcc6000c6fe0d242f7"
+github-url-to-object@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/github-url-to-object/-/github-url-to-object-4.0.4.tgz#a9797b7026e18d53b50b07f45b7e169b55fd90ee"
   dependencies:
     is-url "^1.1.0"
 
@@ -4332,11 +4332,11 @@ ncp@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
 
-nice-package@3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/nice-package/-/nice-package-3.0.3.tgz#4d5539ff109d1e3a81daa752eea452812364a59c"
+nice-package@3.0.4:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/nice-package/-/nice-package-3.0.4.tgz#599c6b5e76ba1db8d51c8666331ea154df4c4414"
   dependencies:
-    github-url-to-object "^2.2.1"
+    github-url-to-object "^4.0.4"
     lodash "^4.17.2"
     normalize-registry-metadata "^1.1.2"
     revalidator "^0.3.1"
