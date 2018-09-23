@@ -70,7 +70,7 @@
     "jest": "23.6.0",
     "lint-staged": "7.3.0",
     "pre-commit": "1.2.2",
-    "prettier": "1.14.2",
+    "prettier": "1.14.3",
     "renovate-config-algolia": "2.0.2",
     "validator": "10.7.1"
   },
