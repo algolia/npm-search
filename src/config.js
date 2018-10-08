@@ -77,6 +77,54 @@ const defaultConfig = {
         },
       },
     },
+    {
+      condition: {
+        pattern: 'author\\: {facet:owner.name}',
+        anchoring: 'contains',
+      },
+      consequence: {
+        params: {
+          automaticFacetFilters: ['owner.name'],
+          query: {
+            remove: ['author\\:', '{facet:owner.name}'],
+          },
+        },
+      },
+      description: 'filter on author: {owner.name}',
+      objectID: 'author:owner',
+    },
+    {
+      condition: {
+        pattern: 'owner\\: {facet:owner.name}',
+        anchoring: 'contains',
+      },
+      consequence: {
+        params: {
+          automaticFacetFilters: ['owner.name'],
+          query: {
+            remove: ['owner\\:', '{facet:owner.name}'],
+          },
+        },
+      },
+      description: 'filter on owner: {owner.name}',
+      objectID: 'owner:owner',
+    },
+    {
+      condition: {
+        pattern: 'keyword\\: {facet:keywords}',
+        anchoring: 'contains',
+      },
+      consequence: {
+        params: {
+          automaticFacetFilters: ['keywords'],
+          query: {
+            remove: ['keyword\\:', '{facet:keywords}'],
+          },
+        },
+      },
+      description: 'filter on keyword: {keywords}',
+      objectID: 'keyword:keyword',
+    },
   ],
 };
 

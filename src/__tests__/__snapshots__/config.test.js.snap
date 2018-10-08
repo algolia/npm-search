@@ -23,6 +23,69 @@ Object {
       "description": "promote exact matches",
       "objectID": "promote-exact",
     },
+    Object {
+      "condition": Object {
+        "anchoring": "contains",
+        "pattern": "author\\\\: {facet:owner.name}",
+      },
+      "consequence": Object {
+        "params": Object {
+          "automaticFacetFilters": Array [
+            "owner.name",
+          ],
+          "query": Object {
+            "remove": Array [
+              "author\\\\:",
+              "{facet:owner.name}",
+            ],
+          },
+        },
+      },
+      "description": "filter on author: {owner.name}",
+      "objectID": "author:owner",
+    },
+    Object {
+      "condition": Object {
+        "anchoring": "contains",
+        "pattern": "owner\\\\: {facet:owner.name}",
+      },
+      "consequence": Object {
+        "params": Object {
+          "automaticFacetFilters": Array [
+            "owner.name",
+          ],
+          "query": Object {
+            "remove": Array [
+              "owner\\\\:",
+              "{facet:owner.name}",
+            ],
+          },
+        },
+      },
+      "description": "filter on owner: {owner.name}",
+      "objectID": "owner:owner",
+    },
+    Object {
+      "condition": Object {
+        "anchoring": "contains",
+        "pattern": "keyword\\\\: {facet:keywords}",
+      },
+      "consequence": Object {
+        "params": Object {
+          "automaticFacetFilters": Array [
+            "keywords",
+          ],
+          "query": Object {
+            "remove": Array [
+              "keyword\\\\:",
+              "{facet:keywords}",
+            ],
+          },
+        },
+      },
+      "description": "filter on keyword: {keywords}",
+      "objectID": "keyword:keyword",
+    },
   ],
   "indexSettings": Object {
     "attributesForFaceting": Array [
