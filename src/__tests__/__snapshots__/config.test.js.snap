@@ -42,7 +42,7 @@ Object {
         },
       },
       "description": "filter on author: {owner.name}",
-      "objectID": "author:owner",
+      "objectID": "author-filter",
     },
     Object {
       "condition": Object {
@@ -84,7 +84,7 @@ Object {
         },
       },
       "description": "filter on keyword: {keywords}",
-      "objectID": "keyword:keyword",
+      "objectID": "keyword-filter",
     },
   ],
   "indexSettings": Object {

@@ -91,7 +91,7 @@ const defaultConfig = {
         },
       },
       description: 'filter on author: {owner.name}',
-      objectID: 'author:owner',
+      objectID: 'author-filter',
     },
     {
       condition: {
@@ -123,7 +123,7 @@ const defaultConfig = {
         },
       },
       description: 'filter on keyword: {keywords}',
-      objectID: 'keyword:keyword',
+      objectID: 'keyword-filter',
     },
   ],
 };
