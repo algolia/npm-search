@@ -107,7 +107,7 @@ const defaultConfig = {
         },
       },
       description: 'filter on owner: {owner.name}',
-      objectID: 'owner:owner',
+      objectID: 'owner-filter',
     },
     {
       condition: {
