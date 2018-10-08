@@ -14,11 +14,9 @@ export function info() {
   }));
 }
 
-const logWarning = ({ error, type, packages }) => {
+const logWarning = ({ error, type, packagesStr }) => {
   log.warn(
-    `Something went wrong asking the ${type} for \n${packages.join(
-      ','
-    )} \n${error}`
+    `Something went wrong asking the ${type} for \n${packagesStr} \n${error}`
   );
 };
 
@@ -58,7 +56,7 @@ export async function getDownloads(pkgs) {
         logWarning({
           error,
           type: 'downloads',
-          packages: pkgsNames,
+          packagesStr: pkgsNames,
         });
         return { body: {} };
       })
@@ -72,7 +70,7 @@ export async function getDownloads(pkgs) {
           logWarning({
             error,
             type: 'scoped downloads',
-            packages: [pkg],
+            packagesStr: pkg,
           });
           return { body: {} };
         })
@@ -114,32 +112,11 @@ export async function getDownloads(pkgs) {
 }
 
 export function getDependents(pkgs) {
+  // we return 0, waiting for https://github.com/npm/registry/issues/361
   return Promise.all(
-    pkgs.map(({ name }) =>
-      got(`${c.npmRegistryEndpoint}/_design/app/_view/dependedUpon`, {
-        json: true,
-        query: {
-          startkey: JSON.stringify([name]),
-          endkey: JSON.stringify([name, {}]),
-          stale: 'update_after',
-        },
-      })
-        .then(res => res.body.rows[0] || { value: 0 })
-        .then(({ value }) => ({
-          dependents: value,
-          humanDependents: numeral(value).format('0.[0]a'),
-        }))
-        .catch(error => {
-          logWarning({
-            error,
-            type: 'dependents',
-            packages: [name],
-          });
-          return {
-            dependents: 0,
-            humanDependents: '0',
-          };
-        })
-    )
+    pkgs.map(() => ({
+      dependents: 0,
+      humanDependents: '0',
+    }))
   );
 }

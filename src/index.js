@@ -8,6 +8,7 @@ import log from './log.js';
 import ms from 'ms';
 import cargo from 'async/cargo';
 import queue from 'async/queue';
+import { loadHits } from './jsDelivr';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
@@ -96,21 +97,18 @@ async function bootstrap(state) {
 
   if (state.bootstrapLastId) {
     log.info('⛷ Bootstrap: starting at doc %s', state.bootstrapLastId);
+    await loadHits();
     return loop(state.bootstrapLastId);
   } else {
-    await client.deleteIndex(c.bootstrapIndexName);
+    const { taskID } = await client.deleteIndex(c.bootstrapIndexName);
+    await bootstrapIndex.waitTask(taskID);
     log.info('⛷ Bootstrap: starting from the first doc');
-    return (
-      npm
-        .info()
-        // first time this launches, we need to remember the last seq our bootstrap can trust
-        .then(({ seq }) =>
-          stateManager.save({
-            seq,
-          })
-        )
-        .then(() => loop(state.bootstrapLastId))
-    );
+    const { seq } = await npm.info();
+    // first time this launches, we need to remember the last seq our bootstrap can trust
+    await stateManager.save({ seq });
+    await setSettings(bootstrapIndex);
+    await loadHits();
+    return loop(state.bootstrapLastId);
   }
 
   function loop(lastId) {

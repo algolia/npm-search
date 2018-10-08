@@ -97,6 +97,7 @@ Object {
     ],
     "customRanking": Array [
       "desc(_searchInternal.downloadsMagnitude)",
+      "desc(_searchInternal.jsDelivrPopularity)",
       "desc(dependents)",
       "desc(downloadsLast30Days)",
     ],
@@ -145,6 +146,7 @@ Object {
       "type": "synonym",
     },
   ],
+  "jsDelivrHitsEndpoint": "https://data.jsdelivr.com/v1/stats/packages/month/all",
   "maxObjSize": 450000,
   "npmDownloadsEndpoint": "https://api.npmjs.org/downloads",
   "npmRegistryEndpoint": "https://replicate.npmjs.com/registry",

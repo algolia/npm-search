@@ -5,6 +5,7 @@ import ms from 'ms';
 const defaultConfig = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
   npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
+  jsDelivrHitsEndpoint: 'https://data.jsdelivr.com/v1/stats/packages/month/all',
   maxObjSize: 450000,
   popularDownloadsRatio: 0.005,
   appId: 'OFCNCOG2CU',
@@ -32,6 +33,7 @@ const defaultConfig = {
     ],
     customRanking: [
       'desc(_searchInternal.downloadsMagnitude)',
+      'desc(_searchInternal.jsDelivrPopularity)',
       'desc(dependents)',
       'desc(downloadsLast30Days)',
     ],
