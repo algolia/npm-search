@@ -134,6 +134,25 @@ describe('adds yeoman generators', () => {
   });
 });
 
+describe('adds webpack scaffolds', () => {
+  it('should add if matches the criterions', () => {
+    const dogs = {
+      name: 'webpack-scaffold-cats',
+      lastPublisher: { name: 'unknown' },
+    };
+    const formattedDogs = formatPkg(dogs);
+    expect(formattedDogs.computedKeywords).toEqual(['webpack-scaffold']);
+  });
+  it('should not add if does not start with generator-', () => {
+    const dogs = {
+      name: 'foo-dogs',
+      lastPublisher: { name: 'unknown' },
+    };
+    const formattedDogs = formatPkg(dogs);
+    expect(formattedDogs.computedKeywords).toEqual([]);
+  });
+});
+
 describe('test getRepositoryInfo', () => {
   const getRepositoryInfo = formatPkg.__RewireAPI__.__get__(
     'getRepositoryInfo'

@@ -231,7 +231,7 @@ const registrySubsetRules = [
   ({ name, keywords = [] }) => ({
     name: 'webpack-scaffold',
     include:
-      name.startsWith('webpack-scaffold-') && keywords.includes('webpack-scaffold'),
+      name.startsWith('webpack-scaffold-')
   }),
 ];
 
