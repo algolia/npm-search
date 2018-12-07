@@ -227,6 +227,12 @@ const registrySubsetRules = [
     include: schematics.length > 0,
     metadata: { schematics },
   }),
+
+  ({ name, keywords = [] }) => ({
+    name: 'webpack-scaffold',
+    include:
+      name.startsWith('webpack-scaffold-') && keywords.includes('webpack-scaffold'),
+  }),
 ];
 
 function getComputedData(cleaned) {
