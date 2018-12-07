@@ -228,7 +228,7 @@ const registrySubsetRules = [
     metadata: { schematics },
   }),
 
-  ({ name, keywords = [] }) => ({
+  ({ name }) => ({
     name: 'webpack-scaffold',
     include: name.startsWith('webpack-scaffold-'),
   }),
