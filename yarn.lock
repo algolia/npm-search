@@ -4380,9 +4380,9 @@ ncp@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ncp/-/ncp-2.0.0.tgz#195a21d6c46e361d2fb1281ba38b91e9df7bdbb3"
 
-nice-package@3.0.4:
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/nice-package/-/nice-package-3.0.4.tgz#599c6b5e76ba1db8d51c8666331ea154df4c4414"
+nice-package@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/nice-package/-/nice-package-3.1.0.tgz#9653cc1d9994e55544f67b10fcf50c5775614774"
   dependencies:
     github-url-to-object "^4.0.4"
     lodash "^4.17.2"
