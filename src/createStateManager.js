@@ -32,7 +32,7 @@ export default () => ({
   set(state) {
     currentState = state;
 
-    return setData('index-state', JSON.stringify(state));
+    return setData('index-state', JSON.stringify(state)).then(() => state);
   },
   reset() {
     return this.set(defaultState);
