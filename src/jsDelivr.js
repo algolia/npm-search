@@ -1,5 +1,6 @@
 import got from 'got';
 import c from './config.js';
+import log from './log.js';
 
 const hits = new Map();
 
@@ -12,10 +13,14 @@ function formatHits(pkg) {
 }
 
 export async function loadHits() {
-  const hitsJSONpromise = got(c.jsDelivrHitsEndpoint, { json: true });
-  const hitsJSON = (await hitsJSONpromise).body;
-  hits.clear();
-  hitsJSON.forEach(formatHits);
+  try {
+    const hitsJSONpromise = got(c.jsDelivrHitsEndpoint, { json: true });
+    const hitsJSON = (await hitsJSONpromise).body;
+    hits.clear();
+    hitsJSON.forEach(formatHits);
+  } catch (e) {
+    log.error('no jsDelivr hits found, skipping enrichment', e);
+  }
 }
 
 export function getHits(pkgs) {
