@@ -1,4 +1,15 @@
 import c from './config.js';
+import redis from 'redis';
+import { promisify } from 'util';
+
+const client = redis.createClient(process.env.REDIS_URL);
+
+const getData = promisify(client.get).bind(client);
+const setData = promisify(client.set).bind(client);
+
+client.on('error', err => {
+  throw err;
+});
 
 const defaultState = {
   seq: c.seq,
@@ -8,26 +19,20 @@ const defaultState = {
 
 let currentState;
 
-export default algoliaIndex => ({
+export default () => ({
   check() {
     if (c.seq !== null) return this.reset();
-    return this.get().then(
-      state => (state === undefined ? this.reset() : state)
-    );
+    return this.get().then(state => (state === null ? this.reset() : state));
   },
   get() {
     return currentState
       ? Promise.resolve(currentState)
-      : algoliaIndex.getSettings().then(({ userData }) => userData);
+      : getData('index-state').then(data => JSON.parse(data));
   },
   set(state) {
     currentState = state;
 
-    return algoliaIndex
-      .setSettings({
-        userData: state,
-      })
-      .then(() => state);
+    return setData('index-state', JSON.stringify(state));
   },
   reset() {
     return this.set(defaultState);

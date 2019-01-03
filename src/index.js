@@ -27,7 +27,7 @@ let loopStart = Date.now();
 
 const { index: mainIndex, client } = createAlgoliaIndex(c.indexName);
 const { index: bootstrapIndex } = createAlgoliaIndex(c.bootstrapIndexName);
-const stateManager = createStateManager(mainIndex);
+const stateManager = createStateManager();
 
 async function main() {
   // first we make sure the bootstrap index has the correct settings
