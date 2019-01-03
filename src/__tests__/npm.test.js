@@ -119,7 +119,7 @@ describe('getDownloads()', () => {
     // eslint-disable-next-line no-console
     console.log('downloads', { jest, angular, holmes });
 
-    expect(jest).toHaveLength(8);
+    expect(jest).toHaveLength(7);
 
     expect(angular).toHaveLength(7);
 
@@ -131,7 +131,7 @@ describe('getDownloads()', () => {
       pkg => pkg._searchInternal.downloadsMagnitude
     );
 
-    expect(jest).toBe(8);
+    expect(jest).toBe(7);
     expect(angular).toBe(7);
     expect(holmes).toBe(3);
   });
