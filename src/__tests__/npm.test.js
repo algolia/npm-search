@@ -133,7 +133,7 @@ describe('getDownloads()', () => {
     const [jest, angular, holmes] = downloads.map(
       pkg => pkg._searchInternal.downloadsMagnitude
     );
-    
+
     expect(jest).toBeGreaterThanOrEqual(6);
     expect(jest).toBeLessThanOrEqual(8);
 
