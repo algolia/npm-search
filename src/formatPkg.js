@@ -338,6 +338,7 @@ function getRepositoryInfo(repository) {
   }
 
   const url = typeof repository === 'string' ? repository : repository.url;
+  const path = typeof repository === 'string' ? '' : repository.directory || '';
 
   if (!url) {
     return null;
@@ -354,7 +355,7 @@ function getRepositoryInfo(repository) {
       project,
       user,
       host: domain,
-      path: '',
+      path: path.replace(/^[./]+/, ''),
     };
   }
 
@@ -363,7 +364,14 @@ function getRepositoryInfo(repository) {
    *   https://github.com/babel/babel/tree/master/packages/babel-core
    * so we need to do it
    */
-  return getRepositoryInfoFromHttpUrl(url);
+  const repositoryInfoFromUrl = getRepositoryInfoFromHttpUrl(url);
+  if (!repositoryInfoFromUrl) {
+    return null;
+  }
+  return {
+    ...repositoryInfoFromUrl,
+    path: path.replace(/^[./]+/, '') || repositoryInfoFromUrl.path,
+  };
 }
 
 function formatUser(user) {

@@ -252,6 +252,18 @@ describe('test getRepositoryInfo', () => {
       url: 'git+https://bitbucket.org/2klicdev/2klic-sdk.git',
     };
 
+    const githubRepoWithDirectory = {
+      type: 'git',
+      url: 'https://github.com/facebook/react.git',
+      directory: './packages/react-dom',
+    };
+
+    const githubRepoWithPathUrlAndDirectory = {
+      type: 'git',
+      url: 'https://github.com/facebook/react/tree/master/packages/wrong',
+      directory: './packages/react-dom',
+    };
+
     expect(getRepositoryInfo(githubRepo)).toEqual({
       host: 'github.com',
       user: 'webpack',
@@ -271,6 +283,20 @@ describe('test getRepositoryInfo', () => {
       user: '2klicdev',
       project: '2klic-sdk',
       path: '',
+    });
+
+    expect(getRepositoryInfo(githubRepoWithDirectory)).toEqual({
+      host: 'github.com',
+      user: 'facebook',
+      project: 'react',
+      path: 'packages/react-dom',
+    });
+
+    expect(getRepositoryInfo(githubRepoWithPathUrlAndDirectory)).toEqual({
+      host: 'github.com',
+      user: 'facebook',
+      project: 'react',
+      path: 'packages/react-dom',
     });
   });
 
