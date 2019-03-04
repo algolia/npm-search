@@ -36,9 +36,11 @@ async function main() {
   // after a bootstrap is done, it's moved to main (with settings)
   // if it was already finished, we will set the settings on the main index
   await bootstrap(await stateManager.check());
+
   // then we figure out which updates we missed since
   // the last time main index was updated
   await replicate(await stateManager.get());
+
   // then we watch 👀 for all changes happening in the ecosystem
   return watch(await stateManager.get());
 }
@@ -89,6 +91,10 @@ function infoDocs(offset, nbDocs, emoji) {
 }
 
 async function bootstrap(state) {
+  await stateManager.save({
+    stage: 'watch',
+  });
+
   if (state.seq > 0 && state.bootstrapDone === true) {
     await setSettings(mainIndex);
     log.info('⛷ Bootstrap: done');
@@ -167,6 +173,10 @@ async function replicate({ seq }) {
     seq
   );
 
+  await stateManager.save({
+    stage: 'replicate',
+  });
+
   const { seq: npmSeqToReach } = await npm.info();
 
   return new Promise((resolve, reject) => {
@@ -213,10 +223,14 @@ async function replicate({ seq }) {
   });
 }
 
-function watch({ seq }) {
+async function watch({ seq }) {
   log.info(
     `🛰 Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates, since ${seq}`
   );
+
+  await stateManager.save({
+    stage: 'watch',
+  });
 
   return new Promise((resolve, reject) => {
     const changes = db.changes({
