@@ -294,6 +294,82 @@ Object {
 }
 `;
 
+exports[`transforms correctly: indexof 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "indexof",
+      "indexof",
+      "indexof",
+    ],
+    "concatenatedName": "indexof",
+  },
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": 1346430013243,
+  "dependencies": Object {},
+  "deprecated": false,
+  "description": "Microsoft sucks",
+  "devDependencies": Object {},
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": null,
+  "githubRepo": null,
+  "homepage": null,
+  "humanDownloadsLast30Days": "0",
+  "keywords": Array [
+    "index",
+    "array",
+    "indexOf",
+  ],
+  "lastCrawl": Any<String>,
+  "lastPublisher": null,
+  "license": null,
+  "modified": 1424001480609,
+  "name": "indexof",
+  "objectID": "indexof",
+  "originalAuthor": undefined,
+  "owner": Object {
+    "avatar": "https://gravatar.com/avatar/f1e3ab214a976a39cfd713bc93deb10f",
+    "email": "tj@vision-media.ca",
+    "link": "https://www.npmjs.com/~tjholowaychuk",
+    "name": "tjholowaychuk",
+  },
+  "owners": Array [
+    Object {
+      "avatar": "https://gravatar.com/avatar/f1e3ab214a976a39cfd713bc93deb10f",
+      "email": "tj@vision-media.ca",
+      "link": "https://www.npmjs.com/~tjholowaychuk",
+      "name": "tjholowaychuk",
+    },
+  ],
+  "popular": false,
+  "readme": "
+# indexOf
+
+  Lame indexOf thing, thanks microsoft
+
+## Example
+
+\`\`\`js
+var index = require('indexof');
+index(arr, obj);
+\`\`\`
+
+## License
+
+  MIT",
+  "repository": null,
+  "tags": Object {
+    "latest": "0.0.1",
+  },
+  "version": "0.0.1",
+  "versions": Object {
+    "0.0.1": "2012-08-31T16:20:14.894Z",
+  },
+}
+`;
+
 exports[`truncates long readmes 1`] = `
 Object {
   "_searchInternal": Object {

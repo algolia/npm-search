@@ -121,9 +121,13 @@ function maybeEscape(node) {
 }
 
 function getAuthor(cleaned) {
-  return cleaned.author && typeof cleaned.author === 'object'
-    ? formatUser(cleaned.author)
-    : null;
+  if (cleaned.author && typeof cleaned.author === 'object') {
+    return formatUser(cleaned.author);
+  }
+  if (Array.isArray(cleaned.owners) && typeof cleaned.owners[0] === 'object') {
+    return formatUser(cleaned.owners[0]);
+  }
+  return null;
 }
 
 function getLicense(cleaned) {
