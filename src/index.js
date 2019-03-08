@@ -92,7 +92,7 @@ function infoDocs(offset, nbDocs, emoji) {
 
 async function bootstrap(state) {
   await stateManager.save({
-    stage: 'watch',
+    stage: 'bootstrap',
   });
 
   if (state.seq > 0 && state.bootstrapDone === true) {
