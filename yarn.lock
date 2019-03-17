@@ -185,12 +185,12 @@ ajv@^6.9.1:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-algoliasearch@3.32.0:
-  version "3.32.0"
-  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-3.32.0.tgz#5818168c26ff921bd0346a919071bac928b747ce"
+algoliasearch@3.32.1:
+  version "3.32.1"
+  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-3.32.1.tgz#605f8a2c17ab8da2af4456110f4d0a02b384e3d0"
   dependencies:
     agentkeepalive "^2.2.0"
-    debug "^2.6.8"
+    debug "^2.6.9"
     envify "^4.0.0"
     es6-promise "^4.1.0"
     events "^1.1.0"
