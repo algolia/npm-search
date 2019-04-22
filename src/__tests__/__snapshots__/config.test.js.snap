@@ -90,6 +90,7 @@ Object {
   "indexSettings": Object {
     "attributesForFaceting": Array [
       "filterOnly(_searchInternal.alternativeNames)",
+      "filterOnly(bin)",
       "searchable(keywords)",
       "searchable(computedKeywords)",
       "searchable(owner.name)",

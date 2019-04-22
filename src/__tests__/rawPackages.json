@@ -1861,5 +1861,156 @@
     "keywords": ["index", "array", "indexOf"],
     "readmeFilename": "",
     "_attachments": {}
+  },
+  {
+    "_id": "create-instantsearch-app",
+    "_rev": "23-68734be7846942b871f34588c1c68946",
+    "name": "create-instantsearch-app",
+    "description": "⚡️ Build InstantSearch apps at the speed of thought",
+    "dist-tags": {
+      "latest": "4.4.2",
+      "beta": "3.0.0-beta.5"
+    },
+    "versions": {
+      "4.4.2": {
+        "name": "create-instantsearch-app",
+        "version": "4.4.2",
+        "license": "MIT",
+        "description": "⚡️ Build InstantSearch apps at the speed of thought",
+        "keywords": ["algolia", "instantsearch"],
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/algolia/create-instantsearch-app.git"
+        },
+        "author": {
+          "name": "Algolia",
+          "email": "support@algolia.com"
+        },
+        "main": "index.js",
+        "bin": {
+          "create-instantsearch-app": "src/cli/index.js"
+        },
+        "scripts": {
+          "start": "node src/cli/index.js",
+          "test": "jest src",
+          "test:e2e:templates": "jest e2e/templates.test.js",
+          "test:e2e:installs": "jest e2e/installs.test.js",
+          "test:e2e": "yarn run test:e2e:templates && yarn run test:e2e:installs",
+          "lint": "eslint .",
+          "lint:fix": "yarn run lint --fix",
+          "format": "prettier --write *.{js,md,json}",
+          "doctoc": "doctoc --maxlevel 3 README.md CONTRIBUTING.md docs/",
+          "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+          "release-templates": "node ./scripts/release-templates",
+          "release": "release-it",
+          "release:beta": "release-it --preRelease=beta"
+        },
+        "engines": {
+          "node": ">= 8"
+        },
+        "dependencies": {
+          "algoliasearch": "3.32.1",
+          "chalk": "2.4.2",
+          "commander": "2.20.0",
+          "inquirer": "6.2.2",
+          "jstransformer-handlebars": "1.1.0",
+          "latest-semver": "1.0.0",
+          "load-json-file": "5.2.0",
+          "lodash.camelcase": "4.3.0",
+          "metalsmith": "2.3.0",
+          "metalsmith-ignore": "1.0.0",
+          "metalsmith-in-place": "4.2.0",
+          "metalsmith-rename": "1.0.0",
+          "semver": "6.0.0",
+          "validate-npm-package-name": "3.0.0"
+        },
+        "devDependencies": {
+          "babel-eslint": "10.0.1",
+          "conventional-changelog-cli": "2.0.12",
+          "doctoc": "1.4.0",
+          "eslint": "5.16.0",
+          "eslint-config-algolia": "13.2.3",
+          "eslint-config-prettier": "4.1.0",
+          "eslint-plugin-html": "5.0.3",
+          "eslint-plugin-import": "2.16.0",
+          "eslint-plugin-jest": "22.4.1",
+          "eslint-plugin-prettier": "3.0.1",
+          "jest": "24.7.1",
+          "jest-image-snapshot": "2.8.1",
+          "prettier": "1.16.4",
+          "release-it": "7.6.3",
+          "walk-sync": "1.1.3"
+        },
+        "renovate": {
+          "extends": ["config:js-app", "algolia"]
+        },
+        "jest": {
+          "testPathIgnorePatterns": [
+            "<rootDir>/node_modules/",
+            "<rootDir>/src/templates/"
+          ],
+          "testEnvironment": "node"
+        },
+        "gitHead": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
+        "bugs": {
+          "url": "https://github.com/algolia/create-instantsearch-app/issues"
+        },
+        "homepage": "https://github.com/algolia/create-instantsearch-app#readme",
+        "_id": "create-instantsearch-app@4.4.2",
+        "_npmVersion": "6.4.1",
+        "_nodeVersion": "11.0.0",
+        "_npmUser": {
+          "name": "francoischalifour",
+          "email": "francois.chalifour@gmail.com"
+        },
+        "dist": {
+          "integrity": "sha512-w7jQdAf4JnNxjDwwz5W0l9QEGQwdzSV7haijrWQaLoe6IkLruv8Kibu5mrvy9iXo58AuVilnrH8Y+M+8elHOTA==",
+          "shasum": "6941e32434f592deaebe473b18ec74f970434394",
+          "tarball": "https://registry.npmjs.org/create-instantsearch-app/-/create-instantsearch-app-4.4.2.tgz",
+          "fileCount": 231,
+          "unpackedSize": 382011,
+          "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJcrdSqCRA9TVsSAnZWagAAProP/0s0plIES/stqO+C14oS\nGZHkXieClM1QeQv14ZZTFAM1lVx8MgV1jWBk7tKDrphCPEmCqWILbExqArt8\nj9HZQr5wDHIYenzAAyZeoBUpXZ2mZ9/VTi1L3sBRUEM2pQxd7H5AlJNXvIDr\nfUPqsgQI69CN/RXcejl6NCbj6sV0OxieQNqMP3767lmu/zLjaymKYsYJUke8\nELJ4OUNJEw63Yn2bSgV5iKY2pCtj4yPF+W4HTnddHm2cbwxuU2mZ9tfdHrAB\nJF5fYAzhF06DT98UQk/kpbUvo3mhfGzdbYmVz0m8VJCTXK9+wG4Lj83E8EeT\n29K4ve4PTiHtetX1T4GH1WhDIbnGbj93SVNHdBp5y02umwT59Jwwkxj+fyo2\nL8XPt+I2NoX5PvhAZQh45EPb2vtKV95OzyIUAD8ykoA7xUf7SQTMIGtQIWgd\ncEMhCfzRXpXxhcXbIdVTDZ/VX471UxIXuWiVBwK0R4SZRNvgfAalri7ph8xx\nex1jGZmCRV4lQAXBYtiMVdb7knH9RAP+sn9hTg1hekOd2UHj2mC/1ljvXhti\n6+2aie8uYInoNh3hKYannVlLYmefnvZXUgO8ThXP/ninX6RAboV276ZGkON6\n9eboWoF88F2TDZ+Rw+rpk8SyeVKdelVJ6KbmW3N5Uep62xuCF6Ml33FuiEqQ\n+pQ5\r\n=2QE1\r\n-----END PGP SIGNATURE-----\r\n"
+        },
+        "maintainers": [
+          {
+            "name": "bobylito",
+            "email": "bobylito@gmail.com"
+          }
+        ],
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/create-instantsearch-app_4.4.2_1554896041684_0.21387610340916474"
+        },
+        "_hasShrinkwrap": false
+      }
+    },
+    "readme": "# Create InstantSearch App",
+    "maintainers": [
+      {
+        "name": "bobylito",
+        "email": "bobylito@gmail.com"
+      }
+    ],
+    "time": {
+      "modified": "2019-04-10T11:34:05.753Z",
+      "created": "2017-07-19T08:41:38.313Z",
+      "4.4.2": "2019-04-10T11:34:01.895Z"
+    },
+    "homepage": "https://github.com/algolia/create-instantsearch-app#readme",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/algolia/create-instantsearch-app.git"
+    },
+    "author": {
+      "name": "Algolia",
+      "email": "support@algolia.com"
+    },
+    "bugs": {
+      "url": "https://github.com/algolia/create-instantsearch-app/issues"
+    },
+    "license": "MIT",
+    "readmeFilename": "README.md",
+    "keywords": ["algolia", "instantsearch"]
   }
 ]

@@ -26,6 +26,7 @@ const defaultConfig = {
     ],
     attributesForFaceting: [
       'filterOnly(_searchInternal.alternativeNames)' /* optionalFacetFilters to boost the name */,
+      'filterOnly(bin)',
       'searchable(keywords)',
       'searchable(computedKeywords)',
       'searchable(owner.name)',

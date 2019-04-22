@@ -19,6 +19,18 @@ it('transforms correctly', () => {
     );
 });
 
+it('keeps .bin intact', () => {
+  const createInstantSearchApp = rawPackages.find(
+    pkg => pkg.name === 'create-instantsearch-app'
+  );
+  const formatted = formatPkg(createInstantSearchApp);
+  expect(formatted.bin).toMatchInlineSnapshot(`
+Object {
+  "create-instantsearch-app": "src/cli/index.js",
+}
+`);
+});
+
 it('truncates long readmes', () => {
   const object = {
     name: 'long-boy',
@@ -31,10 +43,13 @@ it('truncates long readmes', () => {
     formatted.readme.length - truncatedEnding.length
   );
 
-  expect(formatted.readme).toHaveLength(451224);
+  const readmeLength = formatted.readme.length;
+
+  expect(readmeLength).toBeLessThan(475000);
   expect(ending).toBe(truncatedEnding);
 
   expect(formatted).toMatchSnapshot({
+    readme: expect.any(String),
     lastCrawl: expect.any(String),
   });
 });

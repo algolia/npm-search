@@ -91,6 +91,7 @@ export default function formatPkg(pkg) {
     modified: Date.parse(cleaned.modified),
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
+    bin: cleaned.bin,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       concatenatedName,
