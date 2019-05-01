@@ -91,6 +91,7 @@ export default function formatPkg(pkg) {
     modified: Date.parse(cleaned.modified),
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
+    bin: cleaned.bin,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       concatenatedName,
@@ -121,9 +122,13 @@ function maybeEscape(node) {
 }
 
 function getAuthor(cleaned) {
-  return cleaned.author && typeof cleaned.author === 'object'
-    ? formatUser(cleaned.author)
-    : null;
+  if (cleaned.author && typeof cleaned.author === 'object') {
+    return formatUser(cleaned.author);
+  }
+  if (Array.isArray(cleaned.owners) && typeof cleaned.owners[0] === 'object') {
+    return formatUser(cleaned.owners[0]);
+  }
+  return null;
 }
 
 function getLicense(cleaned) {
@@ -226,6 +231,11 @@ const registrySubsetRules = [
     name: 'angular-cli-schematic',
     include: schematics.length > 0,
     metadata: { schematics },
+  }),
+
+  ({ name }) => ({
+    name: 'webpack-scaffold',
+    include: name.startsWith('webpack-scaffold-'),
   }),
 ];
 
@@ -333,6 +343,7 @@ function getRepositoryInfo(repository) {
   }
 
   const url = typeof repository === 'string' ? repository : repository.url;
+  const path = typeof repository === 'string' ? '' : repository.directory || '';
 
   if (!url) {
     return null;
@@ -349,7 +360,7 @@ function getRepositoryInfo(repository) {
       project,
       user,
       host: domain,
-      path: '',
+      path: path.replace(/^[./]+/, ''),
     };
   }
 
@@ -358,7 +369,14 @@ function getRepositoryInfo(repository) {
    *   https://github.com/babel/babel/tree/master/packages/babel-core
    * so we need to do it
    */
-  return getRepositoryInfoFromHttpUrl(url);
+  const repositoryInfoFromUrl = getRepositoryInfoFromHttpUrl(url);
+  if (!repositoryInfoFromUrl) {
+    return null;
+  }
+  return {
+    ...repositoryInfoFromUrl,
+    path: path.replace(/^[./]+/, '') || repositoryInfoFromUrl.path,
+  };
 }
 
 function formatUser(user) {

@@ -119,11 +119,14 @@ describe('getDownloads()', () => {
     // eslint-disable-next-line no-console
     console.log('downloads', { jest, angular, holmes });
 
-    expect(jest).toHaveLength(7);
+    expect(jest.length).toBeGreaterThanOrEqual(6);
+    expect(jest.length).toBeLessThanOrEqual(8);
 
-    expect(angular).toHaveLength(7);
+    expect(angular.length).toBeGreaterThanOrEqual(6);
+    expect(angular.length).toBeLessThanOrEqual(8);
 
-    expect(holmes).toHaveLength(3);
+    expect(holmes.length).toBeGreaterThanOrEqual(2);
+    expect(holmes.length).toBeLessThanOrEqual(4);
   });
 
   it('has the right approximate value for downloadsMagnitude', () => {
@@ -131,8 +134,13 @@ describe('getDownloads()', () => {
       pkg => pkg._searchInternal.downloadsMagnitude
     );
 
-    expect(jest).toBe(7);
-    expect(angular).toBe(7);
-    expect(holmes).toBe(3);
+    expect(jest).toBeGreaterThanOrEqual(6);
+    expect(jest).toBeLessThanOrEqual(8);
+
+    expect(angular).toBeGreaterThanOrEqual(6);
+    expect(angular).toBeLessThanOrEqual(8);
+
+    expect(holmes).toBeGreaterThanOrEqual(2);
+    expect(holmes).toBeLessThanOrEqual(4);
   });
 });

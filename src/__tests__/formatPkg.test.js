@@ -19,6 +19,18 @@ it('transforms correctly', () => {
     );
 });
 
+it('keeps .bin intact', () => {
+  const createInstantSearchApp = rawPackages.find(
+    pkg => pkg.name === 'create-instantsearch-app'
+  );
+  const formatted = formatPkg(createInstantSearchApp);
+  expect(formatted.bin).toMatchInlineSnapshot(`
+Object {
+  "create-instantsearch-app": "src/cli/index.js",
+}
+`);
+});
+
 it('truncates long readmes', () => {
   const object = {
     name: 'long-boy',
@@ -31,10 +43,13 @@ it('truncates long readmes', () => {
     formatted.readme.length - truncatedEnding.length
   );
 
-  expect(formatted.readme).toHaveLength(451224);
+  const readmeLength = formatted.readme.length;
+
+  expect(readmeLength).toBeLessThan(475000);
   expect(ending).toBe(truncatedEnding);
 
   expect(formatted).toMatchSnapshot({
+    readme: expect.any(String),
     lastCrawl: expect.any(String),
   });
 });
@@ -127,6 +142,25 @@ describe('adds yeoman generators', () => {
     const dogs = {
       name: 'generator-dogs',
       keywords: ['foo'],
+      lastPublisher: { name: 'unknown' },
+    };
+    const formattedDogs = formatPkg(dogs);
+    expect(formattedDogs.computedKeywords).toEqual([]);
+  });
+});
+
+describe('adds webpack scaffolds', () => {
+  it('should add if matches the criterions', () => {
+    const dogs = {
+      name: 'webpack-scaffold-cats',
+      lastPublisher: { name: 'unknown' },
+    };
+    const formattedDogs = formatPkg(dogs);
+    expect(formattedDogs.computedKeywords).toEqual(['webpack-scaffold']);
+  });
+  it('should not add if does not start with generator-', () => {
+    const dogs = {
+      name: 'foo-dogs',
       lastPublisher: { name: 'unknown' },
     };
     const formattedDogs = formatPkg(dogs);
@@ -233,6 +267,18 @@ describe('test getRepositoryInfo', () => {
       url: 'git+https://bitbucket.org/2klicdev/2klic-sdk.git',
     };
 
+    const githubRepoWithDirectory = {
+      type: 'git',
+      url: 'https://github.com/facebook/react.git',
+      directory: './packages/react-dom',
+    };
+
+    const githubRepoWithPathUrlAndDirectory = {
+      type: 'git',
+      url: 'https://github.com/facebook/react/tree/master/packages/wrong',
+      directory: './packages/react-dom',
+    };
+
     expect(getRepositoryInfo(githubRepo)).toEqual({
       host: 'github.com',
       user: 'webpack',
@@ -252,6 +298,20 @@ describe('test getRepositoryInfo', () => {
       user: '2klicdev',
       project: '2klic-sdk',
       path: '',
+    });
+
+    expect(getRepositoryInfo(githubRepoWithDirectory)).toEqual({
+      host: 'github.com',
+      user: 'facebook',
+      project: 'react',
+      path: 'packages/react-dom',
+    });
+
+    expect(getRepositoryInfo(githubRepoWithPathUrlAndDirectory)).toEqual({
+      host: 'github.com',
+      user: 'facebook',
+      project: 'react',
+      path: 'packages/react-dom',
     });
   });
 

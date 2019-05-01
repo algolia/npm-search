@@ -23,10 +23,74 @@ Object {
       "description": "promote exact matches",
       "objectID": "promote-exact",
     },
+    Object {
+      "condition": Object {
+        "anchoring": "contains",
+        "pattern": "author\\\\: {facet:owner.name}",
+      },
+      "consequence": Object {
+        "params": Object {
+          "automaticFacetFilters": Array [
+            "owner.name",
+          ],
+          "query": Object {
+            "remove": Array [
+              "author\\\\:",
+              "{facet:owner.name}",
+            ],
+          },
+        },
+      },
+      "description": "filter on author: {owner.name}",
+      "objectID": "author-filter",
+    },
+    Object {
+      "condition": Object {
+        "anchoring": "contains",
+        "pattern": "owner\\\\: {facet:owner.name}",
+      },
+      "consequence": Object {
+        "params": Object {
+          "automaticFacetFilters": Array [
+            "owner.name",
+          ],
+          "query": Object {
+            "remove": Array [
+              "owner\\\\:",
+              "{facet:owner.name}",
+            ],
+          },
+        },
+      },
+      "description": "filter on owner: {owner.name}",
+      "objectID": "owner-filter",
+    },
+    Object {
+      "condition": Object {
+        "anchoring": "contains",
+        "pattern": "keyword\\\\: {facet:keywords}",
+      },
+      "consequence": Object {
+        "params": Object {
+          "automaticFacetFilters": Array [
+            "keywords",
+          ],
+          "query": Object {
+            "remove": Array [
+              "keyword\\\\:",
+              "{facet:keywords}",
+            ],
+          },
+        },
+      },
+      "description": "filter on keyword: {keywords}",
+      "objectID": "keyword-filter",
+    },
   ],
   "indexSettings": Object {
     "attributesForFaceting": Array [
       "filterOnly(_searchInternal.alternativeNames)",
+      "filterOnly(bin)",
       "searchable(keywords)",
       "searchable(computedKeywords)",
       "searchable(owner.name)",
@@ -34,6 +98,7 @@ Object {
     ],
     "customRanking": Array [
       "desc(_searchInternal.downloadsMagnitude)",
+      "desc(_searchInternal.jsDelivrPopularity)",
       "desc(dependents)",
       "desc(downloadsLast30Days)",
     ],
@@ -81,7 +146,36 @@ Object {
       ],
       "type": "synonym",
     },
+    Object {
+      "objectID": "a11y",
+      "synonyms": Array [
+        "a11y",
+        "accessibility",
+        "accessible",
+      ],
+      "type": "synonym",
+    },
+    Object {
+      "objectID": "i18n",
+      "synonyms": Array [
+        "i18n",
+        "internationalisation",
+        "internationalization",
+        "translation",
+        "translate",
+      ],
+      "type": "synonym",
+    },
+    Object {
+      "objectID": "k8s",
+      "synonyms": Array [
+        "k8s",
+        "kubernetes",
+      ],
+      "type": "synonym",
+    },
   ],
+  "jsDelivrHitsEndpoint": "https://data.jsdelivr.com/v1/stats/packages/month/all",
   "maxObjSize": 450000,
   "npmDownloadsEndpoint": "https://api.npmjs.org/downloads",
   "npmRegistryEndpoint": "https://replicate.npmjs.com/registry",
