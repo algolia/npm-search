@@ -19,8 +19,7 @@
           "start": "concurrently \"npm run webpack:w\" \"gulp\"",
           "webpack": "webpack",
           "webpack:w": "webpack --progress --colors --watch",
-          "build":
-            "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
         },
         "repository": {
           "type": "git",
@@ -75,8 +74,7 @@
         },
         "dist": {
           "shasum": "ba7b31fe544ff049795e6ab7795c370480dd4b86",
-          "tarball":
-            "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.1.tgz"
+          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.1.tgz"
         },
         "maintainers": [
           {
@@ -100,8 +98,7 @@
           "start": "concurrently \"npm run webpack:w\" \"gulp\"",
           "webpack": "webpack",
           "webpack:w": "webpack --progress --colors --watch",
-          "build":
-            "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
         },
         "repository": {
           "type": "git",
@@ -156,8 +153,7 @@
         },
         "dist": {
           "shasum": "7d9b2ac65f53589a50e8c95049e611ab07296960",
-          "tarball":
-            "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.2.tgz"
+          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.2.tgz"
         },
         "maintainers": [
           {
@@ -181,8 +177,7 @@
           "start": "concurrently \"npm run webpack:w\" \"gulp\"",
           "webpack": "webpack",
           "webpack:w": "webpack --progress --colors --watch",
-          "build":
-            "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
         },
         "repository": {
           "type": "git",
@@ -237,8 +232,7 @@
         },
         "dist": {
           "shasum": "8403f7fccd5418e21786eb84ad33d6b31d6e4299",
-          "tarball":
-            "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.3.tgz"
+          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.3.tgz"
         },
         "maintainers": [
           {
@@ -262,8 +256,7 @@
           "start": "concurrently \"npm run webpack:w\" \"gulp\"",
           "webpack": "webpack",
           "webpack:w": "webpack --progress --colors --watch",
-          "build":
-            "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
+          "build": "concurrently \"webpack --config ./webpack.production.config.js --progress --profile --colors\" \"gulp dist\""
         },
         "repository": {
           "type": "git",
@@ -318,8 +311,7 @@
         },
         "dist": {
           "shasum": "55786c198383be7ab4986739af2c69ad5bcec495",
-          "tarball":
-            "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.4.tgz"
+          "tarball": "https://registry.npmjs.org/@atomic-package/tab/-/tab-0.0.4.tgz"
         },
         "maintainers": [
           {
@@ -366,8 +358,7 @@
     "_id": "@atlaskit/input",
     "_rev": "31-8e30bdb8faac40e50fac00be93918981",
     "name": "@atlaskit/input",
-    "description":
-      "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+    "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
     "dist-tags": {
       "latest": "1.6.1"
     },
@@ -420,8 +411,7 @@
         },
         "dist": {
           "shasum": "1210a9d98b182427dbabdafb0de99029bb5aab02",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.0.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.0.tgz"
         },
         "maintainers": [
           {
@@ -482,8 +472,7 @@
         },
         "dist": {
           "shasum": "65a4ae06c47151224cac7a951f30cd41af71cf4f",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.1.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.1.tgz"
         },
         "maintainers": [
           {
@@ -544,8 +533,7 @@
         },
         "dist": {
           "shasum": "c229de514cece5fa3dd84036d8290360d286e877",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.2.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.2.tgz"
         },
         "maintainers": [
           {
@@ -608,8 +596,7 @@
         },
         "dist": {
           "shasum": "bbaece109bfdd95466828f22ebb3c0ae8ea3e8b6",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.3.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.3.tgz"
         },
         "maintainers": [
           {
@@ -628,8 +615,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -673,8 +659,7 @@
         },
         "dist": {
           "shasum": "e4990fc066a44ce14b49aeb4aeaa724488ab07af",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.4.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.4.tgz"
         },
         "maintainers": [
           {
@@ -693,8 +678,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -738,8 +722,7 @@
         },
         "dist": {
           "shasum": "58dcd55af581cae3ccf67cd2e27235c45d747b13",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.5.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.5.tgz"
         },
         "maintainers": [
           {
@@ -758,8 +741,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -803,8 +785,7 @@
         },
         "dist": {
           "shasum": "e775dbf35197116f791af7ad16d92db33e39a587",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.6.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.6.tgz"
         },
         "maintainers": [
           {
@@ -823,8 +804,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -868,8 +848,7 @@
         },
         "dist": {
           "shasum": "655206ab58d4235bbec29e813040d425e06d71f0",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.8.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.8.tgz"
         },
         "maintainers": [
           {
@@ -888,8 +867,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -933,8 +911,7 @@
         },
         "dist": {
           "shasum": "823e437d4494f626c287fcbf0be1ee6cef5a92a6",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.9.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.9.tgz"
         },
         "maintainers": [
           {
@@ -953,8 +930,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -1004,8 +980,7 @@
         },
         "dist": {
           "shasum": "a62f64b299e2bb106042e64b4e6b82cbd22a5305",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.10.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.10.tgz"
         },
         "_npmOperationalInternal": {
           "host": "packages-12-west.internal.npmjs.com",
@@ -1018,8 +993,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -1069,8 +1043,7 @@
         },
         "dist": {
           "shasum": "3543a73c76f07155345c9eab30c8e247c6335cc2",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.11.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.0.11.tgz"
         },
         "_npmOperationalInternal": {
           "host": "packages-12-west.internal.npmjs.com",
@@ -1083,8 +1056,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -1134,8 +1106,7 @@
         },
         "dist": {
           "shasum": "777a49d4c279f61cd1839dc196ac1b56fec508bd",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.0.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.0.tgz"
         },
         "_npmOperationalInternal": {
           "host": "packages-12-west.internal.npmjs.com",
@@ -1148,8 +1119,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -1199,8 +1169,7 @@
         },
         "dist": {
           "shasum": "8a18272a15119ee6acad0cc397184323bdc759e0",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.1.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.1.tgz"
         },
         "_npmOperationalInternal": {
           "host": "packages-18-east.internal.npmjs.com",
@@ -1213,8 +1182,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -1264,8 +1232,7 @@
         },
         "dist": {
           "shasum": "13a592775c168dd97ded2274c951b26673bde9b3",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.2.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.2.tgz"
         },
         "_npmOperationalInternal": {
           "host": "packages-12-west.internal.npmjs.com",
@@ -1278,8 +1245,7 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "ak:webpack:raw": "src/index.jsx",
@@ -1330,8 +1296,7 @@
         },
         "dist": {
           "shasum": "916622c9202639b9fac8b9a274d8e5f78248384b",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.3.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.1.3.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1344,15 +1309,13 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish":
-            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish"
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish"
         },
         "files": ["dist"],
         "peerDependencies": {
@@ -1398,8 +1361,7 @@
         },
         "dist": {
           "shasum": "8ba24c1c6cad4bd9b0ef3fc72d8ecd54449d0728",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.0.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.0.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1412,15 +1374,13 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish":
-            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook.single.sh",
           "eslint": "../../build/bin/lint.eslint.sh"
         },
@@ -1468,8 +1428,7 @@
         },
         "dist": {
           "shasum": "ca1b6ae5671916d442d064733d74cfde65edc2ca",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.1.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.1.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1482,15 +1441,13 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:experimental:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish":
-            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook.single.sh",
           "eslint": "../../build/bin/lint.eslint.sh"
         },
@@ -1538,8 +1495,7 @@
         },
         "dist": {
           "shasum": "213e24fb4c5aa21ebcd5f7f4e65cd1d03fd310fa",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.2.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.2.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1552,15 +1508,13 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:experimental:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish":
-            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook/run.local.js",
           "eslint": "../../build/bin/lint.eslint.sh",
           "storybook:static": "../../build/bin/storybook/build.static.js"
@@ -1609,8 +1563,7 @@
         },
         "dist": {
           "shasum": "04fd1240a600861e5fd6de425e18c650f80beba6",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.3.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.3.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1623,15 +1576,13 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:experimental:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish":
-            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook/run.local.js",
           "eslint": "../../build/bin/lint.eslint.sh",
           "storybook:static": "../../build/bin/storybook/build.static.js"
@@ -1680,8 +1631,7 @@
         },
         "dist": {
           "shasum": "2d7ff1da654ad9b47cbd3b5cfb137c15f5678f64",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.4.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.5.4.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1694,20 +1644,17 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:experimental:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish":
-            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook/run.local.js",
           "eslint": "../../build/bin/lint.eslint.sh",
           "storybook:static": "../../build/bin/storybook/build.static.js",
-          "test:unit":
-            "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+          "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
         },
         "files": ["dist"],
         "peerDependencies": {
@@ -1753,8 +1700,7 @@
         },
         "dist": {
           "shasum": "f2b3d0d2df54d7a304831a26bd79988ae4d601eb",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.0.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.0.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1767,20 +1713,17 @@
         "config": {
           "access": "public"
         },
-        "description":
-          "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+        "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
         "main": "dist/bundle.js",
         "webpack": "dist/bundle-cjs.js",
         "jsnext:experimental:main": "dist/es/index.js",
         "ak:webpack:raw": "src/index.jsx",
         "scripts": {
-          "prepublish":
-            "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+          "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
           "storybook": "../../build/bin/storybook/run.local.js",
           "eslint": "../../build/bin/lint.eslint.sh",
           "storybook:static": "../../build/bin/storybook/build.static.js",
-          "test:unit":
-            "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
+          "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js"
         },
         "files": ["dist"],
         "peerDependencies": {
@@ -1826,8 +1769,7 @@
         },
         "dist": {
           "shasum": "4c20a218048b90b5e30ca183fd1ede95ae6ad497",
-          "tarball":
-            "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.1.tgz"
+          "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.1.tgz"
         },
         "_npmOperationalInternal": {
           "host": "s3://npm-registry-packages",
@@ -1835,8 +1777,7 @@
         }
       }
     },
-    "readme":
-      "[![AtlasKit component registry](https://img.shields.io/badge/AtlasKit-components-FF5230.svg)](http://atlaskit.atlassian.com)\n[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://Commitizen.github.io/cz-cli/)\n[![semantic-release](https://img.shields.io/badge/GitHub-semantic_release-ffab00.svg)](https://github.com/semantic-release/semantic-release)\n[![Report an issue](https://img.shields.io/badge/Report-an_issue-6554C0.svg)](http://go.atlassian.com/atlaskit-issues)\n\n# Input\n\n**YOU SHOULD ALMOST DEFINITELY NOT BE USING THIS COMPONENT DIRECTLY**\n\n**USE @atlaskit/field-text INSTEAD**\n\n\n## SingleLineTextInput\nA text input component with extremely basic styling that supports read/edit modes.\n\nDesigned for use within other components, e.g. for the read/edit views required by\nak-inline-edit, or within table cells.\n\nNote: In addition the props described below, all other props passed to this\ncomponent will be forwarded to the underlying HTML 'input'. This allows change\nhandlers, placeholders, etc, to be attached to it.\n\n**Kind**: global variable\n* Properties\n\n*  [SingleLineTextInput](#SingleLineTextInput)\n    *  [.value](#SingleLineTextInput.value) : <code>string</code>\n    *  [.style](#SingleLineTextInput.style) : <code>object</code>\n    *  [.isInitiallySelected](#SingleLineTextInput.isInitiallySelected) : <code>boolean</code>\n    *  [.isEditing](#SingleLineTextInput.isEditing) : <code>boolean</code>\n    *  [.onConfirm](#SingleLineTextInput.onConfirm) : <code>function</code>\n    *  [.onKeyDown](#SingleLineTextInput.onKeyDown) : <code>function</code>\n\n<a name=\"SingleLineTextInput.value\"></a>\n\n### SingleLineTextInput.value : <code>string</code>\nThe value of the input field.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.style\"></a>\n\n### SingleLineTextInput.style : <code>object</code>\nCustom styles that will be applied to the read and edit views.\n\nTypical use would be to specify a custom font size.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.isInitiallySelected\"></a>\n\n### SingleLineTextInput.isInitiallySelected : <code>boolean</code>\nWhether the input text will initially be selected/highlighted.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n**Default**: <code>false</code>\n<a name=\"SingleLineTextInput.isEditing\"></a>\n\n### SingleLineTextInput.isEditing : <code>boolean</code>\nWhether the component is in edit mode or read mode.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.onConfirm\"></a>\n\n### SingleLineTextInput.onConfirm : <code>function</code>\nCalled when the user confirms input by pressing the enter key\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.onKeyDown\"></a>\n\n### SingleLineTextInput.onKeyDown : <code>function</code>\nRegular onKeyDown handler passed to the input\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n\n_* Please note that this module could have dependencies that are governed by the Atlassian Design Guidelines license which will be automatically included on install. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies._\n\n## We're here to help!\n\nLet us know what you think of our components and docs, your feedback is really important for us.\n\nAre you in trouble? Read through our [contribution guidelines](https://bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md) and raise an issue to us.\n\n",
+    "readme": "[![AtlasKit component registry](https://img.shields.io/badge/AtlasKit-components-FF5230.svg)](http://atlaskit.atlassian.com)\n[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://Commitizen.github.io/cz-cli/)\n[![semantic-release](https://img.shields.io/badge/GitHub-semantic_release-ffab00.svg)](https://github.com/semantic-release/semantic-release)\n[![Report an issue](https://img.shields.io/badge/Report-an_issue-6554C0.svg)](http://go.atlassian.com/atlaskit-issues)\n\n# Input\n\n**YOU SHOULD ALMOST DEFINITELY NOT BE USING THIS COMPONENT DIRECTLY**\n\n**USE @atlaskit/field-text INSTEAD**\n\n\n## SingleLineTextInput\nA text input component with extremely basic styling that supports read/edit modes.\n\nDesigned for use within other components, e.g. for the read/edit views required by\nak-inline-edit, or within table cells.\n\nNote: In addition the props described below, all other props passed to this\ncomponent will be forwarded to the underlying HTML 'input'. This allows change\nhandlers, placeholders, etc, to be attached to it.\n\n**Kind**: global variable\n* Properties\n\n*  [SingleLineTextInput](#SingleLineTextInput)\n    *  [.value](#SingleLineTextInput.value) : <code>string</code>\n    *  [.style](#SingleLineTextInput.style) : <code>object</code>\n    *  [.isInitiallySelected](#SingleLineTextInput.isInitiallySelected) : <code>boolean</code>\n    *  [.isEditing](#SingleLineTextInput.isEditing) : <code>boolean</code>\n    *  [.onConfirm](#SingleLineTextInput.onConfirm) : <code>function</code>\n    *  [.onKeyDown](#SingleLineTextInput.onKeyDown) : <code>function</code>\n\n<a name=\"SingleLineTextInput.value\"></a>\n\n### SingleLineTextInput.value : <code>string</code>\nThe value of the input field.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.style\"></a>\n\n### SingleLineTextInput.style : <code>object</code>\nCustom styles that will be applied to the read and edit views.\n\nTypical use would be to specify a custom font size.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.isInitiallySelected\"></a>\n\n### SingleLineTextInput.isInitiallySelected : <code>boolean</code>\nWhether the input text will initially be selected/highlighted.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n**Default**: <code>false</code>\n<a name=\"SingleLineTextInput.isEditing\"></a>\n\n### SingleLineTextInput.isEditing : <code>boolean</code>\nWhether the component is in edit mode or read mode.\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.onConfirm\"></a>\n\n### SingleLineTextInput.onConfirm : <code>function</code>\nCalled when the user confirms input by pressing the enter key\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n<a name=\"SingleLineTextInput.onKeyDown\"></a>\n\n### SingleLineTextInput.onKeyDown : <code>function</code>\nRegular onKeyDown handler passed to the input\n\n**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>\n\n_* Please note that this module could have dependencies that are governed by the Atlassian Design Guidelines license which will be automatically included on install. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies._\n\n## We're here to help!\n\nLet us know what you think of our components and docs, your feedback is really important for us.\n\nAre you in trouble? Read through our [contribution guidelines](https://bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md) and raise an issue to us.\n\n",
     "maintainers": [
       {
         "email": "design-platform@atlassian.com",
@@ -1883,5 +1824,193 @@
     },
     "license": "Apache-2.0",
     "readmeFilename": "README.md"
+  },
+  {
+    "_id": "indexof",
+    "_rev": "5-3fd826d99ea92eb0a3423197ec995629",
+    "name": "indexof",
+    "description": "Microsoft sucks",
+    "dist-tags": { "latest": "0.0.1" },
+    "versions": {
+      "0.0.1": {
+        "name": "indexof",
+        "description": "Microsoft sucks",
+        "version": "0.0.1",
+        "keywords": ["index", "array", "indexOf"],
+        "dependencies": {},
+        "component": { "scripts": { "indexof/index.js": "index.js" } },
+        "_id": "indexof@0.0.1",
+        "dist": {
+          "shasum": "82dc336d232b9062179d05ab3293a66059fd435d",
+          "tarball": "https://registry.npmjs.org/indexof/-/indexof-0.0.1.tgz"
+        },
+        "maintainers": [
+          { "name": "tjholowaychuk", "email": "tj@vision-media.ca" }
+        ],
+        "directories": {}
+      }
+    },
+    "readme": "\n# indexOf\n\n  Lame indexOf thing, thanks microsoft\n\n## Example\n\n```js\nvar index = require('indexof');\nindex(arr, obj);\n```\n\n## License\n\n  MIT",
+    "maintainers": [{ "name": "tjholowaychuk", "email": "tj@vision-media.ca" }],
+    "time": {
+      "modified": "2015-02-15T11:58:00.609Z",
+      "created": "2012-08-31T16:20:13.243Z",
+      "0.0.1": "2012-08-31T16:20:14.894Z"
+    },
+    "users": { "pnevares": true, "synchronous": true },
+    "keywords": ["index", "array", "indexOf"],
+    "readmeFilename": "",
+    "_attachments": {}
+  },
+  {
+    "_id": "create-instantsearch-app",
+    "_rev": "23-68734be7846942b871f34588c1c68946",
+    "name": "create-instantsearch-app",
+    "description": "⚡️ Build InstantSearch apps at the speed of thought",
+    "dist-tags": {
+      "latest": "4.4.2",
+      "beta": "3.0.0-beta.5"
+    },
+    "versions": {
+      "4.4.2": {
+        "name": "create-instantsearch-app",
+        "version": "4.4.2",
+        "license": "MIT",
+        "description": "⚡️ Build InstantSearch apps at the speed of thought",
+        "keywords": ["algolia", "instantsearch"],
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/algolia/create-instantsearch-app.git"
+        },
+        "author": {
+          "name": "Algolia",
+          "email": "support@algolia.com"
+        },
+        "main": "index.js",
+        "bin": {
+          "create-instantsearch-app": "src/cli/index.js"
+        },
+        "scripts": {
+          "start": "node src/cli/index.js",
+          "test": "jest src",
+          "test:e2e:templates": "jest e2e/templates.test.js",
+          "test:e2e:installs": "jest e2e/installs.test.js",
+          "test:e2e": "yarn run test:e2e:templates && yarn run test:e2e:installs",
+          "lint": "eslint .",
+          "lint:fix": "yarn run lint --fix",
+          "format": "prettier --write *.{js,md,json}",
+          "doctoc": "doctoc --maxlevel 3 README.md CONTRIBUTING.md docs/",
+          "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+          "release-templates": "node ./scripts/release-templates",
+          "release": "release-it",
+          "release:beta": "release-it --preRelease=beta"
+        },
+        "engines": {
+          "node": ">= 8"
+        },
+        "dependencies": {
+          "algoliasearch": "3.32.1",
+          "chalk": "2.4.2",
+          "commander": "2.20.0",
+          "inquirer": "6.2.2",
+          "jstransformer-handlebars": "1.1.0",
+          "latest-semver": "1.0.0",
+          "load-json-file": "5.2.0",
+          "lodash.camelcase": "4.3.0",
+          "metalsmith": "2.3.0",
+          "metalsmith-ignore": "1.0.0",
+          "metalsmith-in-place": "4.2.0",
+          "metalsmith-rename": "1.0.0",
+          "semver": "6.0.0",
+          "validate-npm-package-name": "3.0.0"
+        },
+        "devDependencies": {
+          "babel-eslint": "10.0.1",
+          "conventional-changelog-cli": "2.0.12",
+          "doctoc": "1.4.0",
+          "eslint": "5.16.0",
+          "eslint-config-algolia": "13.2.3",
+          "eslint-config-prettier": "4.1.0",
+          "eslint-plugin-html": "5.0.3",
+          "eslint-plugin-import": "2.16.0",
+          "eslint-plugin-jest": "22.4.1",
+          "eslint-plugin-prettier": "3.0.1",
+          "jest": "24.7.1",
+          "jest-image-snapshot": "2.8.1",
+          "prettier": "1.16.4",
+          "release-it": "7.6.3",
+          "walk-sync": "1.1.3"
+        },
+        "renovate": {
+          "extends": ["config:js-app", "algolia"]
+        },
+        "jest": {
+          "testPathIgnorePatterns": [
+            "<rootDir>/node_modules/",
+            "<rootDir>/src/templates/"
+          ],
+          "testEnvironment": "node"
+        },
+        "gitHead": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
+        "bugs": {
+          "url": "https://github.com/algolia/create-instantsearch-app/issues"
+        },
+        "homepage": "https://github.com/algolia/create-instantsearch-app#readme",
+        "_id": "create-instantsearch-app@4.4.2",
+        "_npmVersion": "6.4.1",
+        "_nodeVersion": "11.0.0",
+        "_npmUser": {
+          "name": "francoischalifour",
+          "email": "francois.chalifour@gmail.com"
+        },
+        "dist": {
+          "integrity": "sha512-w7jQdAf4JnNxjDwwz5W0l9QEGQwdzSV7haijrWQaLoe6IkLruv8Kibu5mrvy9iXo58AuVilnrH8Y+M+8elHOTA==",
+          "shasum": "6941e32434f592deaebe473b18ec74f970434394",
+          "tarball": "https://registry.npmjs.org/create-instantsearch-app/-/create-instantsearch-app-4.4.2.tgz",
+          "fileCount": 231,
+          "unpackedSize": 382011,
+          "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJcrdSqCRA9TVsSAnZWagAAProP/0s0plIES/stqO+C14oS\nGZHkXieClM1QeQv14ZZTFAM1lVx8MgV1jWBk7tKDrphCPEmCqWILbExqArt8\nj9HZQr5wDHIYenzAAyZeoBUpXZ2mZ9/VTi1L3sBRUEM2pQxd7H5AlJNXvIDr\nfUPqsgQI69CN/RXcejl6NCbj6sV0OxieQNqMP3767lmu/zLjaymKYsYJUke8\nELJ4OUNJEw63Yn2bSgV5iKY2pCtj4yPF+W4HTnddHm2cbwxuU2mZ9tfdHrAB\nJF5fYAzhF06DT98UQk/kpbUvo3mhfGzdbYmVz0m8VJCTXK9+wG4Lj83E8EeT\n29K4ve4PTiHtetX1T4GH1WhDIbnGbj93SVNHdBp5y02umwT59Jwwkxj+fyo2\nL8XPt+I2NoX5PvhAZQh45EPb2vtKV95OzyIUAD8ykoA7xUf7SQTMIGtQIWgd\ncEMhCfzRXpXxhcXbIdVTDZ/VX471UxIXuWiVBwK0R4SZRNvgfAalri7ph8xx\nex1jGZmCRV4lQAXBYtiMVdb7knH9RAP+sn9hTg1hekOd2UHj2mC/1ljvXhti\n6+2aie8uYInoNh3hKYannVlLYmefnvZXUgO8ThXP/ninX6RAboV276ZGkON6\n9eboWoF88F2TDZ+Rw+rpk8SyeVKdelVJ6KbmW3N5Uep62xuCF6Ml33FuiEqQ\n+pQ5\r\n=2QE1\r\n-----END PGP SIGNATURE-----\r\n"
+        },
+        "maintainers": [
+          {
+            "name": "bobylito",
+            "email": "bobylito@gmail.com"
+          }
+        ],
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/create-instantsearch-app_4.4.2_1554896041684_0.21387610340916474"
+        },
+        "_hasShrinkwrap": false
+      }
+    },
+    "readme": "# Create InstantSearch App",
+    "maintainers": [
+      {
+        "name": "bobylito",
+        "email": "bobylito@gmail.com"
+      }
+    ],
+    "time": {
+      "modified": "2019-04-10T11:34:05.753Z",
+      "created": "2017-07-19T08:41:38.313Z",
+      "4.4.2": "2019-04-10T11:34:01.895Z"
+    },
+    "homepage": "https://github.com/algolia/create-instantsearch-app#readme",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/algolia/create-instantsearch-app.git"
+    },
+    "author": {
+      "name": "Algolia",
+      "email": "support@algolia.com"
+    },
+    "bugs": {
+      "url": "https://github.com/algolia/create-instantsearch-app/issues"
+    },
+    "license": "MIT",
+    "readmeFilename": "README.md",
+    "keywords": ["algolia", "instantsearch"]
   }
 ]

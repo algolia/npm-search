@@ -5,6 +5,7 @@ import ms from 'ms';
 const defaultConfig = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
   npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
+  jsDelivrHitsEndpoint: 'https://data.jsdelivr.com/v1/stats/packages/month/all',
   maxObjSize: 450000,
   popularDownloadsRatio: 0.005,
   appId: 'OFCNCOG2CU',
@@ -25,6 +26,7 @@ const defaultConfig = {
     ],
     attributesForFaceting: [
       'filterOnly(_searchInternal.alternativeNames)' /* optionalFacetFilters to boost the name */,
+      'filterOnly(bin)',
       'searchable(keywords)',
       'searchable(computedKeywords)',
       'searchable(owner.name)',
@@ -32,6 +34,7 @@ const defaultConfig = {
     ],
     customRanking: [
       'desc(_searchInternal.downloadsMagnitude)',
+      'desc(_searchInternal.jsDelivrPopularity)',
       'desc(dependents)',
       'desc(downloadsLast30Days)',
     ],
@@ -95,6 +98,54 @@ const defaultConfig = {
           automaticOptionalFacetFilters: ['_searchInternal.alternativeNames'],
         },
       },
+    },
+    {
+      condition: {
+        pattern: 'author\\: {facet:owner.name}',
+        anchoring: 'contains',
+      },
+      consequence: {
+        params: {
+          automaticFacetFilters: ['owner.name'],
+          query: {
+            remove: ['author\\:', '{facet:owner.name}'],
+          },
+        },
+      },
+      description: 'filter on author: {owner.name}',
+      objectID: 'author-filter',
+    },
+    {
+      condition: {
+        pattern: 'owner\\: {facet:owner.name}',
+        anchoring: 'contains',
+      },
+      consequence: {
+        params: {
+          automaticFacetFilters: ['owner.name'],
+          query: {
+            remove: ['owner\\:', '{facet:owner.name}'],
+          },
+        },
+      },
+      description: 'filter on owner: {owner.name}',
+      objectID: 'owner-filter',
+    },
+    {
+      condition: {
+        pattern: 'keyword\\: {facet:keywords}',
+        anchoring: 'contains',
+      },
+      consequence: {
+        params: {
+          automaticFacetFilters: ['keywords'],
+          query: {
+            remove: ['keyword\\:', '{facet:keywords}'],
+          },
+        },
+      },
+      description: 'filter on keyword: {keywords}',
+      objectID: 'keyword-filter',
     },
   ],
 };
