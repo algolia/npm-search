@@ -146,6 +146,34 @@ Object {
       ],
       "type": "synonym",
     },
+    Object {
+      "objectID": "a11y",
+      "synonyms": Array [
+        "a11y",
+        "accessibility",
+        "accessible",
+      ],
+      "type": "synonym",
+    },
+    Object {
+      "objectID": "i18n",
+      "synonyms": Array [
+        "i18n",
+        "internationalisation",
+        "internationalization",
+        "translation",
+        "translate",
+      ],
+      "type": "synonym",
+    },
+    Object {
+      "objectID": "k8s",
+      "synonyms": Array [
+        "k8s",
+        "kubernetes",
+      ],
+      "type": "synonym",
+    },
   ],
   "jsDelivrHitsEndpoint": "https://data.jsdelivr.com/v1/stats/packages/month/all",
   "maxObjSize": 450000,
