@@ -178,6 +178,7 @@ async function replicate({ seq }) {
   });
 
   const { seq: npmSeqToReach } = await npm.info();
+  let npmSeqReached = false;
 
   return new Promise((resolve, reject) => {
     const changes = db.changes({
@@ -196,15 +197,16 @@ async function replicate({ seq }) {
             seq: docs[docs.length - 1].seq,
           })
         )
-        .then(({ seq: lastDocSeq }) => {
-          if (lastDocSeq >= npmSeqToReach) {
-            log.info('🐌 We reached the npm current sequence');
-            changes.cancel();
-          }
-        })
-        .then(done)
+        .then(() => done())
         .catch(done);
     }, c.replicateConcurrency);
+
+    q.drain = () => {
+      if (npmSeqReached) {
+        log.info('🐌 We reached the npm current sequence');
+        resolve();
+      }
+    };
 
     changes.on('change', async change => {
       if (change.deleted === true) {
@@ -217,8 +219,12 @@ async function replicate({ seq }) {
           reject(err);
         }
       });
+
+      if (change.seq >= npmSeqToReach) {
+        npmSeqReached = true;
+        changes.cancel();
+      }
     });
-    changes.on('complete', resolve); // Called when cancel() called
     changes.on('error', reject);
   });
 }
