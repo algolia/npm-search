@@ -3,6 +3,7 @@ import log from './log.js';
 import { getDownloads, getDependents } from './npm.js';
 import { getChangelogs } from './changelog.js';
 import { getHits } from './jsDelivr';
+import { getTSSupport } from './typescriptSupport';
 
 export default function saveDocs({ docs, index }) {
   const rawPkgs = docs
@@ -26,13 +27,15 @@ function addMetaData(pkgs) {
     getDependents(pkgs),
     getChangelogs(pkgs),
     getHits(pkgs),
-  ]).then(([downloads, dependents, changelogs, hits]) =>
+    getTSSupport(pkgs),
+  ]).then(([downloads, dependents, changelogs, hits, ts]) =>
     pkgs.map((pkg, index) => ({
       ...pkg,
       ...downloads[index],
       ...dependents[index],
       ...changelogs[index],
       ...hits[index],
+      ...ts[index],
       _searchInternal: {
         ...pkg._searchInternal,
         ...downloads[index]._searchInternal,

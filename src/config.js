@@ -5,7 +5,9 @@ import ms from 'ms';
 const defaultConfig = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
   npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
+  npmRootEndpoint: 'https://api.npmjs.org/',
   jsDelivrHitsEndpoint: 'https://data.jsdelivr.com/v1/stats/packages/month/all',
+  unpkgRoot: 'https://unpkg.com/',
   maxObjSize: 450000,
   popularDownloadsRatio: 0.005,
   appId: 'OFCNCOG2CU',
