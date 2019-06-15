@@ -5,27 +5,27 @@ import { fileExistsInUnpkg } from './unpkg.js';
 
 /**
  * Basically either
- *  - { ts: undefined }  for no existing TypeScript support
- *  - { ts: "@types/module" } - for definitely typed support
- *  - { ts: "included" } - for types shipped with the module
+ *  - { types: { ts: null }}  for no existing TypeScript support
+ *  - { types: { ts: "@types/module" }} - for definitely typed support
+ *  - { types: { ts: "included" }} - for types shipped with the module
  * */
-export async function getTypeScriptSupportString(pkg) {
+export async function getTypeScriptSupport(pkg) {
   // The cheap and simple (+ recommended by TS) way
   // of adding a types section to your package.json
   if (pkg.types) {
-    return { ts: 'included' };
+    return { types: { ts: 'included' } };
   }
 
   // Older, but still works way of defining your types
   if (pkg.typings) {
-    return { ts: 'included' };
+    return { types: { ts: 'included' } };
   }
 
   // The 2nd most likely is definitely typed
   const defTypeName = `@types/${pkg.name}`;
   const defTyped = await validatePackageExists(defTypeName);
   if (defTyped) {
-    return { ts: defTypeName };
+    return { types: { ts: defTypeName } };
   }
 
   // Check if main's JS file can be resolved to a d.ts file instead
@@ -34,13 +34,13 @@ export async function getTypeScriptSupportString(pkg) {
     const dtsMain = main.replace(/js$/, 'd.ts');
     const resolved = await fileExistsInUnpkg(pkg.name, pkg.version, dtsMain);
     if (resolved) {
-      return { ts: 'included' };
+      return { types: { ts: 'included' } };
     }
   }
 
-  return { ts: undefined };
+  return { types: { ts: null } };
 }
 
 export function getTSSupport(pkgs) {
-  return Promise.all(pkgs.map(getTypeScriptSupportString));
+  return Promise.all(pkgs.map(getTypeScriptSupport));
 }
