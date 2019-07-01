@@ -20,6 +20,13 @@ const logWarning = ({ error, type, packagesStr }) => {
   );
 };
 
+export function validatePackageExists(pkgName) {
+  return got(`${c.npmRootEndpoint}/${pkgName}`, {
+    json: true,
+    method: 'HEAD',
+  }).then(response => response.statusCode === 200);
+}
+
 export async function getDownloads(pkgs) {
   // npm has a weird API to get downloads via GET params, so we split pkgs into chunks
   // and do multiple requests to avoid weird cases when concurrency is high

@@ -179,9 +179,11 @@ Object {
   "maxObjSize": 450000,
   "npmDownloadsEndpoint": "https://api.npmjs.org/downloads",
   "npmRegistryEndpoint": "https://replicate.npmjs.com/registry",
+  "npmRootEndpoint": "https://api.npmjs.org/",
   "popularDownloadsRatio": 0.005,
   "replicateConcurrency": 10,
   "seq": null,
   "timeToRedoBootstrap": 604800000,
+  "unpkgRoot": "https://unpkg.com/",
 }
 `;
