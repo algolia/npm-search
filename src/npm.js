@@ -24,7 +24,9 @@ export function validatePackageExists(pkgName) {
   return got(`${c.npmRootEndpoint}/${pkgName}`, {
     json: true,
     method: 'HEAD',
-  }).then(response => response.statusCode === 200);
+  })
+    .then(response => response.statusCode === 200)
+    .catch(() => false);
 }
 
 export async function getDownloads(pkgs) {
