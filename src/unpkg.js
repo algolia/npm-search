@@ -1,4 +1,3 @@
-// @ts-check
 import c from './config.js';
 import got from 'got';
 
