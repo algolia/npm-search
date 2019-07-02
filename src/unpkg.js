@@ -9,5 +9,7 @@ export function fileExistsInUnpkg(pkg, version, path) {
   return got(uri, {
     json: true,
     method: 'HEAD',
-  }).then(response => response.statusCode === 200);
+  })
+    .then(response => response.statusCode === 200)
+    .catch(() => false);
 }
