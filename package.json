@@ -2,6 +2,7 @@
   "name": "npm-search",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "author": {
     "name": "Algolia, Inc.",
     "url": "https://www.algolia.com"
@@ -75,7 +76,7 @@
     "validator": "10.11.0"
   },
   "engines": {
-    "node": "9.11.2"
+    "node": "12"
   },
   "jest": {
     "testPathIgnorePatterns": [
