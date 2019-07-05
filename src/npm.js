@@ -1,3 +1,4 @@
+import got from 'got';
 import chunk from 'lodash/chunk.js';
 import numeral from 'numeral';
 
