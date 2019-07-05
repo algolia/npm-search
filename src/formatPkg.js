@@ -8,7 +8,7 @@ import traverse from 'traverse';
 import truncate from 'truncate-utf8-bytes';
 import hostedGitInfo from 'hosted-git-info';
 
-import c from './config';
+import c from './config.js';
 
 export default function formatPkg(pkg) {
   const cleaned = new NicePackage(pkg);

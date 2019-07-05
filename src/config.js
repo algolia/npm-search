@@ -1,5 +1,5 @@
-import { config } from 'dotenv';
-config();
+import dotenv from 'dotenv';
+dotenv.config();
 import ms from 'ms';
 
 const defaultConfig = {

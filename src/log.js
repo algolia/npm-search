@@ -1,9 +1,7 @@
 import bunyan from 'bunyan';
 import bunyanDebugStream from 'bunyan-debug-stream';
 
-const stream = bunyanDebugStream({
-  basepath: __dirname,
-});
+const stream = bunyanDebugStream();
 
 const logger = bunyan.createLogger({
   name: 'npm-search',

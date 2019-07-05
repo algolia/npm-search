@@ -2,8 +2,8 @@ import formatPkg from './formatPkg.js';
 import log from './log.js';
 import { getDownloads, getDependents } from './npm.js';
 import { getChangelogs } from './changelog.js';
-import { getHits } from './jsDelivr';
-import { getTSSupport } from './typescriptSupport';
+import { getHits } from './jsDelivr.js';
+import { getTSSupport } from './typescriptSupport.js';
 
 export default function saveDocs({ docs, index }) {
   const rawPkgs = docs

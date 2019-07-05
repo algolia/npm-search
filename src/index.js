@@ -1,14 +1,14 @@
+import PouchDB from 'pouchdb-http';
+import ms from 'ms';
+import cargo from 'async/cargo.js';
+import queue from 'async/queue.js';
 import createStateManager from './createStateManager.js';
 import saveDocs from './saveDocs.js';
 import createAlgoliaIndex from './createAlgoliaIndex.js';
 import c from './config.js';
-import PouchDB from 'pouchdb-http';
 import * as npm from './npm.js';
 import log from './log.js';
-import ms from 'ms';
-import cargo from 'async/cargo';
-import queue from 'async/queue';
-import { loadHits } from './jsDelivr';
+import { loadHits } from './jsDelivr.js';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
