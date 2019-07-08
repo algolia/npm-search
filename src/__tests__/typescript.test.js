@@ -5,17 +5,10 @@ import { validatePackageExists } from '../npm';
 import { fileExistsInUnpkg } from '../unpkg.js';
 
 describe('getTypeScriptSupport()', () => {
-  it('If types or typings are present in pkg.json - return early', async () => {
-    let typesSupport = await getTypeScriptSupport({
+  it('If types are already calculated - return early', async () => {
+    const typesSupport = await getTypeScriptSupport({
       name: 'Has Types',
-      types: './types',
-    });
-
-    expect(typesSupport).toEqual({ types: { ts: 'included' } });
-
-    typesSupport = await getTypeScriptSupport({
-      name: 'Has Types',
-      typings: './types',
+      types: { ts: 'included' },
     });
 
     expect(typesSupport).toEqual({ types: { ts: 'included' } });

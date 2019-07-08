@@ -51,6 +51,8 @@ export default function formatPkg(pkg) {
         }
       : null;
 
+  const types = getTypes(pkg);
+
   const owner = getOwner(repository, lastPublisher, author); // always favor the repository owner
   const { computedKeywords, computedMetadata } = getComputedData(cleaned);
   const keywords = getKeywords(cleaned);
@@ -92,6 +94,7 @@ export default function formatPkg(pkg) {
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
     bin: cleaned.bin,
+    types,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       concatenatedName,
@@ -385,4 +388,17 @@ function formatUser(user) {
     avatar: getGravatar(user),
     link: `https://www.npmjs.com/~${encodeURIComponent(user.name)}`,
   };
+}
+
+function getTypes(pkg) {
+  // The cheap and simple (+ recommended by TS) way
+  // of adding a types section to your package.json
+  if (pkg.types) {
+    return { ts: 'included' };
+  }
+
+  // Older, but still works way of defining your types
+  if (pkg.typings) {
+    return { ts: 'included' };
+  }
 }

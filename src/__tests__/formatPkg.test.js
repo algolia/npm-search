@@ -168,6 +168,24 @@ describe('adds webpack scaffolds', () => {
   });
 });
 
+it('adds types if included in the package.json', () => {
+  expect(
+    formatPkg({
+      name: 'xxx',
+      lastPublisher: { name: 'unknown' },
+      types: './test.dts',
+    })
+  ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
+
+  expect(
+    formatPkg({
+      name: 'xxx',
+      lastPublisher: { name: 'unknown' },
+      typings: './test.dts',
+    })
+  ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
+});
+
 describe('test getRepositoryInfo', () => {
   const getRepositoryInfo = formatPkg.__RewireAPI__.__get__(
     'getRepositoryInfo'

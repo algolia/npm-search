@@ -10,15 +10,9 @@ import { fileExistsInUnpkg } from './unpkg.js';
  *  - { types: { ts: "included" }} - for types shipped with the module
  * */
 export async function getTypeScriptSupport(pkg) {
-  // The cheap and simple (+ recommended by TS) way
-  // of adding a types section to your package.json
+  // Already calculated in `formatPkg`
   if (pkg.types) {
-    return { types: { ts: 'included' } };
-  }
-
-  // Older, but still works way of defining your types
-  if (pkg.typings) {
-    return { types: { ts: 'included' } };
+    return { types: pkg.types };
   }
 
   // The 2nd most likely is definitely typed
