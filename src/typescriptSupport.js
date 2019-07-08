@@ -4,11 +4,21 @@ import { validatePackageExists } from './npm.js';
 import { fileExistsInUnpkg } from './unpkg.js';
 
 /**
+ * @typedef Package
+ * @property {string} name
+ * @property {string} version
+ * @property {string} [main]
+ * @property {string} [types]
+ * @property {string} [typings]
+ */
+
+/**
  * Basically either
- *  - { types: { ts: null }}  for no existing TypeScript support
- *  - { types: { ts: "@types/module" }} - for definitely typed support
- *  - { types: { ts: "included" }} - for types shipped with the module
- * */
+ *   - { types: { ts: null }}  for no existing TypeScript support
+ *   - { types: { ts: "@types/module" }} - for definitely typed support
+ *   - { types: { ts: "included" }} - for types shipped with the module
+ * @param {Package} pkg
+ */
 export async function getTypeScriptSupport(pkg) {
   // Already calculated in `formatPkg`
   if (pkg.types) {
@@ -35,6 +45,9 @@ export async function getTypeScriptSupport(pkg) {
   return { types: { ts: null } };
 }
 
+/**
+ * @param {Array<Package>} pkgs
+ */
 export function getTSSupport(pkgs) {
   return Promise.all(pkgs.map(getTypeScriptSupport));
 }
