@@ -159,7 +159,10 @@ Are you in trouble? Read through our [contribution guidelines](https://bitbucket
     "latest": "1.6.1",
   },
   "types": Object {
-    "ts": null,
+    "ts": Object {
+      "dtsMain": "index.d.ts",
+      "possible": true,
+    },
   },
   "version": "1.6.1",
   "versions": Object {
@@ -290,7 +293,10 @@ Object {
     "latest": "0.0.4",
   },
   "types": Object {
-    "ts": null,
+    "ts": Object {
+      "dtsMain": "index.d.ts",
+      "possible": true,
+    },
   },
   "version": "0.0.4",
   "versions": Object {
@@ -408,7 +414,10 @@ Object {
     "latest": "4.4.2",
   },
   "types": Object {
-    "ts": null,
+    "ts": Object {
+      "dtsMain": "index.d.ts",
+      "possible": true,
+    },
   },
   "version": "4.4.2",
   "versions": Object {
@@ -488,7 +497,10 @@ index(arr, obj);
     "latest": "0.0.1",
   },
   "types": Object {
-    "ts": null,
+    "ts": Object {
+      "dtsMain": "index.d.ts",
+      "possible": true,
+    },
   },
   "version": "0.0.1",
   "versions": Object {
@@ -544,7 +556,10 @@ Object {
   "repository": null,
   "tags": undefined,
   "types": Object {
-    "ts": null,
+    "ts": Object {
+      "dtsMain": "index.d.ts",
+      "possible": true,
+    },
   },
   "version": "0.0.0",
   "versions": Object {},

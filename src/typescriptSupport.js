@@ -7,9 +7,7 @@ import { fileExistsInUnpkg } from './unpkg.js';
  * @typedef Package
  * @property {string} name
  * @property {string} version
- * @property {string} [main]
- * @property {{ ts: string | null }} [types]
- * @property {string} [typings]
+ * @property {{ ts: string | {possible: boolean, dtsMain: string} }} types
  */
 
 /**
@@ -21,7 +19,7 @@ import { fileExistsInUnpkg } from './unpkg.js';
  */
 export async function getTypeScriptSupport(pkg) {
   // Already calculated in `formatPkg`
-  if (pkg.types.ts) {
+  if (typeof pkg.types.ts === 'string') {
     return { types: pkg.types };
   }
 
@@ -32,11 +30,17 @@ export async function getTypeScriptSupport(pkg) {
     return { types: { ts: defTypeName } };
   }
 
-  // Check if main's JS file can be resolved to a d.ts file instead
-  const main = pkg.main || 'index.js';
-  if (main.endsWith('.js')) {
-    const dtsMain = main.replace(/js$/, 'd.ts');
-    const resolved = await fileExistsInUnpkg(pkg.name, pkg.version, dtsMain);
+  if (pkg.types.ts === null) {
+    return { types: { ts: null } };
+  }
+
+  // Do we have a main .d.ts file?
+  if (pkg.types.ts.possible === true) {
+    const resolved = await fileExistsInUnpkg(
+      pkg.name,
+      pkg.version,
+      pkg.types.ts.dtsMain
+    );
     if (resolved) {
       return { types: { ts: 'included' } };
     }

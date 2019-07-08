@@ -402,5 +402,18 @@ function getTypes(pkg) {
     return { ts: 'included' };
   }
 
-  return { ts: null };
+  const main = pkg.main || 'index.js';
+  if (main.endsWith('.js')) {
+    const dtsMain = main.replace(/js$/, 'd.ts');
+    return {
+      ts: {
+        possible: true,
+        dtsMain,
+      },
+    };
+  }
+
+  return {
+    ts: null,
+  };
 }

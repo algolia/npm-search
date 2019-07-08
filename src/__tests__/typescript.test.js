@@ -30,7 +30,7 @@ describe('getTypeScriptSupport()', () => {
 
       const typesSupport = await getTypeScriptSupport({
         name: 'my-lib',
-        types: { ts: null },
+        types: { ts: { possible: true, dtsMain: 'main.d.ts' } },
       });
       expect(typesSupport).toEqual({ types: { ts: 'included' } });
     });

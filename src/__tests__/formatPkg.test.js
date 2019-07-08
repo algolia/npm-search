@@ -168,22 +168,59 @@ describe('adds webpack scaffolds', () => {
   });
 });
 
-it('adds types if included in the package.json', () => {
-  expect(
-    formatPkg({
-      name: 'xxx',
-      lastPublisher: { name: 'unknown' },
-      types: './test.dts',
-    })
-  ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
+describe('adds TypeScript information', () => {
+  it('adds types if included in the package.json', () => {
+    expect(
+      formatPkg({
+        name: 'xxx',
+        lastPublisher: { name: 'unknown' },
+        types: './test.dts',
+      })
+    ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
 
-  expect(
-    formatPkg({
-      name: 'xxx',
-      lastPublisher: { name: 'unknown' },
-      typings: './test.dts',
-    })
-  ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
+    expect(
+      formatPkg({
+        name: 'xxx',
+        lastPublisher: { name: 'unknown' },
+        typings: './test.dts',
+      })
+    ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
+  });
+
+  it('adds types possible if we can find a main file', () => {
+    expect(
+      formatPkg({
+        name: 'xxx',
+        lastPublisher: { name: 'unknown' },
+        main: 'main.js',
+      })
+    ).toEqual(
+      expect.objectContaining({
+        types: { ts: { possible: true, dtsMain: 'main.d.ts' } },
+      })
+    );
+
+    expect(
+      formatPkg({
+        name: 'xxx',
+        lastPublisher: { name: 'unknown' },
+      })
+    ).toEqual(
+      expect.objectContaining({
+        types: { ts: { possible: true, dtsMain: 'index.d.ts' } },
+      })
+    );
+  });
+
+  it('gives up when no main is not js', () => {
+    expect(
+      formatPkg({
+        name: 'xxx',
+        main: 'shell-script.sh',
+        lastPublisher: { name: 'unknown' },
+      })
+    ).toEqual(expect.objectContaining({ types: { ts: null } }));
+  });
 });
 
 describe('test getRepositoryInfo', () => {
