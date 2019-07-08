@@ -95,6 +95,7 @@ Object {
       "searchable(computedKeywords)",
       "searchable(owner.name)",
       "deprecated",
+      "types.ts",
     ],
     "customRanking": Array [
       "desc(_searchInternal.downloadsMagnitude)",
