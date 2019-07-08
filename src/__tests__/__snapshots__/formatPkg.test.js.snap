@@ -160,7 +160,7 @@ Are you in trouble? Read through our [contribution guidelines](https://bitbucket
   },
   "types": Object {
     "ts": Object {
-      "dtsMain": "index.d.ts",
+      "dtsMain": "dist/bundle.d.ts",
       "possible": true,
     },
   },
@@ -294,7 +294,7 @@ Object {
   },
   "types": Object {
     "ts": Object {
-      "dtsMain": "index.d.ts",
+      "dtsMain": "dist/atomic-package.tab.d.ts",
       "possible": true,
     },
   },
