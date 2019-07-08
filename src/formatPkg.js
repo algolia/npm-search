@@ -51,7 +51,7 @@ export default function formatPkg(pkg) {
         }
       : null;
 
-  const types = getTypes(pkg);
+  const types = getTypes(cleaned);
 
   const owner = getOwner(repository, lastPublisher, author); // always favor the repository owner
   const { computedKeywords, computedMetadata } = getComputedData(cleaned);
