@@ -8,7 +8,7 @@ import { fileExistsInUnpkg } from './unpkg.js';
  * @property {string} name
  * @property {string} version
  * @property {string} [main]
- * @property {string} [types]
+ * @property {{ ts: string | null }} [types]
  * @property {string} [typings]
  */
 
@@ -21,7 +21,7 @@ import { fileExistsInUnpkg } from './unpkg.js';
  */
 export async function getTypeScriptSupport(pkg) {
   // Already calculated in `formatPkg`
-  if (pkg.types) {
+  if (pkg.types.ts) {
     return { types: pkg.types };
   }
 

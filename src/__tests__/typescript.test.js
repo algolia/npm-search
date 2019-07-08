@@ -17,7 +17,10 @@ describe('getTypeScriptSupport()', () => {
   describe('without types/typings', () => {
     it('Checks for @types/[name]', async () => {
       validatePackageExists.mockResolvedValue(true);
-      const atTypesSupport = await getTypeScriptSupport({ name: 'my-lib' });
+      const atTypesSupport = await getTypeScriptSupport({
+        name: 'my-lib',
+        types: { ts: null },
+      });
       expect(atTypesSupport).toEqual({ types: { ts: '@types/my-lib' } });
     });
 
@@ -25,7 +28,10 @@ describe('getTypeScriptSupport()', () => {
       validatePackageExists.mockResolvedValue(false);
       fileExistsInUnpkg.mockResolvedValue(true);
 
-      const typesSupport = await getTypeScriptSupport({ name: 'my-lib' });
+      const typesSupport = await getTypeScriptSupport({
+        name: 'my-lib',
+        types: { ts: null },
+      });
       expect(typesSupport).toEqual({ types: { ts: 'included' } });
     });
 
@@ -33,7 +39,10 @@ describe('getTypeScriptSupport()', () => {
       validatePackageExists.mockResolvedValue(false);
       fileExistsInUnpkg.mockResolvedValue(false);
 
-      const typesSupport = await getTypeScriptSupport({ name: 'my-lib' });
+      const typesSupport = await getTypeScriptSupport({
+        name: 'my-lib',
+        types: { ts: null },
+      });
       expect(typesSupport).toEqual({ types: { ts: null } });
     });
   });

@@ -401,4 +401,6 @@ function getTypes(pkg) {
   if (pkg.typings) {
     return { ts: 'included' };
   }
+
+  return { ts: null };
 }
