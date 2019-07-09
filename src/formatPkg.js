@@ -403,7 +403,7 @@ function getTypes(pkg) {
   }
 
   const main = pkg.main || 'index.js';
-  if (main.endsWith('.js')) {
+  if (typeof main === 'string' && main.endsWith('.js')) {
     const dtsMain = main.replace(/js$/, 'd.ts');
     return {
       ts: {
