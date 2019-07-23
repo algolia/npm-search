@@ -219,7 +219,7 @@ describe('adds TypeScript information', () => {
         main: 'shell-script.sh',
         lastPublisher: { name: 'unknown' },
       })
-    ).toEqual(expect.objectContaining({ types: { ts: null } }));
+    ).toEqual(expect.objectContaining({ types: { ts: false } }));
   });
 });
 

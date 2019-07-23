@@ -7,12 +7,12 @@ import { fileExistsInUnpkg } from './unpkg.js';
  * @typedef Package
  * @property {string} name
  * @property {string} version
- * @property {{ ts: string | {possible: boolean, dtsMain: string} }} types
+ * @property {{ ts: 'included' | {possible: boolean, dtsMain: string} | false }} types
  */
 
 /**
  * Basically either
- *   - { types: { ts: null }}  for no existing TypeScript support
+ *   - { types: { ts: false }}  for no existing TypeScript support
  *   - { types: { ts: "@types/module" }} - for definitely typed support
  *   - { types: { ts: "included" }} - for types shipped with the module
  * @param {Package} pkg
@@ -30,8 +30,8 @@ export async function getTypeScriptSupport(pkg) {
     return { types: { ts: defTypeName } };
   }
 
-  if (pkg.types.ts === null) {
-    return { types: { ts: null } };
+  if (pkg.types.ts === false) {
+    return { types: { ts: false } };
   }
 
   // Do we have a main .d.ts file?
@@ -46,7 +46,7 @@ export async function getTypeScriptSupport(pkg) {
     }
   }
 
-  return { types: { ts: null } };
+  return { types: { ts: false } };
 }
 
 /**

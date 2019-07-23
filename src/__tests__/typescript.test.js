@@ -19,7 +19,7 @@ describe('getTypeScriptSupport()', () => {
       validatePackageExists.mockResolvedValue(true);
       const atTypesSupport = await getTypeScriptSupport({
         name: 'my-lib',
-        types: { ts: null },
+        types: { ts: false },
       });
       expect(atTypesSupport).toEqual({ types: { ts: '@types/my-lib' } });
     });
@@ -35,15 +35,15 @@ describe('getTypeScriptSupport()', () => {
       expect(typesSupport).toEqual({ types: { ts: 'included' } });
     });
 
-    it('Handles not having and TS types', async () => {
+    it('Handles not having any possible TS types', async () => {
       validatePackageExists.mockResolvedValue(false);
       fileExistsInUnpkg.mockResolvedValue(false);
 
       const typesSupport = await getTypeScriptSupport({
         name: 'my-lib',
-        types: { ts: null },
+        types: { ts: false },
       });
-      expect(typesSupport).toEqual({ types: { ts: null } });
+      expect(typesSupport).toEqual({ types: { ts: false } });
     });
   });
 });

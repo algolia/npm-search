@@ -414,6 +414,6 @@ function getTypes(pkg) {
   }
 
   return {
-    ts: null,
+    ts: false,
   };
 }
