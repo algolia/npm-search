@@ -21,7 +21,26 @@ describe('getTypeScriptSupport()', () => {
         name: 'my-lib',
         types: { ts: false },
       });
-      expect(atTypesSupport).toEqual({ types: { ts: '@types/my-lib' } });
+      expect(atTypesSupport).toEqual({
+        types: {
+          ts: 'definitely-typed',
+          definitelyTyped: '@types/my-lib',
+        },
+      });
+    });
+
+    it('Checks for @types/[scope__name]', async () => {
+      validatePackageExists.mockResolvedValue(true);
+      const atTypesSupport = await getTypeScriptSupport({
+        name: '@my-scope/my-lib',
+        types: { ts: false },
+      });
+      expect(atTypesSupport).toEqual({
+        types: {
+          ts: 'definitely-typed',
+          definitelyTyped: '@types/my-scope__my-lib',
+        },
+      });
     });
 
     it('Checks for a d.ts resolved version of main ', async () => {
