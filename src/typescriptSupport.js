@@ -24,10 +24,15 @@ export async function getTypeScriptSupport(pkg) {
   }
 
   // The 2nd most likely is definitely typed
-  const defTypeName = `@types/${pkg.name}`;
+  const defTypeName = `@types/${pkg.name.replace('@', '').replace('/', '__')}`;
   const defTyped = await validatePackageExists(defTypeName);
   if (defTyped) {
-    return { types: { ts: defTypeName } };
+    return {
+      types: {
+        ts: 'definitely-typed',
+        definitelyTyped: defTypeName,
+      },
+    };
   }
 
   if (pkg.types.ts === false) {
