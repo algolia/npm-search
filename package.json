@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "babel-node src/index.js",
-    "start": "node lib/index.js",
+    "start": "node --max-old-space-size=920 lib/index.js",
     "install": "npm run build",
     "build": "babel src -d lib --ignore test.js",
     "test": "jest && eslint .",
