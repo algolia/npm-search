@@ -9,7 +9,6 @@
   },
   "scripts": {
     "start": "node --max-old-space-size=920 --experimental-modules src/index.js",
-    "install": "npm run build",
     "test": "jest && eslint .",
     "test:watch": "jest --watchAll --no-watchman",
     "format": "prettier --write **/*.{js,md,json}",
