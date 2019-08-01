@@ -184,7 +184,7 @@ Object {
   "popularDownloadsRatio": 0.005,
   "replicateConcurrency": 10,
   "seq": null,
-  "timeToRedoBootstrap": 604800000,
+  "timeToRedoBootstrap": 1209600000,
   "unpkgRoot": "https://unpkg.com",
 }
 `;
