@@ -8,10 +8,8 @@
     "url": "https://www.algolia.com"
   },
   "scripts": {
-    "dev": "babel-node src/index.js",
-    "start": "node --max-old-space-size=920 lib/index.js",
+    "start": "node --max-old-space-size=920 --experimental-modules src/index.js",
     "install": "npm run build",
-    "build": "babel src -d lib --ignore test.js",
     "test": "jest && eslint .",
     "test:watch": "jest --watchAll --no-watchman",
     "format": "prettier --write **/*.{js,md,json}",
