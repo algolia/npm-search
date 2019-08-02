@@ -4,14 +4,20 @@ import numeral from 'numeral';
 
 import c from './config.js';
 import log from './log.js';
+import datadog from './datadog.js';
 
 export function info() {
+  const start = Date.now();
+
   return got(c.npmRegistryEndpoint, {
     json: true,
-  }).then(({ body: { doc_count: nbDocs, update_seq: seq } }) => ({
-    nbDocs,
-    seq,
-  }));
+  }).then(({ body: { doc_count: nbDocs, update_seq: seq } }) => {
+    datadog.timing('npm.info', Date.now() - start);
+    return {
+      nbDocs,
+      seq,
+    };
+  });
 }
 
 const logWarning = ({ error, type, packagesStr }) => {
@@ -21,15 +27,23 @@ const logWarning = ({ error, type, packagesStr }) => {
 };
 
 export function validatePackageExists(pkgName) {
+  const start = Date.now();
+
   return got(`${c.npmRootEndpoint}/${pkgName}`, {
     json: true,
     method: 'HEAD',
   })
     .then(response => response.statusCode === 200)
-    .catch(() => false);
+    .catch(() => false)
+    .then(
+      res =>
+        datadog.timing('npm.validatePackageExists', Date.now() - start) && res
+    );
 }
 
 export async function getDownloads(pkgs) {
+  const start = Date.now();
+
   // npm has a weird API to get downloads via GET params, so we split pkgs into chunks
   // and do multiple requests to avoid weird cases when concurrency is high
   const encodedPackageNames = pkgs
@@ -95,7 +109,10 @@ export async function getDownloads(pkgs) {
   );
 
   return pkgs.map(({ name }) => {
-    if (downloadsPerPkgName[name] === undefined) return {};
+    if (downloadsPerPkgName[name] === undefined) {
+      datadog.timing('npm.getDownloads', Date.now() - start);
+      return {};
+    }
 
     const downloadsLast30Days = downloadsPerPkgName[name]
       ? downloadsPerPkgName[name].downloads
@@ -106,6 +123,7 @@ export async function getDownloads(pkgs) {
       ? downloadsLast30Days.toString().length
       : 0;
 
+    datadog.timing('npm.getDownloads', Date.now() - start);
     return {
       downloadsLast30Days,
       humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),

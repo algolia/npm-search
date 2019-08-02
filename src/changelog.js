@@ -1,6 +1,8 @@
 import got from 'got';
 import race from 'promise-rat-race';
 
+import datadog from './datadog.js';
+
 const baseUrlMap = new Map([
   [
     'github.com',
@@ -69,6 +71,11 @@ function getChangelog({ repository }) {
     .catch(() => ({ changelogFilename: null }));
 }
 
-export function getChangelogs(pkgs) {
-  return Promise.all(pkgs.map(getChangelog));
+export async function getChangelogs(pkgs) {
+  const start = Date.now();
+
+  const all = await Promise.all(pkgs.map(getChangelog));
+
+  datadog.timing('changelogs.getChangelogs', Date.now() - start);
+  return all;
 }

@@ -8,6 +8,7 @@ import createAlgoliaIndex from './createAlgoliaIndex.js';
 import c from './config.js';
 import * as npm from './npm.js';
 import log from './log.js';
+import datadog from './datadog.js';
 import { loadHits } from './jsDelivr.js';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
@@ -30,18 +31,29 @@ const { index: bootstrapIndex } = createAlgoliaIndex(c.bootstrapIndexName);
 const stateManager = createStateManager(mainIndex);
 
 async function main() {
+  let start = Date.now();
   // first we make sure the bootstrap index has the correct settings
+  log.info('💪  Setting up Algolia');
   await setSettings(bootstrapIndex);
+  datadog.timing('main.init_algolia', Date.now() - start);
+
   // then we run the bootstrap
   // after a bootstrap is done, it's moved to main (with settings)
   // if it was already finished, we will set the settings on the main index
+  start = Date.now();
+  log.info('🗻  Bootstraping');
   await bootstrap(await stateManager.check());
+  datadog.timing('main.bootsrap', Date.now() - start);
 
   // then we figure out which updates we missed since
   // the last time main index was updated
+  start = Date.now();
+  log.info('🚀  Launching Replicate');
   await replicate(await stateManager.get());
+  datadog.timing('main.replicate', Date.now() - start);
 
   // then we watch 👀 for all changes happening in the ecosystem
+  log.info('👀  Watching...');
   return watch(await stateManager.get());
 }
 
@@ -64,7 +76,7 @@ function infoChange(seq, nbChanges, emoji) {
     const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
     const remaining = ((npmInfo.seq - seq) / ratePerSecond) * 1000 || 0;
     log.info(
-      `${emoji} Synced %d/%d changes (%d%), current rate: %d changes/s (%s remaining)`,
+      `${emoji}   Synced %d/%d changes (%d%), current rate: %d changes/s (%s remaining)`,
       seq,
       npmInfo.seq,
       Math.floor((Math.max(seq, 1) / npmInfo.seq) * 100),
@@ -79,7 +91,7 @@ function infoDocs(offset, nbDocs, emoji) {
   return npm.info().then(({ nbDocs: totalDocs }) => {
     const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);
     log.info(
-      `${emoji} Synced %d/%d docs (%d%), current rate: %d docs/s (%s remaining)`,
+      `${emoji}   Synced %d/%d docs (%d%), current rate: %d docs/s (%s remaining)`,
       offset + nbDocs,
       totalDocs,
       Math.floor((Math.max(offset + nbDocs, 1) / totalDocs) * 100),
@@ -97,18 +109,18 @@ async function bootstrap(state) {
 
   if (state.seq > 0 && state.bootstrapDone === true) {
     await setSettings(mainIndex);
-    log.info('⛷ Bootstrap: done');
+    log.info('⛷   Bootstrap: done');
     return state;
   }
 
   if (state.bootstrapLastId) {
-    log.info('⛷ Bootstrap: starting at doc %s', state.bootstrapLastId);
+    log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
     await loadHits();
     return loop(state.bootstrapLastId);
   } else {
     const { taskID } = await client.deleteIndex(c.bootstrapIndexName);
     await bootstrapIndex.waitTask(taskID);
-    log.info('⛷ Bootstrap: starting from the first doc');
+    log.info('⛷   Bootstrap: starting from the first doc');
     const { seq } = await npm.info();
     // first time this launches, we need to remember the last seq our bootstrap can trust
     await stateManager.save({ seq });
@@ -118,6 +130,8 @@ async function bootstrap(state) {
   }
 
   function loop(lastId) {
+    const start = Date.now();
+
     const options =
       lastId === undefined
         ? {}
@@ -133,8 +147,11 @@ async function bootstrap(state) {
         limit: c.bootstrapConcurrency,
       })
       .then(async res => {
+        datadog.increment('packages', res.rows.length);
+        log.info('fetched', res.rows.length, 'packages');
+
         if (res.rows.length === 0) {
-          log.info('⛷ Bootstrap: done');
+          log.info('⛷   Bootstrap: done');
           await stateManager.save({
             bootstrapDone: true,
             bootstrapLastDone: Date.now(),
@@ -153,12 +170,15 @@ async function bootstrap(state) {
           )
           .then(() => infoDocs(res.offset, res.rows.length, '⛷'))
           .then(() => loop(newLastId));
+      })
+      .then(() => {
+        datadog.timing('loop', Date.now() - start);
       });
   }
 }
 
 async function moveToProduction() {
-  log.info('🚚 starting move to production');
+  log.info('🚚  starting move to production');
 
   const currentState = await stateManager.get();
   await client.copyIndex(c.bootstrapIndexName, c.indexName);
@@ -168,7 +188,7 @@ async function moveToProduction() {
 
 async function replicate({ seq }) {
   log.info(
-    '🐌 Replicate: Asking for %d changes since sequence %d',
+    '🐌   Replicate: Asking for %d changes since sequence %d',
     c.replicateConcurrency,
     seq
   );
@@ -190,6 +210,8 @@ async function replicate({ seq }) {
     });
 
     const q = cargo((docs, done) => {
+      datadog.increment('packages', docs.length);
+
       saveDocs({ docs, index: mainIndex })
         .then(() => infoChange(docs[docs.length - 1].seq, 1, '🐌'))
         .then(() =>
@@ -203,7 +225,7 @@ async function replicate({ seq }) {
 
     q.drain = () => {
       if (npmSeqReached) {
-        log.info('🐌 We reached the npm current sequence');
+        log.info('🐌  We reached the npm current sequence');
         resolve();
       }
     };
@@ -211,7 +233,7 @@ async function replicate({ seq }) {
     changes.on('change', async change => {
       if (change.deleted === true) {
         await mainIndex.deleteObject(change.id);
-        log.info(`🐌 Deleted ${change.id}`);
+        log.info(`🐌  Deleted ${change.id}`);
       }
 
       q.push(change, err => {
@@ -231,7 +253,7 @@ async function replicate({ seq }) {
 
 async function watch({ seq }) {
   log.info(
-    `🛰 Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates, since ${seq}`
+    `🛰   Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates, since ${seq}`
   );
 
   await stateManager.save({
@@ -248,6 +270,8 @@ async function watch({ seq }) {
     });
 
     const q = queue((change, done) => {
+      datadog.increment('packages');
+
       saveDocs({ docs: [change], index: mainIndex })
         .then(() => infoChange(change.seq, 1, '🛰'))
         .then(() =>
