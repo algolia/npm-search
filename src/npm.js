@@ -6,39 +6,45 @@ import c from './config.js';
 import log from './log.js';
 import datadog from './datadog.js';
 
-export function info() {
+export async function info() {
   const start = Date.now();
 
-  return got(c.npmRegistryEndpoint, {
+  const {
+    body: { doc_count: nbDocs, update_seq: seq },
+  } = await got(c.npmRegistryEndpoint, {
     json: true,
-  }).then(({ body: { doc_count: nbDocs, update_seq: seq } }) => {
-    datadog.timing('npm.info', Date.now() - start);
-    return {
-      nbDocs,
-      seq,
-    };
   });
+
+  datadog.timing('npm.info', Date.now() - start);
+
+  return {
+    nbDocs,
+    seq,
+  };
 }
 
 const logWarning = ({ error, type, packagesStr }) => {
   log.warn(
-    `Something went wrong asking the ${type} for \n${packagesStr} \n${error}`
+    `Something went wrong asking the ${type} for "${packagesStr}" "${error}"`
   );
 };
 
-export function validatePackageExists(pkgName) {
+export async function validatePackageExists(pkgName) {
   const start = Date.now();
 
-  return got(`${c.npmRootEndpoint}/${pkgName}`, {
-    json: true,
-    method: 'HEAD',
-  })
-    .then(response => response.statusCode === 200)
-    .catch(() => false)
-    .then(
-      res =>
-        datadog.timing('npm.validatePackageExists', Date.now() - start) && res
-    );
+  let exists;
+  try {
+    const response = await got(`${c.npmRootEndpoint}/${pkgName}`, {
+      json: true,
+      method: 'HEAD',
+    });
+    exists = response.statusCode === 200;
+  } catch (e) {
+    exists = false;
+  }
+
+  datadog.timing('npm.validatePackageExists', Date.now() - start);
+  return exists;
 }
 
 export async function getDownloads(pkgs) {
@@ -72,32 +78,41 @@ export async function getDownloads(pkgs) {
   );
 
   const downloadsPerPkgNameChunks = await Promise.all([
-    ...pkgsNamesChunks.map(pkgsNames =>
-      got(`${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`, {
-        json: true,
-      }).catch(error => {
+    ...pkgsNamesChunks.map(async pkgsNames => {
+      try {
+        return await got(
+          `${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`,
+          {
+            json: true,
+          }
+        );
+      } catch (error) {
         logWarning({
           error,
           type: 'downloads',
           packagesStr: pkgsNames,
         });
         return { body: {} };
-      })
-    ),
-    ...encodedScopedPackageNames.map(pkg =>
-      got(`${c.npmDownloadsEndpoint}/point/last-month/${pkg}`, {
-        json: true,
-      })
-        .then(res => ({ body: { [res.body.package]: res.body } }))
-        .catch(error => {
-          logWarning({
-            error,
-            type: 'scoped downloads',
-            packagesStr: pkg,
-          });
-          return { body: {} };
-        })
-    ),
+      }
+    }),
+    ...encodedScopedPackageNames.map(async pkg => {
+      try {
+        const res = await got(
+          `${c.npmDownloadsEndpoint}/point/last-month/${pkg}`,
+          {
+            json: true,
+          }
+        );
+        return { body: { [res.body.package]: res.body } };
+      } catch (error) {
+        logWarning({
+          error,
+          type: 'scoped downloads',
+          packagesStr: pkg,
+        });
+        return { body: {} };
+      }
+    }),
   ]);
 
   const downloadsPerPkgName = downloadsPerPkgNameChunks.reduce(

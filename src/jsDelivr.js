@@ -17,10 +17,18 @@ export async function loadHits() {
   const start = Date.now();
   log.info('📦  Loading hits from jsDelivr');
 
-  const hitsJSONpromise = got(c.jsDelivrHitsEndpoint, { json: true });
-  const hitsJSON = (await hitsJSONpromise).body;
-  hits.clear();
-  hitsJSON.forEach(formatHits);
+  try {
+    const { body: hitsJSON } = await got(c.jsDelivrHitsEndpoint, {
+      json: true,
+    });
+    hits.clear();
+    hitsJSON.forEach(formatHits);
+  } catch (e) {
+    log.error(e);
+
+    // eslint-disable-next-line no-process-exit
+    process.exit(1);
+  }
 
   datadog.timing('jsdelivr.loadHits', Date.now() - start);
 }

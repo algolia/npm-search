@@ -27,7 +27,7 @@ const baseUrlMap = new Map([
   ],
 ]);
 
-function getChangelog({ repository }) {
+async function getChangelog({ repository }) {
   if (repository === null) {
     return { changelogFilename: null };
   }
@@ -66,9 +66,12 @@ function getChangelog({ repository }) {
     'history',
   ].map(file => [baseUrl.replace(/\/$/, ''), file].join('/'));
 
-  return race(files.map(got, { method: 'HEAD' }))
-    .then(({ url }) => ({ changelogFilename: url }))
-    .catch(() => ({ changelogFilename: null }));
+  try {
+    const { url } = await race(files.map(got, { method: 'HEAD' }));
+    return { changelogFilename: url };
+  } catch (e) {
+    return { changelogFilename: null };
+  }
 }
 
 export async function getChangelogs(pkgs) {

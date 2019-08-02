@@ -34,33 +34,32 @@ export default async function saveDocs({ docs, index }) {
   index.saveObjects(pkgs);
   datadog.timing('saveDocs.saveObjects', Date.now() - start2);
 
-  log.info('🔍  Saved %d packages', rawPkgs.length);
   datadog.timing('saveDocs', Date.now() - start);
   return pkgs.length;
 }
 
-function addMetaData(pkgs) {
-  return Promise.all([
+async function addMetaData(pkgs) {
+  const [downloads, dependents, changelogs, hits, ts] = await Promise.all([
     getDownloads(pkgs),
     getDependents(pkgs),
     getChangelogs(pkgs),
     getHits(pkgs),
     getTSSupport(pkgs),
-  ]).then(([downloads, dependents, changelogs, hits, ts]) =>
-    pkgs.map((pkg, index) => ({
-      ...pkg,
-      ...downloads[index],
-      ...dependents[index],
-      ...changelogs[index],
-      ...hits[index],
-      ...ts[index],
-      _searchInternal: {
-        ...pkg._searchInternal,
-        ...downloads[index]._searchInternal,
-        ...dependents[index]._searchInternal,
-        ...changelogs[index]._searchInternal,
-        ...hits[index]._searchInternal,
-      },
-    }))
-  );
+  ]);
+
+  return pkgs.map((pkg, index) => ({
+    ...pkg,
+    ...downloads[index],
+    ...dependents[index],
+    ...changelogs[index],
+    ...hits[index],
+    ...ts[index],
+    _searchInternal: {
+      ...pkg._searchInternal,
+      ...downloads[index]._searchInternal,
+      ...dependents[index]._searchInternal,
+      ...changelogs[index]._searchInternal,
+      ...hits[index]._searchInternal,
+    },
+  }));
 }

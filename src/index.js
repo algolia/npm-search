@@ -71,35 +71,35 @@ async function setSettings(index) {
   return index.waitTask(taskID);
 }
 
-function infoChange(seq, nbChanges, emoji) {
-  return npm.info().then(npmInfo => {
-    const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
-    const remaining = ((npmInfo.seq - seq) / ratePerSecond) * 1000 || 0;
-    log.info(
-      `${emoji}   Synced %d/%d changes (%d%), current rate: %d changes/s (%s remaining)`,
-      seq,
-      npmInfo.seq,
-      Math.floor((Math.max(seq, 1) / npmInfo.seq) * 100),
-      Math.round(ratePerSecond),
-      ms(remaining)
-    );
-    loopStart = Date.now();
-  });
+async function infoChange(seq, nbChanges, emoji) {
+  const npmInfo = await npm.info();
+
+  const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
+  const remaining = ((npmInfo.seq - seq) / ratePerSecond) * 1000 || 0;
+  log.info(
+    `${emoji}   Synced %d/%d changes (%d%), current rate: %d changes/s (%s remaining)`,
+    seq,
+    npmInfo.seq,
+    Math.floor((Math.max(seq, 1) / npmInfo.seq) * 100),
+    Math.round(ratePerSecond),
+    ms(remaining)
+  );
+  loopStart = Date.now();
 }
 
-function infoDocs(offset, nbDocs, emoji) {
-  return npm.info().then(({ nbDocs: totalDocs }) => {
-    const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);
-    log.info(
-      `${emoji}   Synced %d/%d docs (%d%), current rate: %d docs/s (%s remaining)`,
-      offset + nbDocs,
-      totalDocs,
-      Math.floor((Math.max(offset + nbDocs, 1) / totalDocs) * 100),
-      Math.round(ratePerSecond),
-      ms(((totalDocs - offset - nbDocs) / ratePerSecond) * 1000)
-    );
-    loopStart = Date.now();
-  });
+async function logProgress(offset, nbDocs) {
+  const { nbDocs: totalDocs } = await npm.info();
+
+  const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);
+  log.info(
+    `[progress] %d/%d docs (%d%), current rate: %d docs/s (%s remaining)`,
+    offset + nbDocs,
+    totalDocs,
+    Math.floor((Math.max(offset + nbDocs, 1) / totalDocs) * 100),
+    Math.round(ratePerSecond),
+    ms(((totalDocs - offset - nbDocs) / ratePerSecond) * 1000)
+  );
+  loopStart = Date.now();
 }
 
 async function bootstrap(state) {
@@ -109,72 +109,81 @@ async function bootstrap(state) {
 
   if (state.seq > 0 && state.bootstrapDone === true) {
     await setSettings(mainIndex);
-    log.info('⛷   Bootstrap: done');
+    log.info('☑️   Bootstrap: done');
     return state;
   }
 
-  if (state.bootstrapLastId) {
-    log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
-    await loadHits();
-    return loop(state.bootstrapLastId);
-  } else {
-    const { taskID } = await client.deleteIndex(c.bootstrapIndexName);
-    await bootstrapIndex.waitTask(taskID);
+  await loadHits();
+
+  const { seq, nbDocs: totalDocs } = await npm.info();
+  if (!state.bootstrapLastId) {
+    // Start from 0
     log.info('⛷   Bootstrap: starting from the first doc');
-    const { seq } = await npm.info();
     // first time this launches, we need to remember the last seq our bootstrap can trust
     await stateManager.save({ seq });
     await setSettings(bootstrapIndex);
-    await loadHits();
-    return loop(state.bootstrapLastId);
+  } else {
+    log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
   }
 
-  function loop(lastId) {
-    const start = Date.now();
+  log.info('-----');
+  log.info(`Total packages   ${totalDocs}`);
+  log.info('-----');
 
-    const options =
-      lastId === undefined
-        ? {}
-        : {
-            startkey: lastId,
-            skip: 1,
-          };
-
-    return db
-      .allDocs({
-        ...defaultOptions,
-        ...options,
-        limit: c.bootstrapConcurrency,
-      })
-      .then(async res => {
-        datadog.increment('packages', res.rows.length);
-        log.info('fetched', res.rows.length, 'packages');
-
-        if (res.rows.length === 0) {
-          log.info('⛷   Bootstrap: done');
-          await stateManager.save({
-            bootstrapDone: true,
-            bootstrapLastDone: Date.now(),
-          });
-
-          return moveToProduction();
-        }
-
-        const newLastId = res.rows[res.rows.length - 1].id;
-
-        return saveDocs({ docs: res.rows, index: bootstrapIndex })
-          .then(() =>
-            stateManager.save({
-              bootstrapLastId: newLastId,
-            })
-          )
-          .then(() => infoDocs(res.offset, res.rows.length, '⛷'))
-          .then(() => loop(newLastId));
-      })
-      .then(() => {
-        datadog.timing('loop', Date.now() - start);
-      });
+  let still = true;
+  while (still) {
+    still = await loop(state.bootstrapLastId);
   }
+
+  log.info('-----');
+  log.info('☑️   Bootstrap: done');
+  await stateManager.save({
+    bootstrapDone: true,
+    bootstrapLastDone: Date.now(),
+  });
+
+  return await moveToProduction();
+}
+
+async function loop(lastId) {
+  const start = Date.now();
+  log.info('loop()');
+
+  const options =
+    lastId === undefined
+      ? {}
+      : {
+          startkey: lastId,
+          skip: 1,
+        };
+
+  const res = await db.allDocs({
+    ...defaultOptions,
+    ...options,
+    limit: c.bootstrapConcurrency,
+  });
+
+  // Nothing left to process
+  if (res.rows.length <= 0) {
+    return false;
+  }
+
+  datadog.increment('packages', res.rows.length);
+  log.info('  - fetched', res.rows.length, 'packages');
+
+  const newLastId = res.rows[res.rows.length - 1].id;
+
+  const saved = await saveDocs({ docs: res.rows, index: bootstrapIndex });
+  stateManager.save({
+    bootstrapLastId: newLastId,
+  });
+  log.info(`  - saved ${saved} packages`);
+
+  await logProgress(res.offset, res.rows.length);
+
+  datadog.timing('loop', Date.now() - start);
+
+  return newLastId;
 }
 
 async function moveToProduction() {
@@ -183,7 +192,7 @@ async function moveToProduction() {
   const currentState = await stateManager.get();
   await client.copyIndex(c.bootstrapIndexName, c.indexName);
 
-  return stateManager.save(currentState);
+  await stateManager.save(currentState);
 }
 
 async function replicate({ seq }) {
@@ -209,18 +218,19 @@ async function replicate({ seq }) {
       return_docs: false, // eslint-disable-line camelcase
     });
 
-    const q = cargo((docs, done) => {
+    const q = cargo(async docs => {
       datadog.increment('packages', docs.length);
 
-      saveDocs({ docs, index: mainIndex })
-        .then(() => infoChange(docs[docs.length - 1].seq, 1, '🐌'))
-        .then(() =>
-          stateManager.save({
-            seq: docs[docs.length - 1].seq,
-          })
-        )
-        .then(() => done())
-        .catch(done);
+      try {
+        await saveDocs({ docs, index: mainIndex });
+        await infoChange(docs[docs.length - 1].seq, 1, '🐌');
+        await stateManager.save({
+          seq: docs[docs.length - 1].seq,
+        });
+        return true;
+      } catch (e) {
+        return e;
+      }
     }, c.replicateConcurrency);
 
     q.drain = () => {
@@ -269,38 +279,34 @@ async function watch({ seq }) {
       return_docs: false, // eslint-disable-line camelcase
     });
 
-    const q = queue((change, done) => {
+    const q = queue(async change => {
       datadog.increment('packages');
 
-      saveDocs({ docs: [change], index: mainIndex })
-        .then(() => infoChange(change.seq, 1, '🛰'))
-        .then(() =>
-          stateManager.save({
-            seq: change.seq,
-          })
-        )
-        .then(stateManager.get)
-        .then(({ bootstrapLastDone }) => {
-          const now = Date.now();
-          const lastBootstrapped = new Date(bootstrapLastDone);
-          // when the process is running longer than a certain time
-          // we want to start over and get all info again
-          // we do this by exiting and letting Heroku start over
-          if (now - lastBootstrapped > c.timeToRedoBootstrap) {
-            return stateManager
-              .set({
-                seq: 0,
-                bootstrapDone: false,
-              })
-              .then(() => {
-                process.exit(0); // eslint-disable-line no-process-exit
-              });
-          }
+      try {
+        await saveDocs({ docs: [change], index: mainIndex });
+        await infoChange(change.seq, 1, '🛰');
+        await stateManager.save({
+          seq: change.seq,
+        });
+        const { bootstrapLastDone } = await stateManager.get();
 
-          return null;
-        })
-        .then(done)
-        .catch(done);
+        const now = Date.now();
+        const lastBootstrapped = new Date(bootstrapLastDone);
+        // when the process is running longer than a certain time
+        // we want to start over and get all info again
+        // we do this by exiting and letting Heroku start over
+        if (now - lastBootstrapped > c.timeToRedoBootstrap) {
+          await stateManager.set({
+            seq: 0,
+            bootstrapDone: false,
+          });
+          process.exit(0); // eslint-disable-line no-process-exit
+        }
+
+        return null;
+      } catch (e) {
+        return e;
+      }
     }, 1);
 
     changes.on('change', async change => {
