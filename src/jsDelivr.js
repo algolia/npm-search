@@ -25,9 +25,6 @@ export async function loadHits() {
     hitsJSON.forEach(formatHits);
   } catch (e) {
     log.error(e);
-
-    // eslint-disable-next-line no-process-exit
-    process.exit(1);
   }
 
   datadog.timing('jsdelivr.loadHits', Date.now() - start);

@@ -63,6 +63,6 @@ export async function getTSSupport(pkgs) {
 
   const all = await Promise.all(pkgs.map(getTypeScriptSupport));
 
-  datadog.timing('changelogs.getTSSupport', Date.now() - start);
+  datadog.timing('getTSSupport', Date.now() - start);
   return all;
 }

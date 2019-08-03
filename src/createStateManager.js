@@ -1,4 +1,5 @@
 import c from './config.js';
+import datadog from './datadog.js';
 
 const defaultState = {
   seq: c.seq,
@@ -24,16 +25,22 @@ export default algoliaIndex => ({
       return currentState;
     }
 
+    const start = Date.now();
     const { userData } = await algoliaIndex.getSettings();
+    datadog.timing('stateManager.get', Date.now() - start);
+
     return userData;
   },
 
   async set(state) {
     currentState = state;
 
+    const start = Date.now();
     await algoliaIndex.setSettings({
       userData: state,
     });
+    datadog.timing('stateManager.set', Date.now() - start);
+
     return state;
   },
 

@@ -47,7 +47,8 @@ async function addMetaData(pkgs) {
     getTSSupport(pkgs),
   ]);
 
-  return pkgs.map((pkg, index) => ({
+  const start = Date.now();
+  const all = pkgs.map((pkg, index) => ({
     ...pkg,
     ...downloads[index],
     ...dependents[index],
@@ -62,4 +63,6 @@ async function addMetaData(pkgs) {
       ...hits[index]._searchInternal,
     },
   }));
+  datadog.timing('saveDocs.addMetaData', Date.now() - start);
+  return all;
 }

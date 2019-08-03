@@ -30,6 +30,12 @@ const { index: mainIndex, client } = createAlgoliaIndex(c.indexName);
 const { index: bootstrapIndex } = createAlgoliaIndex(c.bootstrapIndexName);
 const stateManager = createStateManager(mainIndex);
 
+/**
+ * Main process
+ *   - Bootstrap: will index the whole list of packages (if needed)
+ *   - Replicate: will process the delta of missing update we may of miss during bootstrap
+ *   - Watch    : will process update in real time
+ */
 async function main() {
   let start = Date.now();
   // first we make sure the bootstrap index has the correct settings
@@ -41,7 +47,7 @@ async function main() {
   // after a bootstrap is done, it's moved to main (with settings)
   // if it was already finished, we will set the settings on the main index
   start = Date.now();
-  log.info('🗻  Bootstraping');
+  log.info('⛷   Bootstraping');
   await bootstrap(await stateManager.check());
   datadog.timing('main.bootsrap', Date.now() - start);
 
@@ -71,7 +77,7 @@ async function setSettings(index) {
   return index.waitTask(taskID);
 }
 
-async function infoChange(seq, nbChanges, emoji) {
+async function logUpdateProgress(seq, nbChanges, emoji) {
   const npmInfo = await npm.info();
 
   const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
@@ -87,7 +93,7 @@ async function infoChange(seq, nbChanges, emoji) {
   loopStart = Date.now();
 }
 
-async function logProgress(offset, nbDocs) {
+async function logBootstrapProgress(offset, nbDocs) {
   const { nbDocs: totalDocs } = await npm.info();
 
   const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);
@@ -109,7 +115,7 @@ async function bootstrap(state) {
 
   if (state.seq > 0 && state.bootstrapDone === true) {
     await setSettings(mainIndex);
-    log.info('☑️   Bootstrap: done');
+    log.info('⛷   Bootstrap: done');
     return state;
   }
 
@@ -130,13 +136,13 @@ async function bootstrap(state) {
   log.info(`Total packages   ${totalDocs}`);
   log.info('-----');
 
-  let still = true;
-  while (still) {
-    still = await loop(state.bootstrapLastId);
+  let lastProcessedId = state.bootstrapLastId;
+  while (lastProcessedId !== null) {
+    lastProcessedId = await bootstrapLoop(lastProcessedId);
   }
 
   log.info('-----');
-  log.info('☑️   Bootstrap: done');
+  log.info('⛷   Bootstrap: done');
   await stateManager.save({
     bootstrapDone: true,
     bootstrapLastDone: Date.now(),
@@ -145,9 +151,14 @@ async function bootstrap(state) {
   return await moveToProduction();
 }
 
-async function loop(lastId) {
+/**
+ * Execute one loop for bootstrap,
+ *   Fetch N packages from `lastId`, process and save them to Algolia
+ * @param {string} lastId
+ */
+async function bootstrapLoop(lastId) {
   const start = Date.now();
-  log.info('loop()');
+  log.info('loop()', '::', lastId);
 
   const options =
     lastId === undefined
@@ -157,15 +168,18 @@ async function loop(lastId) {
           skip: 1,
         };
 
+  const start2 = Date.now();
   const res = await db.allDocs({
     ...defaultOptions,
     ...options,
     limit: c.bootstrapConcurrency,
   });
+  datadog.timing('db.allDocs', Date.now() - start2);
 
-  // Nothing left to process
   if (res.rows.length <= 0) {
-    return false;
+    // Nothing left to process
+    // We return null to stop the bootstraping
+    return null;
   }
 
   datadog.increment('packages', res.rows.length);
@@ -179,7 +193,7 @@ async function loop(lastId) {
   });
   log.info(`  - saved ${saved} packages`);
 
-  await logProgress(res.offset, res.rows.length);
+  await logBootstrapProgress(res.offset, res.rows.length);
 
   datadog.timing('loop', Date.now() - start);
 
@@ -210,6 +224,7 @@ async function replicate({ seq }) {
   let npmSeqReached = false;
 
   return new Promise((resolve, reject) => {
+    const start2 = Date.now();
     const changes = db.changes({
       ...defaultOptions,
       since: seq,
@@ -217,13 +232,14 @@ async function replicate({ seq }) {
       live: true,
       return_docs: false, // eslint-disable-line camelcase
     });
+    datadog.timing('db.changes', Date.now() - start2);
 
     const q = cargo(async docs => {
       datadog.increment('packages', docs.length);
 
       try {
         await saveDocs({ docs, index: mainIndex });
-        await infoChange(docs[docs.length - 1].seq, 1, '🐌');
+        await logUpdateProgress(docs[docs.length - 1].seq, 1, '🐌');
         await stateManager.save({
           seq: docs[docs.length - 1].seq,
         });
@@ -232,13 +248,6 @@ async function replicate({ seq }) {
         return e;
       }
     }, c.replicateConcurrency);
-
-    q.drain = () => {
-      if (npmSeqReached) {
-        log.info('🐌  We reached the npm current sequence');
-        resolve();
-      }
-    };
 
     changes.on('change', async change => {
       if (change.deleted === true) {
@@ -258,6 +267,13 @@ async function replicate({ seq }) {
       }
     });
     changes.on('error', reject);
+
+    q.drain(() => {
+      if (npmSeqReached) {
+        log.info('🐌  We reached the npm current sequence');
+        resolve();
+      }
+    });
   });
 }
 
@@ -284,7 +300,7 @@ async function watch({ seq }) {
 
       try {
         await saveDocs({ docs: [change], index: mainIndex });
-        await infoChange(change.seq, 1, '🛰');
+        await logUpdateProgress(change.seq, 1, '🛰');
         await stateManager.save({
           seq: change.seq,
         });
