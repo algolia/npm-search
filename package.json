@@ -12,8 +12,7 @@
     "test": "jest && eslint .",
     "test:watch": "jest --watchAll --no-watchman",
     "format": "prettier --write **/*.{js,md,json}",
-    "doctoc": "doctoc --notitle --maxlevel 3 README.md",
-    "precommit": "lint-staged"
+    "doctoc": "doctoc --notitle --maxlevel 3 README.md"
   },
   "lint-staged": {
     "*.js": [
@@ -52,19 +51,19 @@
     "truncate-utf8-bytes": "1.0.2"
   },
   "devDependencies": {
-    "babel-eslint": "8.2.6",
+    "babel-eslint": "10.0.2",
     "babel-plugin-rewire": "1.2.0",
     "doctoc": "1.4.0",
-    "eslint": "5.16.0",
-    "eslint-config-algolia": "13.1.0",
-    "eslint-config-prettier": "2.10.0",
+    "eslint": "6.1.0",
+    "eslint-config-algolia": "13.4.0",
+    "eslint-config-prettier": "6.0.0",
     "eslint-import-resolver-webpack": "0.11.1",
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-jasmine": "2.10.1",
     "eslint-plugin-jest": "22.14.1",
-    "eslint-plugin-prettier": "2.7.0",
+    "eslint-plugin-prettier": "3.1.0",
     "eslint-plugin-react": "7.14.3",
-    "husky": "0.14.3",
+    "husky": "3.0.2",
     "jest": "23.6.0",
     "lint-staged": "7.3.0",
     "pre-commit": "1.2.2",
@@ -80,5 +79,10 @@
       "node_modules",
       "lib"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
