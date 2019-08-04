@@ -39,7 +39,7 @@
     "dotenv": "6.2.0",
     "escape-html": "1.0.3",
     "got": "9.6.0",
-    "gravatar-url": "2.0.0",
+    "gravatar-url": "3.0.1",
     "hosted-git-info": "2.7.1",
     "lodash": "4.17.15",
     "ms": "2.1.2",
