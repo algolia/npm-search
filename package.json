@@ -66,7 +66,7 @@
     "eslint-plugin-react": "7.14.3",
     "husky": "0.14.3",
     "jest": "23.6.0",
-    "lint-staged": "7.3.0",
+    "lint-staged": "9.2.1",
     "pre-commit": "1.2.2",
     "prettier": "1.14.3",
     "renovate-config-algolia": "2.0.2",
