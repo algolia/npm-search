@@ -138,12 +138,16 @@ async function getTotalDownloads() {
  */
 async function getDownload(pkgNames) {
   try {
-    return await got(
+    const response = await got(
       `${config.npmDownloadsEndpoint}/point/last-month/${pkgNames}`,
       {
         json: true,
       }
     );
+    if (response.body.downloads) {
+      return { body: { [response.body.package]: response.body } };
+    }
+    return response;
   } catch (error) {
     log.warn(`An error ocurred when getting download of ${pkgNames} ${error}`);
     return { body: {} };
@@ -190,9 +194,8 @@ async function getDownloads(pkgs) {
     {}
   );
 
-  return pkgs.map(({ name }) => {
+  const all = pkgs.map(({ name }) => {
     if (downloadsPerPkgName[name] === undefined) {
-      datadog.timing('npm.getDownloads', Date.now() - start);
       return {};
     }
 
@@ -205,7 +208,6 @@ async function getDownloads(pkgs) {
       ? downloadsLast30Days.toString().length
       : 0;
 
-    datadog.timing('npm.getDownloads', Date.now() - start);
     return {
       downloadsLast30Days,
       humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
@@ -220,6 +222,9 @@ async function getDownloads(pkgs) {
       },
     };
   });
+
+  datadog.timing('npm.getDownloads', Date.now() - start);
+  return all;
 }
 
 export default {

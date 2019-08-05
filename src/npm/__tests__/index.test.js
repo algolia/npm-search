@@ -1,4 +1,4 @@
-import api from './../index.js';
+import api from '../index.js';
 
 describe('getInfo()', () => {
   let registryInfo;
@@ -46,6 +46,36 @@ describe('getDependents()', () => {
     expect(jest).toBe(0);
     expect(angular).toBe(0);
     expect(holmes).toBe(0);
+  });
+});
+
+describe('getDownload()', () => {
+  it('should download one package and return correct response', async () => {
+    const dl = await api.getDownload('jest');
+    expect(dl.body).toHaveProperty('jest');
+    expect(dl.body.jest).toEqual({
+      downloads: expect.any(Number),
+      start: expect.any(String),
+      end: expect.any(String),
+      package: 'jest',
+    });
+  });
+
+  it('should download one scoped package and return correct response', async () => {
+    const dl = await api.getDownload('@angular/core');
+    expect(dl.body).toHaveProperty('@angular/core');
+    expect(dl.body['@angular/core']).toEqual({
+      downloads: expect.any(Number),
+      start: expect.any(String),
+      end: expect.any(String),
+      package: '@angular/core',
+    });
+  });
+
+  it('should download 2 packages and return correct response', async () => {
+    const dl = await api.getDownload('jest,holmes.js');
+    expect(dl.body).toHaveProperty('jest');
+    expect(dl.body).toHaveProperty(['holmes.js']);
   });
 });
 
