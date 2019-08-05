@@ -14,5 +14,6 @@ const client = new StatsD({
     log.error('[DATADOG ERROR]', error);
   },
 });
+log.info('🐶  Datadog launched');
 
 export default client;
