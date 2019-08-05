@@ -1,4 +1,3 @@
-import PouchDB from 'pouchdb-http';
 import ms from 'ms';
 import cargo from 'async/cargo.js';
 import queue from 'async/queue.js';
@@ -12,17 +11,6 @@ import datadog from './datadog.js';
 import { loadHits } from './jsDelivr.js';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
-
-const db = new PouchDB(config.npmRegistryEndpoint, {
-  ajax: {
-    timeout: ms('2.5m'), // default is 10s
-  },
-});
-const defaultOptions = {
-  include_docs: true, // eslint-disable-line camelcase
-  conflicts: false,
-  attachments: false,
-};
 
 let loopStart = Date.now();
 
@@ -159,21 +147,17 @@ async function bootstrapLoop(lastId) {
   const start = Date.now();
   log.info('loop()', '::', lastId);
 
-  const options =
-    lastId === undefined
-      ? {}
-      : {
-          startkey: lastId,
-          skip: 1,
-        };
-
-  const start2 = Date.now();
-  const res = await db.allDocs({
-    ...defaultOptions,
-    ...options,
+  const options = {
     limit: config.bootstrapConcurrency,
+  };
+  if (lastId) {
+    options.startkey = lastId;
+    options.skip = 1;
+  }
+
+  const res = await npm.findAll({
+    options,
   });
-  datadog.timing('db.allDocs', Date.now() - start2);
 
   if (res.rows.length <= 0) {
     // Nothing left to process

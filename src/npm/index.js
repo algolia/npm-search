@@ -115,6 +115,27 @@ function getDependents(pkgs) {
   );
 }
 
+/**
+ * Get total npm downloads
+ */
+async function getTotalDownloads() {
+  const {
+    body: { downloads: totalNpmDownloadsPerDay },
+  } = await got(`${config.npmDownloadsEndpoint}/range/last-month`, {
+    json: true,
+  });
+
+  return totalNpmDownloadsPerDay.reduce(
+    (total, { downloads: dayDownloads }) => total + dayDownloads,
+    0
+  );
+}
+
+/**
+ * Get download stats for a list of packages
+ *
+ * @param {string} pkgNames Packages name
+ */
 async function getDownload(pkgNames) {
   try {
     return await got(
@@ -129,6 +150,11 @@ async function getDownload(pkgNames) {
   }
 }
 
+/**
+ * Get downloads for all packages passer in arguments
+ *
+ * @param {array} pkgs Packages
+ */
 async function getDownloads(pkgs) {
   const start = Date.now();
 
@@ -149,15 +175,7 @@ async function getDownloads(pkgs) {
     names.join(',')
   );
 
-  const {
-    body: { downloads: totalNpmDownloadsPerDay },
-  } = await got(`${config.npmDownloadsEndpoint}/range/last-month`, {
-    json: true,
-  });
-  const totalNpmDownloads = totalNpmDownloadsPerDay.reduce(
-    (total, { downloads: dayDownloads }) => total + dayDownloads,
-    0
-  );
+  const totalNpmDownloads = await getTotalDownloads();
 
   const downloadsPerPkgNameChunks = await Promise.all([
     ...pkgsNamesChunks.map(getDownload),
