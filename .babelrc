@@ -1,20 +1,17 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/env",
       {
         "targets": {
-          "node": true
+          "node": "current"
         }
       }
-    ],
-    "stage-2"
+    ]
   ],
   "env": {
     "test": {
-      "plugins": [
-        "rewire"
-      ]
+      "plugins": ["rewire"]
     }
   }
 }

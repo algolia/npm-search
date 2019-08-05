@@ -17,7 +17,6 @@ export default algoliaIndex => ({
     if (state === undefined) {
       return this.reset();
     }
-    return state;
   },
 
   async get() {

@@ -176,7 +176,7 @@ Object {
       "type": "synonym",
     },
   ],
-  "jsDelivrHitsEndpoint": "https://data.jsdelivr.com/v1/stats/packages/month/all",
+  "jsDelivrHitsEndpoint": "https://data.jsdelivr.com/v1/stats/packages/npm/month/all",
   "maxObjSize": 450000,
   "npmDownloadsEndpoint": "https://api.npmjs.org/downloads",
   "npmRegistryEndpoint": "https://replicate.npmjs.com/registry",

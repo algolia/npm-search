@@ -6,7 +6,8 @@ const defaultConfig = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
   npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
   npmRootEndpoint: 'https://registry.npmjs.org',
-  jsDelivrHitsEndpoint: 'https://data.jsdelivr.com/v1/stats/packages/month/all',
+  jsDelivrHitsEndpoint:
+    'https://data.jsdelivr.com/v1/stats/packages/npm/month/all',
   unpkgRoot: 'https://unpkg.com',
   maxObjSize: 450000,
   popularDownloadsRatio: 0.005,
