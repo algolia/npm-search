@@ -11,8 +11,8 @@ let currentState;
 export default algoliaIndex => ({
   check() {
     if (c.seq !== null) return this.reset();
-    return this.get().then(
-      state => (state === undefined ? this.reset() : state)
+    return this.get().then(state =>
+      state === undefined ? this.reset() : state
     );
   },
   get() {
