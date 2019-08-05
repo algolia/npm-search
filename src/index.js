@@ -5,7 +5,7 @@ import queue from 'async/queue.js';
 import createStateManager from './createStateManager.js';
 import saveDocs from './saveDocs.js';
 import createAlgoliaIndex from './createAlgoliaIndex.js';
-import c from './config.js';
+import config from './config.js';
 import * as npm from './npm.js';
 import log from './log.js';
 import datadog from './datadog.js';
@@ -13,7 +13,7 @@ import { loadHits } from './jsDelivr.js';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
-const db = new PouchDB(c.npmRegistryEndpoint, {
+const db = new PouchDB(config.npmRegistryEndpoint, {
   ajax: {
     timeout: ms('2.5m'), // default is 10s
   },
@@ -26,8 +26,8 @@ const defaultOptions = {
 
 let loopStart = Date.now();
 
-const { index: mainIndex, client } = createAlgoliaIndex(c.indexName);
-const { index: bootstrapIndex } = createAlgoliaIndex(c.bootstrapIndexName);
+const { index: mainIndex, client } = createAlgoliaIndex(config.indexName);
+const { index: bootstrapIndex } = createAlgoliaIndex(config.bootstrapIndexName);
 const stateManager = createStateManager(mainIndex);
 
 /**
@@ -66,11 +66,11 @@ async function main() {
 main().catch(error);
 
 async function setSettings(index) {
-  await index.setSettings(c.indexSettings);
-  await index.batchSynonyms(c.indexSynonyms, {
+  await index.setSettings(config.indexSettings);
+  await index.batchSynonyms(config.indexSynonyms, {
     replaceExistingSynonyms: true,
   });
-  const { taskID } = await index.batchRules(c.indexRules, {
+  const { taskID } = await index.batchRules(config.indexRules, {
     replaceExistingRules: true,
   });
 
@@ -172,7 +172,7 @@ async function bootstrapLoop(lastId) {
   const res = await db.allDocs({
     ...defaultOptions,
     ...options,
-    limit: c.bootstrapConcurrency,
+    limit: config.bootstrapConcurrency,
   });
   datadog.timing('db.allDocs', Date.now() - start2);
 
@@ -204,7 +204,7 @@ async function moveToProduction() {
   log.info('🚚  starting move to production');
 
   const currentState = await stateManager.get();
-  await client.copyIndex(c.bootstrapIndexName, c.indexName);
+  await client.copyIndex(config.bootstrapIndexName, config.indexName);
 
   await stateManager.save(currentState);
 }
@@ -212,7 +212,7 @@ async function moveToProduction() {
 async function replicate({ seq }) {
   log.info(
     '🐌   Replicate: Asking for %d changes since sequence %d',
-    c.replicateConcurrency,
+    config.replicateConcurrency,
     seq
   );
 
@@ -228,7 +228,7 @@ async function replicate({ seq }) {
     const changes = db.changes({
       ...defaultOptions,
       since: seq,
-      batch_size: c.replicateConcurrency, // eslint-disable-line camelcase
+      batch_size: config.replicateConcurrency, // eslint-disable-line camelcase
       live: true,
       return_docs: false, // eslint-disable-line camelcase
     });
@@ -247,7 +247,7 @@ async function replicate({ seq }) {
       } catch (e) {
         return e;
       }
-    }, c.replicateConcurrency);
+    }, config.replicateConcurrency);
 
     changes.on('change', async change => {
       if (change.deleted === true) {
@@ -311,7 +311,7 @@ async function watch({ seq }) {
         // when the process is running longer than a certain time
         // we want to start over and get all info again
         // we do this by exiting and letting Heroku start over
-        if (now - lastBootstrapped > c.timeToRedoBootstrap) {
+        if (now - lastBootstrapped > config.timeToRedoBootstrap) {
           await stateManager.set({
             seq: 0,
             bootstrapDone: false,

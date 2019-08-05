@@ -18,7 +18,7 @@ export async function loadHits() {
   log.info('📦  Loading hits from jsDelivr');
 
   try {
-    const { body: hitsJSON } = await got(c.jsDelivrHitsEndpoint, {
+    const { body: hitsJSON } = await got(config.jsDelivrHitsEndpoint, {
       json: true,
     });
     hits.clear();
