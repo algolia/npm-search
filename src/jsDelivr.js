@@ -1,6 +1,6 @@
 import got from 'got';
 import log from './log.js';
-import c from './config.js';
+import config from './config.js';
 import datadog from './datadog.js';
 
 const hits = new Map();
