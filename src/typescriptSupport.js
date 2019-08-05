@@ -2,6 +2,7 @@
 
 import { validatePackageExists } from './npm.js';
 import { fileExistsInUnpkg } from './unpkg.js';
+import datadog from './datadog.js';
 
 /**
  * @typedef Package
@@ -57,6 +58,11 @@ export async function getTypeScriptSupport(pkg) {
 /**
  * @param {Array<Package>} pkgs
  */
-export function getTSSupport(pkgs) {
-  return Promise.all(pkgs.map(getTypeScriptSupport));
+export async function getTSSupport(pkgs) {
+  const start = Date.now();
+
+  const all = await Promise.all(pkgs.map(getTypeScriptSupport));
+
+  datadog.timing('getTSSupport', Date.now() - start);
+  return all;
 }

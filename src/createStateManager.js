@@ -1,4 +1,5 @@
 import c from './config.js';
+import datadog from './datadog.js';
 
 const defaultState = {
   seq: c.seq,
@@ -9,35 +10,51 @@ const defaultState = {
 let currentState;
 
 export default algoliaIndex => ({
-  check() {
+  async check() {
     if (c.seq !== null) return this.reset();
-    return this.get().then(state =>
-      state === undefined ? this.reset() : state
-    );
+    const state = await this.get();
+
+    if (state === undefined) {
+      return this.reset();
+    }
+
+    return state;
   },
-  get() {
-    return currentState
-      ? Promise.resolve(currentState)
-      : algoliaIndex.getSettings().then(({ userData }) => userData);
+
+  async get() {
+    if (currentState) {
+      return currentState;
+    }
+
+    const start = Date.now();
+    const { userData } = await algoliaIndex.getSettings();
+    datadog.timing('stateManager.get', Date.now() - start);
+
+    return userData;
   },
-  set(state) {
+
+  async set(state) {
     currentState = state;
 
-    return algoliaIndex
-      .setSettings({
-        userData: state,
-      })
-      .then(() => state);
+    const start = Date.now();
+    await algoliaIndex.setSettings({
+      userData: state,
+    });
+    datadog.timing('stateManager.set', Date.now() - start);
+
+    return state;
   },
-  reset() {
-    return this.set(defaultState);
+
+  async reset() {
+    return await this.set(defaultState);
   },
-  save(partial) {
-    return this.get().then((current = defaultState) =>
-      this.set({
-        ...current,
-        ...partial,
-      })
-    );
+
+  async save(partial) {
+    const current = (await this.get()) || defaultState;
+
+    return await this.set({
+      ...current,
+      ...partial,
+    });
   },
 });
