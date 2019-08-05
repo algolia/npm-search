@@ -8,7 +8,7 @@ import traverse from 'traverse';
 import truncate from 'truncate-utf8-bytes';
 import hostedGitInfo from 'hosted-git-info';
 
-import c from './config.js';
+import config from './config.js';
 
 export default function formatPkg(pkg) {
   const cleaned = new NicePackage(pkg);
@@ -103,11 +103,11 @@ export default function formatPkg(pkg) {
   };
 
   const totalSize = sizeof(rawPkg);
-  if (totalSize > c.maxObjSize) {
+  if (totalSize > config.maxObjSize) {
     const sizeDiff = sizeof(rawPkg.readme) - totalSize;
     rawPkg.readme = `${truncate(
       rawPkg.readme,
-      c.maxObjSize - sizeDiff
+      config.maxObjSize - sizeDiff
     )} **TRUNCATED**`;
   }
 
