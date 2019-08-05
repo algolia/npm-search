@@ -1,17 +1,71 @@
 import got from 'got';
+import ms from 'ms';
+import PouchDB from 'pouchdb-http';
 import chunk from 'lodash/chunk.js';
 import numeral from 'numeral';
 
-import c from './config.js';
-import log from './log.js';
-import datadog from './datadog.js';
+import config from '../config.js';
+import datadog from '../datadog.js';
+import log from '../log';
 
-export async function info() {
+const db = new PouchDB(config.npmRegistryEndpoint, {
+  ajax: {
+    timeout: ms('2.5m'), // default is 10s
+  },
+});
+
+// Default request options
+const defaultOptions = {
+  include_docs: true, // eslint-disable-line camelcase
+  conflicts: false,
+  attachments: false,
+};
+
+/**
+ * Find all packages in registry
+ *
+ * @param {object} options Options param
+ */
+async function findAll(options) {
+  const start2 = Date.now();
+
+  const results = await db.allDocs({
+    ...defaultOptions,
+    ...options,
+  });
+
+  datadog.timing('db.allDocs', Date.now() - start2);
+
+  return results;
+}
+
+/**
+ * Listen to changes in registry
+ *
+ * @param {object} options Options param
+ */
+function listenToChanges(options) {
+  const start2 = Date.now();
+
+  const changes = db.changes({
+    ...defaultOptions,
+    ...options,
+  });
+
+  datadog.timing('db.changes', Date.now() - start2);
+
+  return changes;
+}
+
+/**
+ * Get info about registry
+ */
+async function getInfo() {
   const start = Date.now();
 
   const {
     body: { doc_count: nbDocs, update_seq: seq },
-  } = await got(c.npmRegistryEndpoint, {
+  } = await got(config.npmRegistryEndpoint, {
     json: true,
   });
 
@@ -23,18 +77,17 @@ export async function info() {
   };
 }
 
-const logWarning = ({ error, type, packagesStr }) => {
-  log.warn(
-    `Something went wrong asking the ${type} for "${packagesStr}" "${error}"`
-  );
-};
-
-export async function validatePackageExists(pkgName) {
+/**
+ * Validate if a package exists
+ *
+ * @param {string} pkgName Package name
+ */
+async function validatePackageExists(pkgName) {
   const start = Date.now();
 
   let exists;
   try {
-    const response = await got(`${c.npmRootEndpoint}/${pkgName}`, {
+    const response = await got(`${config.npmRootEndpoint}/${pkgName}`, {
       json: true,
       method: 'HEAD',
     });
@@ -47,7 +100,36 @@ export async function validatePackageExists(pkgName) {
   return exists;
 }
 
-export async function getDownloads(pkgs) {
+/**
+ * Get list of packages that depends of them
+ *
+ * @param {Array} pkgs Package list
+ */
+function getDependents(pkgs) {
+  // we return 0, waiting for https://github.com/npm/registry/issues/361
+  return Promise.all(
+    pkgs.map(() => ({
+      dependents: 0,
+      humanDependents: '0',
+    }))
+  );
+}
+
+async function getDownload(pkgNames) {
+  try {
+    return await got(
+      `${config.npmDownloadsEndpoint}/point/last-month/${pkgNames}`,
+      {
+        json: true,
+      }
+    );
+  } catch (error) {
+    log.warn(`An error ocurred when getting download of ${pkgNames} ${error}`);
+    return { body: {} };
+  }
+}
+
+async function getDownloads(pkgs) {
   const start = Date.now();
 
   // npm has a weird API to get downloads via GET params, so we split pkgs into chunks
@@ -69,7 +151,7 @@ export async function getDownloads(pkgs) {
 
   const {
     body: { downloads: totalNpmDownloadsPerDay },
-  } = await got(`${c.npmDownloadsEndpoint}/range/last-month`, {
+  } = await got(`${config.npmDownloadsEndpoint}/range/last-month`, {
     json: true,
   });
   const totalNpmDownloads = totalNpmDownloadsPerDay.reduce(
@@ -78,41 +160,8 @@ export async function getDownloads(pkgs) {
   );
 
   const downloadsPerPkgNameChunks = await Promise.all([
-    ...pkgsNamesChunks.map(async pkgsNames => {
-      try {
-        return await got(
-          `${c.npmDownloadsEndpoint}/point/last-month/${pkgsNames}`,
-          {
-            json: true,
-          }
-        );
-      } catch (error) {
-        logWarning({
-          error,
-          type: 'downloads',
-          packagesStr: pkgsNames,
-        });
-        return { body: {} };
-      }
-    }),
-    ...encodedScopedPackageNames.map(async pkg => {
-      try {
-        const res = await got(
-          `${c.npmDownloadsEndpoint}/point/last-month/${pkg}`,
-          {
-            json: true,
-          }
-        );
-        return { body: { [res.body.package]: res.body } };
-      } catch (error) {
-        logWarning({
-          error,
-          type: 'scoped downloads',
-          packagesStr: pkg,
-        });
-        return { body: {} };
-      }
-    }),
+    ...pkgsNamesChunks.map(getDownload),
+    ...encodedScopedPackageNames.map(getDownload),
   ]);
 
   const downloadsPerPkgName = downloadsPerPkgNameChunks.reduce(
@@ -133,7 +182,7 @@ export async function getDownloads(pkgs) {
       ? downloadsPerPkgName[name].downloads
       : 0;
     const downloadsRatio = (downloadsLast30Days / totalNpmDownloads) * 100;
-    const popular = downloadsRatio > c.popularDownloadsRatio;
+    const popular = downloadsRatio > config.popularDownloadsRatio;
     const downloadsMagnitude = downloadsLast30Days
       ? downloadsLast30Days.toString().length
       : 0;
@@ -155,12 +204,12 @@ export async function getDownloads(pkgs) {
   });
 }
 
-export function getDependents(pkgs) {
-  // we return 0, waiting for https://github.com/npm/registry/issues/361
-  return Promise.all(
-    pkgs.map(() => ({
-      dependents: 0,
-      humanDependents: '0',
-    }))
-  );
-}
+export default {
+  findAll,
+  listenToChanges,
+  getInfo,
+  validatePackageExists,
+  getDependents,
+  getDownload,
+  getDownloads,
+};

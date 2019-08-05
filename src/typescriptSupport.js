@@ -1,6 +1,6 @@
 // @ts-check
 
-import { validatePackageExists } from './npm.js';
+import npm from './npm/index.js';
 import { fileExistsInUnpkg } from './unpkg.js';
 import datadog from './datadog.js';
 
@@ -26,7 +26,7 @@ export async function getTypeScriptSupport(pkg) {
 
   // The 2nd most likely is definitely typed
   const defTypeName = `@types/${pkg.name.replace('@', '').replace('/', '__')}`;
-  const defTyped = await validatePackageExists(defTypeName);
+  const defTyped = await npm.validatePackageExists(defTypeName);
   if (defTyped) {
     return {
       types: {

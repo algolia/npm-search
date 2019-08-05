@@ -1,6 +1,6 @@
 import formatPkg from './formatPkg.js';
 import log from './log.js';
-import { getDownloads, getDependents } from './npm.js';
+import npm from './npm/index.js';
 import { getChangelogs } from './changelog.js';
 import { getHits } from './jsDelivr.js';
 import { getTSSupport } from './typescriptSupport.js';
@@ -40,8 +40,8 @@ export default async function saveDocs({ docs, index }) {
 
 async function addMetaData(pkgs) {
   const [downloads, dependents, changelogs, hits, ts] = await Promise.all([
-    getDownloads(pkgs),
-    getDependents(pkgs),
+    npm.getDownloads(pkgs),
+    npm.getDependents(pkgs),
     getChangelogs(pkgs),
     getHits(pkgs),
     getTSSupport(pkgs),

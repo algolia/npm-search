@@ -78,8 +78,7 @@ async function setSettings(index) {
 }
 
 async function logUpdateProgress(seq, nbChanges, emoji) {
-  const npmInfo = await npm.info();
-
+  const npmInfo = await npm.getInfo();
   const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
   const remaining = ((npmInfo.seq - seq) / ratePerSecond) * 1000 || 0;
   log.info(
@@ -220,21 +219,18 @@ async function replicate({ seq }) {
     stage: 'replicate',
   });
 
-  const { seq: npmSeqToReach } = await npm.info();
+  const { seq: npmSeqToReach } = await npm.getInfo();
   let npmSeqReached = false;
 
   return new Promise((resolve, reject) => {
-    const start2 = Date.now();
-    const changes = db.changes({
-      ...defaultOptions,
+    const listener = npm.listenToChanges({
       since: seq,
       batch_size: c.replicateConcurrency, // eslint-disable-line camelcase
       live: true,
       return_docs: false, // eslint-disable-line camelcase
     });
-    datadog.timing('db.changes', Date.now() - start2);
 
-    const q = cargo(async docs => {
+    const changesConsumer = cargo(async docs => {
       datadog.increment('packages', docs.length);
 
       try {
@@ -247,15 +243,15 @@ async function replicate({ seq }) {
       } catch (e) {
         return e;
       }
-    }, c.replicateConcurrency);
+    }, config.replicateConcurrency);
 
-    changes.on('change', async change => {
+    listener.on('change', async change => {
       if (change.deleted === true) {
         await mainIndex.deleteObject(change.id);
         log.info(`🐌  Deleted ${change.id}`);
       }
 
-      q.push(change, err => {
+      changesConsumer.push(change, err => {
         if (err) {
           reject(err);
         }
@@ -263,12 +259,12 @@ async function replicate({ seq }) {
 
       if (change.seq >= npmSeqToReach) {
         npmSeqReached = true;
-        changes.cancel();
+        listener.cancel();
       }
     });
-    changes.on('error', reject);
+    listener.on('error', reject);
 
-    q.drain(() => {
+    changesConsumer.drain(() => {
       if (npmSeqReached) {
         log.info('🐌  We reached the npm current sequence');
         resolve();
@@ -287,15 +283,14 @@ async function watch({ seq }) {
   });
 
   return new Promise((resolve, reject) => {
-    const changes = db.changes({
-      ...defaultOptions,
+    const listener = npm.listenToChanges({
       since: seq,
       live: true,
       batch_size: 1, // eslint-disable-line camelcase
       return_docs: false, // eslint-disable-line camelcase
     });
 
-    const q = queue(async change => {
+    const changesConsumer = queue(async change => {
       datadog.increment('packages');
 
       try {
@@ -325,18 +320,18 @@ async function watch({ seq }) {
       }
     }, 1);
 
-    changes.on('change', async change => {
+    listener.on('change', async change => {
       if (change.deleted === true) {
         await mainIndex.deleteObject(change.id);
         log.info(`🛰 Deleted ${change.id}`);
       }
-      q.push(change, err => {
+      changesConsumer.push(change, err => {
         if (err) {
           reject(err);
         }
       });
     });
-    changes.on('error', reject);
+    listener.on('error', reject);
   });
 }
 
