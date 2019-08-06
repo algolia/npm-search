@@ -135,7 +135,7 @@ async function bootstrap(state, algoliaClient, bootstrapIndex) {
  *   Fetch N packages from `lastId`, process and save them to Algolia
  * @param {string} lastId
  */
-async function bootstrapLoop(lastId) {
+async function bootstrapLoop(lastId, bootstrapIndex) {
   const start = Date.now();
   log.info('loop()', '::', lastId);
 
