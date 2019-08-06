@@ -5,10 +5,6 @@ import datadog from '../datadog.js';
 
 const hits = new Map();
 
-function formatHits(pkg) {
-  hits.set(pkg.name, pkg.hits);
-}
-
 /**
  * Load downloads hits
  */
@@ -21,7 +17,9 @@ async function loadHits() {
       json: true,
     });
     hits.clear();
-    hitsJSON.forEach(formatHits);
+    hitsJSON.forEach(pkg => {
+      hits.set(pkg.name, pkg.hits);
+    });
   } catch (e) {
     log.error(e);
   }
@@ -77,18 +75,21 @@ async function getFilesList(pkg) {
     );
   }
 
-  let files;
+  let files = [];
   try {
-    files = await got(`${config.jsDelivrPackageEndpoint}/${pkg.name}/flat`, {
-      json: true,
-    });
+    const response = await got(
+      `${config.jsDelivrPackageEndpoint}/${pkg.name}/flat`,
+      {
+        json: true,
+      }
+    );
+    files = response.body.files;
   } catch (e) {
     log.warn(e);
-    return {};
   }
 
   datadog.timing('jsdelivr.getFilesList', Date.now() - start);
-  return files.body.files;
+  return files;
 }
 
 export { hits, loadHits, getHits, getAllFilesList, getFilesList };

@@ -59,7 +59,7 @@ describe('files', () => {
       const files = await api.getFilesList({
         name: 'thispackagedoesnotexist@3.33.0',
       });
-      expect(files).toEqual({});
+      expect(files).toEqual([]);
     });
   });
 
