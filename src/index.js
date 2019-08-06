@@ -42,7 +42,12 @@ async function main() {
   // if it was already finished, we will set the settings on the main index
   start = Date.now();
   log.info('⛷   Bootstraping');
-  await bootstrap(await stateManager.check(), algoliaClient, bootstrapIndex);
+  await bootstrap(
+    await stateManager.check(),
+    algoliaClient,
+    mainIndex,
+    bootstrapIndex
+  );
   datadog.timing('main.bootsrap', Date.now() - start);
 
   // then we figure out which updates we missed since
@@ -89,12 +94,13 @@ async function logBootstrapProgress(offset, nbDocs) {
   loopStart = Date.now();
 }
 
-async function bootstrap(state, algoliaClient, bootstrapIndex) {
+async function bootstrap(state, algoliaClient, mainIndex, bootstrapIndex) {
   await stateManager.save({
     stage: 'bootstrap',
   });
 
   if (state.seq > 0 && state.bootstrapDone === true) {
+    await algolia.putDefaultSettings(mainIndex);
     log.info('⛷   Bootstrap: done');
     return state;
   }
@@ -107,6 +113,7 @@ async function bootstrap(state, algoliaClient, bootstrapIndex) {
     log.info('⛷   Bootstrap: starting from the first doc');
     // first time this launches, we need to remember the last seq our bootstrap can trust
     await stateManager.save({ seq });
+    await algolia.putDefaultSettings(bootstrapIndex);
   } else {
     log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
   }
