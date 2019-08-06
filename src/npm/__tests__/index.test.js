@@ -1,12 +1,12 @@
-import { info, getDownloads, getDependents } from '../npm';
+import * as api from '../index.js';
 
-describe('info()', () => {
+describe('getInfo()', () => {
   let registryInfo;
   beforeAll(async () => {
-    registryInfo = await info();
+    registryInfo = await api.getInfo();
   });
 
-  it('contains the correct keys', () => {
+  test('contains the correct keys', () => {
     expect(registryInfo).toEqual(
       expect.objectContaining({
         nbDocs: expect.any(Number),
@@ -19,7 +19,7 @@ describe('info()', () => {
 describe('getDependents()', () => {
   let dependents;
   beforeAll(async () => {
-    dependents = await getDependents([
+    dependents = await api.getDependents([
       { name: 'jest' },
       { name: '@angular/core' },
       { name: 'holmes.js' },
@@ -47,30 +47,42 @@ describe('getDependents()', () => {
     expect(angular).toBe(0);
     expect(holmes).toBe(0);
   });
+});
 
-  it.skip('has the right approximate value', () => {
-    const [jest, angular, holmes] = dependents.map(pkg =>
-      pkg.dependents.toString()
-    );
+describe('getDownload()', () => {
+  it('should download one package and return correct response', async () => {
+    const dl = await api.getDownload('jest');
+    expect(dl.body).toHaveProperty('jest');
+    expect(dl.body.jest).toEqual({
+      downloads: expect.any(Number),
+      start: expect.any(String),
+      end: expect.any(String),
+      package: 'jest',
+    });
+  });
 
-    // eslint-disable-next-line no-console
-    console.log('dependents', { jest, angular, holmes });
+  it('should download one scoped package and return correct response', async () => {
+    const dl = await api.getDownload('@angular/core');
+    expect(dl.body).toHaveProperty('@angular/core');
+    expect(dl.body['@angular/core']).toEqual({
+      downloads: expect.any(Number),
+      start: expect.any(String),
+      end: expect.any(String),
+      package: '@angular/core',
+    });
+  });
 
-    // real should be 2100
-    expect(jest).toHaveLength(4);
-
-    // real should be 5200
-    expect(angular).toHaveLength(4);
-
-    // real should be 0
-    expect(holmes).toHaveLength(1);
+  it('should download 2 packages and return correct response', async () => {
+    const dl = await api.getDownload('jest,holmes.js');
+    expect(dl.body).toHaveProperty('jest');
+    expect(dl.body).toHaveProperty(['holmes.js']);
   });
 });
 
 describe('getDownloads()', () => {
   let downloads;
   beforeAll(async () => {
-    downloads = await getDownloads([
+    downloads = await api.getDownloads([
       { name: 'jest' },
       { name: '@angular/core' },
       { name: 'holmes.js' },

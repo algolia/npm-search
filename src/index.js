@@ -1,4 +1,3 @@
-import PouchDB from 'pouchdb-http';
 import ms from 'ms';
 import cargo from 'async/cargo.js';
 import queue from 'async/queue.js';
@@ -6,23 +5,12 @@ import createStateManager from './createStateManager.js';
 import saveDocs from './saveDocs.js';
 import createAlgoliaIndex from './createAlgoliaIndex.js';
 import config from './config.js';
-import * as npm from './npm.js';
+import * as npm from './npm/index.js';
 import log from './log.js';
 import datadog from './datadog.js';
 import { loadHits } from './jsDelivr.js';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
-
-const db = new PouchDB(config.npmRegistryEndpoint, {
-  ajax: {
-    timeout: ms('2.5m'), // default is 10s
-  },
-});
-const defaultOptions = {
-  include_docs: true, // eslint-disable-line camelcase
-  conflicts: false,
-  attachments: false,
-};
 
 let loopStart = Date.now();
 
@@ -78,8 +66,7 @@ async function setSettings(index) {
 }
 
 async function logUpdateProgress(seq, nbChanges, emoji) {
-  const npmInfo = await npm.info();
-
+  const npmInfo = await npm.getInfo();
   const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
   const remaining = ((npmInfo.seq - seq) / ratePerSecond) * 1000 || 0;
   log.info(
@@ -94,7 +81,7 @@ async function logUpdateProgress(seq, nbChanges, emoji) {
 }
 
 async function logBootstrapProgress(offset, nbDocs) {
-  const { nbDocs: totalDocs } = await npm.info();
+  const { nbDocs: totalDocs } = await npm.getInfo();
 
   const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);
   log.info(
@@ -121,7 +108,7 @@ async function bootstrap(state) {
 
   await loadHits();
 
-  const { seq, nbDocs: totalDocs } = await npm.info();
+  const { seq, nbDocs: totalDocs } = await npm.getInfo();
   if (!state.bootstrapLastId) {
     // Start from 0
     log.info('⛷   Bootstrap: starting from the first doc');
@@ -160,21 +147,17 @@ async function bootstrapLoop(lastId) {
   const start = Date.now();
   log.info('loop()', '::', lastId);
 
-  const options =
-    lastId === undefined
-      ? {}
-      : {
-          startkey: lastId,
-          skip: 1,
-        };
-
-  const start2 = Date.now();
-  const res = await db.allDocs({
-    ...defaultOptions,
-    ...options,
+  const options = {
     limit: config.bootstrapConcurrency,
+  };
+  if (lastId) {
+    options.startkey = lastId;
+    options.skip = 1;
+  }
+
+  const res = await npm.findAll({
+    options,
   });
-  datadog.timing('db.allDocs', Date.now() - start2);
 
   if (res.rows.length <= 0) {
     // Nothing left to process
@@ -220,21 +203,18 @@ async function replicate({ seq }) {
     stage: 'replicate',
   });
 
-  const { seq: npmSeqToReach } = await npm.info();
+  const { seq: npmSeqToReach } = await npm.getInfo();
   let npmSeqReached = false;
 
   return new Promise((resolve, reject) => {
-    const start2 = Date.now();
-    const changes = db.changes({
-      ...defaultOptions,
+    const listener = npm.listenToChanges({
       since: seq,
       batch_size: config.replicateConcurrency, // eslint-disable-line camelcase
       live: true,
       return_docs: false, // eslint-disable-line camelcase
     });
-    datadog.timing('db.changes', Date.now() - start2);
 
-    const q = cargo(async docs => {
+    const changesConsumer = cargo(async docs => {
       datadog.increment('packages', docs.length);
 
       try {
@@ -249,13 +229,13 @@ async function replicate({ seq }) {
       }
     }, config.replicateConcurrency);
 
-    changes.on('change', async change => {
+    listener.on('change', async change => {
       if (change.deleted === true) {
         await mainIndex.deleteObject(change.id);
         log.info(`🐌  Deleted ${change.id}`);
       }
 
-      q.push(change, err => {
+      changesConsumer.push(change, err => {
         if (err) {
           reject(err);
         }
@@ -263,12 +243,12 @@ async function replicate({ seq }) {
 
       if (change.seq >= npmSeqToReach) {
         npmSeqReached = true;
-        changes.cancel();
+        listener.cancel();
       }
     });
-    changes.on('error', reject);
+    listener.on('error', reject);
 
-    q.drain(() => {
+    changesConsumer.drain(() => {
       if (npmSeqReached) {
         log.info('🐌  We reached the npm current sequence');
         resolve();
@@ -287,15 +267,14 @@ async function watch({ seq }) {
   });
 
   return new Promise((resolve, reject) => {
-    const changes = db.changes({
-      ...defaultOptions,
+    const listener = npm.listenToChanges({
       since: seq,
       live: true,
       batch_size: 1, // eslint-disable-line camelcase
       return_docs: false, // eslint-disable-line camelcase
     });
 
-    const q = queue(async change => {
+    const changesConsumer = queue(async change => {
       datadog.increment('packages');
 
       try {
@@ -325,18 +304,18 @@ async function watch({ seq }) {
       }
     }, 1);
 
-    changes.on('change', async change => {
+    listener.on('change', async change => {
       if (change.deleted === true) {
         await mainIndex.deleteObject(change.id);
         log.info(`🛰 Deleted ${change.id}`);
       }
-      q.push(change, err => {
+      changesConsumer.push(change, err => {
         if (err) {
           reject(err);
         }
       });
     });
-    changes.on('error', reject);
+    listener.on('error', reject);
   });
 }
 
