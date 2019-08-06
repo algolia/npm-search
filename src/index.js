@@ -5,7 +5,7 @@ import createStateManager from './createStateManager.js';
 import saveDocs from './saveDocs.js';
 import createAlgoliaIndex from './createAlgoliaIndex.js';
 import config from './config.js';
-import npm from './npm/index.js';
+import * as npm from './npm/index.js';
 import log from './log.js';
 import datadog from './datadog.js';
 import { loadHits } from './jsDelivr.js';
@@ -108,7 +108,7 @@ async function bootstrap(state) {
 
   await loadHits();
 
-  const { seq, nbDocs: totalDocs } = await npm.info();
+  const { seq, nbDocs: totalDocs } = await npm.getInfo();
   if (!state.bootstrapLastId) {
     // Start from 0
     log.info('⛷   Bootstrap: starting from the first doc');

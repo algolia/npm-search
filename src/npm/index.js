@@ -227,7 +227,7 @@ async function getDownloads(pkgs) {
   return all;
 }
 
-export default {
+export {
   findAll,
   listenToChanges,
   getInfo,

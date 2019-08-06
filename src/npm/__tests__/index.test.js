@@ -1,4 +1,4 @@
-import api from '../index.js';
+import * as api from '../index.js';
 
 describe('getInfo()', () => {
   let registryInfo;
@@ -127,6 +127,9 @@ describe('getDownloads()', () => {
     const [jest, angular, holmes] = downloads.map(pkg =>
       pkg.downloadsLast30Days.toString()
     );
+
+    // eslint-disable-next-line no-console
+    console.log('downloads', { jest, angular, holmes });
 
     expect(jest.length).toBeGreaterThanOrEqual(6);
     expect(jest.length).toBeLessThanOrEqual(8);

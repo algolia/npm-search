@@ -1,6 +1,6 @@
 import formatPkg from './formatPkg.js';
 import log from './log.js';
-import npm from './npm/index.js';
+import * as npm from './npm/index.js';
 import { getChangelogs } from './changelog.js';
 import { getHits } from './jsDelivr.js';
 import { getTSSupport } from './typescriptSupport.js';

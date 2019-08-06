@@ -1,6 +1,6 @@
 // @ts-check
 
-import npm from './npm/index.js';
+import * as npm from './npm/index.js';
 import { fileExistsInUnpkg } from './unpkg.js';
 import datadog from './datadog.js';
 
