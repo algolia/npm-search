@@ -441,3 +441,64 @@ describe('alternative names', () => {
     `);
   });
 });
+
+describe('moduleType', () => {
+  test('type=module', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        type: 'module',
+      }).moduleType
+    ).toEqual('esm');
+  });
+
+  test('type=commonjs', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        type: 'commonjs',
+      }).moduleType
+    ).toEqual('cjs');
+  });
+
+  test('module=xxx.js', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        module: 'index.js',
+      }).moduleType
+    ).toEqual('esm');
+  });
+
+  test('main: index.mjs', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        main: 'index.mjs',
+      }).moduleType
+    ).toEqual('esm');
+  });
+
+  test('main: index.cjs', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        main: 'index.cjs',
+      }).moduleType
+    ).toEqual('cjs');
+  });
+
+  test('unknown', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+      }).moduleType
+    ).toEqual('unknown');
+  });
+});

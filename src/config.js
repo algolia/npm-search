@@ -35,6 +35,7 @@ const defaultConfig = {
       'searchable(owner.name)',
       'deprecated',
       'types.ts',
+      'moduleType',
     ],
     customRanking: [
       'desc(_searchInternal.downloadsMagnitude)',
