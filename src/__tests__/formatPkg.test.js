@@ -1,6 +1,6 @@
-import formatPkg from '../formatPkg';
+import formatPkg from '../formatPkg.js';
 import rawPackages from './rawPackages.json';
-import isISO8601 from 'validator/lib/isISO8601';
+import isISO8601 from 'validator/lib/isISO8601.js';
 
 it('transforms correctly', () => {
   rawPackages
