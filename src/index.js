@@ -81,7 +81,7 @@ async function logUpdateProgress(seq, nbChanges, emoji) {
 }
 
 async function logBootstrapProgress(offset, nbDocs) {
-  const { nbDocs: totalDocs } = await npm.info();
+  const { nbDocs: totalDocs } = await npm.getInfo();
 
   const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);
   log.info(
