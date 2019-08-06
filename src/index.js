@@ -8,7 +8,7 @@ import config from './config.js';
 import * as npm from './npm/index.js';
 import log from './log.js';
 import datadog from './datadog.js';
-import { loadHits } from './jsDelivr.js';
+import * as jsDelivr from './jsDelivr/index.js';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
@@ -30,6 +30,9 @@ async function main() {
   log.info('💪  Setting up Algolia');
   await setSettings(bootstrapIndex);
   datadog.timing('main.init_algolia', Date.now() - start);
+
+  // Preload some useful data
+  await jsDelivr.loadHits();
 
   // then we run the bootstrap
   // after a bootstrap is done, it's moved to main (with settings)
@@ -105,8 +108,6 @@ async function bootstrap(state) {
     log.info('⛷   Bootstrap: done');
     return state;
   }
-
-  await loadHits();
 
   const { seq, nbDocs: totalDocs } = await npm.getInfo();
   if (!state.bootstrapLastId) {

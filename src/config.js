@@ -8,6 +8,7 @@ const defaultConfig = {
   npmRootEndpoint: 'https://registry.npmjs.org',
   jsDelivrHitsEndpoint:
     'https://data.jsdelivr.com/v1/stats/packages/npm/month/all',
+  jsDelivrPackageEndpoint: 'https://data.jsdelivr.com/v1/package/npm',
   unpkgRoot: 'https://unpkg.com',
   maxObjSize: 450000,
   popularDownloadsRatio: 0.005,
