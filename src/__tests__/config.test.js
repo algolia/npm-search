@@ -1,4 +1,4 @@
-import config from '../config';
+import config from '../config.js';
 
 it('gets the correct keys from env variables', () => {
   // from mocked .env

@@ -1,4 +1,4 @@
-import { getChangelogs, __RewireAPI__ } from '../changelog'; // eslint-disable-line import/named
+import { getChangelogs, __RewireAPI__ } from '../changelog.js'; // eslint-disable-line import/named
 
 const gotSnapshotUrls = new Set([
   'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md',
