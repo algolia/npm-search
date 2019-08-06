@@ -1,11 +1,6 @@
 import algoliasearch from 'algoliasearch';
 
 function createClient(appId, apiKey, indexName) {
-  if (!apiKey)
-    throw new Error(
-      'npm-search: Please provide the `apiKey` env variable and restart'
-    );
-
   const client = algoliasearch(appId, apiKey);
   return {
     index: client.initIndex(indexName),
@@ -18,6 +13,12 @@ function createClient(appId, apiKey, indexName) {
  * @param {object} config
  */
 async function prepare(config) {
+  if (!config.apiKey) {
+    throw new Error(
+      'npm-search: Please provide the `apiKey` env variable and restart'
+    );
+  }
+
   // Get main index and boostrap algolia client
   const { index: mainIndex, client } = createClient(
     config.appId,
