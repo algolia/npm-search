@@ -6,7 +6,7 @@ import numeral from 'numeral';
 
 import config from '../config.js';
 import datadog from '../datadog.js';
-import log from '../log';
+import log from '../log.js';
 
 const db = new PouchDB(config.npmRegistryEndpoint, {
   ajax: {

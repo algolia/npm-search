@@ -156,7 +156,7 @@ async function bootstrapLoop(lastId) {
   }
 
   const res = await npm.findAll({
-    options,
+    ...options,
   });
 
   if (res.rows.length <= 0) {
@@ -171,7 +171,7 @@ async function bootstrapLoop(lastId) {
   const newLastId = res.rows[res.rows.length - 1].id;
 
   const saved = await saveDocs({ docs: res.rows, index: bootstrapIndex });
-  stateManager.save({
+  await stateManager.save({
     bootstrapLastId: newLastId,
   });
   log.info(`  - saved ${saved} packages`);
@@ -216,6 +216,7 @@ async function replicate({ seq }) {
 
     const changesConsumer = cargo(async docs => {
       datadog.increment('packages', docs.length);
+      log.info(`🐌  Replicate received ${docs.length} packages`);
 
       try {
         await saveDocs({ docs, index: mainIndex });
@@ -276,6 +277,7 @@ async function watch({ seq }) {
 
     const changesConsumer = queue(async change => {
       datadog.increment('packages');
+      log.info(`🛰  Watch received 1 packages`);
 
       try {
         await saveDocs({ docs: [change], index: mainIndex });
