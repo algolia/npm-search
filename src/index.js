@@ -155,9 +155,7 @@ async function bootstrapLoop(lastId) {
     options.skip = 1;
   }
 
-  const res = await npm.findAll({
-    ...options,
-  });
+  const res = await npm.findAll(options);
 
   if (res.rows.length <= 0) {
     // Nothing left to process
