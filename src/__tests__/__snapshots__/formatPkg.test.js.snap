@@ -6,9 +6,9 @@ Object {
     "alternativeNames": Array [
       "atlaskitinput",
       " atlaskit input",
+      "@atlaskit/input.js",
       "@atlaskit/input",
     ],
-    "concatenatedName": "atlaskitinput",
   },
   "bin": undefined,
   "computedKeywords": Array [],
@@ -201,9 +201,9 @@ Object {
     "alternativeNames": Array [
       "atomicpackagetab",
       " atomic package tab",
+      "@atomic-package/tab.js",
       "@atomic-package/tab",
     ],
-    "concatenatedName": "atomicpackagetab",
   },
   "bin": undefined,
   "computedKeywords": Array [],
@@ -314,9 +314,9 @@ Object {
     "alternativeNames": Array [
       "createinstantsearchapp",
       "create instantsearch app",
+      "create-instantsearch-app.js",
       "create-instantsearch-app",
     ],
-    "concatenatedName": "createinstantsearchapp",
   },
   "bin": Object {
     "create-instantsearch-app": "src/cli/index.js",
@@ -431,10 +431,8 @@ Object {
   "_searchInternal": Object {
     "alternativeNames": Array [
       "indexof",
-      "indexof",
-      "indexof",
+      "indexof.js",
     ],
-    "concatenatedName": "indexof",
   },
   "bin": undefined,
   "computedKeywords": Array [],
@@ -515,9 +513,9 @@ Object {
     "alternativeNames": Array [
       "longboy",
       "long boy",
+      "long-boy.js",
       "long-boy",
     ],
-    "concatenatedName": "longboy",
   },
   "bin": undefined,
   "computedKeywords": Array [],
