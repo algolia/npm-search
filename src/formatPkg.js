@@ -59,8 +59,7 @@ export default function formatPkg(pkg) {
 
   const dependencies = cleaned.dependencies || {};
   const devDependencies = cleaned.devDependencies || {};
-  const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
-  const splitName = cleaned.name.replace(/[-/@_.]+/g, ' ');
+  const alternativeNames = getAlternativeNames(cleaned.name);
 
   const tags = pkg['dist-tags'];
 
@@ -97,8 +96,7 @@ export default function formatPkg(pkg) {
     types,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
-      concatenatedName,
-      alternativeNames: [concatenatedName, splitName, cleaned.name],
+      alternativeNames,
     },
   };
 
@@ -416,4 +414,20 @@ function getTypes(pkg) {
   return {
     ts: false,
   };
+}
+
+/**
+ * @param {string} name
+ */
+function getAlternativeNames(name) {
+  const concatenatedName = name.replace(/[-/@_.]+/g, '');
+  const splitName = name.replace(/[-/@_.]+/g, ' ');
+  const dotJSName = name.endsWith('.js')
+    ? name.substring(0, name.length - 3)
+    : `${name}.js`;
+  const normalName = name;
+
+  return Array.from(
+    new Set([concatenatedName, splitName, dotJSName, normalName])
+  );
 }
