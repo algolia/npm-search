@@ -1,10 +1,11 @@
 import ms from 'ms';
 import cargo from 'async/cargo.js';
 import queue from 'async/queue.js';
+
 import createStateManager from './createStateManager.js';
 import saveDocs from './saveDocs.js';
-import createAlgoliaIndex from './createAlgoliaIndex.js';
 import config from './config.js';
+import * as algolia from './algolia/index.js';
 import * as npm from './npm/index.js';
 import log from './log.js';
 import datadog from './datadog.js';
@@ -14,9 +15,7 @@ log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
 let loopStart = Date.now();
 
-const { index: mainIndex, client } = createAlgoliaIndex(config.indexName);
-const { index: bootstrapIndex } = createAlgoliaIndex(config.bootstrapIndexName);
-const stateManager = createStateManager(mainIndex);
+let stateManager;
 
 /**
  * Main process
@@ -28,42 +27,37 @@ async function main() {
   let start = Date.now();
   // first we make sure the bootstrap index has the correct settings
   log.info('💪  Setting up Algolia');
-  await setSettings(bootstrapIndex);
+  const {
+    client: algoliaClient,
+    mainIndex,
+    bootstrapIndex,
+  } = await algolia.prepare(config);
   datadog.timing('main.init_algolia', Date.now() - start);
+
+  // Create State Manager that holds progression of indexing
+  stateManager = createStateManager(mainIndex);
 
   // then we run the bootstrap
   // after a bootstrap is done, it's moved to main (with settings)
   // if it was already finished, we will set the settings on the main index
   start = Date.now();
   log.info('⛷   Bootstraping');
-  await bootstrap(await stateManager.check());
+  await bootstrap(await stateManager.check(), algoliaClient, bootstrapIndex);
   datadog.timing('main.bootsrap', Date.now() - start);
 
   // then we figure out which updates we missed since
   // the last time main index was updated
   start = Date.now();
   log.info('🚀  Launching Replicate');
-  await replicate(await stateManager.get());
+  await replicate(await stateManager.get(), mainIndex);
   datadog.timing('main.replicate', Date.now() - start);
 
   // then we watch 👀 for all changes happening in the ecosystem
   log.info('👀  Watching...');
-  return watch(await stateManager.get());
+  return watch(await stateManager.get(), mainIndex);
 }
 
 main().catch(error);
-
-async function setSettings(index) {
-  await index.setSettings(config.indexSettings);
-  await index.batchSynonyms(config.indexSynonyms, {
-    replaceExistingSynonyms: true,
-  });
-  const { taskID } = await index.batchRules(config.indexRules, {
-    replaceExistingRules: true,
-  });
-
-  return index.waitTask(taskID);
-}
 
 async function logUpdateProgress(seq, nbChanges, emoji) {
   const npmInfo = await npm.getInfo();
@@ -95,13 +89,12 @@ async function logBootstrapProgress(offset, nbDocs) {
   loopStart = Date.now();
 }
 
-async function bootstrap(state) {
+async function bootstrap(state, algoliaClient, bootstrapIndex) {
   await stateManager.save({
     stage: 'bootstrap',
   });
 
   if (state.seq > 0 && state.bootstrapDone === true) {
-    await setSettings(mainIndex);
     log.info('⛷   Bootstrap: done');
     return state;
   }
@@ -114,7 +107,6 @@ async function bootstrap(state) {
     log.info('⛷   Bootstrap: starting from the first doc');
     // first time this launches, we need to remember the last seq our bootstrap can trust
     await stateManager.save({ seq });
-    await setSettings(bootstrapIndex);
   } else {
     log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
   }
@@ -125,7 +117,7 @@ async function bootstrap(state) {
 
   let lastProcessedId = state.bootstrapLastId;
   while (lastProcessedId !== null) {
-    lastProcessedId = await bootstrapLoop(lastProcessedId);
+    lastProcessedId = await bootstrapLoop(lastProcessedId, bootstrapIndex);
   }
 
   log.info('-----');
@@ -135,7 +127,7 @@ async function bootstrap(state) {
     bootstrapLastDone: Date.now(),
   });
 
-  return await moveToProduction();
+  return await moveToProduction(algoliaClient);
 }
 
 /**
@@ -181,16 +173,16 @@ async function bootstrapLoop(lastId) {
   return newLastId;
 }
 
-async function moveToProduction() {
+async function moveToProduction(algoliaClient) {
   log.info('🚚  starting move to production');
 
   const currentState = await stateManager.get();
-  await client.copyIndex(config.bootstrapIndexName, config.indexName);
+  await algoliaClient.copyIndex(config.bootstrapIndexName, config.indexName);
 
   await stateManager.save(currentState);
 }
 
-async function replicate({ seq }) {
+async function replicate({ seq }, mainIndex) {
   log.info(
     '🐌   Replicate: Asking for %d changes since sequence %d',
     config.replicateConcurrency,
@@ -256,7 +248,7 @@ async function replicate({ seq }) {
   });
 }
 
-async function watch({ seq }) {
+async function watch({ seq }, mainIndex) {
   log.info(
     `🛰   Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates, since ${seq}`
   );
