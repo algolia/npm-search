@@ -60,7 +60,7 @@ export default function formatPkg(pkg) {
   const dependencies = cleaned.dependencies || {};
   const devDependencies = cleaned.devDependencies || {};
   const alternativeNames = getAlternativeNames(cleaned.name);
-  const moduleType = getModuleType(cleaned);
+  const moduleTypes = getModuleTypes(cleaned);
 
   const tags = pkg['dist-tags'];
 
@@ -95,7 +95,7 @@ export default function formatPkg(pkg) {
     owners: (cleaned.owners || []).map(formatUser),
     bin: cleaned.bin,
     types,
-    moduleType,
+    moduleTypes,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       alternativeNames,
@@ -434,17 +434,23 @@ function getAlternativeNames(name) {
   );
 }
 
-function getModuleType(cleaned) {
+function getModuleTypes(cleaned) {
   const main = cleaned.main || '';
+  const moduleTypes = [];
   if (
     typeof cleaned.module === 'string' ||
     cleaned.type === 'module' ||
     main.endsWith('.mjs')
   ) {
-    return 'esm';
+    moduleTypes.push('esm');
   }
   if (cleaned.type === 'commonjs' || main.endsWith('.cjs')) {
-    return 'cjs';
+    moduleTypes.push('cjs');
   }
-  return 'unknown';
+
+  if (moduleTypes.length === 0) {
+    moduleTypes.push('unknown');
+  }
+
+  return moduleTypes;
 }
