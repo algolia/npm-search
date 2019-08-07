@@ -59,8 +59,8 @@ export default function formatPkg(pkg) {
 
   const dependencies = cleaned.dependencies || {};
   const devDependencies = cleaned.devDependencies || {};
-  const concatenatedName = cleaned.name.replace(/[-/@_.]+/g, '');
-  const splitName = cleaned.name.replace(/[-/@_.]+/g, ' ');
+  const alternativeNames = getAlternativeNames(cleaned.name);
+  const moduleTypes = getModuleTypes(cleaned);
 
   const tags = pkg['dist-tags'];
 
@@ -95,10 +95,10 @@ export default function formatPkg(pkg) {
     owners: (cleaned.owners || []).map(formatUser),
     bin: cleaned.bin,
     types,
+    moduleTypes,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
-      concatenatedName,
-      alternativeNames: [concatenatedName, splitName, cleaned.name],
+      alternativeNames,
     },
   };
 
@@ -416,4 +416,41 @@ function getTypes(pkg) {
   return {
     ts: false,
   };
+}
+
+/**
+ * @param {string} name
+ */
+function getAlternativeNames(name) {
+  const concatenatedName = name.replace(/[-/@_.]+/g, '');
+  const splitName = name.replace(/[-/@_.]+/g, ' ');
+  const dotJSName = name.endsWith('.js')
+    ? name.substring(0, name.length - 3)
+    : `${name}.js`;
+  const normalName = name;
+
+  return Array.from(
+    new Set([concatenatedName, splitName, dotJSName, normalName])
+  );
+}
+
+function getModuleTypes(cleaned) {
+  const main = cleaned.main || '';
+  const moduleTypes = [];
+  if (
+    typeof cleaned.module === 'string' ||
+    cleaned.type === 'module' ||
+    main.endsWith('.mjs')
+  ) {
+    moduleTypes.push('esm');
+  }
+  if (cleaned.type === 'commonjs' || main.endsWith('.cjs')) {
+    moduleTypes.push('cjs');
+  }
+
+  if (moduleTypes.length === 0) {
+    moduleTypes.push('unknown');
+  }
+
+  return moduleTypes;
 }

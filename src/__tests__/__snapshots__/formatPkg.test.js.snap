@@ -6,9 +6,9 @@ Object {
     "alternativeNames": Array [
       "atlaskitinput",
       " atlaskit input",
+      "@atlaskit/input.js",
       "@atlaskit/input",
     ],
-    "concatenatedName": "atlaskitinput",
   },
   "bin": undefined,
   "computedKeywords": Array [],
@@ -46,6 +46,9 @@ Object {
   },
   "license": "Apache-2.0",
   "modified": 1510790341980,
+  "moduleTypes": Array [
+    "unknown",
+  ],
   "name": "@atlaskit/input",
   "objectID": "@atlaskit/input",
   "originalAuthor": undefined,
@@ -201,9 +204,9 @@ Object {
     "alternativeNames": Array [
       "atomicpackagetab",
       " atomic package tab",
+      "@atomic-package/tab.js",
       "@atomic-package/tab",
     ],
-    "concatenatedName": "atomicpackagetab",
   },
   "bin": undefined,
   "computedKeywords": Array [],
@@ -261,6 +264,9 @@ Object {
   },
   "license": "MIT",
   "modified": 1498153976616,
+  "moduleTypes": Array [
+    "unknown",
+  ],
   "name": "@atomic-package/tab",
   "objectID": "@atomic-package/tab",
   "originalAuthor": undefined,
@@ -314,9 +320,9 @@ Object {
     "alternativeNames": Array [
       "createinstantsearchapp",
       "create instantsearch app",
+      "create-instantsearch-app.js",
       "create-instantsearch-app",
     ],
-    "concatenatedName": "createinstantsearchapp",
   },
   "bin": Object {
     "create-instantsearch-app": "src/cli/index.js",
@@ -383,6 +389,9 @@ Object {
   },
   "license": "MIT",
   "modified": 1554896045753,
+  "moduleTypes": Array [
+    "unknown",
+  ],
   "name": "create-instantsearch-app",
   "objectID": "create-instantsearch-app",
   "originalAuthor": undefined,
@@ -431,10 +440,8 @@ Object {
   "_searchInternal": Object {
     "alternativeNames": Array [
       "indexof",
-      "indexof",
-      "indexof",
+      "indexof.js",
     ],
-    "concatenatedName": "indexof",
   },
   "bin": undefined,
   "computedKeywords": Array [],
@@ -459,6 +466,9 @@ Object {
   "lastPublisher": null,
   "license": null,
   "modified": 1424001480609,
+  "moduleTypes": Array [
+    "unknown",
+  ],
   "name": "indexof",
   "objectID": "indexof",
   "originalAuthor": undefined,
@@ -515,9 +525,9 @@ Object {
     "alternativeNames": Array [
       "longboy",
       "long boy",
+      "long-boy.js",
       "long-boy",
     ],
-    "concatenatedName": "longboy",
   },
   "bin": undefined,
   "computedKeywords": Array [],
@@ -542,6 +552,9 @@ Object {
   },
   "license": null,
   "modified": NaN,
+  "moduleTypes": Array [
+    "unknown",
+  ],
   "name": "long-boy",
   "objectID": "long-boy",
   "originalAuthor": undefined,

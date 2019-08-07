@@ -40,7 +40,6 @@ For every single NPM package, we create a record in the Algolia index. The resul
 ```json5
 {
   name: 'babel-core',
-  concatenatedName: 'babelcore',
   downloadsLast30Days: 10978749,
   downloadsRatio: 0.08310651682685861,
   humanDownloadsLast30Days: '11m',
@@ -122,6 +121,7 @@ For every single NPM package, we create a record in the Algolia index. The resul
     ts: 'definitely-typed', // definitely-typed | included | false
     definitelyTyped: '@types/babel__core',
   },
+  moduleTypes: ['unknown'], // esm | cjs | unknown
   humanDependents: '3.3k',
   changelogFilename: null, // if babel-core had a changelog, it would be the raw GitHub url here
   objectID: 'babel-core',
@@ -129,6 +129,9 @@ For every single NPM package, we create a record in the Algolia index. The resul
     popularName: 'babel-core',
     downloadsMagnitude: 8,
     jsDelivrPopularity: 5,
+    alternativeNames: [
+      // alternative versions of this name, to show up on confused searches
+    ],
   },
 }
 ```

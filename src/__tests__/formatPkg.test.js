@@ -1,5 +1,6 @@
 import formatPkg from '../formatPkg.js';
 import rawPackages from './rawPackages.json';
+import preact from './preact-simplified.json';
 import isISO8601 from 'validator/lib/isISO8601.js';
 
 it('transforms correctly', () => {
@@ -25,10 +26,10 @@ it('keeps .bin intact', () => {
   );
   const formatted = formatPkg(createInstantSearchApp);
   expect(formatted.bin).toMatchInlineSnapshot(`
-Object {
-  "create-instantsearch-app": "src/cli/index.js",
-}
-`);
+        Object {
+          "create-instantsearch-app": "src/cli/index.js",
+        }
+    `);
 });
 
 it('truncates long readmes', () => {
@@ -223,7 +224,7 @@ describe('adds TypeScript information', () => {
   });
 });
 
-describe('test getRepositoryInfo', () => {
+describe('getRepositoryInfo', () => {
   const getRepositoryInfo = formatPkg.__RewireAPI__.__get__(
     'getRepositoryInfo'
   );
@@ -375,5 +376,134 @@ describe('test getRepositoryInfo', () => {
     expect(getRepositoryInfo(undefined)).toBe(null);
     expect(getRepositoryInfo(null)).toBe(null);
     expect(getRepositoryInfo('aaaaaaaa')).toBe(null);
+  });
+});
+
+describe('alternative names', () => {
+  test('name not yet ending in .js', () => {
+    const original = {
+      name: 'places',
+      lastPublisher: { name: 'unknown' },
+    };
+    expect(formatPkg(original)._searchInternal.alternativeNames)
+      .toMatchInlineSnapshot(`
+      Array [
+        "places",
+        "places.js",
+      ]
+    `);
+  });
+
+  test('name ending in .js', () => {
+    const original = {
+      name: 'places.js',
+      lastPublisher: { name: 'unknown' },
+    };
+    expect(formatPkg(original)._searchInternal.alternativeNames)
+      .toMatchInlineSnapshot(`
+            Array [
+              "placesjs",
+              "places js",
+              "places",
+              "places.js",
+            ]
+        `);
+  });
+
+  test('scoped package', () => {
+    const original = {
+      name: '@algolia/places.js',
+      lastPublisher: { name: 'unknown' },
+    };
+    expect(formatPkg(original)._searchInternal.alternativeNames)
+      .toMatchInlineSnapshot(`
+            Array [
+              "algoliaplacesjs",
+              " algolia places js",
+              "@algolia/places",
+              "@algolia/places.js",
+            ]
+        `);
+  });
+
+  test('name with - and _', () => {
+    const original = {
+      name: 'this-is_a-dumb-name',
+      lastPublisher: { name: 'unknown' },
+    };
+    expect(formatPkg(original)._searchInternal.alternativeNames)
+      .toMatchInlineSnapshot(`
+      Array [
+        "thisisadumbname",
+        "this is a dumb name",
+        "this-is_a-dumb-name.js",
+        "this-is_a-dumb-name",
+      ]
+    `);
+  });
+});
+
+describe('moduleTypes', () => {
+  test('type=module', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        type: 'module',
+      }).moduleTypes
+    ).toEqual(['esm']);
+  });
+
+  test('type=commonjs', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        type: 'commonjs',
+      }).moduleTypes
+    ).toEqual(['cjs']);
+  });
+
+  test('module=xxx.js', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        module: 'index.js',
+      }).moduleTypes
+    ).toEqual(['esm']);
+  });
+
+  test('main: index.mjs', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        main: 'index.mjs',
+      }).moduleTypes
+    ).toEqual(['esm']);
+  });
+
+  test('main: index.cjs', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        main: 'index.cjs',
+      }).moduleTypes
+    ).toEqual(['cjs']);
+  });
+
+  test('unknown', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+      }).moduleTypes
+    ).toEqual(['unknown']);
+  });
+
+  test('preact (esm & umd)', () => {
+    expect(formatPkg(preact).moduleTypes).toEqual(['esm']);
   });
 });
