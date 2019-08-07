@@ -47,12 +47,12 @@ async function main() {
   // the last time main index was updated
   start = Date.now();
   log.info('🚀  Launching Replicate');
-  await replicate(await stateManager.get(), stateManager, mainIndex);
+  await replicate(stateManager, mainIndex);
   datadog.timing('main.replicate', Date.now() - start);
 
   // then we watch 👀 for all changes happening in the ecosystem
   log.info('👀  Watching...');
-  return watch(await stateManager.get(), stateManager, mainIndex);
+  return watch(stateManager, mainIndex);
 }
 
 main().catch(error);
@@ -192,7 +192,8 @@ async function moveToProduction(stateManager, algoliaClient) {
   await stateManager.save(currentState);
 }
 
-async function replicate({ seq }, stateManager, mainIndex) {
+async function replicate(stateManager, mainIndex) {
+  const { seq } = await stateManager.get();
   log.info(
     '🐌   Replicate: Asking for %d changes since sequence %d',
     config.replicateConcurrency,
@@ -258,7 +259,8 @@ async function replicate({ seq }, stateManager, mainIndex) {
   });
 }
 
-async function watch({ seq }, stateManager, mainIndex) {
+async function watch(stateManager, mainIndex) {
+  const { seq } = await stateManager.get();
   log.info(
     `🛰   Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates, since ${seq}`
   );
