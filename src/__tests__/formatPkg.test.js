@@ -1,5 +1,6 @@
 import formatPkg from '../formatPkg.js';
 import rawPackages from './rawPackages.json';
+import preact from './preact-simplified.json';
 import isISO8601 from 'validator/lib/isISO8601.js';
 
 it('transforms correctly', () => {
@@ -439,5 +440,70 @@ describe('alternative names', () => {
         "this-is_a-dumb-name",
       ]
     `);
+  });
+});
+
+describe('moduleTypes', () => {
+  test('type=module', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        type: 'module',
+      }).moduleTypes
+    ).toEqual(['esm']);
+  });
+
+  test('type=commonjs', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        type: 'commonjs',
+      }).moduleTypes
+    ).toEqual(['cjs']);
+  });
+
+  test('module=xxx.js', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        module: 'index.js',
+      }).moduleTypes
+    ).toEqual(['esm']);
+  });
+
+  test('main: index.mjs', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        main: 'index.mjs',
+      }).moduleTypes
+    ).toEqual(['esm']);
+  });
+
+  test('main: index.cjs', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+        main: 'index.cjs',
+      }).moduleTypes
+    ).toEqual(['cjs']);
+  });
+
+  test('unknown', () => {
+    expect(
+      formatPkg({
+        name: 'irrelevant',
+        lastPublisher: { name: 'unknown' },
+      }).moduleTypes
+    ).toEqual(['unknown']);
+  });
+
+  test('preact (esm & umd)', () => {
+    expect(formatPkg(preact).moduleTypes).toEqual(['esm']);
   });
 });
