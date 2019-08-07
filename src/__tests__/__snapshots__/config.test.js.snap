@@ -96,7 +96,7 @@ Object {
       "searchable(owner.name)",
       "deprecated",
       "types.ts",
-      "moduleType",
+      "moduleTypes",
     ],
     "customRanking": Array [
       "desc(_searchInternal.downloadsMagnitude)",
