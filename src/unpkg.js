@@ -8,7 +8,6 @@ export async function fileExistsInUnpkg(pkg, version, path) {
   const uri = `${config.unpkgRoot}/${pkg}@${version}/${path}`;
   try {
     const response = await got(uri, {
-      json: true,
       method: 'HEAD',
     });
     return response.statusCode === 200;
