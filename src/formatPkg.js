@@ -340,7 +340,7 @@ function getRepositoryInfoFromHttpUrl(repository) {
   };
 }
 
-function getRepositoryInfo(repository) {
+export function getRepositoryInfo(repository) {
   if (!repository) {
     return null;
   }

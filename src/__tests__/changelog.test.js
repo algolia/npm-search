@@ -1,25 +1,18 @@
-import { getChangelogs, __RewireAPI__ } from '../changelog.js'; // eslint-disable-line import/named
+import { getChangelogs, baseUrlMap } from '../changelog.js'; // eslint-disable-line import/named
 
-const gotSnapshotUrls = new Set([
-  'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md',
-  'https://raw.githubusercontent.com/visionmedia/debug/master/CHANGELOG.md',
-  'https://bitbucket.org/atlassian/aui/raw/master/changelog.md',
-  'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md',
-]);
+jest.mock('got', () => {
+  const gotSnapshotUrls = new Set([
+    'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md',
+    'https://raw.githubusercontent.com/visionmedia/debug/master/CHANGELOG.md',
+    'https://bitbucket.org/atlassian/aui/raw/master/changelog.md',
+    'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md',
+  ]);
 
-// Mock 'got' requests.
-// To fetch from network, just comment the code below.
-// If you are fetching from network, the tests may timeout. To prevent this,
-// use jest.setTimeout() to increase the async timeout.
-__RewireAPI__.__Rewire__(
-  'got',
-  url =>
-    gotSnapshotUrls.has(url) ? Promise.resolve({ url }) : Promise.reject() // eslint-disable-line prefer-promise-reject-errors
-);
+  return url =>
+    gotSnapshotUrls.has(url) ? Promise.resolve({ url }) : Promise.reject(); // eslint-disable-line prefer-promise-reject-errors
+});
 
 describe('should test baseUrlMap', () => {
-  const baseUrlMap = __RewireAPI__.__get__('baseUrlMap');
-
   it('should work with paths', () => {
     const bitbucketRepo = {
       host: 'bitbucket.org',
