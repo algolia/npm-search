@@ -5,7 +5,6 @@ it('gets the correct keys from env variables', () => {
   expect(config.apiKey).toBe('fake-api-key');
   // from config.js
   expect(config.maxObjSize).toBe(450000);
-  expect(config).toMatchSnapshot();
 });
 
 const objectIDRe = /^[A-Za-z0-9_-]+$/;
