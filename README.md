@@ -231,6 +231,8 @@ See [config.js](./config.js):
 - `popularDownloadsRatio`: % of total npm downloads for a package to be considered as popular
   how much % of it is needed for a package to be popular - _default 0.2_ This is a bit lower than
   the jQuery download range.
+- `DOGSTATSD_HOST`: Metrics reporting - _default `localhost`_
+- `SENTRY_DSN`: Error reporting - _default `empty`_
 
 ## How does it work?
 
