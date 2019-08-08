@@ -1,6 +1,6 @@
 import Sentry from '@sentry/node';
 
-import log from './../log.js';
+import log from '../log.js';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
