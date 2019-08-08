@@ -102,7 +102,7 @@ async function bootstrap(
   });
 
   if (state.seq > 0 && state.bootstrapDone === true) {
-    await algolia.putDefaultSettings(mainIndex);
+    await algolia.putDefaultSettings(mainIndex, config);
     log.info('⛷   Bootstrap: done');
     return state;
   }
@@ -113,7 +113,7 @@ async function bootstrap(
     log.info('⛷   Bootstrap: starting from the first doc');
     // first time this launches, we need to remember the last seq our bootstrap can trust
     await stateManager.save({ seq });
-    await algolia.putDefaultSettings(bootstrapIndex);
+    await algolia.putDefaultSettings(bootstrapIndex, config);
   } else {
     log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
   }
