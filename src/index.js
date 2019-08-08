@@ -328,6 +328,9 @@ async function watch(stateManager, mainIndex) {
 
 async function error(err) {
   sentry.report(err);
+
+  // Wait for sentry to report the error on their API
   await wait(5000);
+
   process.exit(1); // eslint-disable-line no-process-exit
 }
