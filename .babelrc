@@ -1,17 +1,12 @@
 {
-  "presets": [
+  presets: [
     [
-      "@babel/env",
+      '@babel/env',
       {
-        "targets": {
-          "node": "current"
-        }
-      }
-    ]
+        targets: {
+          node: 'current',
+        },
+      },
+    ],
   ],
-  "env": {
-    "test": {
-      "plugins": ["rewire"]
-    }
-  }
 }

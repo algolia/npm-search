@@ -1,4 +1,4 @@
-import formatPkg from '../formatPkg.js';
+import formatPkg, { getRepositoryInfo } from '../formatPkg.js';
 import rawPackages from './rawPackages.json';
 import preact from './preact-simplified.json';
 import isISO8601 from 'validator/lib/isISO8601.js';
@@ -225,10 +225,6 @@ describe('adds TypeScript information', () => {
 });
 
 describe('getRepositoryInfo', () => {
-  const getRepositoryInfo = formatPkg.__RewireAPI__.__get__(
-    'getRepositoryInfo'
-  );
-
   it('should get information from short repository url', () => {
     expect(getRepositoryInfo('gitlab:user/repo')).toEqual({
       host: 'gitlab.com',

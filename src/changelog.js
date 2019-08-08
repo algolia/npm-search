@@ -3,7 +3,7 @@ import race from 'promise-rat-race';
 
 import datadog from './datadog.js';
 
-const baseUrlMap = new Map([
+export const baseUrlMap = new Map([
   [
     'github.com',
     ({ user, project, path, branch }) =>
