@@ -11,7 +11,6 @@ import log from './log.js';
 import datadog from './datadog.js';
 import * as jsDelivr from './jsDelivr/index.js';
 import * as sentry from './utils/sentry.js';
-import wait from './utils/wait.js';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
@@ -328,9 +327,6 @@ async function watch(stateManager, mainIndex) {
 
 async function error(err) {
   sentry.report(err);
-
-  // Wait for sentry to report the error on their API
-  await wait(5000);
-
+  await sentry.drain();
   process.exit(1); // eslint-disable-line no-process-exit
 }
