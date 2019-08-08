@@ -9,7 +9,7 @@ import * as algolia from './algolia/index.js';
 import * as npm from './npm/index.js';
 import log from './log.js';
 import datadog from './datadog.js';
-import { loadHits } from './jsDelivr.js';
+import * as jsDelivr from './jsDelivr/index.js';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
@@ -34,6 +34,9 @@ async function main() {
 
   // Create State Manager that holds progression of indexing
   const stateManager = createStateManager(mainIndex);
+
+  // Preload some useful data
+  await jsDelivr.loadHits();
 
   // then we run the bootstrap
   // after a bootstrap is done, it's moved to main (with settings)
@@ -103,8 +106,6 @@ async function bootstrap(
     log.info('⛷   Bootstrap: done');
     return state;
   }
-
-  await loadHits();
 
   const { seq, nbDocs: totalDocs } = await npm.getInfo();
   if (!state.bootstrapLastId) {

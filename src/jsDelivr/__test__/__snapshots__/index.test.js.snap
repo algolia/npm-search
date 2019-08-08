@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`files getAllFilesList() should get a flat list of files 1`] = `
+Array [
+  Array [
+    Object {
+      "hash": "+uxmYs/88pYWmLwFS3M54NGjE+hX6sBmwNOpzaW1LGk=",
+      "name": "/bin/jest.js",
+      "size": 343,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "MvOGr1Lc6r8wEe8GNmscm3Sx/QWEFE4Is1AZ5rQzFr8=",
+      "name": "/build/jest.d.ts",
+      "size": 291,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "BEQ5sRqArzHCh5sNbwjxHRQunhxkCD1HXcM9EdYAKPc=",
+      "name": "/build/jest.d.ts.map",
+      "size": 171,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "m5wVGuVr5Pq4z5L2vpeMVA3rbLV4kQ0MCPuo0newsmY=",
+      "name": "/build/jest.js",
+      "size": 1030,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "m/vOMvpK2FU19W9PYavnEExEToN7HHU1mb/f/ooU3eQ=",
+      "name": "/LICENSE",
+      "size": 1099,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "9hWvkPsgtCTc1w0lswu1AO+Q+S19Dppeg5bNklG/Khg=",
+      "name": "/package.json",
+      "size": 925,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "MPu0d2f8or6adBXZZLUNh6vL7Yeg34MmOBiupdclu10=",
+      "name": "/README.md",
+      "size": 551,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "CycshPBWVvIRZozw+b1pnAvKYC1Q7aPvcT8tS+HPepU=",
+      "name": "/tsconfig.json",
+      "size": 162,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "kt2uoTK/NmyQe2OUiNwpdwxV4RxgS2gW9rEgOtj+lZU=",
+      "name": "/tsconfig.tsbuildinfo",
+      "size": 220798,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+  ],
+]
+`;
+
+exports[`files getAllFilesList() should get multiple flat list of files 1`] = `
+Array [
+  Array [
+    Object {
+      "hash": "+uxmYs/88pYWmLwFS3M54NGjE+hX6sBmwNOpzaW1LGk=",
+      "name": "/bin/jest.js",
+      "size": 343,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "MvOGr1Lc6r8wEe8GNmscm3Sx/QWEFE4Is1AZ5rQzFr8=",
+      "name": "/build/jest.d.ts",
+      "size": 291,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "BEQ5sRqArzHCh5sNbwjxHRQunhxkCD1HXcM9EdYAKPc=",
+      "name": "/build/jest.d.ts.map",
+      "size": 171,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "m5wVGuVr5Pq4z5L2vpeMVA3rbLV4kQ0MCPuo0newsmY=",
+      "name": "/build/jest.js",
+      "size": 1030,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "m/vOMvpK2FU19W9PYavnEExEToN7HHU1mb/f/ooU3eQ=",
+      "name": "/LICENSE",
+      "size": 1099,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "9hWvkPsgtCTc1w0lswu1AO+Q+S19Dppeg5bNklG/Khg=",
+      "name": "/package.json",
+      "size": 925,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "MPu0d2f8or6adBXZZLUNh6vL7Yeg34MmOBiupdclu10=",
+      "name": "/README.md",
+      "size": 551,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "CycshPBWVvIRZozw+b1pnAvKYC1Q7aPvcT8tS+HPepU=",
+      "name": "/tsconfig.json",
+      "size": 162,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+    Object {
+      "hash": "kt2uoTK/NmyQe2OUiNwpdwxV4RxgS2gW9rEgOtj+lZU=",
+      "name": "/tsconfig.tsbuildinfo",
+      "size": 220798,
+      "time": "1985-10-26T08:15:00.000Z",
+    },
+  ],
+  Array [],
+]
+`;
+
+exports[`files getFilesList() should get a flat list of files 1`] = `
+Array [
+  Object {
+    "hash": "+uxmYs/88pYWmLwFS3M54NGjE+hX6sBmwNOpzaW1LGk=",
+    "name": "/bin/jest.js",
+    "size": 343,
+    "time": "1985-10-26T08:15:00.000Z",
+  },
+  Object {
+    "hash": "MvOGr1Lc6r8wEe8GNmscm3Sx/QWEFE4Is1AZ5rQzFr8=",
+    "name": "/build/jest.d.ts",
+    "size": 291,
+    "time": "1985-10-26T08:15:00.000Z",
+  },
+  Object {
+    "hash": "BEQ5sRqArzHCh5sNbwjxHRQunhxkCD1HXcM9EdYAKPc=",
+    "name": "/build/jest.d.ts.map",
+    "size": 171,
+    "time": "1985-10-26T08:15:00.000Z",
+  },
+  Object {
+    "hash": "m5wVGuVr5Pq4z5L2vpeMVA3rbLV4kQ0MCPuo0newsmY=",
+    "name": "/build/jest.js",
+    "size": 1030,
+    "time": "1985-10-26T08:15:00.000Z",
+  },
+  Object {
+    "hash": "m/vOMvpK2FU19W9PYavnEExEToN7HHU1mb/f/ooU3eQ=",
+    "name": "/LICENSE",
+    "size": 1099,
+    "time": "1985-10-26T08:15:00.000Z",
+  },
+  Object {
+    "hash": "9hWvkPsgtCTc1w0lswu1AO+Q+S19Dppeg5bNklG/Khg=",
+    "name": "/package.json",
+    "size": 925,
+    "time": "1985-10-26T08:15:00.000Z",
+  },
+  Object {
+    "hash": "MPu0d2f8or6adBXZZLUNh6vL7Yeg34MmOBiupdclu10=",
+    "name": "/README.md",
+    "size": 551,
+    "time": "1985-10-26T08:15:00.000Z",
+  },
+  Object {
+    "hash": "CycshPBWVvIRZozw+b1pnAvKYC1Q7aPvcT8tS+HPepU=",
+    "name": "/tsconfig.json",
+    "size": 162,
+    "time": "1985-10-26T08:15:00.000Z",
+  },
+  Object {
+    "hash": "kt2uoTK/NmyQe2OUiNwpdwxV4RxgS2gW9rEgOtj+lZU=",
+    "name": "/tsconfig.tsbuildinfo",
+    "size": 220798,
+    "time": "1985-10-26T08:15:00.000Z",
+  },
+]
+`;
