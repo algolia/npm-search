@@ -325,6 +325,6 @@ async function watch(stateManager, mainIndex) {
 }
 
 function error(err) {
-  console.error(err); // eslint-disable-line no-console
+  log.error(err);
   process.exit(1); // eslint-disable-line no-process-exit
 }
