@@ -80,6 +80,7 @@
     "node": "12"
   },
   "jest": {
+    "testEnvironment": "node",
     "testPathIgnorePatterns": [
       "node_modules",
       "lib"
