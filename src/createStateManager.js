@@ -7,54 +7,56 @@ const defaultState = {
   bootstrapLastId: undefined,
 };
 
-let currentState;
+export default algoliaIndex => {
+  let currentState;
 
-export default algoliaIndex => ({
-  async check() {
-    if (config.seq !== null) return this.reset();
-    const state = await this.get();
+  return {
+    async check() {
+      if (config.seq !== null) return this.reset();
+      const state = await this.get();
 
-    if (state === undefined) {
-      return this.reset();
-    }
+      if (state === undefined) {
+        return this.reset();
+      }
 
-    return state;
-  },
+      return state;
+    },
 
-  async get() {
-    if (currentState) {
-      return currentState;
-    }
+    async get() {
+      if (currentState) {
+        return currentState;
+      }
 
-    const start = Date.now();
-    const { userData } = await algoliaIndex.getSettings();
-    datadog.timing('stateManager.get', Date.now() - start);
+      const start = Date.now();
+      const { userData } = await algoliaIndex.getSettings();
+      datadog.timing('stateManager.get', Date.now() - start);
 
-    return userData;
-  },
+      return userData;
+    },
 
-  async set(state) {
-    currentState = state;
+    async set(state) {
+      currentState = state;
 
-    const start = Date.now();
-    await algoliaIndex.setSettings({
-      userData: state,
-    });
-    datadog.timing('stateManager.set', Date.now() - start);
+      const start = Date.now();
+      await algoliaIndex.setSettings({
+        userData: state,
+      });
+      datadog.timing('stateManager.set', Date.now() - start);
 
-    return state;
-  },
+      return state;
+    },
 
-  async reset() {
-    return await this.set(defaultState);
-  },
+    async reset() {
+      return await this.set(defaultState);
+    },
 
-  async save(partial) {
-    const current = (await this.get()) || defaultState;
+    async save(partial) {
+      const current = (await this.get()) || defaultState;
 
-    return await this.set({
-      ...current,
-      ...partial,
-    });
-  },
-});
+      return await this.set({
+        ...current,
+        ...partial,
+      });
+    },
+  };
+};
