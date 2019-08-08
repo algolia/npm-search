@@ -1,4 +1,4 @@
-import { getChangelogs, baseUrlMap } from '../changelog.js'; // eslint-disable-line import/named
+import { getChangelogs, baseUrlMap } from '../changelog.js';
 
 jest.mock('got', () => {
   const gotSnapshotUrls = new Set([
