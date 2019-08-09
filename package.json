@@ -12,7 +12,9 @@
     "test": "jest --forceExit && eslint .",
     "test:watch": "jest --watchAll --no-watchman",
     "format": "prettier --write **/*.{js,md,json}",
-    "doctoc": "doctoc --notitle --maxlevel 3 README.md"
+    "doctoc": "doctoc --notitle --maxlevel 3 README.md",
+    "docker:build": "./scripts/build.sh",
+    "docker:release": "docker push h1fra/npmsearch"
   },
   "lint-staged": {
     "*.js": [

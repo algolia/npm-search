@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: npmsearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: npmsearch
+
+  serviceName: 'npmsearch'
+
+  template:
+    metadata:
+      labels:
+        app: npmsearch
+    spec:
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 60
+
+      containers:
+        - name: npmsearch
+          image: h1fra/npmsearch
+          args:
+            - yarn
+            - start
+          resources:
+            requests:
+              cpu: '1'
+              memory: '2000Mi'
+
+          env:
+            - name: appId
+              value: 'KECOEVPMGH'
+            - name: apiKey
+              value: ''
+            - name: replicateConcurrency
+              value: '50'
