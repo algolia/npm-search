@@ -194,7 +194,7 @@ async function moveToProduction(stateManager, algoliaClient) {
   await stateManager.save(currentState);
 }
 
-async function replicate(stateManager, mainIndex) {
+async function replicate(stateManager, mainIndex, retry = 0, retryError) {
   const { seq } = await stateManager.get();
   log.info(
     '🐌   Replicate: Asking for %d changes since sequence %d',
@@ -209,11 +209,18 @@ async function replicate(stateManager, mainIndex) {
   const { seq: npmSeqToReach } = await npm.getInfo();
   let npmSeqReached = false;
 
+  if (retry > config.replicateRetry) {
+    return Promise.reject(
+      new Error('replicate has failed > 3 times'),
+      retryError
+    );
+  }
+
   return new Promise((resolve, reject) => {
     const listener = npm.listenToChanges({
       since: seq,
-      batch_size: config.replicateConcurrency, // eslint-disable-line camelcase
       live: true,
+      batch_size: config.replicateConcurrency, // eslint-disable-line camelcase
       return_docs: false, // eslint-disable-line camelcase
     });
 
@@ -250,9 +257,18 @@ async function replicate(stateManager, mainIndex) {
         listener.cancel();
       }
     });
-    listener.on('error', reject);
+    let lastError = undefined;
+    listener.on('error', err => {
+      lastError = err;
+      listener.cancel();
+    });
 
     changesConsumer.drain(() => {
+      if (lastError) {
+        log.info('🐌  Retrying replicate', retry + 1);
+        replicate(stateManager, mainIndex, retry + 1, lastError);
+      }
+
       if (npmSeqReached) {
         log.info('🐌  We reached the npm current sequence');
         resolve();
@@ -261,7 +277,7 @@ async function replicate(stateManager, mainIndex) {
   });
 }
 
-async function watch(stateManager, mainIndex) {
+async function watch(stateManager, mainIndex, retry = 0, retryError) {
   const { seq } = await stateManager.get();
   log.info(
     `🛰   Watch: 👍 We are in sync (or almost). Will now be 🔭 watching for registry updates, since ${seq}`
@@ -270,6 +286,10 @@ async function watch(stateManager, mainIndex) {
   await stateManager.save({
     stage: 'watch',
   });
+
+  if (retry > config.watchRetry) {
+    return Promise.reject(new Error('watch has failed > 3 times'), retryError);
+  }
 
   return new Promise((resolve, reject) => {
     const listener = npm.listenToChanges({
@@ -313,7 +333,7 @@ async function watch(stateManager, mainIndex) {
     listener.on('change', async change => {
       if (change.deleted === true) {
         await mainIndex.deleteObject(change.id);
-        log.info(`🛰 Deleted ${change.id}`);
+        log.info(`🛰  Deleted ${change.id}`);
       }
       changesConsumer.push(change, err => {
         if (err) {
@@ -321,12 +341,19 @@ async function watch(stateManager, mainIndex) {
         }
       });
     });
-    listener.on('error', reject);
+
+    listener.on('error', err => {
+      sentry.report(err, {
+        retry: true,
+      });
+      log.info('🛰  Retrying watch', retry + 1);
+      watch(stateManager, mainIndex, retry + 1, err);
+    });
   });
 }
 
-async function error(err) {
-  sentry.report(err);
+async function error(err, extra) {
+  sentry.report(err, extra);
   await sentry.drain();
   process.exit(1); // eslint-disable-line no-process-exit
 }
