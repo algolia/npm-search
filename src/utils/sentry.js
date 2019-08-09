@@ -5,8 +5,9 @@ import log from '../log.js';
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   release: `1.0.0`,
-  environment: 'prod',
+  environment: process.env.SENTRY_NAME || 'prod',
   serverName: 'npm-search',
+  maxBreadcrumbs: 10,
 });
 
 export function report(err, extra = {}) {

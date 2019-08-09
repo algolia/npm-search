@@ -15,6 +15,10 @@ export default function formatPkg(pkg) {
   if (!cleaned.name) {
     return undefined;
   }
+  if (Array.isArray(cleaned.main)) {
+    // https://github.com/angular-ui/bootstrap-bower/issues/52
+    cleaned.main = cleaned.main[0];
+  }
 
   const lastPublisher = cleaned.lastPublisher
     ? formatUser(cleaned.lastPublisher)
@@ -437,6 +441,7 @@ function getAlternativeNames(name) {
 function getModuleTypes(cleaned) {
   const main = cleaned.main || '';
   const moduleTypes = [];
+
   if (
     typeof cleaned.module === 'string' ||
     cleaned.type === 'module' ||
