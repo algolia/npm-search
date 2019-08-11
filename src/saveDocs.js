@@ -10,7 +10,7 @@ export default async function saveDocs({ docs, index }) {
   const start = Date.now();
 
   const rawPkgs = docs
-    .filter(result => result.doc.name !== undefined) // must be a document
+    .filter(result => !result.deleted && result.doc.name !== undefined) // must be a document
     .map(result => {
       const start1 = Date.now();
 

@@ -1,6 +1,5 @@
 import got from 'got';
-import ms from 'ms';
-import PouchDB from 'pouchdb-http';
+import nano from 'nano';
 import chunk from 'lodash/chunk.js';
 import numeral from 'numeral';
 
@@ -8,11 +7,10 @@ import config from '../config.js';
 import datadog from '../datadog.js';
 import log from '../log.js';
 
-const db = new PouchDB(config.npmRegistryEndpoint, {
-  ajax: {
-    timeout: ms('2.5m'), // default is 10s
-  },
+const registry = nano({
+  url: config.npmRegistryEndpoint,
 });
+const db = registry.use(config.npmRegistryDBName);
 
 // Default request options
 const defaultOptions = {
@@ -29,12 +27,25 @@ const defaultOptions = {
 async function findAll(options) {
   const start2 = Date.now();
 
-  const results = await db.allDocs({
+  const results = await db.list({
     ...defaultOptions,
     ...options,
   });
 
   datadog.timing('db.allDocs', Date.now() - start2);
+
+  return results;
+}
+
+async function getChanges(options) {
+  const start2 = Date.now();
+
+  const results = await db.changes({
+    ...defaultOptions,
+    ...options,
+  });
+
+  datadog.timing('db.getChanges', Date.now() - start2);
 
   return results;
 }
@@ -45,16 +56,24 @@ async function findAll(options) {
  * @param {object} options Options param
  */
 function listenToChanges(options) {
-  const start2 = Date.now();
-
-  const changes = db.changes({
+  const listener = db.follow({
     ...defaultOptions,
     ...options,
   });
+  listener.on('catchup', () => {
+    log.info(' Watch has catchup');
+  });
+  listener.on('retry', () => {
+    log.info(' Registry is retrying to connect');
+  });
+  listener.on('timeout', info => {
+    log.info(' Watch has timeouted', info);
+  });
+  listener.on('stop', () => {
+    log.info(' Watch has stopped');
+  });
 
-  datadog.timing('db.changes', Date.now() - start2);
-
-  return changes;
+  return listener;
 }
 
 /**
@@ -75,6 +94,16 @@ async function getInfo() {
     nbDocs,
     seq,
   };
+}
+
+async function getDocs({ keys }) {
+  const start = Date.now();
+
+  const docs = await db.fetch({ keys });
+
+  datadog.timing('npm.getDocs', Date.now() - start);
+
+  return docs;
 }
 
 /**
@@ -230,7 +259,9 @@ async function getDownloads(pkgs) {
 export {
   findAll,
   listenToChanges,
+  getChanges,
   getInfo,
+  getDocs,
   validatePackageExists,
   getDependents,
   getDownload,
