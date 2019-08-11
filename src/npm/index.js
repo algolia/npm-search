@@ -96,16 +96,6 @@ async function getInfo() {
   };
 }
 
-async function getDocs({ keys }) {
-  const start = Date.now();
-
-  const docs = await db.fetch({ keys });
-
-  datadog.timing('npm.getDocs', Date.now() - start);
-
-  return docs;
-}
-
 /**
  * Validate if a package exists
  *
@@ -261,7 +251,6 @@ export {
   listenToChanges,
   getChanges,
   getInfo,
-  getDocs,
   validatePackageExists,
   getDependents,
   getDownload,
