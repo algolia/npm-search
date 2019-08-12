@@ -128,6 +128,11 @@ async function watch(stateManager, mainIndex) {
         ? (await npm.getDocs({ keys: [change.id] })).rows[0]
         : null;
 
+      if (!doc) {
+        log.warn('Could not find doc', doc, change);
+        return;
+      }
+
       await loop(
         stateManager,
         mainIndex,
