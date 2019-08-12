@@ -149,9 +149,10 @@ async function loop(stateManager, mainIndex, changes, totalSequence) {
   const names = changes.results.map(change => change.id);
   log.info(`🚀  Received ${changes.results.length} packages`, names.join(','));
 
-  // Delete package directly in index
-  changes.results.filter(change => {
+  // eslint-disable-next-line no-param-reassign
+  changes.results = changes.results.filter(change => {
     if (change.deleted) {
+      // Delete package directly in index
       // Filter does not support async/await but there is no concurrency issue with this
       mainIndex.deleteObject(change.id);
       log.info(`🚀  Deleted ${change.id}`);
