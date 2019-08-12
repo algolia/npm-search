@@ -130,6 +130,7 @@ async function watch(stateManager, mainIndex) {
   }, 1);
 
   listener.on('change', change => {
+    log.info('we received 1 change, pushing to changesConsumer');
     changesConsumer.push(change);
   });
 
