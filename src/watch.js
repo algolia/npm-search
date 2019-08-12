@@ -51,7 +51,7 @@ async function run(stateManager, mainIndex) {
 
   await catchup(stateManager, mainIndex);
 
-  log.info('🚀  Replicate is up to date, synchronous mode activated');
+  log.info('🚀  Index is up to date, watch mode activated');
 
   await watch(stateManager, mainIndex);
 }
@@ -71,7 +71,7 @@ async function catchup(stateManager, mainIndex) {
       const { seq: totalSequence } = await npm.getInfo();
       const { seq } = await stateManager.get();
       log.info(
-        '🚀  Replicate: Asking for %d changes since sequence %d',
+        '🚀  Catchup: Asking for %d changes since sequence %d',
         config.replicateConcurrency,
         seq
       );
@@ -101,7 +101,7 @@ async function watch(stateManager, mainIndex) {
   const listener = npm.listenToChanges({
     since: seq,
     include_docs: true, // eslint-disable-line camelcase
-    heartbeat: 90 * 1000,
+    heartbeat: 30 * 1000,
   });
 
   /**
@@ -130,6 +130,7 @@ async function watch(stateManager, mainIndex) {
   }, 1);
 
   listener.on('change', change => {
+    log.info('we received 1 change, pushing to changesConsumer');
     changesConsumer.push(change);
   });
 
@@ -146,18 +147,19 @@ async function watch(stateManager, mainIndex) {
 async function loop(stateManager, mainIndex, changes, totalSequence) {
   const start = Date.now();
   datadog.increment('packages', changes.results.length);
-  const names = changes.results.map(change => change.doc && change.doc.name);
-  log.info(`🚀  Replicate received ${changes.results.length} packages`, names);
+  const names = changes.results.map(change => change.id);
+  log.info(`🚀  Received ${changes.results.length} packages`, names.join(','));
 
-  // Delete package directly in index
-  await Promise.all(
-    changes.results.map(async change => {
-      if (change.deleted) {
-        await mainIndex.deleteObject(change.id);
-        log.info(`🚀  Deleted ${change.id}`);
-      }
-    })
-  );
+  // eslint-disable-next-line no-param-reassign
+  changes.results = changes.results.filter(change => {
+    if (change.deleted) {
+      // Delete package directly in index
+      // Filter does not support async/await but there is no concurrency issue with this
+      mainIndex.deleteObject(change.id);
+      log.info(`🚀  Deleted ${change.id}`);
+    }
+    return !change.deleted;
+  });
 
   await saveDocs({ docs: changes.results, index: mainIndex });
 

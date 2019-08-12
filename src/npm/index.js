@@ -60,11 +60,14 @@ function listenToChanges(options) {
     ...defaultOptions,
     ...options,
   });
+  listener.on('confirm', () => {
+    log.info('Registry is confirmed/connected');
+  });
   listener.on('catchup', () => {
     log.info('Watch has catchup');
   });
-  listener.on('retry', () => {
-    log.info('Registry is retrying to connect');
+  listener.on('retry', info => {
+    log.info('Registry is retrying to connect', info);
   });
   listener.on('timeout', info => {
     log.info('Watch has timeouted', info);
