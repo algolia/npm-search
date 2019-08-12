@@ -3,7 +3,8 @@ dotenv.config();
 import ms from 'ms';
 
 const defaultConfig = {
-  npmRegistryEndpoint: 'https://replicate.npmjs.com/registry',
+  npmRegistryEndpoint: 'https://replicate.npmjs.com',
+  npmRegistryDBName: 'registry',
   npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
   npmRootEndpoint: 'https://registry.npmjs.org',
   jsDelivrHitsEndpoint:
