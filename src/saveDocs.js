@@ -3,7 +3,7 @@ import log from './log.js';
 import * as npm from './npm/index.js';
 import { getChangelogs } from './changelog.js';
 import * as jsDelivr from './jsDelivr/index.js';
-import { getTSSupport } from './typescriptSupport.js';
+import * as typescript from './typescript/index.js';
 import datadog from './datadog.js';
 
 export default async function saveDocs({ docs, index }) {
@@ -44,7 +44,7 @@ async function addMetaData(pkgs) {
     npm.getDependents(pkgs),
     getChangelogs(pkgs),
     jsDelivr.getHits(pkgs),
-    getTSSupport(pkgs),
+    typescript.checkForSupportMultiple(pkgs),
   ]);
 
   const start = Date.now();

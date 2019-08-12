@@ -188,29 +188,26 @@ describe('adds TypeScript information', () => {
     ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
   });
 
-  it('adds types possible if we can find a main file', () => {
+  it('adds types if included in the dependencies', () => {
     expect(
       formatPkg({
         name: 'xxx',
+        main: 'shell-script.sh',
         lastPublisher: { name: 'unknown' },
-        main: 'main.js',
+        dependencies: { typescript: '^2.3.1' },
       })
-    ).toEqual(
-      expect.objectContaining({
-        types: { ts: { possible: true, dtsMain: 'main.d.ts' } },
-      })
-    );
+    ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
+  });
 
+  it('adds types if included in the devDependencies', () => {
     expect(
       formatPkg({
         name: 'xxx',
+        main: 'shell-script.sh',
         lastPublisher: { name: 'unknown' },
+        devDependencies: { typescript: '^2.3.1' },
       })
-    ).toEqual(
-      expect.objectContaining({
-        types: { ts: { possible: true, dtsMain: 'index.d.ts' } },
-      })
-    );
+    ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
   });
 
   it('gives up when no main is not js', () => {

@@ -401,20 +401,18 @@ function getTypes(pkg) {
     return { ts: 'included' };
   }
 
-  // Older, but still works way of defining your types
-  if (pkg.typings) {
+  // Simply check if the package use typescript as deps
+  if (
+    (pkg.devDependencies &&
+      Object.keys(pkg.devDependencies).includes('typescript')) ||
+    (pkg.dependencies && Object.keys(pkg.dependencies).includes('typescript'))
+  ) {
     return { ts: 'included' };
   }
 
-  const main = pkg.main || 'index.js';
-  if (typeof main === 'string' && main.endsWith('.js')) {
-    const dtsMain = main.replace(/js$/, 'd.ts');
-    return {
-      ts: {
-        possible: true,
-        dtsMain,
-      },
-    };
+  // Older, but still works way of defining your types
+  if (pkg.typings) {
+    return { ts: 'included' };
   }
 
   return {

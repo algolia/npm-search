@@ -128,11 +128,6 @@ async function watch(stateManager, mainIndex) {
         ? (await npm.getDocs({ keys: [change.id] })).rows[0]
         : null;
 
-      if (!doc) {
-        log.warn('Could not find doc', doc, change);
-        return;
-      }
-
       await loop(
         stateManager,
         mainIndex,
@@ -180,7 +175,7 @@ async function watch(stateManager, mainIndex) {
 async function loop(stateManager, mainIndex, changes) {
   const start = Date.now();
   datadog.increment('packages', changes.results.length);
-  const names = changes.results.map(change => change.id);
+  const names = changes.results.map(change => change && change.id);
   log.info(`🚀  Received ${changes.results.length} packages`, names.join(','));
 
   // eslint-disable-next-line no-param-reassign

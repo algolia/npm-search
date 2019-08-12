@@ -10,6 +10,8 @@ const defaultConfig = {
   jsDelivrHitsEndpoint:
     'https://data.jsdelivr.com/v1/stats/packages/npm/month/all',
   jsDelivrPackageEndpoint: 'https://data.jsdelivr.com/v1/package/npm',
+  typescriptTypesIndex:
+    'https://typespublisher.blob.core.windows.net/typespublisher/data/search-index-min.json',
   unpkgRoot: 'https://unpkg.com',
   maxObjSize: 450000,
   popularDownloadsRatio: 0.005,

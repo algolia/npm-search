@@ -162,10 +162,7 @@ Are you in trouble? Read through our [contribution guidelines](https://bitbucket
     "latest": "1.6.1",
   },
   "types": Object {
-    "ts": Object {
-      "dtsMain": "dist/bundle.d.ts",
-      "possible": true,
-    },
+    "ts": false,
   },
   "version": "1.6.1",
   "versions": Object {
@@ -299,10 +296,7 @@ Object {
     "latest": "0.0.4",
   },
   "types": Object {
-    "ts": Object {
-      "dtsMain": "dist/atomic-package.tab.d.ts",
-      "possible": true,
-    },
+    "ts": "included",
   },
   "version": "0.0.4",
   "versions": Object {
@@ -423,10 +417,7 @@ Object {
     "latest": "4.4.2",
   },
   "types": Object {
-    "ts": Object {
-      "dtsMain": "index.d.ts",
-      "possible": true,
-    },
+    "ts": false,
   },
   "version": "4.4.2",
   "versions": Object {
@@ -507,10 +498,7 @@ index(arr, obj);
     "latest": "0.0.1",
   },
   "types": Object {
-    "ts": Object {
-      "dtsMain": "index.d.ts",
-      "possible": true,
-    },
+    "ts": false,
   },
   "version": "0.0.1",
   "versions": Object {
@@ -569,10 +557,7 @@ Object {
   "repository": null,
   "tags": undefined,
   "types": Object {
-    "ts": Object {
-      "dtsMain": "index.d.ts",
-      "possible": true,
-    },
+    "ts": false,
   },
   "version": "0.0.0",
   "versions": Object {},
