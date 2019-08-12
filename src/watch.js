@@ -41,7 +41,6 @@ let loopStart;
  *   yes !
  *   When we are catched up, we could await between poll and we will receive N changes.
  *   But long-polling is more efficient in term of bandwidth and more reactive.
- *
  */
 async function run(stateManager, mainIndex) {
   await stateManager.save({
@@ -61,8 +60,8 @@ async function run(stateManager, mainIndex) {
  * @param {object} mainIndex Algolia index manager
  */
 async function catchup(stateManager, mainIndex) {
-  let hasCatchedUp = false;
-  while (!hasCatchedUp) {
+  let hasCaughtUp = false;
+  while (!hasCaughtUp) {
     loopStart = Date.now();
 
     try {
@@ -77,15 +76,10 @@ async function catchup(stateManager, mainIndex) {
       // Get one chunk of changes from registry
       const changes = await npm.getChanges({
         since: seq,
-        limit: config.replicateConcurrency, // eslint-disable-line camelcase
+        limit: config.replicateConcurrency,
         include_docs: true, // eslint-disable-line camelcase
       });
-      hasCatchedUp = await loop(
-        stateManager,
-        mainIndex,
-        changes,
-        totalSequence
-      );
+      hasCaughtUp = await loop(stateManager, mainIndex, changes, totalSequence);
     } catch (err) {
       sentry.report(err);
     }

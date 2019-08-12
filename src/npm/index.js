@@ -25,27 +25,27 @@ const defaultOptions = {
  * @param {object} options Options param
  */
 async function findAll(options) {
-  const start2 = Date.now();
+  const start = Date.now();
 
   const results = await db.list({
     ...defaultOptions,
     ...options,
   });
 
-  datadog.timing('db.allDocs', Date.now() - start2);
+  datadog.timing('db.allDocs', Date.now() - start);
 
   return results;
 }
 
 async function getChanges(options) {
-  const start2 = Date.now();
+  const start = Date.now();
 
   const results = await db.changes({
     ...defaultOptions,
     ...options,
   });
 
-  datadog.timing('db.getChanges', Date.now() - start2);
+  datadog.timing('db.getChanges', Date.now() - start);
 
   return results;
 }
@@ -61,16 +61,16 @@ function listenToChanges(options) {
     ...options,
   });
   listener.on('catchup', () => {
-    log.info(' Watch has catchup');
+    log.info('Watch has catchup');
   });
   listener.on('retry', () => {
-    log.info(' Registry is retrying to connect');
+    log.info('Registry is retrying to connect');
   });
   listener.on('timeout', info => {
-    log.info(' Watch has timeouted', info);
+    log.info('Watch has timeouted', info);
   });
   listener.on('stop', () => {
-    log.info(' Watch has stopped');
+    log.info('Watch has stopped');
   });
 
   return listener;

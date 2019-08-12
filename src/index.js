@@ -40,7 +40,7 @@ async function main() {
 
   // then we figure out which updates we missed since
   // the last time main index was updated
-  log.info('🚀  Launching Watch ');
+  log.info('🚀  Launching Watch');
   await watch.run(stateManager, mainIndex);
 }
 

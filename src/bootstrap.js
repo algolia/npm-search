@@ -18,6 +18,7 @@ let loopStart;
  *  - you lagged too much behind
  *
  * Watch mode should/can be reliably left running for weeks/months as CouchDB is made for that.
+ * BUT for the moment it's mandatory to relaunch it because it's the only way to update: typescript, downloads stats.
  */
 async function run(stateManager, algoliaClient, mainIndex, bootstrapIndex) {
   const state = await stateManager.check();
