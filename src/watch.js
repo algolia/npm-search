@@ -148,6 +148,11 @@ async function watch(stateManager, mainIndex) {
       changesConsumer._tasks.length
     );
     totalSequence = change.seq;
+    if (!change.id) {
+      // Can happen when NPM send an empty line (for example the hearthbeat) 🤷🏻‍
+      log.info('Change is null', change);
+      return;
+    }
     changesConsumer.push(change);
   });
 
