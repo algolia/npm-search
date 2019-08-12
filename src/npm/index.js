@@ -50,6 +50,16 @@ async function getChanges(options) {
   return results;
 }
 
+async function getDocs({ keys }) {
+  const start = Date.now();
+
+  const docs = await db.fetch({ keys });
+
+  datadog.timing('npm.getDocs', Date.now() - start);
+
+  return docs;
+}
+
 /**
  * Listen to changes in registry
  *
@@ -254,6 +264,7 @@ export {
   listenToChanges,
   getChanges,
   getInfo,
+  getDocs,
   validatePackageExists,
   getDependents,
   getDownload,
