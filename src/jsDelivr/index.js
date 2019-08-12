@@ -69,7 +69,7 @@ async function getAllFilesList(pkgs) {
  */
 async function getFilesList(pkg) {
   const start = Date.now();
-  if (!pkg.name || !pkg.name.includes('@')) {
+  if (!pkg.name || !pkg.version) {
     throw new Error(
       `Package name should contain a version number: ${pkg.name}`
     );
@@ -78,7 +78,7 @@ async function getFilesList(pkg) {
   let files = [];
   try {
     const response = await got(
-      `${config.jsDelivrPackageEndpoint}/${pkg.name}/flat`,
+      `${config.jsDelivrPackageEndpoint}/${pkg.name}@${pkg.version}/flat`,
       {
         json: true,
       }
