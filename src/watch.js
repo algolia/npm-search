@@ -1,7 +1,9 @@
+import ms from 'ms';
+import queue from 'async/queue.js';
+
 import config from './config.js';
 import datadog from './datadog.js';
 import log from './log.js';
-import ms from 'ms';
 import * as npm from './npm/index.js';
 import saveDocs from './saveDocs.js';
 import * as sentry from './utils/sentry.js';
@@ -47,9 +49,10 @@ async function run(stateManager, mainIndex) {
     stage: 'watch',
   });
 
+  await catchup(stateManager, mainIndex);
+
   log.info('🚀  Replicate is up to date, synchronous mode activated');
 
-  await catchup(stateManager, mainIndex);
   await watch(stateManager, mainIndex);
 }
 
@@ -101,14 +104,33 @@ async function watch(stateManager, mainIndex) {
     heartbeat: 90 * 1000,
   });
 
-  listener.on('change', async change => {
-    await loop(
-      stateManager,
-      mainIndex,
-      // eslint-disable-next-line camelcase
-      { results: [change], last_seq: change.seq },
-      change.seq
-    );
+  /**
+   * Queue is ensuring we are processing changes ordered
+   * This also means we can not process more than 1 at the same time
+   *
+   * --- Why ?
+   *   CouchDB send changes in an ordered fashion
+   *     Event A update package C
+   *     Event B delete package C
+   *
+   *     If the events are not processed in the same order, you can have a broken state
+   */
+  const changesConsumer = queue(async change => {
+    try {
+      await loop(
+        stateManager,
+        mainIndex,
+        // eslint-disable-next-line camelcase
+        { results: [change], last_seq: change.seq },
+        change.seq
+      );
+    } catch (err) {
+      sentry.report(err);
+    }
+  }, 1);
+
+  listener.on('change', change => {
+    changesConsumer.push(change);
   });
 
   listener.on('error', err => {
@@ -124,7 +146,8 @@ async function watch(stateManager, mainIndex) {
 async function loop(stateManager, mainIndex, changes, totalSequence) {
   const start = Date.now();
   datadog.increment('packages', changes.results.length);
-  log.info(`🚀  Replicate received ${changes.results.length} packages`);
+  const names = changes.results.map(change => change.doc && change.doc.name);
+  log.info(`🚀  Replicate received ${changes.results.length} packages`, names);
 
   // Delete package directly in index
   await Promise.all(
