@@ -8,7 +8,8 @@ import * as npm from './npm/index.js';
 import saveDocs from './saveDocs.js';
 import * as sentry from './utils/sentry.js';
 
-let loopStart;
+let loopStart = Date.now();
+let totalSequence; // Cached npmInfo.seq
 
 /**
  * Run watch and catchup
@@ -54,6 +55,8 @@ async function run(stateManager, mainIndex) {
   log.info('🚀  Index is up to date, watch mode activated');
 
   await watch(stateManager, mainIndex);
+
+  log.info('🚀  watch is done');
 }
 
 /**
@@ -68,7 +71,9 @@ async function catchup(stateManager, mainIndex) {
     loopStart = Date.now();
 
     try {
-      const { seq: totalSequence } = await npm.getInfo();
+      const npmInfo = await npm.getInfo();
+      totalSequence = npmInfo.seq;
+
       const { seq } = await stateManager.get();
       log.info(
         '🚀  Catchup: Asking for %d changes since sequence %d',
@@ -82,7 +87,7 @@ async function catchup(stateManager, mainIndex) {
         limit: config.replicateConcurrency,
         include_docs: true, // eslint-disable-line camelcase
       });
-      hasCaughtUp = await loop(stateManager, mainIndex, changes, totalSequence);
+      hasCaughtUp = await loop(stateManager, mainIndex, changes);
     } catch (err) {
       sentry.report(err);
     }
@@ -100,8 +105,9 @@ async function watch(stateManager, mainIndex) {
   const { seq } = await stateManager.get();
   const listener = npm.listenToChanges({
     since: seq,
-    include_docs: true, // eslint-disable-line camelcase
+    include_docs: false, // eslint-disable-line camelcase
     heartbeat: 30 * 1000,
+    limit: 100,
   });
 
   /**
@@ -116,12 +122,17 @@ async function watch(stateManager, mainIndex) {
    *     If the events are not processed in the same order, you can have a broken state
    */
   const changesConsumer = queue(async change => {
+    log.info('Processing... still in queue', changesConsumer._tasks.length);
     try {
+      const doc = !change.deleted
+        ? (await npm.getDocs({ keys: [change.id] })).rows[0]
+        : null;
+
       await loop(
         stateManager,
         mainIndex,
         // eslint-disable-next-line camelcase
-        { results: [change], last_seq: change.seq },
+        { results: [doc], last_seq: change.seq },
         change.seq
       );
     } catch (err) {
@@ -130,7 +141,13 @@ async function watch(stateManager, mainIndex) {
   }, 1);
 
   listener.on('change', change => {
-    log.info('we received 1 change, pushing to changesConsumer');
+    log.info(
+      'we received 1 change',
+      change.seq,
+      '; in queue',
+      changesConsumer._tasks.length
+    );
+    totalSequence = change.seq;
     changesConsumer.push(change);
   });
 
@@ -139,12 +156,18 @@ async function watch(stateManager, mainIndex) {
   });
 
   listener.follow();
+
+  return new Promise(resolve => {
+    listener.on('stop', () => {
+      resolve();
+    });
+  });
 }
 
 /**
  * Process changes
  */
-async function loop(stateManager, mainIndex, changes, totalSequence) {
+async function loop(stateManager, mainIndex, changes) {
   const start = Date.now();
   datadog.increment('packages', changes.results.length);
   const names = changes.results.map(change => change.id);
@@ -167,7 +190,7 @@ async function loop(stateManager, mainIndex, changes, totalSequence) {
     seq: changes.last_seq,
   });
 
-  logProgress(totalSequence, changes.last_seq, changes.results.length);
+  logProgress(changes.last_seq, changes.results.length);
 
   datadog.timing('watch.loop', Date.now() - start);
   return changes.last_seq >= totalSequence;
@@ -176,11 +199,10 @@ async function loop(stateManager, mainIndex, changes, totalSequence) {
 /**
  * Log our process through catchup/watch
  *
- * @param {number} totalSequence The current number of changes in Registry
  * @param {number} seq The current number of changes we have reached
  * @param {number} nbChanges Number of changes processed in this batch
  */
-function logProgress(totalSequence, seq, nbChanges) {
+function logProgress(seq, nbChanges) {
   const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
   const remaining = ((totalSequence - seq) / ratePerSecond) * 1000 || 0;
 
