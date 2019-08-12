@@ -1,4 +1,16 @@
 import * as api from '../index.js';
+import log from '../../log.js';
+
+jest.mock('../../log.js', () => {
+  return {
+    info: jest.fn(),
+    warn: jest.fn(),
+  };
+});
+
+beforeEach(() => {
+  jest.resetAllMocks();
+});
 
 describe('hits', () => {
   beforeAll(async () => {
@@ -51,34 +63,48 @@ describe('hits', () => {
 describe('files', () => {
   describe('getFilesList()', () => {
     it('should get a flat list of files', async () => {
-      const files = await api.getFilesList({ name: 'jest@24.8.0' });
+      const files = await api.getFilesList({
+        name: 'jest',
+        version: '24.8.0',
+      });
       expect(files).toMatchSnapshot();
     });
 
-    it('should not get a files list', async () => {
+    it('should not get a files list for fake package', async () => {
       const files = await api.getFilesList({
-        name: 'thispackagedoesnotexist@3.33.0',
+        name: 'thispackagedoesnotexist',
+        version: '3.33.0',
       });
       expect(files).toEqual([]);
+      expect(log.warn.mock.calls[0][0].message).toMatchInlineSnapshot(
+        `"Response code 404 (Not Found)"`
+      );
     });
   });
 
   describe('getAllFilesList()', () => {
     it('should get a flat list of files', async () => {
-      const files = await api.getAllFilesList([{ name: 'jest@24.8.0' }]);
+      const files = await api.getAllFilesList([
+        { name: 'jest', version: '24.8.0' },
+      ]);
       expect(files).toMatchSnapshot();
     });
 
     it('should get multiple flat list of files', async () => {
       const files = await api.getAllFilesList([
         {
-          name: 'jest@24.8.0',
+          name: 'jest',
+          version: '24.8.0',
         },
         {
-          name: 'thispackagedoesnotexist@3.33.0',
+          name: 'thispackagedoesnotexist',
+          version: '3.33.0',
         },
       ]);
       expect(files).toMatchSnapshot();
+      expect(log.warn.mock.calls[0][0].message).toMatchInlineSnapshot(
+        `"Response code 404 (Not Found)"`
+      );
     });
   });
 });
