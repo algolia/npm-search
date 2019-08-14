@@ -406,7 +406,8 @@ function getTypes(pkg) {
     return { ts: 'included' };
   }
 
-  const main = pkg.main || 'index.js';
+  // we only look at the first entry in main here
+  const main = getMains(pkg)[0];
   if (typeof main === 'string' && main.endsWith('.js')) {
     const dtsMain = main.replace(/js$/, 'd.ts');
     return {
@@ -438,19 +439,37 @@ function getAlternativeNames(name) {
   );
 }
 
-function getModuleTypes(cleaned) {
-  const main = cleaned.main || '';
+export function getMains(pkg) {
+  if (Array.isArray(pkg.main)) {
+    // we can not deal with non-string mains for now
+    return pkg.main.filter(main => typeof main === 'string');
+  }
+  if (typeof pkg.main === 'string') {
+    return [pkg.main];
+  }
+  if (typeof pkg.main === 'undefined') {
+    return ['index.js'];
+  }
+  // we can not deal with non-array ||non-string mains for now
+  return [];
+}
+
+function getModuleTypes(pkg) {
+  const mains = getMains(pkg);
   const moduleTypes = [];
-  if (
-    typeof cleaned.module === 'string' ||
-    cleaned.type === 'module' ||
-    main.endsWith('.mjs')
-  ) {
-    moduleTypes.push('esm');
-  }
-  if (cleaned.type === 'commonjs' || main.endsWith('.cjs')) {
-    moduleTypes.push('cjs');
-  }
+
+  mains.forEach(main => {
+    if (
+      typeof pkg.module === 'string' ||
+      pkg.type === 'module' ||
+      main.endsWith('.mjs')
+    ) {
+      moduleTypes.push('esm');
+    }
+    if (pkg.type === 'commonjs' || main.endsWith('.cjs')) {
+      moduleTypes.push('cjs');
+    }
+  });
 
   if (moduleTypes.length === 0) {
     moduleTypes.push('unknown');
