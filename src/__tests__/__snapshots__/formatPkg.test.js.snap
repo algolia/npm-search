@@ -162,8 +162,7 @@ Are you in trouble? Read through our [contribution guidelines](https://bitbucket
     "latest": "1.6.1",
   },
   "types": Object {
-    "_where": "files",
-    "ts": "included",
+    "ts": false,
   },
   "version": "1.6.1",
   "versions": Object {

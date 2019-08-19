@@ -1,4 +1,8 @@
-import formatPkg, { getRepositoryInfo, getMains } from '../formatPkg.js';
+import formatPkg, {
+  getRepositoryInfo,
+  getMains,
+  cleanProperties,
+} from '../formatPkg.js';
 import rawPackages from './rawPackages.json';
 import preact from './preact-simplified.json';
 import isISO8601 from 'validator/lib/isISO8601.js';
@@ -503,6 +507,15 @@ describe('moduleTypes', () => {
         main: [{ personalMain: 'index.mjs' }],
       }).moduleTypes
     ).toEqual(['unknown']);
+  });
+});
+
+describe('cleanProperties()', () => {
+  expect(
+    cleanProperties({ main: ['index.js', 'index.ts'], files: 'index.js' })
+  ).toEqual({
+    main: 'index.js',
+    files: ['index.js'],
   });
 });
 

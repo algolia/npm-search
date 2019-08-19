@@ -11,13 +11,9 @@ import hostedGitInfo from 'hosted-git-info';
 import config from './config.js';
 
 export default function formatPkg(pkg) {
-  const cleaned = new NicePackage(pkg);
+  let cleaned = new NicePackage(pkg);
   if (!cleaned.name) {
     return undefined;
-  }
-  if (Array.isArray(cleaned.main)) {
-    // https://github.com/angular-ui/bootstrap-bower/issues/52
-    cleaned.main = cleaned.main[0];
   }
 
   const lastPublisher = cleaned.lastPublisher
@@ -38,6 +34,8 @@ export default function formatPkg(pkg) {
   if (!githubRepo && !lastPublisher && !author) {
     return undefined; // ignore this package, we cannot link it to anyone
   }
+
+  cleaned = cleanProperties(cleaned);
 
   const defaultRepository =
     typeof cleaned.repository === 'string'
@@ -116,6 +114,20 @@ export default function formatPkg(pkg) {
   }
 
   return traverse(rawPkg).forEach(maybeEscape);
+}
+
+export function cleanProperties(cleaned) {
+  const tmp = { ...cleaned, files: cleaned.files || [] };
+  if (Array.isArray(cleaned.main)) {
+    // https://github.com/angular-ui/bootstrap-bower/issues/52
+    tmp.main = cleaned.main[0];
+  }
+
+  if (!Array.isArray(tmp.files)) {
+    tmp.files = [tmp.files];
+  }
+
+  return tmp;
 }
 
 function maybeEscape(node) {
