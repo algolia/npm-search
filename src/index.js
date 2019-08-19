@@ -24,7 +24,7 @@ async function main() {
   // We schedule to kill the process:
   //  - reset cache
   //  - maybe retrigger bootstrap
-  setInterval(() => {
+  setTimeout(() => {
     log.info('👋  Scheduled process cleaning');
     // eslint-disable-next-line no-process-exit
     process.exit(0);
