@@ -1,6 +1,7 @@
 import got from 'got';
 import race from 'promise-rat-race';
 
+import config from './config.js';
 import datadog from './datadog.js';
 
 export const baseUrlMap = new Map([
@@ -74,10 +75,38 @@ async function getChangelog({ repository }) {
   }
 }
 
-export async function getChangelogs(pkgs) {
+const CHANGELOG_REGEX = new RegExp(
+  /^(?:(?:update|change|release)(?:s|[ \-_]*(?:logs?|histor(?:y|ies)))|histor(?:y|ies)|release[ \-_]*notes?)(?:\.[\da-z]+)?$/i
+);
+
+function checkChangelogFromFilesList(pkg, filesList) {
+  // Check in fileList
+  if (!filesList || filesList.length <= 0) {
+    return false;
+  }
+
+  const match = filesList.find(file => CHANGELOG_REGEX.test(file.name));
+  if (match) {
+    const url = `${config.jsDelivrCDN}/${pkg.name}@${pkg.version}/${match.name}`;
+    return { changelogFilename: url };
+  }
+
+  return false;
+}
+
+export async function getChangelogs(pkgs, filesLists) {
   const start = Date.now();
 
-  const all = await Promise.all(pkgs.map(getChangelog));
+  const all = await Promise.all(
+    pkgs.map((pkg, index) => {
+      const fromFS = checkChangelogFromFilesList(pkg, filesLists[index]);
+      if (fromFS) {
+        return fromFS;
+      }
+
+      return getChangelog(pkg);
+    })
+  );
 
   datadog.timing('changelogs.getChangelogs', Date.now() - start);
   return all;

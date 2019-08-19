@@ -177,7 +177,9 @@ describe('adds TypeScript information', () => {
         lastPublisher: { name: 'unknown' },
         types: './test.dts',
       })
-    ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
+    ).toEqual(
+      expect.objectContaining({ types: { ts: 'included', _where: 'types' } })
+    );
 
     expect(
       formatPkg({
@@ -185,29 +187,22 @@ describe('adds TypeScript information', () => {
         lastPublisher: { name: 'unknown' },
         typings: './test.dts',
       })
-    ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
+    ).toEqual(
+      expect.objectContaining({ types: { ts: 'included', _where: 'types' } })
+    );
   });
 
-  it('adds types if included in the dependencies', () => {
+  it('adds types if included in the files', () => {
     expect(
       formatPkg({
         name: 'xxx',
         main: 'shell-script.sh',
         lastPublisher: { name: 'unknown' },
-        dependencies: { typescript: '^2.3.1' },
+        files: ['index.js', 'global.d.ts'],
       })
-    ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
-  });
-
-  it('adds types if included in the devDependencies', () => {
-    expect(
-      formatPkg({
-        name: 'xxx',
-        main: 'shell-script.sh',
-        lastPublisher: { name: 'unknown' },
-        devDependencies: { typescript: '^2.3.1' },
-      })
-    ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
+    ).toEqual(
+      expect.objectContaining({ types: { ts: 'included', _where: 'files' } })
+    );
   });
 
   it('gives up when no main is not js', () => {

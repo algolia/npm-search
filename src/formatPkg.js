@@ -397,22 +397,13 @@ function formatUser(user) {
 function getTypes(pkg) {
   // The cheap and simple (+ recommended by TS) way
   // of adding a types section to your package.json
-  if (pkg.types) {
-    return { ts: 'included' };
+  if (pkg.types || pkg.typings) {
+    return { ts: 'included', _where: 'types' };
   }
 
-  // Simply check if the package use typescript as deps
-  if (
-    (pkg.devDependencies &&
-      Object.keys(pkg.devDependencies).includes('typescript')) ||
-    (pkg.dependencies && Object.keys(pkg.dependencies).includes('typescript'))
-  ) {
-    return { ts: 'included' };
-  }
-
-  // Older, but still works way of defining your types
-  if (pkg.typings) {
-    return { ts: 'included' };
+  // Check in exposed files
+  if (pkg.files && pkg.files.some(file => file.search('.d.ts'))) {
+    return { ts: 'included', _where: 'files' };
   }
 
   return {

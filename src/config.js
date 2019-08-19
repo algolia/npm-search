@@ -10,6 +10,7 @@ const defaultConfig = {
   jsDelivrHitsEndpoint:
     'https://data.jsdelivr.com/v1/stats/packages/npm/month/all',
   jsDelivrPackageEndpoint: 'https://data.jsdelivr.com/v1/package/npm',
+  jsDelivrCDN: 'https://cdn.jsdelivr.net/npm',
   typescriptTypesIndex:
     'https://typespublisher.blob.core.windows.net/typespublisher/data/search-index-min.json',
   unpkgRoot: 'https://unpkg.com',

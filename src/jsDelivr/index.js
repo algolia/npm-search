@@ -54,12 +54,12 @@ function getHits(pkgs) {
  * Get packages files list
  * @param {array} pkgs
  */
-async function getAllFilesList(pkgs) {
+async function getFilesLists(pkgs) {
   const start = Date.now();
 
   const files = await Promise.all(pkgs.map(getFilesList));
 
-  datadog.timing('jsdelivr.getAllFilesList', Date.now() - start);
+  datadog.timing('jsdelivr.getFilesLists', Date.now() - start);
   return files;
 }
 
@@ -92,4 +92,4 @@ async function getFilesList(pkg) {
   return files;
 }
 
-export { hits, loadHits, getHits, getAllFilesList, getFilesList };
+export { hits, loadHits, getHits, getFilesLists, getFilesList };

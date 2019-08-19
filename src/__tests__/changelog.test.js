@@ -90,74 +90,91 @@ describe('should test baseUrlMap', () => {
   });
 });
 
-it('should get changelog for github', async () => {
-  const pkg = {
-    repository: {
-      host: 'github.com',
-      user: 'visionmedia',
-      project: 'debug',
-      path: '',
-      head: 'master',
-      branch: 'master',
-    },
-  };
+describe('getChangelogs()', () => {
+  it('should get changelog for github', async () => {
+    const pkg = {
+      repository: {
+        host: 'github.com',
+        user: 'visionmedia',
+        project: 'debug',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg]);
-  expect(changelogFilename).toBe(
-    'https://raw.githubusercontent.com/visionmedia/debug/master/CHANGELOG.md'
-  );
-});
+    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    expect(changelogFilename).toBe(
+      'https://raw.githubusercontent.com/visionmedia/debug/master/CHANGELOG.md'
+    );
+  });
 
-it('should get changelog for gitlab', async () => {
-  const pkg = {
-    repository: {
-      host: 'gitlab.com',
-      user: 'janslow',
-      project: 'gitlab-fetch',
-      path: '',
-      head: 'master',
-      branch: 'master',
-    },
-  };
+  it('should get changelog for gitlab', async () => {
+    const pkg = {
+      repository: {
+        host: 'gitlab.com',
+        user: 'janslow',
+        project: 'gitlab-fetch',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg]);
-  expect(changelogFilename).toBe(
-    'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md'
-  );
-});
+    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    expect(changelogFilename).toBe(
+      'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md'
+    );
+  });
 
-it('should get changelog for bitbucket', async () => {
-  const pkg = {
-    repository: {
-      host: 'bitbucket.org',
-      user: 'atlassian',
-      project: 'aui',
-      path: '',
-      head: 'master',
-      branch: 'master',
-    },
-  };
+  it('should get changelog for bitbucket', async () => {
+    const pkg = {
+      repository: {
+        host: 'bitbucket.org',
+        user: 'atlassian',
+        project: 'aui',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg]);
-  expect(changelogFilename).toBe(
-    'https://bitbucket.org/atlassian/aui/raw/master/changelog.md'
-  );
-});
+    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    expect(changelogFilename).toBe(
+      'https://bitbucket.org/atlassian/aui/raw/master/changelog.md'
+    );
+  });
 
-it('should work with HISTORY.md', async () => {
-  const pkg = {
-    repository: {
-      host: 'github.com',
-      user: 'expressjs',
-      project: 'body-parser',
-      path: '',
-      head: 'master',
-      branch: 'master',
-    },
-  };
+  it('should work with HISTORY.md', async () => {
+    const pkg = {
+      repository: {
+        host: 'github.com',
+        user: 'expressjs',
+        project: 'body-parser',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg]);
-  expect(changelogFilename).toBe(
-    'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md'
-  );
+    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    expect(changelogFilename).toBe(
+      'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md'
+    );
+  });
+
+  it('should work with FilesLists', async () => {
+    const pkg = {
+      name: 'body-parser',
+      version: '1.19.0',
+    };
+
+    const [{ changelogFilename }] = await getChangelogs(
+      [pkg],
+      [[{ name: 'HISTORY.md' }]]
+    );
+    expect(changelogFilename).toBe(
+      'https://cdn.jsdelivr.net/npm/body-parser@1.19.0/HISTORY.md'
+    );
+  });
 });

@@ -82,16 +82,16 @@ describe('files', () => {
     });
   });
 
-  describe('getAllFilesList()', () => {
+  describe('getFilesLists()', () => {
     it('should get a flat list of files', async () => {
-      const files = await api.getAllFilesList([
+      const files = await api.getFilesLists([
         { name: 'jest', version: '24.8.0' },
       ]);
       expect(files).toMatchSnapshot();
     });
 
     it('should get multiple flat list of files', async () => {
-      const files = await api.getAllFilesList([
+      const files = await api.getFilesLists([
         {
           name: 'jest',
           version: '24.8.0',

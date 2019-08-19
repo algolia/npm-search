@@ -1,7 +1,7 @@
 import formatPkg from './formatPkg.js';
 import log from './log.js';
 import * as npm from './npm/index.js';
-import { getChangelogs } from './changelog.js';
+import * as changelog from './changelog.js';
 import * as jsDelivr from './jsDelivr/index.js';
 import * as typescript from './typescript/index.js';
 import datadog from './datadog.js';
@@ -39,12 +39,16 @@ export default async function saveDocs({ docs, index }) {
 }
 
 async function addMetaData(pkgs) {
-  const [downloads, dependents, changelogs, hits, ts] = await Promise.all([
+  const [downloads, dependents, hits, filesLists] = await Promise.all([
     npm.getDownloads(pkgs),
     npm.getDependents(pkgs),
-    getChangelogs(pkgs),
     jsDelivr.getHits(pkgs),
-    typescript.checkForSupportMultiple(pkgs),
+    jsDelivr.getFilesLists(pkgs),
+  ]);
+
+  const [changelogs, ts] = await Promise.all([
+    changelog.getChangelogs(pkgs, filesLists),
+    typescript.checkForSupportMultiple(pkgs, filesLists),
   ]);
 
   const start = Date.now();

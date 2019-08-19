@@ -42,9 +42,9 @@ function isDefinitelyTyped({ name }) {
  *   - { types: { ts: "included" }} - for types shipped with the module
  * @param {Package} pkg
  */
-export function checkForSupport(pkg) {
+export function checkForSupport(pkg, filesList) {
   // Already calculated in `formatPkg`
-  if (typeof pkg.types.ts === 'string') {
+  if (pkg.types.ts === 'included') {
     return { types: pkg.types };
   }
 
@@ -54,7 +54,22 @@ export function checkForSupport(pkg) {
     return {
       types: {
         ts: 'definitely-typed',
+        _where: 'deftyped',
         definitelyTyped: `@types/${defTyped}`,
+      },
+    };
+  }
+
+  // Check in fileList
+  if (
+    filesList &&
+    filesList.length > 0 &&
+    filesList.some(file => file.name.endsWith('.d.ts'))
+  ) {
+    return {
+      types: {
+        ts: 'included',
+        _where: 'filesList',
       },
     };
   }
@@ -66,10 +81,14 @@ export function checkForSupport(pkg) {
  * Check if packages have Typescript definitions
  * @param {Array<Package>} pkgs
  */
-async function checkForSupportMultiple(pkgs) {
+async function checkForSupportMultiple(pkgs, filesLists) {
   const start = Date.now();
 
-  const all = await Promise.all(pkgs.map(checkForSupport));
+  const all = await Promise.all(
+    pkgs.map((pkg, index) => {
+      return checkForSupport(pkg, filesLists[index]);
+    })
+  );
 
   datadog.timing('getTSSupport', Date.now() - start);
   return all;

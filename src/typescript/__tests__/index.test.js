@@ -29,7 +29,7 @@ describe('checkForSupport()', () => {
     expect(typesSupport).toEqual({ types: { ts: 'included' } });
   });
 
-  describe('without types/typings', () => {
+  describe('Defintely Typed', () => {
     it('Checks for @types/[name]', async () => {
       const atTypesSupport = await api.checkForSupport({
         name: 'lodash.valuesin',
@@ -37,6 +37,7 @@ describe('checkForSupport()', () => {
       });
       expect(atTypesSupport).toEqual({
         types: {
+          _where: 'deftyped',
           ts: 'definitely-typed',
           definitelyTyped: '@types/lodash.valuesin',
         },
@@ -50,18 +51,52 @@ describe('checkForSupport()', () => {
       });
       expect(atTypesSupport).toEqual({
         types: {
+          _where: 'deftyped',
           ts: 'definitely-typed',
           definitelyTyped: '@types/mapbox__geojson-area',
         },
       });
     });
+  });
 
-    it('Handles not having any possible TS types', async () => {
-      const typesSupport = await api.checkForSupport({
-        name: 'my-lib',
-        types: { ts: false },
+  describe('FilesList', () => {
+    it('should match a correct filesList', async () => {
+      const atTypesSupport = await api.checkForSupport(
+        {
+          name: 'doesnotexist',
+          types: { ts: false },
+        },
+        [{ name: 'index.js' }, { name: 'index.d.ts' }]
+      );
+      expect(atTypesSupport).toEqual({
+        types: {
+          _where: 'filesList',
+          ts: 'included',
+        },
       });
-      expect(typesSupport).toEqual({ types: { ts: false } });
     });
+
+    it('should not match an incorrect filesList', async () => {
+      const atTypesSupport = await api.checkForSupport(
+        {
+          name: 'doesnotexist',
+          types: { ts: false },
+        },
+        [{ name: 'index.js' }, { name: 'index.ts' }, { name: 'index.md' }]
+      );
+      expect(atTypesSupport).toEqual({
+        types: {
+          ts: false,
+        },
+      });
+    });
+  });
+
+  it('Handles not having any possible TS types', async () => {
+    const typesSupport = await api.checkForSupport({
+      name: 'my-lib',
+      types: { ts: false },
+    });
+    expect(typesSupport).toEqual({ types: { ts: false } });
   });
 });

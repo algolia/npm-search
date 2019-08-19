@@ -162,7 +162,8 @@ Are you in trouble? Read through our [contribution guidelines](https://bitbucket
     "latest": "1.6.1",
   },
   "types": Object {
-    "ts": false,
+    "_where": "files",
+    "ts": "included",
   },
   "version": "1.6.1",
   "versions": Object {
@@ -296,7 +297,7 @@ Object {
     "latest": "0.0.4",
   },
   "types": Object {
-    "ts": "included",
+    "ts": false,
   },
   "version": "0.0.4",
   "versions": Object {
