@@ -402,7 +402,7 @@ function getTypes(pkg) {
   }
 
   // Check in exposed files
-  if (pkg.files && pkg.files.some(file => file.search('.d.ts'))) {
+  if (pkg.files && pkg.files.some(file => file.endsWith('.d.ts'))) {
     return { ts: 'included', _where: 'files' };
   }
 

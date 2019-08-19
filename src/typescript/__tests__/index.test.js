@@ -56,6 +56,18 @@ describe('checkForSupport()', () => {
           definitelyTyped: '@types/mapbox__geojson-area',
         },
       });
+
+      const atTypesSupport2 = await api.checkForSupport({
+        name: '@reach/router',
+        types: { ts: false },
+      });
+      expect(atTypesSupport2).toEqual({
+        types: {
+          _where: 'deftyped',
+          ts: 'definitely-typed',
+          definitelyTyped: '@types/reach__router',
+        },
+      });
     });
   });
 

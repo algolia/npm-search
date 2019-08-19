@@ -20,9 +20,10 @@ async function loadTypesIndex() {
 
   log.info(`📦  Typescript preload, found ${body.length} @types`);
 
-  // m = modules associate
+  // m = modules associated
   // t = @types/<name>
   body.forEach(type => {
+    typesCache[type.t] = type.t;
     type.m.forEach(m => {
       typesCache[m] = type.t;
     });
