@@ -406,6 +406,7 @@ function getTypes(pkg) {
     return { ts: 'included', _where: 'files' };
   }
 
+  // We will do further check later
   return {
     ts: false,
   };
@@ -427,19 +428,37 @@ function getAlternativeNames(name) {
   );
 }
 
-function getModuleTypes(cleaned) {
-  const main = cleaned.main || '';
+export function getMains(pkg) {
+  if (Array.isArray(pkg.main)) {
+    // we can not deal with non-string mains for now
+    return pkg.main.filter(main => typeof main === 'string');
+  }
+  if (typeof pkg.main === 'string') {
+    return [pkg.main];
+  }
+  if (typeof pkg.main === 'undefined') {
+    return ['index.js'];
+  }
+  // we can not deal with non-array ||non-string mains for now
+  return [];
+}
+
+function getModuleTypes(pkg) {
+  const mains = getMains(pkg);
   const moduleTypes = [];
-  if (
-    typeof cleaned.module === 'string' ||
-    cleaned.type === 'module' ||
-    main.endsWith('.mjs')
-  ) {
-    moduleTypes.push('esm');
-  }
-  if (cleaned.type === 'commonjs' || main.endsWith('.cjs')) {
-    moduleTypes.push('cjs');
-  }
+
+  mains.forEach(main => {
+    if (
+      typeof pkg.module === 'string' ||
+      pkg.type === 'module' ||
+      main.endsWith('.mjs')
+    ) {
+      moduleTypes.push('esm');
+    }
+    if (pkg.type === 'commonjs' || main.endsWith('.cjs')) {
+      moduleTypes.push('cjs');
+    }
+  });
 
   if (moduleTypes.length === 0) {
     moduleTypes.push('unknown');

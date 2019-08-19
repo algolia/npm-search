@@ -1,4 +1,4 @@
-import formatPkg, { getRepositoryInfo } from '../formatPkg.js';
+import formatPkg, { getRepositoryInfo, getMains } from '../formatPkg.js';
 import rawPackages from './rawPackages.json';
 import preact from './preact-simplified.json';
 import isISO8601 from 'validator/lib/isISO8601.js';
@@ -493,5 +493,36 @@ describe('moduleTypes', () => {
 
   test('preact (esm & umd)', () => {
     expect(formatPkg(preact).moduleTypes).toEqual(['esm']);
+  });
+
+  test('silly broken package', () => {
+    expect(
+      formatPkg({
+        name: 'whoever',
+        lastPublisher: { name: 'unknown' },
+        main: [{ personalMain: 'index.mjs' }],
+      }).moduleTypes
+    ).toEqual(['unknown']);
+  });
+});
+
+describe('getMain', () => {
+  test('main === string', () => {
+    expect(getMains({ main: 'index.js' })).toEqual(['index.js']);
+  });
+
+  test('first if array', () => {
+    expect(getMains({ main: ['index.js', 'ondex.jsx'] })).toEqual([
+      'index.js',
+      'ondex.jsx',
+    ]);
+  });
+
+  test('index.js if undefined', () => {
+    expect(getMains({ main: undefined })).toEqual(['index.js']);
+  });
+
+  test('nothing if object', () => {
+    expect(getMains({ main: { something: 'cool.js' } })).toEqual([]);
   });
 });
