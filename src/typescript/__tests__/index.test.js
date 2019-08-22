@@ -3,7 +3,7 @@ import * as api from '../index.js';
 describe('loadTypesIndex()', () => {
   it('should download and cache all @types', async () => {
     expect(api.typesCache).not.toHaveProperty('algoliasearch');
-    expect(api.isDefinitelyTyped('algoliasearch')).toBe(undefined);
+    expect(api.isDefinitelyTyped({ name: 'algoliasearch' })).toBe(undefined);
 
     await api.loadTypesIndex();
     expect(api.typesCache).toHaveProperty('algoliasearch');

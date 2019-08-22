@@ -23,9 +23,9 @@ async function loadTypesIndex() {
   // m = modules associated
   // t = @types/<name>
   body.forEach(type => {
-    typesCache[type.t] = type.t;
+    typesCache[unmangle(type.t)] = type.t;
     type.m.forEach(m => {
-      typesCache[m] = type.t;
+      typesCache[unmangle(m)] = type.t;
     });
   });
 
@@ -33,7 +33,11 @@ async function loadTypesIndex() {
 }
 
 function isDefinitelyTyped({ name }) {
-  return typesCache[name];
+  return typesCache[unmangle(name)];
+}
+
+function unmangle(name) {
+  return name.replace('__', '/').replace('@', '');
 }
 
 /**
