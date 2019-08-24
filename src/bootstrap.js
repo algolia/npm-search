@@ -117,10 +117,12 @@ async function moveToProduction(stateManager, algoliaClient) {
   await stateManager.save(currentState);
 }
 
-async function logProgress(offset, nbDocs) {
-  const { nbDocs: totalDocs } = await npm.getInfo();
-
+const lastMinutes = [];
+const maxMinutes = 10;
+function logProgress(offset, nbDocs, totalDocs) {
+  // ------- Current rate
   const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);
+
   log.info(
     `[progress] %d/%d docs (%d%), current rate: %d docs/s (%s remaining)`,
     offset + nbDocs,
@@ -128,6 +130,29 @@ async function logProgress(offset, nbDocs) {
     Math.floor((Math.max(offset + nbDocs, 1) / totalDocs) * 100),
     Math.round(ratePerSecond),
     ms(((totalDocs - offset - nbDocs) / ratePerSecond) * 1000)
+  );
+
+  // ------- Last minutes
+  const thisMinute = new Date().getMinutes();
+  if (lastMinutes.length > maxMinutes) {
+    lastMinutes.shift();
+  }
+
+  const alreadyPushed = lastMinutes.findIndex(v => v[0] === thisMinute);
+  if (alreadyPushed >= 0) {
+    lastMinutes[alreadyPushed][1] += nbDocs;
+  } else {
+    lastMinutes.push([thisMinute, nbDocs]);
+  }
+  const totalLastMinutes = lastMinutes.reduce((p, v) => p + v[1], 0);
+  const ratesLastMinutes = totalLastMinutes / (lastMinutes.length * 60);
+
+  log.info(
+    `[progress] last %d minutes (%d docs): %d docs/s (%s remaining)`,
+    lastMinutes.length,
+    totalLastMinutes,
+    Math.round(ratesLastMinutes),
+    ms(((totalDocs - offset - nbDocs) / ratesLastMinutes) * 1000)
   );
 }
 
