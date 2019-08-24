@@ -1,4 +1,5 @@
 import log from './../log.js';
+import wait from './../utils/wait.js';
 
 import * as api from './index.js';
 
@@ -43,8 +44,8 @@ class PackagesFetcher {
   /**
    * Launch prefetching
    */
-  async launch({ fullPreftech = false }) {
-    const count = fullPreftech ? Math.ceil(this.max / this.limit) : 1;
+  async launch({ prefetch = true }) {
+    const count = prefetch ? Math.min(5, Math.ceil(this.max / this.limit)) : 1;
 
     log.info(`Prefetching ${count} pages of packages`);
     for (let index = 0; index < count; index++) {
@@ -124,7 +125,19 @@ class PackagesFetcher {
   /**
    * Get next batch from memory storage
    */
-  get() {
+  async get() {
+    if (this.storage.length <= 0) {
+      if (this.isFinished) {
+        return null;
+      }
+
+      while (this.storage.length <= 0 || !this.isFinished) {
+        log.warn('🥴  We process packages faster than we prefetch them');
+        await this.prefetch();
+        await wait(5000);
+      }
+    }
+
     const packages = this.storage.splice(0, this.limit);
 
     this.nextOffset += packages.length;

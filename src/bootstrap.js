@@ -4,6 +4,8 @@ import datadog from './datadog.js';
 import log from './log.js';
 import ms from 'ms';
 import * as npm from './npm/index.js';
+import PackagesFetcher from './npm/packagesFetcher.js';
+import wait from './utils/wait.js';
 import saveDocs from './saveDocs.js';
 
 let loopStart;
@@ -32,27 +34,52 @@ async function run(stateManager, algoliaClient, mainIndex, bootstrapIndex) {
   await stateManager.save({
     stage: 'bootstrap',
   });
+  const packagesFetcher = new PackagesFetcher(
+    {
+      limit: config.bootstrapConcurrency,
+      max: config.packagesPrefetchMax,
+    },
+    stateManager
+  );
 
-  const { seq, nbDocs: totalDocs } = await npm.getInfo();
+  const { seq } = await npm.getInfo();
   if (!state.bootstrapLastId) {
     // Start from 0
-    log.info('⛷   Bootstrap: starting from the first doc');
     // first time this launches, we need to remember the last seq our bootstrap can trust
     await stateManager.save({ seq });
     await algolia.putDefaultSettings(bootstrapIndex, config);
   } else {
-    log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
+    packagesFetcher.nextKey = state.bootstrapLastId;
   }
 
+  // Firsy sync packagesFetcher
+  Promise.all([
+    await packagesFetcher.syncTotalWithNPM(),
+    await packagesFetcher.syncOffset(),
+  ]);
+
   log.info('-----');
-  log.info(`Total packages   ${totalDocs}`);
+  log.info(`Total packages   ${packagesFetcher.total}`);
+  log.info(`Starting offset   ${packagesFetcher.nextOffset}`);
+  log.info(
+    '⛷   Bootstrap: starting at doc %s',
+    packagesFetcher.nextKey || '"first doc"'
+  );
   log.info('-----');
+
+  // Prefetch max before starting to have a head start
+  await packagesFetcher.launch({ fullPreftech: true });
 
   let lastProcessedId = state.bootstrapLastId;
   while (lastProcessedId !== null) {
     loopStart = Date.now();
 
-    lastProcessedId = await loop(lastProcessedId, stateManager, bootstrapIndex);
+    lastProcessedId = await loop(
+      lastProcessedId,
+      stateManager,
+      bootstrapIndex,
+      packagesFetcher
+    );
   }
 
   log.info('-----');
@@ -70,40 +97,47 @@ async function run(stateManager, algoliaClient, mainIndex, bootstrapIndex) {
  *   Fetch N packages from `lastId`, process and save them to Algolia
  * @param {string} lastId
  */
-async function loop(lastId, stateManager, bootstrapIndex) {
+async function loop(lastId, stateManager, bootstrapIndex, packagesFetcher) {
   const start = Date.now();
   log.info('loop()', '::', lastId);
 
-  const options = {
-    limit: config.bootstrapConcurrency,
-  };
-  if (lastId) {
-    options.startkey = lastId;
-    options.skip = 1;
-  }
-
-  const res = await npm.findAll(options);
-
-  if (res.rows.length <= 0) {
+  const packages = await packagesFetcher.get();
+  if (!packages) {
     // Nothing left to process
     // We return null to stop the bootstraping
+    log.info('loop done');
     return null;
   }
 
-  datadog.increment('packages', res.rows.length);
-  log.info('  - fetched', res.rows.length, 'packages');
+  packagesFetcher.prefetch();
 
-  const newLastId = res.rows[res.rows.length - 1].id;
+  const newLastId = packages[packages.length - 1].id;
+  log.info('::', newLastId);
 
-  const saved = await saveDocs({ docs: res.rows, index: bootstrapIndex });
+  datadog.increment('packages', packages.length);
+  log.info(
+    '  - fetched',
+    packages.length,
+    'packages',
+    `(${packagesFetcher.storage.length} in storage)`
+  );
+
+  const saved = await saveDocs({ docs: packages, index: bootstrapIndex });
   await stateManager.save({
     bootstrapLastId: newLastId,
   });
   log.info(`  - saved ${saved} packages`);
 
-  await logProgress(res.offset, res.rows.length);
+  await logProgress(
+    packagesFetcher.actualOffset,
+    packages.length,
+    packagesFetcher.total
+  );
 
   datadog.timing('loop', Date.now() - start);
+
+  // Be nice
+  await wait(1000);
 
   return newLastId;
 }
