@@ -1,12 +1,20 @@
 {
-  presets: [
+  "presets": [
     [
-      '@babel/env',
+      "@babel/env",
       {
-        targets: {
-          node: 'current',
-        },
-      },
-    ],
+        "targets": {
+          "node": "current"
+        }
+      }
+    ]
   ],
+  "plugins": [
+    [
+      "@babel/plugin-proposal-class-properties",
+      {
+        "loose": true
+      }
+    ]
+  ]
 }

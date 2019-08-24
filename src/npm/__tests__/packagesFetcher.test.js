@@ -1,5 +1,5 @@
-import PackagesFetcher from '../packagesFetcher';
-import wait from '../../utils/wait';
+import PackagesFetcher from '../packagesFetcher.js';
+import wait from '../../utils/wait.js';
 
 jest.setTimeout(20 * 1000);
 
@@ -26,8 +26,8 @@ describe('Prefetch: limit 1, max 1', () => {
     expect(packagesFetcher.actualOffset).toBe(0);
   });
 
-  it('should get and removed 1 package', () => {
-    const packages = packagesFetcher.get();
+  it('should get and removed 1 package', async () => {
+    const packages = await packagesFetcher.get();
 
     expect(packages).toHaveLength(1);
     expect(packagesFetcher.storage).toHaveLength(0);
@@ -58,8 +58,8 @@ describe('Prefetch: limit 5, max 20', () => {
     expect(packagesFetcher.nextOffset).toBe(0);
   });
 
-  it('should get 5 packages', () => {
-    const packages = packagesFetcher.get();
+  it('should get 5 packages', async () => {
+    const packages = await packagesFetcher.get();
 
     expect(packages).toHaveLength(5);
     expect(packagesFetcher.actualOffset).toBe(0);
