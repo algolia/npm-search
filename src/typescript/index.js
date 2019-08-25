@@ -24,9 +24,6 @@ async function loadTypesIndex() {
   // t = @types/<name>
   body.forEach(type => {
     typesCache[unmangle(type.t)] = type.t;
-    type.m.forEach(m => {
-      typesCache[unmangle(m)] = type.t;
-    });
   });
 
   datadog.timing('typescript.loadTypesIndex', Date.now() - start);
