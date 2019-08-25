@@ -6,7 +6,6 @@ import datadog from './datadog.js';
 import * as jsDelivr from './jsDelivr/index.js';
 import * as typescript from './typescript/index.js';
 import * as sentry from './utils/sentry.js';
-// import PackagesFetcher from './npm/packagesFetcher.js';
 
 import * as bootstrap from './bootstrap.js';
 import * as watch from './watch.js';
@@ -43,7 +42,6 @@ async function main() {
 
   // then we figure out which updates we missed since
   // the last time main index was updated
-
   log.info('🚀  Launching Watch');
   await watch.run(stateManager, mainIndex);
 }
