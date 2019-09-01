@@ -48,7 +48,7 @@
     "nano": "8.1.0",
     "nice-package": "3.1.0",
     "numeral": "2.0.6",
-    "object-sizeof": "1.4.0",
+    "object-sizeof": "1.5.1",
     "promise-rat-race": "1.5.1",
     "traverse": "0.6.6",
     "truncate-utf8-bytes": "1.0.2"
