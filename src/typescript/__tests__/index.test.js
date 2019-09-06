@@ -7,10 +7,10 @@ describe('loadTypesIndex()', () => {
 
     await api.loadTypesIndex();
     expect(api.typesCache).toHaveProperty('algoliasearch');
-    expect(api.typesCache).toHaveProperty('algoliasearch/lite');
+    expect(api.typesCache).not.toHaveProperty('algoliasearch/lite');
 
     expect(api.typesCache.algoliasearch).toBe('algoliasearch');
-    expect(api.typesCache['algoliasearch/lite']).toBe('algoliasearch');
+    expect(api.typesCache['algoliasearch/lite']).toBe(undefined);
     expect(api.typesCache.doesnotexist).toBe(undefined);
 
     expect(api.isDefinitelyTyped({ name: 'algoliasearch' })).toBe(
