@@ -77,7 +77,8 @@
     "validator": "11.1.0"
   },
   "engines": {
-    "node": "12"
+    "node": "12",
+    "yarn": "1.18.0"
   },
   "jest": {
     "testEnvironment": "node",
