@@ -73,7 +73,7 @@
     "lint-staged": "9.4.2",
     "pre-commit": "1.2.2",
     "prettier": "1.18.2",
-    "renovate-config-algolia": "2.0.2",
+    "renovate-config-algolia": "2.1.2",
     "validator": "11.1.0"
   },
   "engines": {
