@@ -18,7 +18,7 @@ export async function fileExistsInUnpkg(pkg, version, path) {
 
 export async function gotUnpkg(pkg, version, path) {
   const uri = `${config.unpkgRoot}/${pkg}@${version}/${path}`;
-  return got(uri, {
+  return await got(uri, {
     method: 'HEAD',
   });
 }

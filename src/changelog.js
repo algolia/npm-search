@@ -2,7 +2,7 @@ import got from 'got';
 import race from 'promise-rat-race';
 
 import datadog from './datadog.js';
-import { gotUnpkg } from './unpkg';
+import { gotUnpkg } from './unpkg.js';
 
 export const baseUrlMap = new Map([
   [
