@@ -73,11 +73,8 @@ async function getChangelog({ repository, name, version }) {
 
   try {
     const { url } = await race([
-      ...files.map(
-        got,
-        { method: 'HEAD' },
-        ...fileOptions.map(file => gotUnpkg(name, version, file))
-      ),
+      ...files.map(got, { method: 'HEAD' }),
+      ...fileOptions.map(file => gotUnpkg(name, version, file)),
     ]);
     return { changelogFilename: url };
   } catch (e) {
