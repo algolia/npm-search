@@ -2,6 +2,7 @@ import got from 'got';
 import race from 'promise-rat-race';
 
 import datadog from './datadog.js';
+import { gotUnpkg } from './unpkg';
 
 export const baseUrlMap = new Map([
   [
@@ -27,7 +28,7 @@ export const baseUrlMap = new Map([
   ],
 ]);
 
-async function getChangelog({ repository }) {
+async function getChangelog({ repository, name, version }) {
   if (repository === null) {
     return { changelogFilename: null };
   }
@@ -46,7 +47,7 @@ async function getChangelog({ repository }) {
 
   const baseUrl = baseUrlMap.get(host)(repository);
 
-  const files = [
+  const fileOptions = [
     'CHANGELOG.md',
     'ChangeLog.md',
     'changelog.md',
@@ -64,10 +65,20 @@ async function getChangelog({ repository }) {
     'history.md',
     'HISTORY',
     'history',
-  ].map(file => [baseUrl.replace(/\/$/, ''), file].join('/'));
+  ];
+
+  const files = fileOptions.map(file =>
+    [baseUrl.replace(/\/$/, ''), file].join('/')
+  );
 
   try {
-    const { url } = await race(files.map(got, { method: 'HEAD' }));
+    const { url } = await race([
+      ...files.map(
+        got,
+        { method: 'HEAD' },
+        ...fileOptions.map(file => gotUnpkg(name, version, file))
+      ),
+    ]);
     return { changelogFilename: url };
   } catch (e) {
     return { changelogFilename: null };
