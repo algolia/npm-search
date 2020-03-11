@@ -28,11 +28,26 @@ export const baseUrlMap = new Map([
   ],
 ]);
 
+async function handledGot(file) {
+  const result = await got(file, { method: 'HEAD' });
+
+  if (
+    // bitbucket returns 200 for private repos
+    // github returns a 404
+    // I am unsure what gitlab does
+    result.redirectUrls.find(res =>
+      res.startsWith('https://bitbucket.org/account/signin')
+    )
+  ) {
+    throw new Error('Redirect leads to login page');
+  } else {
+    return result;
+  }
+}
+
 async function raceFromPaths(files) {
   try {
-    const { url } = await race(
-      files.map(file => got(file, { method: 'HEAD' }))
-    );
+    const { url } = await race(files.map(file => handledGot(file)));
     return { changelogFilename: url };
   } catch (e) {
     return { changelogFilename: null };
