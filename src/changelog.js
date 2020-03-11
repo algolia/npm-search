@@ -30,7 +30,9 @@ export const baseUrlMap = new Map([
 
 async function raceFromPaths(files) {
   try {
-    const { url } = await race(files.map(got, { method: 'HEAD' }));
+    const { url } = await race(
+      files.map(file => got(file, { method: 'HEAD' }))
+    );
     return { changelogFilename: url };
   } catch (e) {
     return { changelogFilename: null };
