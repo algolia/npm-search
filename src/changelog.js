@@ -2,6 +2,7 @@ import got from 'got';
 import race from 'promise-rat-race';
 
 import datadog from './datadog.js';
+import config from './config.js';
 
 export const baseUrlMap = new Map([
   [
@@ -27,26 +28,17 @@ export const baseUrlMap = new Map([
   ],
 ]);
 
-async function getChangelog({ repository }) {
-  if (repository === null) {
+async function raceFromPaths(files) {
+  try {
+    const { url } = await race(files.map(got, { method: 'HEAD' }));
+    return { changelogFilename: url };
+  } catch (e) {
     return { changelogFilename: null };
   }
+}
 
-  const user = repository.user || '';
-  const project = repository.project || '';
-  const host = repository.host || '';
-  if (user.length < 1 || project.length < 1) {
-    return { changelogFilename: null };
-  }
-
-  // Check if we know how to handle this host
-  if (!baseUrlMap.has(host)) {
-    return { changelogFilename: null };
-  }
-
-  const baseUrl = baseUrlMap.get(host)(repository);
-
-  const files = [
+function getChangelog({ repository, name, version }) {
+  const fileOptions = [
     'CHANGELOG.md',
     'ChangeLog.md',
     'changelog.md',
@@ -64,14 +56,35 @@ async function getChangelog({ repository }) {
     'history.md',
     'HISTORY',
     'history',
-  ].map(file => [baseUrl.replace(/\/$/, ''), file].join('/'));
+  ];
 
-  try {
-    const { url } = await race(files.map(got, { method: 'HEAD' }));
-    return { changelogFilename: url };
-  } catch (e) {
-    return { changelogFilename: null };
+  const unpkgFiles = fileOptions.map(
+    file => `${config.unpkgRoot}/${name}@${version}/${file}`
+  );
+
+  if (repository === null) {
+    return raceFromPaths(unpkgFiles);
   }
+
+  const user = repository.user || '';
+  const project = repository.project || '';
+  const host = repository.host || '';
+  if (user.length < 1 || project.length < 1) {
+    return raceFromPaths(unpkgFiles);
+  }
+
+  // Check if we know how to handle this host
+  if (!baseUrlMap.has(host)) {
+    return raceFromPaths(unpkgFiles);
+  }
+
+  const baseUrl = baseUrlMap.get(host)(repository);
+
+  const files = fileOptions.map(file =>
+    [baseUrl.replace(/\/$/, ''), file].join('/')
+  );
+
+  return raceFromPaths([...files, ...unpkgFiles]);
 }
 
 export async function getChangelogs(pkgs) {

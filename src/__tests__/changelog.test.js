@@ -6,10 +6,13 @@ jest.mock('got', () => {
     'https://raw.githubusercontent.com/visionmedia/debug/master/CHANGELOG.md',
     'https://bitbucket.org/atlassian/aui/raw/master/changelog.md',
     'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md',
+    'https://unpkg.com/@atlaskit/button@13.3.7/CHANGELOG.md',
   ]);
 
   return url =>
-    gotSnapshotUrls.has(url) ? Promise.resolve({ url }) : Promise.reject(); // eslint-disable-line prefer-promise-reject-errors
+    gotSnapshotUrls.has(url)
+      ? Promise.resolve({ url })
+      : Promise.reject(`got mock does not exist for ${url}`); // eslint-disable-line prefer-promise-reject-errors
 });
 
 describe('should test baseUrlMap', () => {
@@ -105,6 +108,20 @@ it('should get changelog for github', async () => {
   const [{ changelogFilename }] = await getChangelogs([pkg]);
   expect(changelogFilename).toBe(
     'https://raw.githubusercontent.com/visionmedia/debug/master/CHANGELOG.md'
+  );
+});
+
+it('should get changelog from unpkg if there is no repository field', async () => {
+  const pkg = {
+    name: '@atlaskit/button',
+    version: '13.3.7',
+    repository: null,
+  };
+
+  const [{ changelogFilename }] = await getChangelogs([pkg]);
+
+  expect(changelogFilename).toBe(
+    'https://unpkg.com/@atlaskit/button@13.3.7/CHANGELOG.md'
   );
 });
 
