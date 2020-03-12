@@ -35,6 +35,8 @@ async function handledGot(file) {
     // bitbucket returns 200 for private repos
     // github returns a 404
     // I am unsure what gitlab does
+    result &&
+    result.redirectUrls &&
     result.redirectUrls.find(res =>
       res.startsWith('https://bitbucket.org/account/signin')
     )
