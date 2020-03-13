@@ -11,7 +11,7 @@ jest.mock('got', () => {
 
   return url =>
     gotSnapshotUrls.has(url)
-      ? Promise.resolve({ url })
+      ? Promise.resolve({ url, redirectUrls: [] })
       : Promise.reject(`got mock does not exist for ${url}`); // eslint-disable-line prefer-promise-reject-errors
 });
 
