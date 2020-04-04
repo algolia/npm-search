@@ -6282,9 +6282,10 @@ neo-async@^2.6.0:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
-nice-package@3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/nice-package/-/nice-package-3.1.0.tgz#9653cc1d9994e55544f67b10fcf50c5775614774"
+nice-package@3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/nice-package/-/nice-package-3.1.2.tgz#fdd25c544a4e6a1668e11004ac594b166f327fb0"
+  integrity sha512-EEOJ4Yd0kVZdKGCBhKzShGsgVCor4Y8E3DcDwhpgW0OmE1L66nMZb3qOE6/OhF04S3Cy508bctUGcp0D9qzV+A==
   dependencies:
     github-url-to-object "^4.0.4"
     lodash "^4.17.2"
