@@ -30,10 +30,10 @@ it('keeps .bin intact', () => {
   );
   const formatted = formatPkg(createInstantSearchApp);
   expect(formatted.bin).toMatchInlineSnapshot(`
-        Object {
-          "create-instantsearch-app": "src/cli/index.js",
-        }
-    `);
+  Object {
+    "create-instantsearch-app": "src/cli/index.js",
+  }
+  `);
 });
 
 it('truncates long readmes', () => {
@@ -390,6 +390,7 @@ describe('alternative names', () => {
       Array [
         "places",
         "places.js",
+        "placesjs",
       ]
     `);
   });
@@ -408,6 +409,20 @@ describe('alternative names', () => {
               "places.js",
             ]
         `);
+  });
+
+  test('name ending in js', () => {
+    const original = {
+      name: 'prismjs',
+      lastPublisher: { name: 'unknown' },
+    };
+    expect(formatPkg(original)._searchInternal.alternativeNames)
+      .toMatchInlineSnapshot(`
+      Array [
+        "prismjs",
+        "prism",
+      ]
+    `);
   });
 
   test('scoped package', () => {
@@ -437,6 +452,7 @@ describe('alternative names', () => {
         "thisisadumbname",
         "this is a dumb name",
         "this-is_a-dumb-name.js",
+        "this-is_a-dumb-namejs",
         "this-is_a-dumb-name",
       ]
     `);

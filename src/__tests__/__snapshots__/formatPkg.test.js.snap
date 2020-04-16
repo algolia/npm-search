@@ -7,6 +7,7 @@ Object {
       "atlaskitinput",
       " atlaskit input",
       "@atlaskit/input.js",
+      "@atlaskit/inputjs",
       "@atlaskit/input",
     ],
   },
@@ -202,6 +203,7 @@ Object {
       "atomicpackagetab",
       " atomic package tab",
       "@atomic-package/tab.js",
+      "@atomic-package/tabjs",
       "@atomic-package/tab",
     ],
   },
@@ -318,6 +320,7 @@ Object {
       "createinstantsearchapp",
       "create instantsearch app",
       "create-instantsearch-app.js",
+      "create-instantsearch-appjs",
       "create-instantsearch-app",
     ],
   },
@@ -438,6 +441,7 @@ Object {
     "alternativeNames": Array [
       "indexof",
       "indexof.js",
+      "indexofjs",
     ],
   },
   "bin": undefined,
@@ -521,7 +525,7 @@ Object {
   "_searchInternal": Object {
     "alternativeNames": Array [
       "prismjs",
-      "prismjs.js",
+      "prism",
     ],
   },
   "bin": undefined,
@@ -719,6 +723,7 @@ Object {
       "longboy",
       "long boy",
       "long-boy.js",
+      "long-boyjs",
       "long-boy",
     ],
   },

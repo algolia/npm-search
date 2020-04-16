@@ -425,16 +425,29 @@ function getTypes(pkg) {
  * @param {string} name
  */
 function getAlternativeNames(name) {
-  const concatenatedName = name.replace(/[-/@_.]+/g, '');
-  const splitName = name.replace(/[-/@_.]+/g, ' ');
-  const dotJSName = name.endsWith('.js')
-    ? name.substring(0, name.length - 3)
-    : `${name}.js`;
-  const normalName = name;
+  const alternativeNames = new Set();
 
-  return Array.from(
-    new Set([concatenatedName, splitName, dotJSName, normalName])
-  );
+  const concatenatedName = name.replace(/[-/@_.]+/g, '');
+  alternativeNames.add(concatenatedName);
+
+  const splitName = name.replace(/[-/@_.]+/g, ' ');
+  alternativeNames.add(splitName);
+
+  const isDotJs = name.endsWith('.js');
+  const isJsSuffix = name.match(/\.?js$/);
+
+  if (isDotJs) {
+    alternativeNames.add(name.substring(0, name.length - 3));
+  } else if (isJsSuffix) {
+    alternativeNames.add(name.substring(0, name.length - 2));
+  } else {
+    alternativeNames.add(`${name}.js`);
+    alternativeNames.add(`${name}js`);
+  }
+
+  alternativeNames.add(name);
+
+  return Array.from(alternativeNames);
 }
 
 export function getMains(pkg) {
