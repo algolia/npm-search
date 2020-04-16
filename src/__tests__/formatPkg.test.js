@@ -1,4 +1,8 @@
-import formatPkg, { getRepositoryInfo, getMains } from '../formatPkg.js';
+import formatPkg, {
+  getRepositoryInfo,
+  getMains,
+  getVersions,
+} from '../formatPkg.js';
 import rawPackages from './rawPackages.json';
 import preact from './preact-simplified.json';
 import isISO8601 from 'validator/lib/isISO8601.js';
@@ -532,5 +536,78 @@ describe('getMain', () => {
 
   test('nothing if object', () => {
     expect(getMains({ main: { something: 'cool.js' } })).toEqual([]);
+  });
+});
+
+describe('getVersions', () => {
+  test("renames 'time' to versions", () => {
+    expect(
+      getVersions(
+        {
+          other: {
+            time: {
+              '1.2.3': '2020-04-04T01:04:57.069Z',
+            },
+          },
+        },
+        {
+          versions: {
+            '1.2.3': {},
+          },
+        }
+      )
+    ).toEqual({
+      '1.2.3': '2020-04-04T01:04:57.069Z',
+    });
+  });
+
+  test("removes the 'created' and 'modified' keys", () => {
+    expect(
+      getVersions(
+        {
+          other: {
+            time: {
+              created: '2020-04-04T01:04:57.069Z',
+              modified: '2030-04-04T01:04:57.069Z',
+              '1.2.3': '2020-04-04T01:04:57.069Z',
+            },
+          },
+        },
+        {
+          versions: {
+            '1.2.3': {},
+          },
+        }
+      )
+    ).toEqual({
+      '1.2.3': '2020-04-04T01:04:57.069Z',
+    });
+  });
+
+  test("removes versions which don't exist in 'versions'", () => {
+    expect(
+      getVersions(
+        {
+          other: {
+            time: {
+              created: '2020-04-04T01:04:57.069Z',
+              modified: '2030-04-04T01:04:57.069Z',
+              '9000.10000.5': '3020-04-04T01:04:57.069Z',
+              '1.2.3': '2020-04-04T01:04:57.069Z',
+              '2.3.4': '2020-04-04T01:04:57.069Z',
+            },
+          },
+        },
+        {
+          versions: {
+            '1.2.3': {},
+            '2.3.4': {},
+          },
+        }
+      )
+    ).toEqual({
+      '1.2.3': '2020-04-04T01:04:57.069Z',
+      '2.3.4': '2020-04-04T01:04:57.069Z',
+    });
   });
 });

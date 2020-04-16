@@ -2012,5 +2012,1921 @@
     "license": "MIT",
     "readmeFilename": "README.md",
     "keywords": ["algolia", "instantsearch"]
+  },
+  {
+    "_id": "prismjs",
+    "_rev": "62-2cd76400df3f44e99f75de7755567a62",
+    "name": "prismjs",
+    "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+    "dist-tags": { "latest": "1.20.0" },
+    "versions": {
+      "0.0.1": {
+        "name": "prismjs",
+        "version": "0.0.1",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": { "test": "echo \"Error: no test specified\" && exit 1" },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "devDependencies": {
+          "del": "^1.1.1",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "highland": "^2.5.0",
+          "npm": "^2.9.1",
+          "vinyl": "^0.4.6",
+          "yargs": "^3.9.0"
+        },
+        "gitHead": "01bf05273e340c209114bc285d486574942762e7",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "_id": "prismjs@0.0.1",
+        "_shasum": "0fd50f4baf26e5cd33523b65bac2f0bc90f5503f",
+        "_from": ".",
+        "_npmVersion": "2.9.1",
+        "_nodeVersion": "0.12.2",
+        "_npmUser": { "name": "charleshansen", "email": "chansen87@gmail.com" },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" }
+        ],
+        "dist": {
+          "shasum": "0fd50f4baf26e5cd33523b65bac2f0bc90f5503f",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-0.0.1.tgz"
+        },
+        "directories": {}
+      },
+      "1.1.0": {
+        "name": "prismjs",
+        "version": "1.1.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5"
+        },
+        "gitHead": "bd275c29f4f8570f1d31b104048b382d3716a460",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism",
+        "_id": "prismjs@1.1.0",
+        "_shasum": "40bd1e90524f4193de2146718addb3b4321f248a",
+        "_from": ".",
+        "_npmVersion": "2.14.4",
+        "_nodeVersion": "4.1.2",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "40bd1e90524f4193de2146718addb3b4321f248a",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.1.0.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "directories": {}
+      },
+      "1.2.0": {
+        "name": "prismjs",
+        "version": "1.2.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "gitHead": "0924b070349284d8a705ad9ff2c70fbdb43e76bf",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism",
+        "_id": "prismjs@1.2.0",
+        "_shasum": "a1996155c0a6464ccbc0f5f29848099c43f0254c",
+        "_from": ".",
+        "_npmVersion": "2.14.4",
+        "_nodeVersion": "4.1.2",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "a1996155c0a6464ccbc0f5f29848099c43f0254c",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.2.0.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "directories": {}
+      },
+      "1.3.0": {
+        "name": "prismjs",
+        "version": "1.3.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "gitHead": "ad97b23be583f01e84ec5f17197d2c2b109ca7d0",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism",
+        "_id": "prismjs@1.3.0",
+        "_shasum": "fb23e5935de898487c034c1431bd0e5c1c09ff31",
+        "_from": ".",
+        "_npmVersion": "2.14.4",
+        "_nodeVersion": "4.1.2",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "fb23e5935de898487c034c1431bd0e5c1c09ff31",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.3.0.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "directories": {}
+      },
+      "1.4.1": {
+        "name": "prismjs",
+        "version": "1.4.1",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "gitHead": "97b0eb5a1a74760c5c0f37f82116679b33876634",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism",
+        "_id": "prismjs@1.4.1",
+        "_shasum": "b82a10374f33bea58b355c6029e7e257ca05134a",
+        "_from": ".",
+        "_npmVersion": "2.14.4",
+        "_nodeVersion": "4.1.2",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "b82a10374f33bea58b355c6029e7e257ca05134a",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.4.1.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-6-west.internal.npmjs.com",
+          "tmp": "tmp/prismjs-1.4.1.tgz_1454641328022_0.8259190910030156"
+        },
+        "directories": {}
+      },
+      "1.5.0": {
+        "name": "prismjs",
+        "version": "1.5.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "e45fd2ebd2378974e2a12c51ac3ff069bfd0fa81",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism",
+        "_id": "prismjs@1.5.0",
+        "_shasum": "3628e57b904641bed9c2e6d612a99f475cc909d8",
+        "_from": ".",
+        "_npmVersion": "2.14.4",
+        "_nodeVersion": "4.1.2",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "3628e57b904641bed9c2e6d612a99f475cc909d8",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.5.0.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-12-west.internal.npmjs.com",
+          "tmp": "tmp/prismjs-1.5.0.tgz_1463426853654_0.8657776003237814"
+        },
+        "directories": {}
+      },
+      "1.5.1": {
+        "name": "prismjs",
+        "version": "1.5.1",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "4a44f01606dbc88ac49accce9cd0cd7cb2fe213d",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism",
+        "_id": "prismjs@1.5.1",
+        "_shasum": "224990100ff6c2a7588d086be1a5ac62e83690f7",
+        "_from": ".",
+        "_npmVersion": "2.14.4",
+        "_nodeVersion": "4.1.2",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "224990100ff6c2a7588d086be1a5ac62e83690f7",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.5.1.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-16-east.internal.npmjs.com",
+          "tmp": "tmp/prismjs-1.5.1.tgz_1465263907507_0.2326038903556764"
+        },
+        "directories": {}
+      },
+      "1.6.0": {
+        "name": "prismjs",
+        "version": "1.6.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^1.5.5" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "4fa29a9fb9dbad25c5fc97f0e551206a5bde79c6",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^1.5.5" },
+        "_id": "prismjs@1.6.0",
+        "_shasum": "118d95fb7a66dba2272e343b345f5236659db365",
+        "_from": ".",
+        "_npmVersion": "3.8.6",
+        "_nodeVersion": "5.12.0",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "118d95fb7a66dba2272e343b345f5236659db365",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.6.0.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "packages-18-east.internal.npmjs.com",
+          "tmp": "tmp/prismjs-1.6.0.tgz_1480950906377_0.05615798500366509"
+        },
+        "directories": {}
+      },
+      "1.7.0": {
+        "name": "prismjs",
+        "version": "1.7.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^1.5.5" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "43fcb680fa0b6c37dd8f69b67f2dc8fcaccd5af6",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^1.5.5" },
+        "_id": "prismjs@1.7.0",
+        "_shasum": "6c03898d388762f460cb06d2773c7f4e6d2cd614",
+        "_from": ".",
+        "_npmVersion": "2.15.1",
+        "_nodeVersion": "0.10.48",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "6c03898d388762f460cb06d2773c7f4e6d2cd614",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.7.0.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs-1.7.0.tgz_1504963072008_0.08508550166152418"
+        },
+        "directories": {}
+      },
+      "1.8.0": {
+        "name": "prismjs",
+        "version": "1.8.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^1.5.5" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "e612e5d731e85a1dda9c5161bc13e5ddb51130db",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^1.5.5" },
+        "_id": "prismjs@1.8.0",
+        "_shasum": "f6b6c5765d3a501c534c81323355a791ee7c195a",
+        "_from": ".",
+        "_npmVersion": "2.15.1",
+        "_nodeVersion": "0.10.48",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "f6b6c5765d3a501c534c81323355a791ee7c195a",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.8.0.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs-1.8.0.tgz_1505561189214_0.21168334409594536"
+        },
+        "directories": {}
+      },
+      "1.8.1": {
+        "name": "prismjs",
+        "version": "1.8.1",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^1.5.5" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "e76cd720fd1315153e54a686ed464a8b9ee34dc8",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^1.5.5" },
+        "_id": "prismjs@1.8.1",
+        "_shasum": "bd0cdc32e9a561c1c8c3c9733765a7f1ec3b54ee",
+        "_from": ".",
+        "_npmVersion": "2.15.1",
+        "_nodeVersion": "0.10.48",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "bd0cdc32e9a561c1c8c3c9733765a7f1ec3b54ee",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.8.1.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs-1.8.1.tgz_1505561741092_0.8185109372716397"
+        },
+        "directories": {}
+      },
+      "1.8.3": {
+        "name": "prismjs",
+        "version": "1.8.3",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^1.5.5" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "f6f9cdaf3e80cd14c5d4954473116a153c641a0c",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^1.5.5" },
+        "_id": "prismjs@1.8.3",
+        "_shasum": "4a3d140be5f2614a8987ca2330733a40d8ad207b",
+        "_from": ".",
+        "_npmVersion": "2.15.1",
+        "_nodeVersion": "0.10.48",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "4a3d140be5f2614a8987ca2330733a40d8ad207b",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.8.3.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs-1.8.3.tgz_1508443187566_0.5627992148511112"
+        },
+        "directories": {}
+      },
+      "1.8.4": {
+        "name": "prismjs",
+        "version": "1.8.4",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^1.5.5" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "7741755a85f52e0d84ee88dfe91d755a4e21cd6f",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^1.5.5" },
+        "_id": "prismjs@1.8.4",
+        "_shasum": "573cc7a14c2c06566e1eca20d813f5ae55db80d2",
+        "_from": ".",
+        "_npmVersion": "2.15.1",
+        "_nodeVersion": "0.10.48",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "573cc7a14c2c06566e1eca20d813f5ae55db80d2",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.8.4.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs-1.8.4.tgz_1509899949169_0.13410851662047207"
+        },
+        "directories": {}
+      },
+      "1.9.0": {
+        "name": "prismjs",
+        "version": "1.9.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^1.7.1" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "a2f60f07d169398da7d60338c0771bb58815fa84",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^1.7.1" },
+        "_id": "prismjs@1.9.0",
+        "_shasum": "fa3e2d9edc3c3887c1f1f3095d41f1f9b4200f0f",
+        "_from": ".",
+        "_npmVersion": "2.15.1",
+        "_nodeVersion": "0.10.48",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "fa3e2d9edc3c3887c1f1f3095d41f1f9b4200f0f",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.9.0.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs-1.9.0.tgz_1512517972938_0.46528697619214654"
+        },
+        "directories": {}
+      },
+      "1.10.0": {
+        "name": "prismjs",
+        "version": "1.10.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^1.7.1" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "1e5bcf7cc05bc0eaa34caa43d122686b8faf1fce",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^1.7.1" },
+        "_id": "prismjs@1.10.0",
+        "_shasum": "77e5187c2ae6b3253fcc313029cf25fe53778721",
+        "_from": ".",
+        "_npmVersion": "2.15.1",
+        "_nodeVersion": "0.10.48",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "77e5187c2ae6b3253fcc313029cf25fe53778721",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.10.0.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs-1.10.0.tgz_1516229889768_0.04717290494590998"
+        },
+        "directories": {}
+      },
+      "1.11.0": {
+        "name": "prismjs",
+        "version": "1.11.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^1.7.1" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "11f55176a701a60e0da781a2774ca4ef7402814c",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^1.7.1" },
+        "_id": "prismjs@1.11.0",
+        "_shasum": "297aef33eb79421bfdb19273a5092ca515970d29",
+        "_from": ".",
+        "_npmVersion": "2.15.1",
+        "_nodeVersion": "0.10.48",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "297aef33eb79421bfdb19273a5092ca515970d29",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.11.0.tgz"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" }
+        ],
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs-1.11.0.tgz_1517817819174_0.9309438713826239"
+        },
+        "directories": {}
+      },
+      "1.12.0": {
+        "name": "prismjs",
+        "version": "1.12.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "92ffeb236237221197ed3dcf08d937d7a2de7e40",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.12.0",
+        "_shasum": "5edbc56096789c9d11b7e16cc84e8c8d4fc85613",
+        "_from": ".",
+        "_npmVersion": "2.15.1",
+        "_nodeVersion": "0.10.48",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "shasum": "5edbc56096789c9d11b7e16cc84e8c8d4fc85613",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.12.0.tgz",
+          "fileCount": 1342,
+          "unpackedSize": 2210886
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" }
+        ],
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.12.0_1520455662772_0.35744213807101444"
+        },
+        "_hasShrinkwrap": false
+      },
+      "1.12.2": {
+        "name": "prismjs",
+        "version": "1.12.2",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "bc2b70f82a1d293e998771d6b51ddcf55649672f",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.12.2",
+        "_npmVersion": "5.6.0",
+        "_nodeVersion": "8.10.0",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "integrity": "sha512-en/99X4LLNXDMn8+nCP3Yb1gYmL3z6lQ9jBkZVhWzS0pRLEyakcL17nOjJPer/AoSpA51zdcydbfo++oLwQ5Ug==",
+          "shasum": "a40a6cd5bf36716e316cb75df91976a7d5d694e6",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.12.2.tgz",
+          "fileCount": 1344,
+          "unpackedSize": 2214941
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" }
+        ],
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.12.2_1520549294791_0.6930916911149951"
+        },
+        "_hasShrinkwrap": false
+      },
+      "1.13.0": {
+        "name": "prismjs",
+        "version": "1.13.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.min.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "595d173837f6cbe4be0051cc4914e8aaa8256fe3",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.13.0",
+        "_npmVersion": "5.6.0",
+        "_nodeVersion": "8.10.0",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "integrity": "sha512-0/1Fiyg3MCzepo6t6Wzx2Ef4nftGKeQIv+Z6LO38RcYJN5QV2ePHh8W41ZkFn57B++6BnglF6fCiJ9b80YlzkQ==",
+          "shasum": "edcc14a90bbd72a03e5ffd2bab81a04c79a607a6",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.13.0.tgz",
+          "fileCount": 349,
+          "unpackedSize": 887208
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" }
+        ],
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.13.0_1521617599615_0.07787033375668906"
+        },
+        "_hasShrinkwrap": false
+      },
+      "1.14.0": {
+        "name": "prismjs",
+        "version": "1.14.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "435eb2e6cd94948627b044255aab7605235bdfa5",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.14.0",
+        "_npmVersion": "5.6.0",
+        "_nodeVersion": "9.11.1",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "integrity": "sha512-sa2s4m60bXs+kU3jcuUwx3ZCrUH7o0kuqnOOINbODqlRrDB7KY8SRx+xR/D7nHLlgfDdG7zXbRO8wJ+su5Ls0A==",
+          "shasum": "bbccfdb8be5d850d26453933cb50122ca0362ae0",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.14.0.tgz",
+          "fileCount": 363,
+          "unpackedSize": 918878
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" }
+        ],
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.14.0_1523430457145_0.06448815343771908"
+        },
+        "_hasShrinkwrap": false
+      },
+      "1.15.0": {
+        "name": "prismjs",
+        "version": "1.15.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test": "mocha tests/testrunner-tests.js && mocha tests/run.js"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^2.3.0",
+          "gulp": "^3.8.6",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^1.0.5",
+          "gulp-rename": "^1.2.0",
+          "gulp-uglify": "^0.3.1",
+          "gulp-replace": "^0.5.4",
+          "mocha": "^2.2.5",
+          "yargs": "^3.26.0"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "7d084d5f17fa40d3451d46cac605308382c9c499",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.15.0",
+        "_npmVersion": "5.6.0",
+        "_nodeVersion": "8.11.3",
+        "_npmUser": { "name": "leaverou", "email": "lea@verou.me" },
+        "dist": {
+          "integrity": "sha512-Lf2JrFYx8FanHrjoV5oL8YHCclLQgbJcVZR+gikGGMqz6ub5QVWDTM6YIwm3BuPxM/LOV+rKns3LssXNLIf+DA==",
+          "shasum": "8801d332e472091ba8def94976c8877ad60398d9",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.15.0.tgz",
+          "fileCount": 369,
+          "unpackedSize": 942622,
+          "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJbJb7YCRA9TVsSAnZWagAANrQQAIrKH/nsU7kJo6xv2eml\n35gvhl2iQhWNsFoVQWrPFO5sEM+AW7ycG1IAV3EydaupzdsiTe5MAWy7o9TV\nAV8iiqoIvGuHP0tXxjlR91bW+JIc/7u2SBmBEdutt5peU+p2R4KBj/UwAqzj\nE0SHO4GWgEusvGs5UCSZc5dmdSUTl0T5RxqWLgGvqTM9+1oMpCRVclPuPQBm\nHciBuMQdTWLJ50cTvctAwN5q5OG2NsA+Em0yRO9duE/xiM954IyMx6UCsb2Q\nZJFL2lumtp9x08oFNTeOK1duxQ4MPTAIbmWxxrNgq/HYMf6Vop6fzxWskZl/\nbV32l82WZNvwWeXbKyQi4R/fiqJJcJIoMJGJRyEVt7wRyOYO8XegWJfHrMq2\nF5w+M0lt/RQCmKHTQwzSmm1R+j/QzmUmLdqTc+k6Maz84X4sfox6w1smBkP2\nxzA1yMRDPCQf/Mn/m5INs1QUErxT/83487PP7ZORXquQlCfE3yB6Km2hfrhE\nSZ5W18bQzn+XU0yYGELRt2lCBCcjcTSlYLeP14tYve+OBbE8RXUhjIz/rfai\nWpSU8xJQiH/+GoPPmzTLhnsDMiyaBGGNuufNc3GyOH/dqQsi+564wf+YiH6+\nE18BHpjJ+f9b9oyTFyIPdTGFOLx+cYqPyp8jgIHSbK68HM7IMC6P4MJTjX5Q\njbfo\r\n=Igtx\r\n-----END PGP SIGNATURE-----\r\n"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" }
+        ],
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.15.0_1529200342999_0.3340824625299048"
+        },
+        "_hasShrinkwrap": false
+      },
+      "1.16.0": {
+        "name": "prismjs",
+        "version": "1.16.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test:aliases": "mocha tests/aliases-test.js",
+          "test:languages": "mocha tests/run.js",
+          "test:plugins": "mocha tests/plugins/**/*.js",
+          "test:runner": "mocha tests/testrunner-tests.js",
+          "test": "npm run test:runner && npm run test:languages && npm run test:plugins && npm run test:aliases"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^4.2.0",
+          "gulp": "^4.0.0",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^2.0.7",
+          "gulp-rename": "^1.2.0",
+          "gulp-replace": "^1.0.0",
+          "gulp-uglify": "^3.0.1",
+          "jsdom": "^13.0.0",
+          "mocha": "^6.0.0",
+          "pump": "^3.0.0",
+          "shelljs": "^0.8.3",
+          "simple-git": "^1.107.0",
+          "yargs": "^13.2.2"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "886698d5b759ef46162a5723a2493f97c689dc94",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.16.0",
+        "_npmVersion": "6.1.0",
+        "_nodeVersion": "11.6.0",
+        "_npmUser": {
+          "name": "jamesdigioia",
+          "email": "jamesorodig@gmail.com"
+        },
+        "dist": {
+          "integrity": "sha512-OA4MKxjFZHSvZcisLGe14THYsug/nF6O1f0pAJc0KN0wTyAcLqmsbE+lTGKSpyh+9pEW57+k6pg2AfYR+coyHA==",
+          "shasum": "406eb2c8aacb0f5f0f1167930cb83835d10a4308",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.16.0.tgz",
+          "fileCount": 423,
+          "unpackedSize": 1086950,
+          "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJcmL1lCRA9TVsSAnZWagAAMogP/011mAPEFDx9MAQP0EYr\nZWw15kc2BgqpqrJ1tnE/+vdg9PSPUOqMgaAy+WMH36D3o6Q3ZwbmQ392bxHQ\nddy+JNB4UZYtEoD/beuPkm9xgCi3Wn1Jgi/rH9R0S6TQLNyMWsBgd0+K5yot\n+zNi9jdmT/mRKjrErLzJo1NidDIpTmL97hVGBpujTd2nNwcOMxfLqDz/da/+\nTD3xSIx0PhQqDDoF9rgQCsMwC4rTSpHy25gXoiFCfhkY4oNiMIAj8PyCmlNx\nQEdzSwr7MDicum9OGD0ITrEZp4dEzcv/zQBA+Fkv0ZH0MzLSPOK2aLzNY1v8\n5j95A+h2IkEZROJ1D2f66gNzjEk47ITI8DjVxGRFqIx77Wmf09H4SwRIbSzf\naJ3XmdB8qgCdIeCK8wu71754WDzJ+jdDmdlLLFOW4IzZ0byHiHG9UZk0Fjb4\nhxaK68ggQbp5JefivJ5R5ckBXEsRwduT1xEh2ZZgn0W0tLAY6qIqRS0MOUTm\nmjqf74NLMiQxpbVf1OS2srlXLAZWnGDQC77Ku4fFxYQZHxXku3ruVxWq/wM+\nkTwIvw51W0YZczsLM5+ORzrk81CtDqZ0sEOeFI8kmxQGcs5BbdmrVvkqqLWt\ndbirgFq0wsqJHaehPUf+G1oXUUkZpn9/MZazd3U8josa0L/F/M6hZFFSYo/W\n8W2f\r\n=XJ/4\r\n-----END PGP SIGNATURE-----\r\n"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" }
+        ],
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.16.0_1553513828506_0.5803732890369675"
+        },
+        "_hasShrinkwrap": false
+      },
+      "1.17.0": {
+        "name": "prismjs",
+        "version": "1.17.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test:aliases": "mocha tests/aliases-test.js",
+          "test:languages": "mocha tests/run.js",
+          "test:plugins": "mocha tests/plugins/**/*.js",
+          "test:regex": "mocha tests/regex-tests.js",
+          "test:runner": "mocha tests/testrunner-tests.js",
+          "test": "npm run test:runner && npm run test:languages && npm run test:plugins && npm run test:aliases && npm run test:regex"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^4.2.0",
+          "gulp": "^4.0.0",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^2.0.7",
+          "gulp-rename": "^1.2.0",
+          "gulp-replace": "^1.0.0",
+          "gulp-uglify": "^3.0.1",
+          "jsdom": "^13.0.0",
+          "mocha": "^6.0.0",
+          "pump": "^3.0.0",
+          "simple-git": "^1.107.0",
+          "yargs": "^13.2.2"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "a70302771078958106f4a2408e5ee8678e8bae63",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.17.0",
+        "_nodeVersion": "12.4.0",
+        "_npmVersion": "6.9.0",
+        "dist": {
+          "integrity": "sha512-jiOQc74cjpGVpaYVA3LYWPcpK7M5sXec7vSECMFiaisl6xwcriIH9pyozI2KeeTmCt1Cb2+sfTHw83zTDO7AiA==",
+          "shasum": "4fff543b13ed34fc6d90372b3d22989e31d9b563",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.17.0.tgz",
+          "fileCount": 452,
+          "unpackedSize": 1218777,
+          "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJdNRoHCRA9TVsSAnZWagAAJcgP/0IyvxvCDrqY8cXI5BNb\n4AJtjuBLCDidQPs12yrCDyyvWCT6ULh2BNB5Nku7MwflQlXKYwq8crBrXpqL\ndkh2YQYAyHJC+SF7t5K4r/0KHT5ETDXg7F9eWV96l99SFhShVu3rJnxXmAc7\npGEEKdkIV+4PkudgxlA08MljuFgNB1+REqchRG756QeU5xqGquRJlOMP7hdu\nL2JEAPtiAOrD7sfL4DKCcfwKWihYn9InYu8vR6baPc5w8hKFCvCR+UGPdTkI\nPXmJBTQxsEdvLxnjUbrhbwSw5ol28yU/S5rOVIA/fHuXlyT8Z5uUlAuD9zZ1\npWvbGnUlJAMgGAzX6MpqH3Dswpwq5Svv5GTxhkZbZ41PDeGkuK2V/2r1Xo4o\nxaQjLyh0WxMZ8/+Gz89TS+nArIP0tvxxW3pSnmavt1NUDoHzF7Z3pVfUv3Qo\nVRJdAhqzchSaDY3GbN6Ja9zMChYmEDcJ7GJV9j7RpvJ0+4AMEDD4peePEZWD\nRzRxAlFTojRV8CPMoJZtkrSx47+QU/5yicZM5j4Hh95/E8x840SdOtR0CSSS\nigtblNddpcyrjocLNuGQPQcSvBaJg5fS7d7opiMSNSpb63Z7aAE0MsG8O2SI\nLcKIEoievtaedis7hchWWe6C0ARWp/jfTObKFBdu5l9bBXMAn4cwZZYGzM2g\nU+rv\r\n=bI9Z\r\n-----END PGP SIGNATURE-----\r\n"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" }
+        ],
+        "_npmUser": {
+          "name": "jamesdigioia",
+          "email": "jamesorodig@gmail.com"
+        },
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.17.0_1563761158519_0.9652233007888711"
+        },
+        "_hasShrinkwrap": false
+      },
+      "1.17.1": {
+        "name": "prismjs",
+        "version": "1.17.1",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test:aliases": "mocha tests/aliases-test.js",
+          "test:languages": "mocha tests/run.js",
+          "test:plugins": "mocha tests/plugins/**/*.js",
+          "test:regex": "mocha tests/regex-tests.js",
+          "test:runner": "mocha tests/testrunner-tests.js",
+          "test": "npm run test:runner && npm run test:languages && npm run test:plugins && npm run test:aliases && npm run test:regex"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^4.2.0",
+          "gulp": "^4.0.0",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^2.0.7",
+          "gulp-rename": "^1.2.0",
+          "gulp-replace": "^1.0.0",
+          "gulp-uglify": "^3.0.1",
+          "jsdom": "^13.0.0",
+          "mocha": "^6.0.0",
+          "pump": "^3.0.0",
+          "simple-git": "^1.107.0",
+          "yargs": "^13.2.2"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "aba55105897299e61815e873f8fcce7063227927",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.17.1",
+        "_nodeVersion": "12.4.0",
+        "_npmVersion": "6.9.0",
+        "dist": {
+          "integrity": "sha512-PrEDJAFdUGbOP6xK/UsfkC5ghJsPJviKgnQOoxaDbBjwc8op68Quupwt1DeAFoG8GImPhiKXAvvsH7wDSLsu1Q==",
+          "shasum": "e669fcbd4cdd873c35102881c33b14d0d68519be",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.17.1.tgz",
+          "fileCount": 442,
+          "unpackedSize": 1157450,
+          "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJdNRqlCRA9TVsSAnZWagAAWMMQAJRV+QO9NLz0lJSr95j5\ncsRgLwoXxmK4zR6VPDIbmYFOy5RWzV7moaiIUxbecZvRwkDtdHqSgQhSo5wl\nztiWp60du6dTzfY2uENZhqqE2XdQVLgLBHK32IRHfv6CrVi8zIEYhX3ir5xY\nIGc4hRptAzEcIBIb1uYQhwdgpn3BCv1coRjstGG+/4NlSuPPa2C5rQiSYS9g\nlQ2FtRtBrBQTahEXYeo69D8Hzj2rFAjn5iiRJXpogDYVH4nEyFV4sSrOjkzR\nIQp28ZO6wwhnp+zR/aSdjzbrJhfw4SFQhvM3zM7E6KBi1wNge0+qsBEwqBku\nmr1LxHl/qIJO54uCw7e8nkq4fHKk0w66dtPn/pAcpqyET8zEruEOMfR3fi0O\nWYFZKWS6ZTqgQZy3+uDz2jo7KWZcBUrVxeIxNfTnLXf7+UeIRuxwIxXI41Yc\nNvI7ACSy4NDMWg1VuCscHWTJsjlKuixf71CIq7r1/dnsQwhiRmVjy+mDmfrS\nCuKijGNLvIfw4TgleplxfkQVzr7jVdn64aQGug2GtTIysH6vitODQkWqQ11Z\nBJv+73UhZhT8RR3hHyxgBkq+pLRQpb7/IDikH0nLCMJ9Uz/wU84mGGVrgj4R\nmIKjvS4nnLD0H2Ft3fZUzuUOpBf0Llg66gbAniEbk3zL5C5gG0ICtewtWydz\nEl42\r\n=FS39\r\n-----END PGP SIGNATURE-----\r\n"
+        },
+        "maintainers": [
+          { "name": "charleshansen", "email": "chansen87@gmail.com" },
+          { "name": "gpleiss", "email": "gpleiss@gmail.com" },
+          { "name": "leaverou", "email": "lea@verou.me" },
+          { "name": "rdy", "email": "ryan.dy@gmail.com" },
+          { "name": "stubbornella", "email": "nicole@stubbornella.org" },
+          { "name": "vinsonchuong", "email": "vinsonchuong@gmail.com" }
+        ],
+        "_npmUser": {
+          "name": "jamesdigioia",
+          "email": "jamesorodig@gmail.com"
+        },
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.17.1_1563761317109_0.1799139526758191"
+        },
+        "_hasShrinkwrap": false
+      },
+      "1.18.0": {
+        "name": "prismjs",
+        "version": "1.18.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test:aliases": "mocha tests/aliases-test.js",
+          "test:core": "mocha tests/core/**/*.js",
+          "test:dependencies": "mocha tests/dependencies-test.js",
+          "test:languages": "mocha tests/run.js",
+          "test:patterns": "mocha tests/pattern-tests.js",
+          "test:plugins": "mocha tests/plugins/**/*.js",
+          "test:runner": "mocha tests/testrunner-tests.js",
+          "test": "npm run test:runner && npm run test:core && npm run test:dependencies && npm run test:languages && npm run test:plugins && npm run test:aliases && npm run test:patterns"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^4.2.0",
+          "gulp": "^4.0.0",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^2.0.7",
+          "gulp-rename": "^1.2.0",
+          "gulp-replace": "^1.0.0",
+          "gulp-uglify": "^3.0.1",
+          "jsdom": "^13.0.0",
+          "mocha": "^6.2.0",
+          "pump": "^3.0.0",
+          "regexpp": "^2.0.1",
+          "simple-git": "^1.107.0",
+          "yargs": "^13.2.2"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "3c1fd1c84afd5e1867a9eb76e9533c53d22c34e1",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.18.0",
+        "_nodeVersion": "13.4.0",
+        "_npmVersion": "6.13.4",
+        "dist": {
+          "integrity": "sha512-N0r3i/Cto516V8+GKKamhsPVZSFcO0TMUBtIDW6uq6BVqoC3FNtZVZ+cmH16N2XtGQlgRN+sFUTjOdCsEP51qw==",
+          "shasum": "8f04dd47fa232cbd27d1ca969107580ff43f06e4",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.18.0.tgz",
+          "fileCount": 479,
+          "unpackedSize": 1325637,
+          "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJeEQVqCRA9TVsSAnZWagAAtHMP/j82EHEM8lBCHCyakEEy\nUZ/fOrtL0CwW8B8uPYVjTuZyL5cuxyafW6qkiMrroF3UFynAcId8i+tYfy+u\nOEqvA5m98hqRF3CANv39JklAuCweLVQd9c6DIcDAIPFLAube+gj4mTPgyMLo\ngH6J/KTXvv0Fw1RD7DYnQwnnzEbVC90gIyynobUbzJF0RhwWK6Qt+9DIZKaE\n5o3nszqdJlVTjYp6LaDOVw8ZHwGa+Z2gwC3bGPaPjK7tdkRKnOo8Kn4zLdkc\nqw82HR/wTlYo4oQmM/tca674ZgFcxpMku1pA8W9/Mk7amWaF2+oI9gKLvUjL\n93bWVHbvfKe/rft1phPUXBbMDLKmMPj+Ia/xEgkzWV4CW0VBUr5asYcVhuKQ\ntvKxa22CBf3sAVuWE7wAojK9bJ0gtxv3Hog6w2u78gxj2WIFB81NSPn9V5LV\njl6K4Qx/qBDLA+PB/Tcy/0W4PlSVOuQaUQTUulUPG4tUPKENVWI6QB8kKd74\nyhFGxPSnYh3jNHNhRtY4YRnYfTowTqGdZYfEyO3dv0lX2gCKtlwjC6uiIIEN\nen4qpWYHdjXrkAmqUvbT07m4suKzey7AdZSbRiQ+YuQRgdUpTqKcRca1aqhE\nyD17Mad2uUtpZCaRLiRqXvzHqRhlwOuX55x8HSbANqNdJaCZHU099iHCACh8\nWa0r\r\n=GzEB\r\n-----END PGP SIGNATURE-----\r\n"
+        },
+        "maintainers": [
+          { "email": "golmote@gmail.com", "name": "golmote" },
+          { "email": "gpleiss@gmail.com", "name": "gpleiss" },
+          { "email": "jamesorodig@gmail.com", "name": "jamesdigioia" },
+          { "email": "lea@verou.me", "name": "leaverou" },
+          { "email": "ryan.dy@gmail.com", "name": "rdy" },
+          { "email": "nicole@stubbornella.org", "name": "stubbornella" },
+          { "email": "vinsonchuong@gmail.com", "name": "vinsonchuong" }
+        ],
+        "_npmUser": {
+          "name": "jamesdigioia",
+          "email": "jamesorodig@gmail.com"
+        },
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.18.0_1578173801804_0.6768215958468853"
+        },
+        "_hasShrinkwrap": false
+      },
+      "1.19.0": {
+        "name": "prismjs",
+        "version": "1.19.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test:aliases": "mocha tests/aliases-test.js",
+          "test:core": "mocha tests/core/**/*.js",
+          "test:dependencies": "mocha tests/dependencies-test.js",
+          "test:languages": "mocha tests/run.js",
+          "test:patterns": "mocha tests/pattern-tests.js",
+          "test:plugins": "mocha tests/plugins/**/*.js",
+          "test:runner": "mocha tests/testrunner-tests.js",
+          "test": "npm run test:runner && npm run test:core && npm run test:dependencies && npm run test:languages && npm run test:plugins && npm run test:aliases && npm run test:patterns"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^4.2.0",
+          "gulp": "^4.0.2",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^2.0.7",
+          "gulp-rename": "^1.2.0",
+          "gulp-replace": "^1.0.0",
+          "gulp-uglify": "^3.0.1",
+          "jsdom": "^13.0.0",
+          "mocha": "^6.2.0",
+          "pump": "^3.0.0",
+          "regexpp": "^2.0.1",
+          "simple-git": "^1.107.0",
+          "yargs": "^13.2.2"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "6fd5c96b90a7724b8b1dbad1c44c0ee70068f4f3",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.19.0",
+        "_nodeVersion": "13.4.0",
+        "_npmVersion": "6.13.4",
+        "dist": {
+          "integrity": "sha512-IVFtbW9mCWm9eOIaEkNyo2Vl4NnEifis2GQ7/MLRG5TQe6t+4Sj9J5QWI9i3v+SS43uZBlCAOn+zYTVYQcPXJw==",
+          "shasum": "713afbd45c3baca4b321569f2df39e17e729d4dc",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.19.0.tgz",
+          "fileCount": 485,
+          "unpackedSize": 1345190,
+          "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJeHHMkCRA9TVsSAnZWagAAmbsP/1eMTE/eqYl2MJzz5Hw7\n75ina5jYCHoiT0/XvzHXgd5vZvhWE7OC6f9omgM4cLn1jzt79PHyZXVouWix\neCmpG2NNLhjD4rqMdVOmYBqlbw/5TWdP7vWmRj6YkXQHylPkSXvIic2u020J\nxnnYcQlDwnJO1sTfL/smLDpzHb2XiL1gNv1N2SaTQ3Oxp0tetDF47ZgTamPK\nb4qcpjXH6wBoUihboRkGHDlUxtQ3Ce3dx5uT2tm5Ac8fdpyOnLn3sNVeIVD9\n5EcmKpugd9pAe4oHtUNqpyLgvTNXndtuN+wwlYKtSC5dyh4KrfoEXKIcp4JP\nNnTCSf+OpLrxWoIV1CiNPs/rWZT5Yfo7jeNQfcOxmv5roQc/iW99jjkGjxb2\nEt6q4UOEiZ/Z7eJIMCjGh604WSQG2GrJXsvUy7E60SbDQGDR2lvTgwcxUNXj\nESCDlocQjS7wHZJzjXmrxwZQFm5xhd6616wcNhK5iT6zgOtNH/MDb251yutO\nfxFQ5CYw4dENRSyCAW4bizIGZbS22bKLSNtKYJLripd7zdHy9VCvzYYTYyD8\nQtiU9Lekgu/4QUu2dFBzZBDLInXUGvB50QHoPQUuQ932kcEwSA4QNA9x982f\naesemb50nMYCZ0lByMLyu+R9aJd8fUBzJOA5av09Y5ww8i9WnTGUHUQViHrm\nNcwP\r\n=OMBZ\r\n-----END PGP SIGNATURE-----\r\n"
+        },
+        "maintainers": [
+          { "email": "golmote@gmail.com", "name": "golmote" },
+          { "email": "gpleiss@gmail.com", "name": "gpleiss" },
+          { "email": "jamesorodig@gmail.com", "name": "jamesdigioia" },
+          { "email": "lea@verou.me", "name": "leaverou" },
+          { "email": "ryan.dy@gmail.com", "name": "rdy" },
+          { "email": "nicole@stubbornella.org", "name": "stubbornella" },
+          { "email": "vinsonchuong@gmail.com", "name": "vinsonchuong" }
+        ],
+        "_npmUser": {
+          "name": "jamesdigioia",
+          "email": "jamesorodig@gmail.com"
+        },
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.19.0_1578922787920_0.24975479218572127"
+        },
+        "_hasShrinkwrap": false
+      },
+      "1.20.0": {
+        "name": "prismjs",
+        "version": "1.20.0",
+        "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+        "main": "prism.js",
+        "style": "themes/prism.css",
+        "scripts": {
+          "test:aliases": "mocha tests/aliases-test.js",
+          "test:core": "mocha tests/core/**/*.js",
+          "test:dependencies": "mocha tests/dependencies-test.js",
+          "test:examples": "mocha tests/examples-test.js",
+          "test:languages": "mocha tests/run.js",
+          "test:patterns": "mocha tests/pattern-tests.js",
+          "test:plugins": "mocha tests/plugins/**/*.js",
+          "test:runner": "mocha tests/testrunner-tests.js",
+          "test": "npm run test:runner && npm run test:core && npm run test:dependencies && npm run test:languages && npm run test:plugins && npm run test:aliases && npm run test:patterns && npm run test:examples"
+        },
+        "repository": {
+          "type": "git",
+          "url": "git+https://github.com/LeaVerou/prism.git"
+        },
+        "keywords": ["prism", "highlight"],
+        "author": { "name": "Lea Verou" },
+        "license": "MIT",
+        "optionalDependencies": { "clipboard": "^2.0.0" },
+        "devDependencies": {
+          "chai": "^4.2.0",
+          "gulp": "^4.0.2",
+          "gulp-concat": "^2.3.4",
+          "gulp-header": "^2.0.7",
+          "gulp-rename": "^1.2.0",
+          "gulp-replace": "^1.0.0",
+          "gulp-uglify": "^3.0.1",
+          "htmlparser2": "^4.0.0",
+          "jsdom": "^13.0.0",
+          "mocha": "^6.2.0",
+          "pump": "^3.0.0",
+          "regexpp": "^2.0.1",
+          "simple-git": "^1.107.0",
+          "yargs": "^13.2.2"
+        },
+        "jspm": {
+          "main": "prism",
+          "registry": "jspm",
+          "jspmPackage": true,
+          "format": "global",
+          "files": [
+            "components/**/*.js",
+            "plugins/**/*",
+            "themes/*.css",
+            "prism.js"
+          ]
+        },
+        "gitHead": "81670053da263b0fe814d58de66213a43f439b98",
+        "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+        "homepage": "https://github.com/LeaVerou/prism#readme",
+        "dependencies": { "clipboard": "^2.0.0" },
+        "_id": "prismjs@1.20.0",
+        "_nodeVersion": "13.11.0",
+        "_npmVersion": "6.13.7",
+        "dist": {
+          "integrity": "sha512-AEDjSrVNkynnw6A+B1DsFkd6AVdTnp+/WoUixFRULlCLZVRZlVQMVWio/16jv7G1FscUxQxOQhWwApgbnxr6kQ==",
+          "shasum": "9b685fc480a3514ee7198eac6a3bf5024319ff03",
+          "tarball": "https://registry.npmjs.org/prismjs/-/prismjs-1.20.0.tgz",
+          "fileCount": 502,
+          "unpackedSize": 1447902,
+          "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJeh903CRA9TVsSAnZWagAAq4YP/RYKTIh5WNDaFSFSKLbW\ncf7ObZpBClXzVF0wZo8MH/eKYlZKN22K8endT8O49hU3fTxDpkE/P6CCjNB1\nGFXbXTOI5xg7cJHmGxKZpSztQUuNhNKaGvMCsg7M/Jiad0CmqBQUYYQISwqL\nTukuDsz1HCUKPwRFqXEZeqXvHnOf0OQ24BUkWpWHvoBSn48Zviqt08lHFxiV\n2wdplmVhgR1wDjGfg55wqREMEl3uLpndiRGeIjLaaZp14RzXbltL9P1M/r7r\nOrLM+PI5O5nSwBj6bXr/UpeSA8vBFu5GGzoVcJkUIapwJhNIpTdE9D3tOOGn\npeTcMPUM1f7eedRoJO9w1BWaheip1vIlWYeniEN5oxGYpSMOLLwAn5p1nvNc\nLQAa6kypilbgWRDy8DfNs+R2EFAptNm3AtNMYIR8yn0aOB8RGxDRWzSUzYjS\nXJ7npTJZwSUVmbrgb1ROz4GjY0Z81M5TPZOlCVSDEftxtGFhAI2Yf6aSsNaI\nMtnn63ixJleYb3m42gLjXgabT1vzxcpNwEeckWyhcTxmfTwb+ZvSH0tRRG3J\nCet1JCW5XA4NWgj+jvQ0E/r+H7zZzrblQ1oFXBtLcEcUY6fRY8/zHmy3VPDm\n15yE+FSS0sR56VCctl/iZ7HiFA1hGB0YwWvm8RkUT7zjdKXnZX4Evirc8Ru+\nI8e9\r\n=Fdx2\r\n-----END PGP SIGNATURE-----\r\n"
+        },
+        "maintainers": [
+          { "email": "golmote@gmail.com", "name": "golmote" },
+          { "email": "gpleiss@gmail.com", "name": "gpleiss" },
+          { "email": "jamesorodig@gmail.com", "name": "jamesdigioia" },
+          { "email": "lea@verou.me", "name": "leaverou" },
+          { "email": "ryan.dy@gmail.com", "name": "rdy" },
+          { "email": "nicole@stubbornella.org", "name": "stubbornella" },
+          { "email": "vinsonchuong@gmail.com", "name": "vinsonchuong" }
+        ],
+        "_npmUser": {
+          "name": "jamesdigioia",
+          "email": "jamesorodig@gmail.com"
+        },
+        "directories": {},
+        "_npmOperationalInternal": {
+          "host": "s3://npm-registry-packages",
+          "tmp": "tmp/prismjs_1.20.0_1585962294426_0.10428285648160607"
+        },
+        "_hasShrinkwrap": false
+      }
+    },
+    "readme": "# [Prism](https://prismjs.com/)\n\n[![Build Status](https://travis-ci.org/PrismJS/prism.svg?branch=master)](https://travis-ci.org/PrismJS/prism)\n[![npm](https://img.shields.io/npm/dw/prismjs.svg)](https://www.npmjs.com/package/prismjs)\n\nPrism is a lightweight, robust, elegant syntax highlighting library. It's a spin-off project from [Dabblet](https://dabblet.com/).\n\nYou can learn more on [prismjs.com](https://prismjs.com/).\n\n[Why another syntax highlighter?](https://lea.verou.me/2012/07/introducing-prism-an-awesome-new-syntax-highlighter/#more-1841)\n\n[More themes for Prism!](https://github.com/PrismJS/prism-themes)\n\n## Contribute to Prism!\n\nPrism depends on community contributions to expand and cover a wider array of use cases. If you like it, considering giving back by sending a pull request. Here are a few tips:\n\n- Read the [documentation](https://prismjs.com/extending.html). Prism was designed to be extensible.\n- Do not edit `prism.js`, itâ€™s just the version of Prism used by the Prism website and is built automatically. Limit your changes to the unminified files in the `components/` folder. The minified files are also generated automatically.\n- The build system uses [gulp](https://github.com/gulpjs/gulp) to minify the files and build `prism.js`. Having gulp installed, you just need to run the command `gulp`.\n- Please follow the code conventions used in the files already. For example, I use [tabs for indentation and spaces for alignment](http://lea.verou.me/2012/01/why-tabs-are-clearly-superior/). Opening braces are on the same line, closing braces on their own line regardless of construct. There is a space before the opening brace. etc etc.\n- Please try to err towards more smaller PRs rather than few huge PRs. If a PR includes changes I want to merge and changes I don't, handling it becomes difficult.\n- My time is very limited these days, so it might take a long time to review longer PRs (short ones are usually merged very quickly), especially those modifying the Prism Core. This doesn't mean your PR is rejected.\n- If you contribute a new language definition, you will be responsible for handling bug reports about that language definition.\n- If you add a new language definition, theme or plugin, you need to add it to `components.json` as well and rebuild Prism by running `gulp`, so that it becomes available to the download build page. For new languages, please also add a few [tests](https://prismjs.com/test-suite.html) and an example in the `examples/` folder.\n\nThank you so much for contributing!!\n\n## Translations\n\n* [![ä¸­æ–‡è¯´æ˜Ž](http://awesomes.oss-cn-beijing.aliyuncs.com/readme.png)](https://www.awesomes.cn/repo/PrismJS/prism)\n",
+    "maintainers": [
+      { "email": "golmote@gmail.com", "name": "golmote" },
+      { "email": "gpleiss@gmail.com", "name": "gpleiss" },
+      { "email": "jamesorodig@gmail.com", "name": "jamesdigioia" },
+      { "email": "lea@verou.me", "name": "leaverou" },
+      { "email": "ryan.dy@gmail.com", "name": "rdy" },
+      { "email": "nicole@stubbornella.org", "name": "stubbornella" },
+      { "email": "vinsonchuong@gmail.com", "name": "vinsonchuong" }
+    ],
+    "time": {
+      "modified": "2020-04-04T01:04:57.069Z",
+      "created": "2015-05-12T23:54:40.643Z",
+      "9000.0.1": "2015-05-12T23:54:40.643Z",
+      "9000.0.2": "2015-05-12T23:56:14.033Z",
+      "0.0.1": "2015-05-13T00:37:38.541Z",
+      "1.1.0": "2015-10-06T00:03:04.995Z",
+      "1.2.0": "2015-10-07T17:35:20.776Z",
+      "1.3.0": "2015-10-27T02:35:27.738Z",
+      "1.4.1": "2016-02-05T03:02:10.903Z",
+      "1.5.0": "2016-05-16T19:27:36.144Z",
+      "1.5.1": "2016-06-07T01:45:09.291Z",
+      "1.6.0": "2016-12-05T15:15:07.039Z",
+      "1.7.0": "2017-09-09T13:17:53.558Z",
+      "1.8.0": "2017-09-16T11:26:30.833Z",
+      "1.8.1": "2017-09-16T11:35:42.623Z",
+      "1.8.3": "2017-10-19T19:59:49.084Z",
+      "1.8.4": "2017-11-05T16:39:11.337Z",
+      "1.9.0": "2017-12-05T23:52:53.059Z",
+      "1.10.0": "2018-01-17T22:58:11.306Z",
+      "1.11.0": "2018-02-05T08:03:40.974Z",
+      "1.12.0": "2018-03-07T20:47:42.924Z",
+      "1.12.2": "2018-03-08T22:48:14.877Z",
+      "1.13.0": "2018-03-21T07:33:19.843Z",
+      "1.14.0": "2018-04-11T07:07:37.342Z",
+      "1.15.0": "2018-06-17T01:52:23.178Z",
+      "1.16.0": "2019-03-25T11:37:08.871Z",
+      "1.17.0": "2019-07-22T02:05:58.666Z",
+      "1.17.1": "2019-07-22T02:08:37.262Z",
+      "1.18.0": "2020-01-04T21:36:41.973Z",
+      "1.19.0": "2020-01-13T13:39:48.212Z",
+      "1.20.0": "2020-04-04T01:04:54.672Z"
+    },
+    "homepage": "https://github.com/LeaVerou/prism#readme",
+    "keywords": ["prism", "highlight"],
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/LeaVerou/prism.git"
+    },
+    "author": { "name": "Lea Verou" },
+    "bugs": { "url": "https://github.com/LeaVerou/prism/issues" },
+    "license": "MIT",
+    "readmeFilename": "README.md",
+    "users": {
+      "jacoborus": true,
+      "rexpan": true,
+      "davidhellmann": true,
+      "koulmomo": true,
+      "talo242": true,
+      "jenux": true,
+      "kon.simeonov": true,
+      "vinnyfonseca": true,
+      "shuoshubao": true,
+      "drewigg": true,
+      "sagarjadhav": true,
+      "wangdao": true,
+      "alexmercer": true,
+      "soenkekluth": true,
+      "mdedirudianto": true,
+      "bushuai": true,
+      "zuojiang": true
+    }
   }
 ]

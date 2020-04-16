@@ -27,7 +27,7 @@ export default function formatPkg(pkg) {
   const license = getLicense(cleaned);
 
   const version = cleaned.version ? cleaned.version : '0.0.0';
-  const versions = getVersions(cleaned);
+  const versions = getVersions(cleaned, pkg);
   const githubRepo = cleaned.repository
     ? getGitHubRepoInfo({
         repository: cleaned.repository,
@@ -201,17 +201,15 @@ function getGravatar(obj) {
   return gravatarUrl(obj.email);
 }
 
-function getVersions(cleaned) {
+export function getVersions(cleaned, rawPkg) {
   if (cleaned.other && cleaned.other.time) {
-    return Object.keys(cleaned.other.time)
-      .filter(key => !['modified', 'created'].includes(key))
-      .reduce(
-        (obj, key) => ({
-          ...obj,
-          [key]: cleaned.other.time[key],
-        }),
-        {}
-      );
+    const realVersions = Object.keys(rawPkg.versions);
+
+    return Object.fromEntries(
+      Object.entries(cleaned.other.time).filter(([key]) =>
+        realVersions.includes(key)
+      )
+    );
   }
   return {};
 }
