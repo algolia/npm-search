@@ -106,16 +106,75 @@ export default function formatPkg(pkg) {
     },
   };
 
-  const totalSize = sizeof(rawPkg);
-  if (totalSize > config.maxObjSize) {
-    const sizeDiff = sizeof(rawPkg.readme) - totalSize;
-    rawPkg.readme = `${truncate(
-      rawPkg.readme,
-      config.maxObjSize - sizeDiff
-    )} **TRUNCATED**`;
+  const truncated = truncatePackage(rawPkg);
+
+  return traverse(truncated).forEach(maybeEscape);
+}
+
+function checkSize(pkg) {
+  const size = sizeof(pkg);
+  const diff = size - config.maxObjSize;
+
+  return {
+    size,
+    diff,
+    isTooBig: diff > 0,
+  };
+}
+
+function truncatePackage(pkg) {
+  let smallerPkg = { ...pkg };
+
+  {
+    const { diff, isTooBig } = checkSize(smallerPkg);
+    if (isTooBig) {
+      const postfix = ' **TRUNCATED**';
+      // sizeof is * 2 what truncate expects
+      const maxReadmeLength = (sizeof(pkg.readme) - diff - sizeof(postfix)) / 2;
+
+      smallerPkg.readme = truncate(pkg.readme, maxReadmeLength) + postfix;
+    }
   }
 
-  return traverse(rawPkg).forEach(maybeEscape);
+  {
+    const { isTooBig } = checkSize(smallerPkg);
+    if (isTooBig) {
+      smallerPkg.readme =
+        '** TRUNCATED ** this package was too big, so non-essential information was removed';
+      smallerPkg.versions =
+        pkg.versions && pkg.version
+          ? {
+              [pkg.version]: pkg.versions[pkg.version],
+            }
+          : null;
+      smallerPkg.tags =
+        pkg.tags && pkg.tags.latest
+          ? {
+              latest: pkg.tags.latest,
+            }
+          : null;
+      smallerPkg.owners = [smallerPkg.owner];
+    }
+  }
+
+  {
+    const { isTooBig } = checkSize(smallerPkg);
+    if (isTooBig) {
+      smallerPkg = {
+        name: smallerPkg.name,
+        readme: smallerPkg.readme,
+      };
+    }
+  }
+
+  {
+    const { isTooBig } = checkSize(smallerPkg);
+    if (isTooBig) {
+      return null;
+    }
+  }
+
+  return smallerPkg;
 }
 
 function maybeEscape(node) {

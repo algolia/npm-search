@@ -43,15 +43,15 @@ it('truncates long readmes', () => {
     readme: 'Hello, World! '.repeat(40000),
   };
   const formatted = formatPkg(object);
-  const truncatedEnding = '**TRUNCATED**';
+  const postfix = ' **TRUNCATED**';
   const ending = formatted.readme.substr(
-    formatted.readme.length - truncatedEnding.length
+    formatted.readme.length - postfix.length
   );
 
   const readmeLength = formatted.readme.length;
 
   expect(readmeLength).toBeLessThan(475000);
-  expect(ending).toBe(truncatedEnding);
+  expect(ending).toBe(postfix);
 
   expect(formatted).toMatchSnapshot({
     readme: expect.any(String),
