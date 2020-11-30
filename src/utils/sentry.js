@@ -11,6 +11,8 @@ Sentry.init({
 
 export function report(err, extra = {}) {
   log.error(err.message);
+  // eslint-disable-next-line no-console
+  console.trace(err);
   if (!process.env.SENTRY_DSN) {
     log.error(err);
     return;
