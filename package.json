@@ -34,7 +34,7 @@
     "babel-cli": "6.26.0",
     "babel-preset-env": "1.7.0",
     "babel-preset-stage-2": "6.24.1",
-    "bunyan": "1.8.12",
+    "bunyan": "1.8.15",
     "bunyan-debug-stream": "2.0.0",
     "dotenv": "8.2.0",
     "dtrace-provider": "0.8.8",
