@@ -66,7 +66,7 @@
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jasmine": "2.10.1",
     "eslint-plugin-jest": "22.21.0",
-    "eslint-plugin-prettier": "3.1.4",
+    "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-react": "7.20.3",
     "husky": "3.1.0",
     "jest": "24.9.0",
