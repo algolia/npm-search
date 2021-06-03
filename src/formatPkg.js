@@ -1,14 +1,15 @@
-import sizeof from 'object-sizeof';
-import NicePackage from 'nice-package';
-import gravatarUrl from 'gravatar-url';
-import numeral from 'numeral';
-const defaultGravatar = 'https://www.gravatar.com/avatar/';
 import escape from 'escape-html';
+import gravatarUrl from 'gravatar-url';
+import hostedGitInfo from 'hosted-git-info';
+import NicePackage from 'nice-package';
+import numeral from 'numeral';
+import sizeof from 'object-sizeof';
 import traverse from 'traverse';
 import truncate from 'truncate-utf8-bytes';
-import hostedGitInfo from 'hosted-git-info';
 
 import config from './config.js';
+
+const defaultGravatar = 'https://www.gravatar.com/avatar/';
 
 export default function formatPkg(pkg) {
   const cleaned = new NicePackage(pkg);
@@ -365,7 +366,7 @@ function getHomePage(homepage, repository) {
     homepage &&
     typeof homepage === 'string' && // if there's a homepage
     (!repository || // and there's no repo,
-    typeof repository !== 'string' || // or repo is not a string
+      typeof repository !== 'string' || // or repo is not a string
       homepage.indexOf(repository) < 0) // or repo is different than homepage
   ) {
     return homepage; // then we consider it a valuable homepage
@@ -378,7 +379,7 @@ function getHomePage(homepage, repository) {
  * Get info from urls like this: (has multiple packages in one repo, like babel does)
  *  https://github.com/babel/babel/tree/master/packages/babel
  *  https://gitlab.com/user/repo/tree/master/packages/project1
- *  https://bitbucket.org/user/repo/src/ae8df4cd0e809a789e3f96fd114075191c0d5c8b/packages/project1/
+ *  https://bitbucket.org/user/repo/src/ae8df4cd0e809a789e3f96fd114075191c0d5c8b/packages/project1/.
  *
  * This function is like getGitHubRepoInfo (above), but support github, gitlab and bitbucket.
  */
@@ -431,7 +432,7 @@ export function getRepositoryInfo(repository) {
   /**
    * Unfortunately, hosted-git-info can't handle URL like this: (has path)
    *   https://github.com/babel/babel/tree/master/packages/babel-core
-   * so we need to do it
+   * so we need to do it.
    */
   const repositoryInfoFromUrl = getRepositoryInfoFromHttpUrl(url);
   if (!repositoryInfoFromUrl) {
@@ -512,7 +513,7 @@ function getAlternativeNames(name) {
 export function getMains(pkg) {
   if (Array.isArray(pkg.main)) {
     // we can not deal with non-string mains for now
-    return pkg.main.filter(main => typeof main === 'string');
+    return pkg.main.filter((main) => typeof main === 'string');
   }
   if (typeof pkg.main === 'string') {
     return [pkg.main];
@@ -528,7 +529,7 @@ function getModuleTypes(pkg) {
   const mains = getMains(pkg);
   const moduleTypes = [];
 
-  mains.forEach(main => {
+  mains.forEach((main) => {
     if (
       typeof pkg.module === 'string' ||
       pkg.type === 'module' ||

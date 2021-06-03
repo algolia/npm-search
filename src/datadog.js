@@ -1,4 +1,5 @@
 import StatsD from 'hot-shots';
+
 import log from './log.js';
 
 const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';

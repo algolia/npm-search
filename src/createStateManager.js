@@ -7,7 +7,7 @@ const defaultState = {
   bootstrapLastId: undefined,
 };
 
-export default algoliaIndex => {
+export default (algoliaIndex) => {
   let currentState;
 
   return {

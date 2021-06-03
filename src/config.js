@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
-dotenv.config();
 import ms from 'ms';
+
+dotenv.config();
 
 const defaultConfig = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com',

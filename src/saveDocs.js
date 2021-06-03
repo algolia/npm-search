@@ -1,10 +1,10 @@
+import { getChangelogs } from './changelog.js';
+import datadog from './datadog.js';
 import formatPkg from './formatPkg.js';
+import * as jsDelivr from './jsDelivr/index.js';
 import log from './log.js';
 import * as npm from './npm/index.js';
-import { getChangelogs } from './changelog.js';
-import * as jsDelivr from './jsDelivr/index.js';
 import { getTSSupport } from './typescriptSupport.js';
-import datadog from './datadog.js';
 
 export default async function saveDocs({ docs, index }) {
   const start = Date.now();
@@ -12,10 +12,10 @@ export default async function saveDocs({ docs, index }) {
   const rawPkgs = docs
     .filter(
       // must be a document & have a name
-      result =>
+      (result) =>
         !result.deleted && result && result.doc && result.doc.name !== undefined
     )
-    .map(result => {
+    .map((result) => {
       const start1 = Date.now();
 
       const formatted = formatPkg(result.doc);
@@ -23,7 +23,7 @@ export default async function saveDocs({ docs, index }) {
       datadog.timing('formatPkg', Date.now() - start1);
       return formatted;
     })
-    .filter(pkg => pkg !== undefined);
+    .filter((pkg) => pkg !== undefined);
 
   if (rawPkgs.length === 0) {
     log.info('🔍 No pkgs found in response.');

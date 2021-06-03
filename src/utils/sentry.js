@@ -16,7 +16,7 @@ export function report(err, extra = {}) {
     return;
   }
 
-  Sentry.withScope(scope => {
+  Sentry.withScope((scope) => {
     scope.setExtras(extra);
     Sentry.captureException(err);
   });

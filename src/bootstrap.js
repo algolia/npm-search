@@ -1,8 +1,9 @@
+import ms from 'ms';
+
 import * as algolia from './algolia/index.js';
 import config from './config.js';
 import datadog from './datadog.js';
 import log from './log.js';
-import ms from 'ms';
 import * as npm from './npm/index.js';
 import saveDocs from './saveDocs.js';
 
@@ -15,7 +16,7 @@ let loopStart;
  * It is useful if:
  *  - you are starting this project for the first time
  *  - you messed up with your Algolia index
- *  - you lagged too much behind
+ *  - you lagged too much behind.
  *
  * Watch mode should/can be reliably left running for weeks/months as CouchDB is made for that.
  * BUT for the moment it's mandatory to relaunch it because it's the only way to update: typescript, downloads stats.
@@ -67,7 +68,8 @@ async function run(stateManager, algoliaClient, mainIndex, bootstrapIndex) {
 
 /**
  * Execute one loop for bootstrap,
- *   Fetch N packages from `lastId`, process and save them to Algolia
+ *   Fetch N packages from `lastId`, process and save them to Algolia.
+ *
  * @param {string} lastId
  */
 async function loop(lastId, stateManager, bootstrapIndex) {

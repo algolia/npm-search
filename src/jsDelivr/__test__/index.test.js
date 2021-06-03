@@ -1,5 +1,5 @@
-import * as api from '../index.js';
 import log from '../../log.js';
+import * as api from '../index.js';
 
 jest.mock('../../log.js', () => {
   return {

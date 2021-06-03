@@ -1,12 +1,11 @@
-import createStateManager from './createStateManager.js';
-import config from './config.js';
 import * as algolia from './algolia/index.js';
-import log from './log.js';
+import * as bootstrap from './bootstrap.js';
+import config from './config.js';
+import createStateManager from './createStateManager.js';
 import datadog from './datadog.js';
 import * as jsDelivr from './jsDelivr/index.js';
+import log from './log.js';
 import * as sentry from './utils/sentry.js';
-
-import * as bootstrap from './bootstrap.js';
 import * as watch from './watch.js';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
@@ -16,7 +15,7 @@ const KILL_PROCESS_EVERY_MS = 12 * 60 * 60 * 1000; // every 12 hours
 /**
  * Main process
  *   - Bootstrap: will index the whole list of packages (if needed)
- *   - Watch    : will process update in real time
+ *   - Watch    : will process update in real time.
  */
 async function main() {
   const start = Date.now();
@@ -56,7 +55,7 @@ async function main() {
   await watch.run(stateManager, mainIndex);
 }
 
-main().catch(async err => {
+main().catch(async (err) => {
   sentry.report(err);
   await sentry.drain();
   process.exit(1); // eslint-disable-line no-process-exit

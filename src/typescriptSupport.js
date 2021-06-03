@@ -1,8 +1,8 @@
 // @ts-check
 
+import datadog from './datadog.js';
 import * as npm from './npm/index.js';
 import { fileExistsInUnpkg } from './unpkg.js';
-import datadog from './datadog.js';
 
 /**
  * @typedef Package
@@ -15,7 +15,8 @@ import datadog from './datadog.js';
  * Basically either
  *   - { types: { ts: false }}  for no existing TypeScript support
  *   - { types: { ts: "@types/module" }} - for definitely typed support
- *   - { types: { ts: "included" }} - for types shipped with the module
+ *   - { types: { ts: "included" }} - for types shipped with the module.
+ *
  * @param {Package} pkg
  */
 export async function getTypeScriptSupport(pkg) {

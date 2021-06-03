@@ -9,7 +9,8 @@ function createClient(appId, apiKey, indexName) {
 }
 
 /**
- * Prepare algolia for indexing
+ * Prepare algolia for indexing.
+ *
  * @param {object} config
  */
 async function prepare(config) {
