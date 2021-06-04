@@ -51,10 +51,10 @@ async function prepare(config) {
 async function putDefaultSettings(index, config) {
   await index.setSettings(config.indexSettings);
 
-  await index.batchSynonyms(config.indexSynonyms, {
+  await index.saveSynonyms(config.indexSynonyms, {
     replaceExistingSynonyms: true,
   });
-  const { taskID } = await index.batchRules(config.indexRules, {
+  const { taskID } = await index.saveRules(config.indexRules, {
     replaceExistingRules: true,
   });
 

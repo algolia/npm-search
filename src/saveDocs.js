@@ -35,7 +35,7 @@ export default async function saveDocs({ docs, index }) {
   datadog.timing('saveDocs.addMetaData', Date.now() - start2);
 
   start2 = Date.now();
-  index.saveObjects(pkgs);
+  await index.saveObjects(pkgs);
   datadog.timing('saveDocs.saveObjects', Date.now() - start2);
 
   datadog.timing('saveDocs', Date.now() - start);

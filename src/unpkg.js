@@ -1,6 +1,5 @@
-import got from 'got';
-
 import config from './config.js';
+import { request } from './utils/request.js';
 
 // make a head request to a route like:
 // https://unpkg.com/lodash@4.17.11/_LazyWrapper.js
@@ -8,7 +7,7 @@ import config from './config.js';
 export async function fileExistsInUnpkg(pkg, version, path) {
   const uri = `${config.unpkgRoot}/${pkg}@${version}/${path}`;
   try {
-    const response = await got(uri, {
+    const response = await request(uri, {
       method: 'HEAD',
     });
     return response.statusCode === 200;

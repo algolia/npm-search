@@ -1,8 +1,8 @@
-import got from 'got';
 import race from 'promise-rat-race';
 
 import config from './config.js';
 import datadog from './datadog.js';
+import { request } from './utils/request.js';
 
 export const baseUrlMap = new Map([
   [
@@ -29,7 +29,7 @@ export const baseUrlMap = new Map([
 ]);
 
 async function handledGot(file) {
-  const result = await got(file, { method: 'HEAD' });
+  const result = await request(file, { method: 'HEAD' });
 
   if (
     // bitbucket returns 200 for private repos

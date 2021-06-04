@@ -1,8 +1,7 @@
-import got from 'got';
-
 import config from '../config.js';
 import datadog from '../datadog.js';
 import log from '../log.js';
+import { request } from '../utils/request.js';
 
 const hits = new Map();
 
@@ -14,8 +13,8 @@ async function loadHits() {
   log.info('📦  Loading hits from jsDelivr');
 
   try {
-    const { body: hitsJSON } = await got(config.jsDelivrHitsEndpoint, {
-      json: true,
+    const { body: hitsJSON } = await request(config.jsDelivrHitsEndpoint, {
+      responseType: 'json',
     });
     hits.clear();
     hitsJSON.forEach((pkg) => {
@@ -81,10 +80,10 @@ async function getFilesList(pkg) {
 
   let files = [];
   try {
-    const response = await got(
+    const response = await request(
       `${config.jsDelivrPackageEndpoint}/${pkg.name}@${pkg.version}/flat`,
       {
-        json: true,
+        responseType: 'json',
       }
     );
     files = response.body.files;

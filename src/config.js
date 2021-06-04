@@ -19,7 +19,7 @@ const defaultConfig = {
   indexName: 'npm-search',
   bootstrapIndexName: 'npm-search-bootstrap',
   replicateConcurrency: 10,
-  bootstrapConcurrency: 100,
+  bootstrapConcurrency: 25,
   timeToRedoBootstrap: ms('2 weeks'),
   seq: null,
   indexSettings: {

@@ -1,4 +1,3 @@
-import got from 'got';
 import chunk from 'lodash/chunk.js';
 import nano from 'nano';
 import numeral from 'numeral';
@@ -6,6 +5,7 @@ import numeral from 'numeral';
 import config from '../config.js';
 import datadog from '../datadog.js';
 import log from '../log.js';
+import { request } from '../utils/request.js';
 
 const registry = nano({
   url: config.npmRegistryEndpoint,
@@ -97,8 +97,8 @@ async function getInfo() {
 
   const {
     body: { doc_count: nbDocs, update_seq: seq },
-  } = await got(config.npmRegistryEndpoint, {
-    json: true,
+  } = await request(config.npmRegistryEndpoint, {
+    responseType: 'json',
   });
 
   datadog.timing('npm.info', Date.now() - start);
@@ -119,8 +119,7 @@ async function validatePackageExists(pkgName) {
 
   let exists;
   try {
-    const response = await got(`${config.npmRootEndpoint}/${pkgName}`, {
-      json: true,
+    const response = await request(`${config.npmRootEndpoint}/${pkgName}`, {
       method: 'HEAD',
     });
     exists = response.statusCode === 200;
@@ -153,8 +152,8 @@ function getDependents(pkgs) {
 async function getTotalDownloads() {
   const {
     body: { downloads: totalNpmDownloadsPerDay },
-  } = await got(`${config.npmDownloadsEndpoint}/range/last-month`, {
-    json: true,
+  } = await request(`${config.npmDownloadsEndpoint}/range/last-month`, {
+    responseType: 'json',
   });
 
   return totalNpmDownloadsPerDay.reduce(
@@ -170,10 +169,10 @@ async function getTotalDownloads() {
  */
 async function getDownload(pkgNames) {
   try {
-    const response = await got(
+    const response = await request(
       `${config.npmDownloadsEndpoint}/point/last-month/${pkgNames}`,
       {
-        json: true,
+        responseType: 'json',
       }
     );
     if (response.body.downloads) {
