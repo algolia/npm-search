@@ -9,16 +9,11 @@
   },
   "scripts": {
     "start": "node --max-old-space-size=920 --experimental-modules src/index.js",
-    "test": "jest --forceExit && eslint .",
+    "test": "jest --forceExit",
     "test:watch": "jest --watchAll --no-watchman",
     "lint": "eslint --ext=jsx,ts,tsx,js .",
-    "doctoc": "doctoc --notitle --maxlevel 3 README.md"
-  },
-  "lint-staged": {
-    "*.js": [
-      "yarn lint --fix",
-      "git add"
-    ]
+    "doctoc": "doctoc --notitle --maxlevel 3 README.md",
+    "prepare": "husky install"
   },
   "renovate": {
     "extends": [
@@ -69,7 +64,7 @@
     "eslint-plugin-jsdoc": "35.1.2",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-react": "7.24.0",
-    "husky": "6.0.0",
+    "husky": "^6.0.0",
     "jest": "27.0.4",
     "lint-staged": "11.0.0",
     "pre-commit": "1.2.2",
@@ -87,10 +82,5 @@
       "node_modules",
       "lib"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }
