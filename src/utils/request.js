@@ -5,7 +5,7 @@ import got from 'got';
 
 const options = {
   keepAlive: true,
-  timeout: 60000,
+  timeout: 60_000,
   maxFreeSockets: 2000,
   scheduling: 'fifo',
 };
