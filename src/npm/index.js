@@ -98,7 +98,7 @@ async function getInfo() {
   const {
     body: { doc_count: nbDocs, update_seq: seq },
   } = await got(config.npmRegistryEndpoint, {
-    json: true,
+    responseType: 'json',
   });
 
   datadog.timing('npm.info', Date.now() - start);
@@ -120,7 +120,6 @@ async function validatePackageExists(pkgName) {
   let exists;
   try {
     const response = await got(`${config.npmRootEndpoint}/${pkgName}`, {
-      json: true,
       method: 'HEAD',
     });
     exists = response.statusCode === 200;
@@ -154,7 +153,7 @@ async function getTotalDownloads() {
   const {
     body: { downloads: totalNpmDownloadsPerDay },
   } = await got(`${config.npmDownloadsEndpoint}/range/last-month`, {
-    json: true,
+    responseType: 'json',
   });
 
   return totalNpmDownloadsPerDay.reduce(
@@ -173,7 +172,7 @@ async function getDownload(pkgNames) {
     const response = await got(
       `${config.npmDownloadsEndpoint}/point/last-month/${pkgNames}`,
       {
-        json: true,
+        responseType: 'json',
       }
     );
     if (response.body.downloads) {

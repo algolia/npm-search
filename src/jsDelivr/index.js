@@ -15,7 +15,7 @@ async function loadHits() {
 
   try {
     const { body: hitsJSON } = await got(config.jsDelivrHitsEndpoint, {
-      json: true,
+      responseType: 'json',
     });
     hits.clear();
     hitsJSON.forEach((pkg) => {
@@ -84,7 +84,7 @@ async function getFilesList(pkg) {
     const response = await got(
       `${config.jsDelivrPackageEndpoint}/${pkg.name}@${pkg.version}/flat`,
       {
-        json: true,
+        responseType: 'json',
       }
     );
     files = response.body.files;
