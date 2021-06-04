@@ -16,13 +16,13 @@ jobs:
       - node/install-packages:
                 pkg-manager: yarn
 
-      # - run:
-      #     name: Lint
-      #     command: yarn lint
+      - run:
+          name: Lint
+          command: yarn lint
 
-      # - run:
-      #     name: Test
-      #     command: yarn test
+      - run:
+          name: Test
+          command: yarn test
 
 
 workflows:

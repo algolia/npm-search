@@ -1,20 +1,22 @@
+import isISO8601 from 'validator/lib/isISO8601.js';
+
 import formatPkg, {
   getRepositoryInfo,
   getMains,
   getVersions,
 } from '../formatPkg.js';
-import rawPackages from './rawPackages.json';
+
 import preact from './preact-simplified.json';
-import isISO8601 from 'validator/lib/isISO8601.js';
+import rawPackages from './rawPackages.json';
 
 it('transforms correctly', () => {
   rawPackages
     .map(formatPkg)
-    .map(element => {
+    .map((element) => {
       expect(isISO8601(element.lastCrawl)).toBe(true);
       return element;
     })
-    .map(formattedPackage =>
+    .map((formattedPackage) =>
       expect(formattedPackage).toMatchSnapshot(
         {
           lastCrawl: expect.any(String),
@@ -26,7 +28,7 @@ it('transforms correctly', () => {
 
 it('keeps .bin intact', () => {
   const createInstantSearchApp = rawPackages.find(
-    pkg => pkg.name === 'create-instantsearch-app'
+    (pkg) => pkg.name === 'create-instantsearch-app'
   );
   const formatted = formatPkg(createInstantSearchApp);
   expect(formatted.bin).toMatchInlineSnapshot(`
@@ -115,13 +117,17 @@ describe('adds vue-cli plugins', () => {
   const formattedUnofficialDogs = formatPkg(unofficialDogs);
   const formattedScopedDogs = formatPkg(scopedDogs);
 
-  expect(formattedDogs.keywords).toEqual([]);
-  expect(formattedUnofficialDogs.keywords).toEqual([]);
-  expect(formattedScopedDogs.keywords).toEqual([]);
+  it('should format correctly', () => {
+    expect(formattedDogs.keywords).toEqual([]);
+    expect(formattedUnofficialDogs.keywords).toEqual([]);
+    expect(formattedScopedDogs.keywords).toEqual([]);
 
-  expect(formattedDogs.computedKeywords).toEqual(['vue-cli-plugin']);
-  expect(formattedUnofficialDogs.computedKeywords).toEqual(['vue-cli-plugin']);
-  expect(formattedScopedDogs.computedKeywords).toEqual(['vue-cli-plugin']);
+    expect(formattedDogs.computedKeywords).toEqual(['vue-cli-plugin']);
+    expect(formattedUnofficialDogs.computedKeywords).toEqual([
+      'vue-cli-plugin',
+    ]);
+    expect(formattedScopedDogs.computedKeywords).toEqual(['vue-cli-plugin']);
+  });
 });
 
 describe('adds yeoman generators', () => {

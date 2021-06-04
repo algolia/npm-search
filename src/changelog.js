@@ -1,8 +1,8 @@
 import got from 'got';
 import race from 'promise-rat-race';
 
-import datadog from './datadog.js';
 import config from './config.js';
+import datadog from './datadog.js';
 
 export const baseUrlMap = new Map([
   [
@@ -37,7 +37,7 @@ async function handledGot(file) {
     // I am unsure what gitlab does
     result &&
     result.redirectUrls &&
-    result.redirectUrls.find(res =>
+    result.redirectUrls.find((res) =>
       res.startsWith('https://bitbucket.org/account/signin')
     )
   ) {
@@ -49,7 +49,7 @@ async function handledGot(file) {
 
 async function raceFromPaths(files) {
   try {
-    const { url } = await race(files.map(file => handledGot(file)));
+    const { url } = await race(files.map((file) => handledGot(file)));
     return { changelogFilename: url };
   } catch (e) {
     return { changelogFilename: null };
@@ -78,7 +78,7 @@ function getChangelog({ repository, name, version }) {
   ];
 
   const unpkgFiles = fileOptions.map(
-    file => `${config.unpkgRoot}/${name}@${version}/${file}`
+    (file) => `${config.unpkgRoot}/${name}@${version}/${file}`
   );
 
   if (repository === null) {
@@ -99,7 +99,7 @@ function getChangelog({ repository, name, version }) {
 
   const baseUrl = baseUrlMap.get(host)(repository);
 
-  const files = fileOptions.map(file =>
+  const files = fileOptions.map((file) =>
     [baseUrl.replace(/\/$/, ''), file].join('/')
   );
 

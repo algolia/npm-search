@@ -42,7 +42,7 @@ describe('getDependents()', () => {
   });
 
   it('has the right fake value', () => {
-    const [jest, angular, holmes] = dependents.map(pkg => pkg.dependents);
+    const [jest, angular, holmes] = dependents.map((pkg) => pkg.dependents);
     expect(jest).toBe(0);
     expect(angular).toBe(0);
     expect(holmes).toBe(0);
@@ -124,7 +124,7 @@ describe('getDownloads()', () => {
   });
 
   it('has the right approximate value for downloadsLast30Days', () => {
-    const [jest, angular, holmes] = downloads.map(pkg =>
+    const [jest, angular, holmes] = downloads.map((pkg) =>
       pkg.downloadsLast30Days.toString()
     );
 
@@ -143,7 +143,7 @@ describe('getDownloads()', () => {
 
   it('has the right approximate value for downloadsMagnitude', () => {
     const [jest, angular, holmes] = downloads.map(
-      pkg => pkg._searchInternal.downloadsMagnitude
+      (pkg) => pkg._searchInternal.downloadsMagnitude
     );
 
     expect(jest).toBeGreaterThanOrEqual(6);

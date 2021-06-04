@@ -11,6 +11,10 @@
       {
         "ignorePackages": true
       }
-    ]
+    ],
+    // temp during mig
+    "jsdoc/require-param-description": "off",
+    "jsdoc/require-description": "off",
+    "jsdoc/no-undefined-types": "off"
   }
 }

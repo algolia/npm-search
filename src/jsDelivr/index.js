@@ -1,12 +1,13 @@
 import got from 'got';
-import log from '../log.js';
+
 import config from '../config.js';
 import datadog from '../datadog.js';
+import log from '../log.js';
 
 const hits = new Map();
 
 /**
- * Load downloads hits
+ * Load downloads hits.
  */
 async function loadHits() {
   const start = Date.now();
@@ -17,7 +18,7 @@ async function loadHits() {
       json: true,
     });
     hits.clear();
-    hitsJSON.forEach(pkg => {
+    hitsJSON.forEach((pkg) => {
       hits.set(pkg.name, pkg.hits);
     });
   } catch (e) {
@@ -28,8 +29,9 @@ async function loadHits() {
 }
 
 /**
- * Get download hits
- * @param {array} pkgs
+ * Get download hits.
+ *
+ * @param {Array} pkgs
  */
 function getHits(pkgs) {
   const start = Date.now();
@@ -51,8 +53,9 @@ function getHits(pkgs) {
 }
 
 /**
- * Get packages files list
- * @param {array} pkgs
+ * Get packages files list.
+ *
+ * @param {Array} pkgs
  */
 async function getAllFilesList(pkgs) {
   const start = Date.now();
@@ -64,7 +67,8 @@ async function getAllFilesList(pkgs) {
 }
 
 /**
- * Get one package files list
+ * Get one package files list.
+ *
  * @param {object} pkg
  */
 async function getFilesList(pkg) {

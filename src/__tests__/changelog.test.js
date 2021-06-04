@@ -9,7 +9,7 @@ jest.mock('got', () => {
     'https://unpkg.com/@atlaskit/button@13.3.7/CHANGELOG.md',
   ]);
 
-  return url =>
+  return (url) =>
     gotSnapshotUrls.has(url)
       ? Promise.resolve({ url, redirectUrls: [] })
       : Promise.reject(`got mock does not exist for ${url}`); // eslint-disable-line prefer-promise-reject-errors

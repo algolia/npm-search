@@ -1,8 +1,9 @@
+import * as npm from '../npm/index.js';
+import { getTypeScriptSupport } from '../typescriptSupport.js';
+import { fileExistsInUnpkg } from '../unpkg.js';
+
 jest.mock('../npm');
 jest.mock('../unpkg');
-import { getTypeScriptSupport } from '../typescriptSupport.js';
-import * as npm from '../npm/index.js';
-import { fileExistsInUnpkg } from '../unpkg.js';
 
 describe('getTypeScriptSupport()', () => {
   it('If types are already calculated - return early', async () => {
@@ -43,7 +44,7 @@ describe('getTypeScriptSupport()', () => {
       });
     });
 
-    it('Checks for a d.ts resolved version of main ', async () => {
+    it('Checks for a d.ts resolved version of main', async () => {
       npm.validatePackageExists.mockResolvedValue(false);
       fileExistsInUnpkg.mockResolvedValue(true);
 

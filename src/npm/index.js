@@ -1,6 +1,6 @@
 import got from 'got';
-import nano from 'nano';
 import chunk from 'lodash/chunk.js';
+import nano from 'nano';
 import numeral from 'numeral';
 
 import config from '../config.js';
@@ -20,9 +20,9 @@ const defaultOptions = {
 };
 
 /**
- * Find all packages in registry
+ * Find all packages in registry.
  *
- * @param {object} options Options param
+ * @param {object} options - Options param.
  */
 async function findAll(options) {
   const start = Date.now();
@@ -61,9 +61,9 @@ async function getDocs({ keys }) {
 }
 
 /**
- * Listen to changes in registry
+ * Listen to changes in registry.
  *
- * @param {object} options Options param
+ * @param {object} options - Options param.
  */
 function listenToChanges(options) {
   const listener = db.follow({
@@ -76,10 +76,10 @@ function listenToChanges(options) {
   listener.on('catchup', () => {
     log.info('Watch has catchup');
   });
-  listener.on('retry', info => {
+  listener.on('retry', (info) => {
     log.info('Registry is retrying to connect', info);
   });
-  listener.on('timeout', info => {
+  listener.on('timeout', (info) => {
     log.info('Watch has timeouted', info);
   });
   listener.on('stop', () => {
@@ -90,7 +90,7 @@ function listenToChanges(options) {
 }
 
 /**
- * Get info about registry
+ * Get info about registry.
  */
 async function getInfo() {
   const start = Date.now();
@@ -110,9 +110,9 @@ async function getInfo() {
 }
 
 /**
- * Validate if a package exists
+ * Validate if a package exists.
  *
- * @param {string} pkgName Package name
+ * @param {string} pkgName - Package name.
  */
 async function validatePackageExists(pkgName) {
   const start = Date.now();
@@ -133,9 +133,9 @@ async function validatePackageExists(pkgName) {
 }
 
 /**
- * Get list of packages that depends of them
+ * Get list of packages that depends of them.
  *
- * @param {Array} pkgs Package list
+ * @param {Array} pkgs - Package list.
  */
 function getDependents(pkgs) {
   // we return 0, waiting for https://github.com/npm/registry/issues/361
@@ -148,7 +148,7 @@ function getDependents(pkgs) {
 }
 
 /**
- * Get total npm downloads
+ * Get total npm downloads.
  */
 async function getTotalDownloads() {
   const {
@@ -164,9 +164,9 @@ async function getTotalDownloads() {
 }
 
 /**
- * Get download stats for a list of packages
+ * Get download stats for a list of packages.
  *
- * @param {string} pkgNames Packages name
+ * @param {string} pkgNames - Packages name.
  */
 async function getDownload(pkgNames) {
   try {
@@ -187,9 +187,9 @@ async function getDownload(pkgNames) {
 }
 
 /**
- * Get downloads for all packages passer in arguments
+ * Get downloads for all packages passer in arguments.
  *
- * @param {array} pkgs Packages
+ * @param {Array} pkgs - Packages.
  */
 async function getDownloads(pkgs) {
   const start = Date.now();
@@ -197,17 +197,17 @@ async function getDownloads(pkgs) {
   // npm has a weird API to get downloads via GET params, so we split pkgs into chunks
   // and do multiple requests to avoid weird cases when concurrency is high
   const encodedPackageNames = pkgs
-    .map(pkg => pkg.name)
-    .filter(name => name[0] !== '@' /* downloads for scoped packages fails */)
-    .map(name => encodeURIComponent(name));
+    .map((pkg) => pkg.name)
+    .filter((name) => name[0] !== '@' /* downloads for scoped packages fails */)
+    .map((name) => encodeURIComponent(name));
   const encodedScopedPackageNames = pkgs
-    .map(pkg => pkg.name)
-    .filter(name => name[0] === '@')
-    .map(name => encodeURIComponent(name));
+    .map((pkg) => pkg.name)
+    .filter((name) => name[0] === '@')
+    .map((name) => encodeURIComponent(name));
 
   // why do we do this? see https://github.com/npm/registry/issues/104
   encodedPackageNames.unshift('');
-  const pkgsNamesChunks = chunk(encodedPackageNames, 100).map(names =>
+  const pkgsNamesChunks = chunk(encodedPackageNames, 100).map((names) =>
     names.join(',')
   );
 
