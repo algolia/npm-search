@@ -14,7 +14,7 @@ const db = registry.use(config.npmRegistryDBName);
 
 // Default request options
 const defaultOptions = {
-  include_docs: true, // eslint-disable-line camelcase
+  include_docs: true,
   conflicts: false,
   attachments: false,
 };

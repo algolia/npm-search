@@ -1,15 +1,6 @@
-// @ts-check
-
 import datadog from './datadog.js';
 import * as npm from './npm/index.js';
 import { fileExistsInUnpkg } from './unpkg.js';
-
-/**
- * @typedef Package
- * @property {string} name
- * @property {string} version
- * @property {{ ts: 'included' | {possible: boolean, dtsMain: string} | false }} types
- */
 
 /**
  * Basically either
@@ -17,7 +8,6 @@ import { fileExistsInUnpkg } from './unpkg.js';
  *   - { types: { ts: "@types/module" }} - for definitely typed support
  *   - { types: { ts: "included" }} - for types shipped with the module.
  *
- * @param {Package} pkg
  */
 export async function getTypeScriptSupport(pkg) {
   // Already calculated in `formatPkg`

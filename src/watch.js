@@ -85,7 +85,7 @@ async function catchup(stateManager, mainIndex) {
       const changes = await npm.getChanges({
         since: seq,
         limit: config.replicateConcurrency,
-        include_docs: true, // eslint-disable-line camelcase
+        include_docs: true,
       });
       hasCaughtUp = await loop(stateManager, mainIndex, changes);
     } catch (err) {
@@ -105,7 +105,7 @@ async function watch(stateManager, mainIndex) {
   const { seq } = await stateManager.get();
   const listener = npm.listenToChanges({
     since: seq,
-    include_docs: false, // eslint-disable-line camelcase
+    include_docs: false,
     heartbeat: 30 * 1000,
     limit: 100,
   });
@@ -136,7 +136,6 @@ async function watch(stateManager, mainIndex) {
       await loop(
         stateManager,
         mainIndex,
-        // eslint-disable-next-line camelcase
         { results: [doc], last_seq: change.seq },
         change.seq
       );
