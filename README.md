@@ -2,7 +2,7 @@
 
 [npm](https://www.npmjs.com/) ↔️ [Algolia](https://www.algolia.com/) replication tool.
 
-[![CircleCI](https://circleci.com/gh/algolia/npm-search/tree/master.svg?style=svg))](https://circleci.com/gh/algolia/npm-search/tree/master)
+[![CircleCI](https://circleci.com/gh/algolia/npm-search/tree/master.svg?style=svg)](https://circleci.com/gh/algolia/npm-search/tree/master)
 
 ---
 
