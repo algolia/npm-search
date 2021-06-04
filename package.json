@@ -8,7 +8,7 @@
     "url": "https://www.algolia.com"
   },
   "scripts": {
-    "start": "node --max-old-space-size=920 --experimental-modules src/index.js",
+    "start": "node --max-old-space-size=920 src/index.js",
     "test": "jest --forceExit",
     "test:watch": "jest --watchAll --no-watchman",
     "lint": "eslint --ext=jsx,ts,tsx,js .",
