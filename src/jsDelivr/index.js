@@ -1,4 +1,4 @@
-import config from '../config.js';
+import { config } from '../config.ts';
 import datadog from '../datadog.js';
 import log from '../log.js';
 import { request } from '../utils/request.js';

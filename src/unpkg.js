@@ -1,4 +1,4 @@
-import config from './config.js';
+import { config } from './config.ts';
 import { request } from './utils/request.js';
 
 // make a head request to a route like:

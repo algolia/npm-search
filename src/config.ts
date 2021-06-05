@@ -1,6 +1,6 @@
 import ms from 'ms';
 
-const defaultConfig = {
+export const config = {
   npmRegistryEndpoint: 'https://replicate.npmjs.com',
   npmRegistryDBName: 'registry',
   npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
@@ -155,17 +155,9 @@ const defaultConfig = {
   ],
 };
 
-export default Object.entries(defaultConfig).reduce(
-  (res, [key, defaultValue]) => ({
-    ...res,
-    [key]:
-      key in process.env
-        ? JSON.parse(
-            typeof defaultValue === 'string'
-              ? `"${process.env[key]}"`
-              : process.env[key]
-          )
-        : defaultValue,
-  }),
-  {}
-);
+Object.entries(process.env).forEach(([key, value]) => {
+  if (typeof config[key] !== 'undefined') {
+    config[key] =
+      typeof config[key] === 'number' ? parseInt(value!, 10) : value;
+  }
+});
