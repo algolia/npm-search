@@ -4,7 +4,7 @@ import { config } from './config.ts';
 import createStateManager from './createStateManager.js';
 import { datadog } from './datadog.ts';
 import * as jsDelivr from './jsDelivr/index.js';
-import log from './log.js';
+import { log } from './utils/log.ts';
 import * as sentry from './utils/sentry.js';
 import * as watch from './watch.js';
 

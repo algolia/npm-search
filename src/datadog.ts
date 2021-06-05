@@ -1,6 +1,6 @@
 import StatsD from 'hot-shots';
 
-import log from './log.js';
+import { log } from './utils/log.ts';
 
 const env = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
 

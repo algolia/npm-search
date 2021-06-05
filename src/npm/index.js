@@ -4,7 +4,7 @@ import numeral from 'numeral';
 
 import { config } from '../config.ts';
 import { datadog } from '../datadog.ts';
-import log from '../log.js';
+import { log } from '../utils/log.ts';
 import { request } from '../utils/request.js';
 
 const registry = nano({

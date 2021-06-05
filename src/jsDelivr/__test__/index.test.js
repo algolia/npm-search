@@ -1,10 +1,12 @@
-import log from '../../log.js';
+import { log } from '../../utils/log.ts';
 import * as api from '../index.js';
 
-jest.mock('../../log.js', () => {
+jest.mock('../../utils/log.ts', () => {
   return {
-    info: jest.fn(),
-    warn: jest.fn(),
+    log: {
+      info: jest.fn(),
+      warn: jest.fn(),
+    },
   };
 });
 

@@ -8,7 +8,7 @@ const stream = bunyanDebugStream({
   showPid: process.env.NODE_ENV !== 'production',
 });
 
-const logger = bunyan.createLogger({
+export const log = bunyan.createLogger({
   name: 'npm-search',
   streams: [
     {
@@ -19,5 +19,3 @@ const logger = bunyan.createLogger({
   ],
   serializers: bunyanDebugStream.serializers,
 });
-
-export default logger;
