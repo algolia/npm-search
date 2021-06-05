@@ -14,7 +14,7 @@ const options = {
 export const httpAgent = new http.Agent(options);
 export const httpsAgent = new https.Agent(options);
 
-export async function request(url, opts) {
+export async function request(url, opts): Promise<ReturnType<typeof got>> {
   return await got(url, {
     ...opts,
     agent: {

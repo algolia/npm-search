@@ -5,7 +5,7 @@ import numeral from 'numeral';
 import { config } from '../config';
 import { datadog } from '../datadog';
 import { log } from '../utils/log';
-import { request } from '../utils/request.js';
+import { request } from '../utils/request';
 
 const registry = nano({
   url: config.npmRegistryEndpoint,
