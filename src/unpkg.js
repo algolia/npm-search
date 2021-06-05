@@ -1,5 +1,5 @@
 import { config } from './config';
-import { request } from './utils/request.js';
+import { request } from './utils/request';
 
 // make a head request to a route like:
 // https://unpkg.com/lodash@4.17.11/_LazyWrapper.js
