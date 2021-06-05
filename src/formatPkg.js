@@ -46,15 +46,14 @@ export default function formatPkg(pkg) {
       : cleaned.repository;
   // If defaultRepository is undefined or it does not have an URL
   // we don't include it.
-  const repository =
-    defaultRepository && defaultRepository.url
-      ? {
-          ...defaultRepository, // Default info: type, url
-          ...getRepositoryInfo(cleaned.repository), // Extra info: host, project, user...
-          head: cleaned.gitHead,
-          branch: cleaned.gitHead || 'master',
-        }
-      : null;
+  const repository = defaultRepository?.url
+    ? {
+        ...defaultRepository, // Default info: type, url
+        ...getRepositoryInfo(cleaned.repository), // Extra info: host, project, user...
+        head: cleaned.gitHead,
+        branch: cleaned.gitHead || 'master',
+      }
+    : null;
 
   const types = getTypes(cleaned);
 
@@ -85,7 +84,7 @@ export default function formatPkg(pkg) {
     originalAuthor: cleaned.author,
     repository,
     githubRepo,
-    gitHead: githubRepo && githubRepo.head, // remove this when we update to the new schema frontend
+    gitHead: githubRepo ? githubRepo.head : null, // remove this when we update to the new schema frontend
     readme: pkg.readme,
     owner,
     deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
@@ -148,12 +147,11 @@ function truncatePackage(pkg) {
               [pkg.version]: pkg.versions[pkg.version],
             }
           : null;
-      smallerPkg.tags =
-        pkg.tags && pkg.tags.latest
-          ? {
-              latest: pkg.tags.latest,
-            }
-          : null;
+      smallerPkg.tags = pkg?.tags?.latest
+        ? {
+            latest: pkg.tags.latest,
+          }
+        : null;
       smallerPkg.owners = [smallerPkg.owner];
     }
   }
@@ -214,7 +212,7 @@ function getLicense(cleaned) {
 }
 
 function getOwner(repository, lastPublisher, author) {
-  if (repository && repository.user) {
+  if (repository?.user) {
     const { user } = repository;
 
     if (repository.host === 'github.com') {
@@ -228,7 +226,7 @@ function getOwner(repository, lastPublisher, author) {
     if (repository.host === 'gitlab.com') {
       return {
         name: user,
-        avatar: lastPublisher && lastPublisher.avatar,
+        avatar: lastPublisher?.avatar,
         link: `https://gitlab.com/${user}`,
       };
     }
@@ -262,7 +260,7 @@ function getGravatar(obj) {
 }
 
 export function getVersions(cleaned, rawPkg) {
-  if (cleaned.other && cleaned.other.time) {
+  if (cleaned?.other?.time) {
     const realVersions = Object.keys(rawPkg.versions);
 
     return Object.fromEntries(
