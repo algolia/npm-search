@@ -1,7 +1,7 @@
 import queue from 'async/queue.js';
 import ms from 'ms';
 
-import config from './config.js';
+import { config } from './config.ts';
 import { datadog } from './datadog.ts';
 import log from './log.js';
 import * as npm from './npm/index.js';
