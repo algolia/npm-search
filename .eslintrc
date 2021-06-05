@@ -8,14 +8,17 @@
     "valid-jsdoc": "off",
     "import/extensions": [
       "error",
-      "always",
       {
-        "ignorePackages": true
+        "ignorePackages": true,
+        "pattern": {
+          "js": "always",
+          "ts": "never"
+        }
       }
     ],
     // temp during mig
     "jsdoc/require-param-description": "off",
     "jsdoc/require-description": "off",
-    "jsdoc/no-undefined-types": "off"
+    "jsdoc/no-undefined-types": "off",
   }
 }

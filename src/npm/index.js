@@ -2,9 +2,9 @@ import chunk from 'lodash/chunk.js';
 import nano from 'nano';
 import numeral from 'numeral';
 
-import { config } from '../config.ts';
-import { datadog } from '../datadog.ts';
-import log from '../log.js';
+import { config } from '../config';
+import { datadog } from '../datadog';
+import { log } from '../utils/log';
 import { request } from '../utils/request.js';
 
 const registry = nano({

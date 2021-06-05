@@ -1,11 +1,11 @@
 import ms from 'ms';
 
 import * as algolia from './algolia/index.js';
-import { config } from './config.ts';
-import { datadog } from './datadog.ts';
-import log from './log.js';
+import { config } from './config';
+import { datadog } from './datadog';
 import * as npm from './npm/index.js';
 import saveDocs from './saveDocs.js';
+import { log } from './utils/log';
 
 let loopStart;
 
