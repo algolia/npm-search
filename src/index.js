@@ -2,7 +2,7 @@ import * as algolia from './algolia/index.js';
 import * as bootstrap from './bootstrap.js';
 import config from './config.js';
 import createStateManager from './createStateManager.js';
-import datadog from './datadog.js';
+import { datadog } from './datadog.ts';
 import * as jsDelivr from './jsDelivr/index.js';
 import log from './log.js';
 import * as sentry from './utils/sentry.js';

@@ -3,7 +3,7 @@ import nano from 'nano';
 import numeral from 'numeral';
 
 import config from '../config.js';
-import datadog from '../datadog.js';
+import { datadog } from '../datadog.ts';
 import log from '../log.js';
 import { request } from '../utils/request.js';
 

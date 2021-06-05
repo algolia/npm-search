@@ -1,4 +1,4 @@
-import datadog from './datadog.js';
+import { datadog } from './datadog.ts';
 import * as npm from './npm/index.js';
 import { fileExistsInUnpkg } from './unpkg.js';
 
