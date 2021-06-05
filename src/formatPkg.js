@@ -7,7 +7,7 @@ import sizeof from 'object-sizeof';
 import traverse from 'traverse';
 import truncate from 'truncate-utf8-bytes';
 
-import { config } from './config.ts';
+import { config } from './config';
 
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 

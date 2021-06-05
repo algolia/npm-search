@@ -1,10 +1,10 @@
 import * as algolia from './algolia/index.js';
 import * as bootstrap from './bootstrap.js';
-import { config } from './config.ts';
+import { config } from './config';
 import createStateManager from './createStateManager.js';
-import { datadog } from './datadog.ts';
+import { datadog } from './datadog';
 import * as jsDelivr from './jsDelivr/index.js';
-import { log } from './utils/log.ts';
+import { log } from './utils/log';
 import * as sentry from './utils/sentry.js';
 import * as watch from './watch.js';
 

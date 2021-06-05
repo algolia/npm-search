@@ -1,10 +1,10 @@
 import { getChangelogs } from './changelog.js';
-import { datadog } from './datadog.ts';
+import { datadog } from './datadog';
 import formatPkg from './formatPkg.js';
 import * as jsDelivr from './jsDelivr/index.js';
 import * as npm from './npm/index.js';
 import { getTSSupport } from './typescriptSupport.js';
-import { log } from './utils/log.ts';
+import { log } from './utils/log';
 
 export default async function saveDocs({ docs, index }) {
   const start = Date.now();

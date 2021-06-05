@@ -1,5 +1,5 @@
-import { config } from './config.ts';
-import { datadog } from './datadog.ts';
+import { config } from './config';
+import { datadog } from './datadog';
 
 const defaultState = {
   seq: config.seq,
