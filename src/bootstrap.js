@@ -1,6 +1,6 @@
 import ms from 'ms';
 
-import * as algolia from './algolia/index.js';
+import * as algolia from './algolia/index';
 import { config } from './config';
 import * as npm from './npm/index.js';
 import saveDocs from './saveDocs.js';
