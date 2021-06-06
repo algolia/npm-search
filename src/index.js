@@ -1,4 +1,4 @@
-import * as algolia from './algolia/index.js';
+import * as algolia from './algolia/index';
 import * as bootstrap from './bootstrap.js';
 import { config } from './config';
 import createStateManager from './createStateManager.js';

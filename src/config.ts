@@ -1,3 +1,4 @@
+import type { Settings, Synonym, Rule } from '@algolia/client-search';
 import ms from 'ms';
 
 export const config = {
@@ -153,6 +154,12 @@ export const config = {
       objectID: 'keyword-filter',
     },
   ],
+};
+
+export type Config = typeof config & {
+  indexSettings: Settings;
+  indexSynonyms: Synonym[];
+  indexRules: Rule[];
 };
 
 Object.entries(process.env).forEach(([key, value]) => {
