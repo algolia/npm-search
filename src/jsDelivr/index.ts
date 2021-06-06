@@ -1,23 +1,27 @@
+import type { RawPkg } from '../@types/pkg';
 import { config } from '../config';
 import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
 import { request } from '../utils/request';
 
-const hits = new Map();
+type Hit = { type: 'npm'; name: string; hits: number };
+type File = { name: string; hash: string; time: string; size: number };
+const hits = new Map<string, number>();
 
 /**
  * Load downloads hits.
  */
-async function loadHits() {
+async function loadHits(): Promise<void> {
   const start = Date.now();
   log.info('📦  Loading hits from jsDelivr');
 
   try {
-    const { body: hitsJSON } = await request(config.jsDelivrHitsEndpoint, {
+    const res = await request<Hit[]>(config.jsDelivrHitsEndpoint, {
       responseType: 'json',
     });
+
     hits.clear();
-    hitsJSON.forEach((pkg) => {
+    res.body.forEach((pkg) => {
       hits.set(pkg.name, pkg.hits);
     });
   } catch (e) {
@@ -29,10 +33,11 @@ async function loadHits() {
 
 /**
  * Get download hits.
- *
- * @param {Array} pkgs
  */
-function getHits(pkgs) {
+function getHits(pkgs: Array<Pick<RawPkg, 'name'>>): Array<{
+  jsDelivrHits: number;
+  _searchInternal: { jsDelivrPopularity: number };
+}> {
   const start = Date.now();
   const all = pkgs.map(({ name }) => {
     const jsDelivrHits = hits.get(name) || 0;
@@ -53,10 +58,10 @@ function getHits(pkgs) {
 
 /**
  * Get packages files list.
- *
- * @param {Array} pkgs
  */
-async function getAllFilesList(pkgs) {
+async function getAllFilesList(
+  pkgs: Array<Pick<RawPkg, 'name' | 'version'>>
+): Promise<File[][]> {
   const start = Date.now();
 
   const files = await Promise.all(pkgs.map(getFilesList));
@@ -67,10 +72,10 @@ async function getAllFilesList(pkgs) {
 
 /**
  * Get one package files list.
- *
- * @param {object} pkg
  */
-async function getFilesList(pkg) {
+async function getFilesList(
+  pkg: Pick<RawPkg, 'name' | 'version'>
+): Promise<File[]> {
   const start = Date.now();
   if (!pkg.name || !pkg.version) {
     throw new Error(
@@ -78,9 +83,9 @@ async function getFilesList(pkg) {
     );
   }
 
-  let files = [];
+  let files: File[] = [];
   try {
-    const response = await request(
+    const response = await request<{ default: string; files: File[] }>(
       `${config.jsDelivrPackageEndpoint}/${pkg.name}@${pkg.version}/flat`,
       {
         responseType: 'json',
