@@ -20,10 +20,14 @@ export interface GithubRepo {
   head: string;
 }
 
-export interface TsType {
-  ts: 'definitely-typed' | 'included' | false;
-  definitelyTyped: string | null;
-}
+export type TsType =
+  | {
+      ts: 'included' | false | { possible: true; dtsMain: string };
+    }
+  | {
+      ts: 'definitely-typed';
+      definitelyTyped: string;
+    };
 
 export type ModuleType = 'esm' | 'cjs' | 'unknown';
 
