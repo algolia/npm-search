@@ -1,5 +1,5 @@
 import * as npm from './npm/index.js';
-import { fileExistsInUnpkg } from './unpkg.js';
+import { fileExistsInUnpkg } from './unpkg';
 import { datadog } from './utils/datadog';
 
 /**
