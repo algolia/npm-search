@@ -5,7 +5,7 @@ import createStateManager from './createStateManager.js';
 import { datadog } from './datadog';
 import * as jsDelivr from './jsDelivr/index.js';
 import { log } from './utils/log';
-import * as sentry from './utils/sentry.js';
+import * as sentry from './utils/sentry';
 import * as watch from './watch.js';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
