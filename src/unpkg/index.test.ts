@@ -1,4 +1,4 @@
-import { fileExistsInUnpkg } from '../unpkg.js';
+import { fileExistsInUnpkg } from './index';
 
 describe('unpkg', () => {
   it('should do a successful HEAD request', async () => {

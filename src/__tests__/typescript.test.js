@@ -1,6 +1,6 @@
 import * as npm from '../npm/index.js';
 import { getTypeScriptSupport } from '../typescriptSupport.js';
-import { fileExistsInUnpkg } from '../unpkg.js';
+import { fileExistsInUnpkg } from '../unpkg';
 
 jest.mock('../npm');
 jest.mock('../unpkg');
