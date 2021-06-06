@@ -11,7 +11,7 @@ import { datadog } from './utils/datadog';
  *
  */
 export async function getTypeScriptSupport(
-  pkg: Pick<RawPkg, 'name' | 'types'>
+  pkg: Pick<RawPkg, 'name' | 'types' | 'version'>
 ): Promise<Pick<RawPkg, 'types'>> {
   // Already calculated in `formatPkg`
   if (typeof pkg.types.ts === 'string') {
@@ -53,7 +53,7 @@ export async function getTypeScriptSupport(
  * @param pkgs
  */
 export async function getTSSupport(
-  pkgs: Array<Pick<RawPkg, 'name' | 'types'>>
+  pkgs: Array<Pick<RawPkg, 'name' | 'types' | 'version'>>
 ): Promise<Array<Pick<RawPkg, 'types'>>> {
   const start = Date.now();
 

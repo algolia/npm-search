@@ -10,6 +10,7 @@ describe('getTypeScriptSupport()', () => {
     const typesSupport = await getTypeScriptSupport({
       name: 'Has Types',
       types: { ts: 'included' },
+      version: '1.0.0',
     });
 
     expect(typesSupport).toEqual({ types: { ts: 'included' } });
@@ -22,6 +23,7 @@ describe('getTypeScriptSupport()', () => {
       const atTypesSupport = await getTypeScriptSupport({
         name: 'my-lib',
         types: { ts: false },
+        version: '1.0.0',
       });
       expect(atTypesSupport).toEqual({
         types: {
@@ -37,6 +39,7 @@ describe('getTypeScriptSupport()', () => {
       const atTypesSupport = await getTypeScriptSupport({
         name: '@my-scope/my-lib',
         types: { ts: false },
+        version: '1.0.0',
       });
       expect(atTypesSupport).toEqual({
         types: {
@@ -55,6 +58,7 @@ describe('getTypeScriptSupport()', () => {
       const typesSupport = await getTypeScriptSupport({
         name: 'my-lib',
         types: { ts: { possible: true, dtsMain: 'main.d.ts' } },
+        version: '1.0.0',
       });
       expect(typesSupport).toEqual({ types: { ts: 'included' } });
     });
@@ -68,6 +72,7 @@ describe('getTypeScriptSupport()', () => {
       const typesSupport = await getTypeScriptSupport({
         name: 'my-lib',
         types: { ts: false },
+        version: '1.0.0',
       });
       expect(typesSupport).toEqual({ types: { ts: false } });
     });
