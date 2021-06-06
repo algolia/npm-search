@@ -1,7 +1,7 @@
 import { getChangelogs } from './changelog';
 import formatPkg from './formatPkg.js';
 import * as jsDelivr from './jsDelivr';
-import * as npm from './npm/index.js';
+import * as npm from './npm';
 import { getTSSupport } from './typescriptSupport.js';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
