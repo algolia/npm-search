@@ -11,7 +11,7 @@ export interface Repo {
   user: string;
   project: string;
   path: string;
-  branch: string;
+  branch?: string;
 }
 export interface GithubRepo {
   user: string;
@@ -41,7 +41,7 @@ export interface RawPkg {
   dependencies: Record<string, string>;
   devDependencies: Record<string, string>;
   originalAuthor: string;
-  repository: Repo;
+  repository: Repo | null;
   githubRepo: GithubRepo | null;
   gitHead: string | null;
   readme: string;

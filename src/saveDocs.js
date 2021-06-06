@@ -1,4 +1,4 @@
-import { getChangelogs } from './changelog.js';
+import { getChangelogs } from './changelog';
 import formatPkg from './formatPkg.js';
 import * as jsDelivr from './jsDelivr';
 import * as npm from './npm/index.js';
