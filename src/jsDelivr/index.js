@@ -1,5 +1,5 @@
 import { config } from '../config';
-import { datadog } from '../datadog';
+import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
 import { request } from '../utils/request';
 

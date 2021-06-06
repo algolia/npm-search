@@ -1,7 +1,7 @@
 import race from 'promise-rat-race';
 
 import { config } from './config';
-import { datadog } from './datadog';
+import { datadog } from './utils/datadog';
 import { request } from './utils/request';
 
 export const baseUrlMap = new Map([

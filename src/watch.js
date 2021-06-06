@@ -2,9 +2,9 @@ import queue from 'async/queue.js';
 import ms from 'ms';
 
 import { config } from './config';
-import { datadog } from './datadog';
 import * as npm from './npm/index.js';
 import saveDocs from './saveDocs.js';
+import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
 

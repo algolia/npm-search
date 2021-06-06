@@ -1,9 +1,9 @@
 import { getChangelogs } from './changelog.js';
-import { datadog } from './datadog';
 import formatPkg from './formatPkg.js';
 import * as jsDelivr from './jsDelivr/index.js';
 import * as npm from './npm/index.js';
 import { getTSSupport } from './typescriptSupport.js';
+import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 
 export default async function saveDocs({ docs, index }) {

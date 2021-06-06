@@ -1,5 +1,5 @@
 import { config } from './config';
-import { datadog } from './datadog';
+import { datadog } from './utils/datadog';
 
 const defaultState = {
   seq: config.seq,
