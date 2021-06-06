@@ -1,7 +1,7 @@
+import { StateManager } from './StateManager';
 import * as algolia from './algolia/index';
 import * as bootstrap from './bootstrap.js';
 import { config } from './config';
-import createStateManager from './createStateManager.js';
 import * as jsDelivr from './jsDelivr/index';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
@@ -39,7 +39,7 @@ async function main() {
   datadog.timing('main.init_algolia', Date.now() - start);
 
   // Create State Manager that holds progression of indexing
-  const stateManager = createStateManager(mainIndex);
+  const stateManager = new StateManager(mainIndex);
 
   // Preload some useful data
   await jsDelivr.loadHits();
