@@ -6,7 +6,7 @@ import { datadog } from './datadog';
 import * as npm from './npm/index.js';
 import saveDocs from './saveDocs.js';
 import { log } from './utils/log';
-import * as sentry from './utils/sentry.js';
+import * as sentry from './utils/sentry';
 
 let loopStart = Date.now();
 let totalSequence; // Cached npmInfo.seq

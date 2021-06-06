@@ -9,7 +9,7 @@ Sentry.init({
   serverName: 'npm-search',
 });
 
-export function report(err, extra = {}) {
+export function report(err, extra = {}): void {
   log.error(err.message);
   if (!process.env.SENTRY_DSN) {
     log.error(err);
@@ -22,10 +22,10 @@ export function report(err, extra = {}) {
   });
 }
 
-export function drain() {
+export async function drain(): Promise<boolean> {
   const client = Sentry.getCurrentHub().getClient();
   if (client) {
-    return client.close(2000);
+    return await client.close(2000);
   }
-  return Promise.resolve();
+  return true;
 }
