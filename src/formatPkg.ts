@@ -80,13 +80,12 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     typeof cleaned.repository === 'string'
       ? { type: 'git', url: cleaned.repository }
       : cleaned.repository;
-  const githubRepo =
-    cleaned.repository && cleaned.gitHead
-      ? getGitHubRepoInfo({
-          repository: defaultRepository,
-          gitHead: cleaned.gitHead,
-        })
-      : null;
+  const githubRepo = cleaned.repository
+    ? getGitHubRepoInfo({
+        repository: defaultRepository,
+        gitHead: cleaned.gitHead,
+      })
+    : null;
 
   if (!githubRepo && !lastPublisher && !author) {
     return undefined; // ignore this package, we cannot link it to anyone
@@ -372,7 +371,7 @@ function getGitHubRepoInfo({
   gitHead = 'master',
 }: {
   repository: PackageRepo;
-  gitHead: string;
+  gitHead?: string;
 }): GithubRepo | null {
   const result = repository.url.match(
     /^https:\/\/(?:www\.)?github.com\/([^/]+)\/([^/]+)(\/.+)?$/
@@ -447,7 +446,7 @@ export function getRepositoryInfo(
   }
 
   const url = typeof repository === 'string' ? repository : repository.url;
-  const path = typeof repository === 'string' ? '' : '';
+  const path = typeof repository === 'string' ? '' : repository.directory || '';
 
   if (!url) {
     return null;

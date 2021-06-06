@@ -131,7 +131,7 @@ it('adds babel plugins', () => {
     keywords: ['dogs'],
   };
 
-  const formattedDogs = formatPkg(dogs);
+  const formattedDogs = formatPkg(pkg);
   const formattedUnofficialDogs = formatPkg(unofficialDogs);
 
   expect(formattedDogs.keywords).toEqual(['babel']);
@@ -283,6 +283,7 @@ describe('getRepositoryInfo', () => {
       user: 'user',
       project: 'repo',
       path: '',
+      url: 'gitlab:user/repo',
     });
 
     expect(getRepositoryInfo('github:user/repo')).toEqual({
@@ -290,6 +291,7 @@ describe('getRepositoryInfo', () => {
       user: 'user',
       project: 'repo',
       path: '',
+      url: 'github:user/repo',
     });
 
     expect(getRepositoryInfo('bitbucket:user/repo')).toEqual({
@@ -297,6 +299,7 @@ describe('getRepositoryInfo', () => {
       user: 'user',
       project: 'repo',
       path: '',
+      url: 'bitbucket:user/repo',
     });
   });
 
@@ -306,6 +309,7 @@ describe('getRepositoryInfo', () => {
         'https://github.com/babel/babel/tree/master/packages/babel'
       )
     ).toEqual({
+      url: 'https://github.com/babel/babel/tree/master/packages/babel',
       host: 'github.com',
       user: 'babel',
       project: 'babel',
@@ -317,6 +321,7 @@ describe('getRepositoryInfo', () => {
         'https://gitlab.com/user/repo/tree/master/packages/a-package'
       )
     ).toEqual({
+      url: 'https://gitlab.com/user/repo/tree/master/packages/a-package',
       host: 'gitlab.com',
       user: 'user',
       project: 'repo',
@@ -332,6 +337,7 @@ describe('getRepositoryInfo', () => {
       user: 'user',
       project: 'repo',
       path: '/src/ae8df4cd0e809a789e3f96fd114075191c0d5c8b/packages/project1',
+      url: 'https://bitbucket.org/user/repo/src/ae8df4cd0e809a789e3f96fd114075191c0d5c8b/packages/project1',
     });
 
     expect(
@@ -343,6 +349,7 @@ describe('getRepositoryInfo', () => {
       user: 'atlassian',
       project: 'confluence-web-components',
       path: '',
+      url: 'git+https://bitbucket.org/atlassian/confluence-web-components.git',
     });
 
     expect(
@@ -352,6 +359,7 @@ describe('getRepositoryInfo', () => {
       user: '2klicdev',
       project: '2klic-sdk',
       path: '',
+      url: 'https://bitbucket.org/2klicdev/2klic-sdk.git',
     });
   });
 
@@ -388,6 +396,7 @@ describe('getRepositoryInfo', () => {
       user: 'webpack',
       project: 'webpack',
       path: '',
+      url: 'https://github.com/webpack/webpack.git',
     });
 
     expect(getRepositoryInfo(gitlabRepo)).toEqual({
@@ -395,6 +404,7 @@ describe('getRepositoryInfo', () => {
       user: 'hyper-expanse',
       project: 'semantic-release-gitlab',
       path: '',
+      url: 'git+https://gitlab.com/hyper-expanse/semantic-release-gitlab.git',
     });
 
     expect(getRepositoryInfo(bitbucketRepo)).toEqual({
@@ -402,6 +412,7 @@ describe('getRepositoryInfo', () => {
       user: '2klicdev',
       project: '2klic-sdk',
       path: '',
+      url: 'git+https://bitbucket.org/2klicdev/2klic-sdk.git',
     });
 
     expect(getRepositoryInfo(githubRepoWithDirectory)).toEqual({
@@ -409,6 +420,7 @@ describe('getRepositoryInfo', () => {
       user: 'facebook',
       project: 'react',
       path: 'packages/react-dom',
+      url: 'https://github.com/facebook/react.git',
     });
 
     expect(getRepositoryInfo(githubRepoWithPathUrlAndDirectory)).toEqual({
@@ -416,6 +428,7 @@ describe('getRepositoryInfo', () => {
       user: 'facebook',
       project: 'react',
       path: 'packages/react-dom',
+      url: 'https://github.com/facebook/react/tree/master/packages/wrong',
     });
   });
 
