@@ -1,5 +1,5 @@
 import * as npm from '../npm';
-import { getTypeScriptSupport } from '../typescriptSupport.js';
+import { getTypeScriptSupport } from '../typescriptSupport';
 import { fileExistsInUnpkg } from '../unpkg';
 
 jest.mock('../npm');
@@ -17,6 +17,7 @@ describe('getTypeScriptSupport()', () => {
 
   describe('without types/typings', () => {
     it('Checks for @types/[name]', async () => {
+      // @ts-expect-error
       npm.validatePackageExists.mockResolvedValue(true);
       const atTypesSupport = await getTypeScriptSupport({
         name: 'my-lib',
@@ -31,6 +32,7 @@ describe('getTypeScriptSupport()', () => {
     });
 
     it('Checks for @types/[scope__name]', async () => {
+      // @ts-expect-error
       npm.validatePackageExists.mockResolvedValue(true);
       const atTypesSupport = await getTypeScriptSupport({
         name: '@my-scope/my-lib',
@@ -45,7 +47,9 @@ describe('getTypeScriptSupport()', () => {
     });
 
     it('Checks for a d.ts resolved version of main', async () => {
+      // @ts-expect-error
       npm.validatePackageExists.mockResolvedValue(false);
+      // @ts-expect-error
       fileExistsInUnpkg.mockResolvedValue(true);
 
       const typesSupport = await getTypeScriptSupport({
@@ -56,7 +60,9 @@ describe('getTypeScriptSupport()', () => {
     });
 
     it('Handles not having any possible TS types', async () => {
+      // @ts-expect-error
       npm.validatePackageExists.mockResolvedValue(false);
+      // @ts-expect-error
       fileExistsInUnpkg.mockResolvedValue(false);
 
       const typesSupport = await getTypeScriptSupport({

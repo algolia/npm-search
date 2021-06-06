@@ -1,3 +1,4 @@
+import type { RawPkg } from './@types/pkg';
 import * as npm from './npm';
 import { fileExistsInUnpkg } from './unpkg';
 import { datadog } from './utils/datadog';
@@ -9,7 +10,9 @@ import { datadog } from './utils/datadog';
  *   - { types: { ts: "included" }} - for types shipped with the module.
  *
  */
-export async function getTypeScriptSupport(pkg) {
+export async function getTypeScriptSupport(
+  pkg: Pick<RawPkg, 'name' | 'types'>
+): Promise<Pick<RawPkg, 'types'>> {
   // Already calculated in `formatPkg`
   if (typeof pkg.types.ts === 'string') {
     return { types: pkg.types };
@@ -47,9 +50,11 @@ export async function getTypeScriptSupport(pkg) {
 }
 
 /**
- * @param {Array<Package>} pkgs
+ * @param pkgs
  */
-export async function getTSSupport(pkgs) {
+export async function getTSSupport(
+  pkgs: Array<Pick<RawPkg, 'name' | 'types'>>
+): Promise<Array<Pick<RawPkg, 'types'>>> {
   const start = Date.now();
 
   const all = await Promise.all(pkgs.map(getTypeScriptSupport));
