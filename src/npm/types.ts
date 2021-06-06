@@ -57,6 +57,9 @@ export interface GetPackage {
     modified: string;
     [key: string]: string;
   };
+  author?: GetUser;
   users?: Record<string, boolean>;
   versions: Record<string, GetVersion>;
+  keywords?: string[];
+  contributors?: Array<{ name: string }>;
 }

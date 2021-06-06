@@ -6,6 +6,7 @@ import formatPkg, {
   getMains,
   getVersions,
 } from '../formatPkg';
+import type { GetPackage } from '../npm/types';
 
 import preact from './preact-simplified.json';
 import rawPackages from './rawPackages.json';
@@ -47,12 +48,15 @@ it('keeps .bin intact', () => {
 });
 
 it('truncates long readmes', () => {
-  const object = {
+  const pkg: GetPackage = {
     name: 'long-boy',
-    lastPublisher: { name: 'unknown' },
     readme: 'Hello, World! '.repeat(40000),
+
+    _id: '0',
+    'dist-tags': {},
+    _rev: '',
   };
-  const formatted = formatPkg(object);
+  const formatted = formatPkg(pkg);
   const postfix = ' **TRUNCATED**';
   const ending = formatted.readme.substr(
     formatted.readme.length - postfix.length
@@ -70,14 +74,13 @@ it('truncates long readmes', () => {
 });
 
 it('adds angular cli schematics', () => {
-  const angularSchema = {
+  const pkg = {
     name: 'angular-cli-schema-1',
     schematics: 'bli-blo',
     keywords: ['hi'],
-    lastPublisher: { name: 'angular-god' },
   };
 
-  const formatted = formatPkg(angularSchema);
+  const formatted = formatPkg(pkg);
   expect(formatted.keywords).toEqual(['hi']);
   expect(formatted.computedKeywords).toEqual(['angular-cli-schematic']);
   expect(formatted.computedMetadata).toEqual({
@@ -86,15 +89,13 @@ it('adds angular cli schematics', () => {
 });
 
 it('adds babel plugins', () => {
-  const dogs = {
+  const pkg: GetPackage = {
     name: '@babel/plugin-dogs',
     keywords: 'babel',
-    lastPublisher: { name: 'xtuc' },
   };
   const unofficialDogs = {
     name: 'babel-plugin-dogs',
     keywords: ['dogs'],
-    lastPublisher: { name: 'unknown' },
   };
 
   const formattedDogs = formatPkg(dogs);
@@ -108,20 +109,17 @@ it('adds babel plugins', () => {
 });
 
 describe('adds vue-cli plugins', () => {
-  const dogs = {
+  const pkg: GetPackage = {
     name: '@vue/cli-plugin-dogs',
-    lastPublisher: { name: 'xtuc' },
   };
   const unofficialDogs = {
     name: 'vue-cli-plugin-dogs',
-    lastPublisher: { name: 'unknown' },
   };
   const scopedDogs = {
     name: '@dogs/vue-cli-plugin-dogs',
-    lastPublisher: { name: 'unknown' },
   };
 
-  const formattedDogs = formatPkg(dogs);
+  const formattedDogs = formatPkg(pkg);
   const formattedUnofficialDogs = formatPkg(unofficialDogs);
   const formattedScopedDogs = formatPkg(scopedDogs);
 
@@ -140,28 +138,25 @@ describe('adds vue-cli plugins', () => {
 
 describe('adds yeoman generators', () => {
   it('should add if matches the criterions', () => {
-    const dogs = {
+    const pkg: GetPackage = {
       name: 'generator-dogs',
       keywords: ['yeoman-generator'],
-      lastPublisher: { name: 'unknown' },
     };
     const formattedDogs = formatPkg(dogs);
     expect(formattedDogs.computedKeywords).toEqual(['yeoman-generator']);
   });
   it('should not add if does not start with generator-', () => {
-    const dogs = {
+    const pkg: GetPackage = {
       name: 'foo-dogs',
       keywords: ['yeoman-generator'],
-      lastPublisher: { name: 'unknown' },
     };
     const formattedDogs = formatPkg(dogs);
     expect(formattedDogs.computedKeywords).toEqual([]);
   });
   it('should not add if does not contain yeoman-generator as a keyword', () => {
-    const dogs = {
+    const pkg: GetPackage = {
       name: 'generator-dogs',
       keywords: ['foo'],
-      lastPublisher: { name: 'unknown' },
     };
     const formattedDogs = formatPkg(dogs);
     expect(formattedDogs.computedKeywords).toEqual([]);
@@ -170,17 +165,15 @@ describe('adds yeoman generators', () => {
 
 describe('adds webpack scaffolds', () => {
   it('should add if matches the criterions', () => {
-    const dogs = {
+    const pkg: GetPackage = {
       name: 'webpack-scaffold-cats',
-      lastPublisher: { name: 'unknown' },
     };
     const formattedDogs = formatPkg(dogs);
     expect(formattedDogs.computedKeywords).toEqual(['webpack-scaffold']);
   });
   it('should not add if does not start with generator-', () => {
-    const dogs = {
+    const pkg: GetPackage = {
       name: 'foo-dogs',
-      lastPublisher: { name: 'unknown' },
     };
     const formattedDogs = formatPkg(dogs);
     expect(formattedDogs.computedKeywords).toEqual([]);
@@ -192,7 +185,6 @@ describe('adds TypeScript information', () => {
     expect(
       formatPkg({
         name: 'xxx',
-        lastPublisher: { name: 'unknown' },
         types: './test.dts',
       })
     ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
@@ -200,7 +192,6 @@ describe('adds TypeScript information', () => {
     expect(
       formatPkg({
         name: 'xxx',
-        lastPublisher: { name: 'unknown' },
         typings: './test.dts',
       })
     ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
@@ -210,7 +201,6 @@ describe('adds TypeScript information', () => {
     expect(
       formatPkg({
         name: 'xxx',
-        lastPublisher: { name: 'unknown' },
         main: 'main.js',
       })
     ).toEqual(
@@ -222,7 +212,6 @@ describe('adds TypeScript information', () => {
     expect(
       formatPkg({
         name: 'xxx',
-        lastPublisher: { name: 'unknown' },
       })
     ).toEqual(
       expect.objectContaining({
@@ -236,7 +225,6 @@ describe('adds TypeScript information', () => {
       formatPkg({
         name: 'xxx',
         main: 'shell-script.sh',
-        lastPublisher: { name: 'unknown' },
       })
     ).toEqual(expect.objectContaining({ types: { ts: false } }));
   });
@@ -428,7 +416,6 @@ describe('alternative names', () => {
   test('name ending in js', () => {
     const original = {
       name: 'prismjs',
-      lastPublisher: { name: 'unknown' },
     };
     expect(formatPkg(original)._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
@@ -442,7 +429,6 @@ describe('alternative names', () => {
   test('scoped package', () => {
     const original = {
       name: '@algolia/places.js',
-      lastPublisher: { name: 'unknown' },
     };
     expect(formatPkg(original)._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
@@ -458,7 +444,6 @@ describe('alternative names', () => {
   test('name with - and _', () => {
     const original = {
       name: 'this-is_a-dumb-name',
-      lastPublisher: { name: 'unknown' },
     };
     expect(formatPkg(original)._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
@@ -478,7 +463,6 @@ describe('moduleTypes', () => {
     expect(
       formatPkg({
         name: 'irrelevant',
-        lastPublisher: { name: 'unknown' },
         type: 'module',
       }).moduleTypes
     ).toEqual(['esm']);
@@ -488,7 +472,6 @@ describe('moduleTypes', () => {
     expect(
       formatPkg({
         name: 'irrelevant',
-        lastPublisher: { name: 'unknown' },
         type: 'commonjs',
       }).moduleTypes
     ).toEqual(['cjs']);
@@ -498,7 +481,6 @@ describe('moduleTypes', () => {
     expect(
       formatPkg({
         name: 'irrelevant',
-        lastPublisher: { name: 'unknown' },
         module: 'index.js',
       }).moduleTypes
     ).toEqual(['esm']);
@@ -508,7 +490,6 @@ describe('moduleTypes', () => {
     expect(
       formatPkg({
         name: 'irrelevant',
-        lastPublisher: { name: 'unknown' },
         main: 'index.mjs',
       }).moduleTypes
     ).toEqual(['esm']);
@@ -518,7 +499,6 @@ describe('moduleTypes', () => {
     expect(
       formatPkg({
         name: 'irrelevant',
-        lastPublisher: { name: 'unknown' },
         main: 'index.cjs',
       }).moduleTypes
     ).toEqual(['cjs']);
@@ -528,7 +508,6 @@ describe('moduleTypes', () => {
     expect(
       formatPkg({
         name: 'irrelevant',
-        lastPublisher: { name: 'unknown' },
       }).moduleTypes
     ).toEqual(['unknown']);
   });
@@ -541,7 +520,6 @@ describe('moduleTypes', () => {
     expect(
       formatPkg({
         name: 'whoever',
-        lastPublisher: { name: 'unknown' },
         main: [{ personalMain: 'index.mjs' }],
       }).moduleTypes
     ).toEqual(['unknown']);
