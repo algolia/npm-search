@@ -1,4 +1,4 @@
-import * as npm from '../npm/index.js';
+import * as npm from '../npm';
 import { getTypeScriptSupport } from '../typescriptSupport.js';
 import { fileExistsInUnpkg } from '../unpkg';
 

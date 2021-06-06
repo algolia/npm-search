@@ -1,8 +1,8 @@
 import ms from 'ms';
 
-import * as algolia from './algolia/index';
+import * as algolia from './algolia';
 import { config } from './config';
-import * as npm from './npm/index.js';
+import * as npm from './npm';
 import saveDocs from './saveDocs.js';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
