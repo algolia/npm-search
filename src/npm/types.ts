@@ -43,6 +43,12 @@ export interface GetVersion {
   version: string;
 }
 
+export interface PackageRepo {
+  type: string;
+  url: string;
+  directory?: string;
+}
+
 export interface GetPackage {
   _id: string;
   _rev: string;
@@ -60,6 +66,8 @@ export interface GetPackage {
   author?: GetUser;
   users?: Record<string, boolean>;
   versions: Record<string, GetVersion>;
-  keywords?: string[];
+  keywords?: string[] | string;
   contributors?: Array<{ name: string }>;
+  repository?: PackageRepo;
+  schematics?: string;
 }

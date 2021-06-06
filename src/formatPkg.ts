@@ -18,7 +18,7 @@ import type {
   Repo,
 } from './@types/pkg';
 import { config } from './config';
-import type { GetPackage, GetUser } from './npm/types';
+import type { GetPackage, GetUser, PackageRepo } from './npm/types';
 
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 
@@ -76,10 +76,14 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
 
   const version = cleaned.version ? cleaned.version : '0.0.0';
   const versions = getVersions(cleaned, pkg);
+  const defaultRepository =
+    typeof cleaned.repository === 'string'
+      ? { type: 'git', url: cleaned.repository }
+      : cleaned.repository;
   const githubRepo =
     cleaned.repository && cleaned.gitHead
       ? getGitHubRepoInfo({
-          repository: cleaned.repository,
+          repository: defaultRepository,
           gitHead: cleaned.gitHead,
         })
       : null;
@@ -88,11 +92,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     return undefined; // ignore this package, we cannot link it to anyone
   }
 
-  const defaultRepository =
-    typeof cleaned.repository === 'string'
-      ? { url: cleaned.repository }
-      : cleaned.repository;
-  const repoInfo = getRepositoryInfo(cleaned.repository);
+  const repoInfo = getRepositoryInfo(defaultRepository);
   // If defaultRepository is undefined or it does not have an URL
   // we don't include it.
   const repository: Repo | null =
@@ -324,8 +324,8 @@ function getGravatar(user: GetUser): string {
 }
 
 export function getVersions(
-  cleaned: NicePackageType,
-  rawPkg: GetPackage
+  cleaned: Pick<NicePackageType, 'other'>,
+  rawPkg: Pick<GetPackage, 'versions'>
 ): Record<string, string> {
   if (cleaned?.other?.time) {
     const realVersions = Object.keys(rawPkg.versions);
@@ -371,14 +371,10 @@ function getGitHubRepoInfo({
   repository,
   gitHead = 'master',
 }: {
-  repository: string;
+  repository: PackageRepo;
   gitHead: string;
 }): GithubRepo | null {
-  if (!repository) {
-    return null;
-  }
-
-  const result = repository.match(
+  const result = repository.url.match(
     /^https:\/\/(?:www\.)?github.com\/([^/]+)\/([^/]+)(\/.+)?$/
   );
 
@@ -443,7 +439,9 @@ function getRepositoryInfoFromHttpUrl(repository: string): Repo | null {
   };
 }
 
-export function getRepositoryInfo(repository: string | Repo): Repo | null {
+export function getRepositoryInfo(
+  repository: string | GetPackage['repository']
+): Repo | null {
   if (!repository) {
     return null;
   }
@@ -552,7 +550,7 @@ function getAlternativeNames(name: string): string[] {
   return Array.from(alternativeNames);
 }
 
-export function getMains(pkg: NicePackageType): string[] {
+export function getMains(pkg: Pick<NicePackageType, 'main'>): string[] {
   if (Array.isArray(pkg.main)) {
     // we can not deal with non-string mains for now
     return pkg.main.filter((main) => typeof main === 'string');

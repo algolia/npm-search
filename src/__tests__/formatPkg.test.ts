@@ -11,9 +11,42 @@ import type { GetPackage } from '../npm/types';
 import preact from './preact-simplified.json';
 import rawPackages from './rawPackages.json';
 
+const BASE: GetPackage = {
+  _id: '0',
+  'dist-tags': {},
+  _rev: '',
+  name: '0',
+  maintainers: [],
+  readme: '',
+  readmeFilename: '',
+  time: {
+    created: '',
+    modified: '',
+  },
+  versions: {},
+  repository: {
+    type: 'git',
+    url: 'https://github.com/algolia/npm-search',
+  },
+};
+
+const BASE_VERSION = {
+  _id: '',
+  description: '',
+  dist: { shasum: '', tarball: '' },
+  maintainers: [],
+  name: '',
+  version: '',
+};
+
 describe('nice-package', () => {
-  it('should nice', () => {
+  it('should nice preact', () => {
     const cleaned = new NicePackage(preact);
+    expect(cleaned).toMatchSnapshot();
+  });
+  it('should nice atlaskit', () => {
+    const pkg = rawPackages.find((p) => p.name === '@atlaskit/input');
+    const cleaned = new NicePackage(pkg);
     expect(cleaned).toMatchSnapshot();
   });
 });
@@ -49,12 +82,9 @@ it('keeps .bin intact', () => {
 
 it('truncates long readmes', () => {
   const pkg: GetPackage = {
+    ...BASE,
     name: 'long-boy',
     readme: 'Hello, World! '.repeat(40000),
-
-    _id: '0',
-    'dist-tags': {},
-    _rev: '',
   };
   const formatted = formatPkg(pkg);
   const postfix = ' **TRUNCATED**';
@@ -74,7 +104,8 @@ it('truncates long readmes', () => {
 });
 
 it('adds angular cli schematics', () => {
-  const pkg = {
+  const pkg: GetPackage = {
+    ...BASE,
     name: 'angular-cli-schema-1',
     schematics: 'bli-blo',
     keywords: ['hi'],
@@ -90,10 +121,12 @@ it('adds angular cli schematics', () => {
 
 it('adds babel plugins', () => {
   const pkg: GetPackage = {
+    ...BASE,
     name: '@babel/plugin-dogs',
     keywords: 'babel',
   };
   const unofficialDogs = {
+    ...BASE,
     name: 'babel-plugin-dogs',
     keywords: ['dogs'],
   };
@@ -110,12 +143,15 @@ it('adds babel plugins', () => {
 
 describe('adds vue-cli plugins', () => {
   const pkg: GetPackage = {
+    ...BASE,
     name: '@vue/cli-plugin-dogs',
   };
   const unofficialDogs = {
+    ...BASE,
     name: 'vue-cli-plugin-dogs',
   };
   const scopedDogs = {
+    ...BASE,
     name: '@dogs/vue-cli-plugin-dogs',
   };
 
@@ -139,26 +175,29 @@ describe('adds vue-cli plugins', () => {
 describe('adds yeoman generators', () => {
   it('should add if matches the criterions', () => {
     const pkg: GetPackage = {
+      ...BASE,
       name: 'generator-dogs',
       keywords: ['yeoman-generator'],
     };
-    const formattedDogs = formatPkg(dogs);
+    const formattedDogs = formatPkg(pkg);
     expect(formattedDogs.computedKeywords).toEqual(['yeoman-generator']);
   });
   it('should not add if does not start with generator-', () => {
     const pkg: GetPackage = {
+      ...BASE,
       name: 'foo-dogs',
       keywords: ['yeoman-generator'],
     };
-    const formattedDogs = formatPkg(dogs);
+    const formattedDogs = formatPkg(pkg);
     expect(formattedDogs.computedKeywords).toEqual([]);
   });
   it('should not add if does not contain yeoman-generator as a keyword', () => {
     const pkg: GetPackage = {
+      ...BASE,
       name: 'generator-dogs',
       keywords: ['foo'],
     };
-    const formattedDogs = formatPkg(dogs);
+    const formattedDogs = formatPkg(pkg);
     expect(formattedDogs.computedKeywords).toEqual([]);
   });
 });
@@ -166,16 +205,18 @@ describe('adds yeoman generators', () => {
 describe('adds webpack scaffolds', () => {
   it('should add if matches the criterions', () => {
     const pkg: GetPackage = {
+      ...BASE,
       name: 'webpack-scaffold-cats',
     };
-    const formattedDogs = formatPkg(dogs);
+    const formattedDogs = formatPkg(pkg);
     expect(formattedDogs.computedKeywords).toEqual(['webpack-scaffold']);
   });
   it('should not add if does not start with generator-', () => {
     const pkg: GetPackage = {
+      ...BASE,
       name: 'foo-dogs',
     };
-    const formattedDogs = formatPkg(dogs);
+    const formattedDogs = formatPkg(pkg);
     expect(formattedDogs.computedKeywords).toEqual([]);
   });
 });
@@ -184,6 +225,7 @@ describe('adds TypeScript information', () => {
   it('adds types if included in the package.json', () => {
     expect(
       formatPkg({
+        ...BASE,
         name: 'xxx',
         types: './test.dts',
       })
@@ -191,6 +233,7 @@ describe('adds TypeScript information', () => {
 
     expect(
       formatPkg({
+        ...BASE,
         name: 'xxx',
         typings: './test.dts',
       })
@@ -200,6 +243,7 @@ describe('adds TypeScript information', () => {
   it('adds types possible if we can find a main file', () => {
     expect(
       formatPkg({
+        ...BASE,
         name: 'xxx',
         main: 'main.js',
       })
@@ -211,6 +255,7 @@ describe('adds TypeScript information', () => {
 
     expect(
       formatPkg({
+        ...BASE,
         name: 'xxx',
       })
     ).toEqual(
@@ -223,6 +268,7 @@ describe('adds TypeScript information', () => {
   it('gives up when no main is not js', () => {
     expect(
       formatPkg({
+        ...BASE,
         name: 'xxx',
         main: 'shell-script.sh',
       })
@@ -383,11 +429,11 @@ describe('getRepositoryInfo', () => {
 
 describe('alternative names', () => {
   test('name not yet ending in .js', () => {
-    const original = {
+    const pkg: GetPackage = {
+      ...BASE,
       name: 'places',
-      lastPublisher: { name: 'unknown' },
     };
-    expect(formatPkg(original)._searchInternal.alternativeNames)
+    expect(formatPkg(pkg)._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
       Array [
         "places",
@@ -398,11 +444,11 @@ describe('alternative names', () => {
   });
 
   test('name ending in .js', () => {
-    const original = {
+    const pkg: GetPackage = {
+      ...BASE,
       name: 'places.js',
-      lastPublisher: { name: 'unknown' },
     };
-    expect(formatPkg(original)._searchInternal.alternativeNames)
+    expect(formatPkg(pkg)._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
             Array [
               "placesjs",
@@ -414,10 +460,11 @@ describe('alternative names', () => {
   });
 
   test('name ending in js', () => {
-    const original = {
+    const pkg: GetPackage = {
+      ...BASE,
       name: 'prismjs',
     };
-    expect(formatPkg(original)._searchInternal.alternativeNames)
+    expect(formatPkg(pkg)._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
       Array [
         "prismjs",
@@ -427,10 +474,11 @@ describe('alternative names', () => {
   });
 
   test('scoped package', () => {
-    const original = {
+    const pkg: GetPackage = {
+      ...BASE,
       name: '@algolia/places.js',
     };
-    expect(formatPkg(original)._searchInternal.alternativeNames)
+    expect(formatPkg(pkg)._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
             Array [
               "algoliaplacesjs",
@@ -442,10 +490,11 @@ describe('alternative names', () => {
   });
 
   test('name with - and _', () => {
-    const original = {
+    const pkg: GetPackage = {
+      ...BASE,
       name: 'this-is_a-dumb-name',
     };
-    expect(formatPkg(original)._searchInternal.alternativeNames)
+    expect(formatPkg(pkg)._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
       Array [
         "thisisadumbname",
@@ -462,6 +511,7 @@ describe('moduleTypes', () => {
   test('type=module', () => {
     expect(
       formatPkg({
+        ...BASE,
         name: 'irrelevant',
         type: 'module',
       }).moduleTypes
@@ -471,6 +521,7 @@ describe('moduleTypes', () => {
   test('type=commonjs', () => {
     expect(
       formatPkg({
+        ...BASE,
         name: 'irrelevant',
         type: 'commonjs',
       }).moduleTypes
@@ -480,6 +531,7 @@ describe('moduleTypes', () => {
   test('module=xxx.js', () => {
     expect(
       formatPkg({
+        ...BASE,
         name: 'irrelevant',
         module: 'index.js',
       }).moduleTypes
@@ -489,6 +541,7 @@ describe('moduleTypes', () => {
   test('main: index.mjs', () => {
     expect(
       formatPkg({
+        ...BASE,
         name: 'irrelevant',
         main: 'index.mjs',
       }).moduleTypes
@@ -498,6 +551,7 @@ describe('moduleTypes', () => {
   test('main: index.cjs', () => {
     expect(
       formatPkg({
+        ...BASE,
         name: 'irrelevant',
         main: 'index.cjs',
       }).moduleTypes
@@ -507,6 +561,7 @@ describe('moduleTypes', () => {
   test('unknown', () => {
     expect(
       formatPkg({
+        ...BASE,
         name: 'irrelevant',
       }).moduleTypes
     ).toEqual(['unknown']);
@@ -519,6 +574,7 @@ describe('moduleTypes', () => {
   test('silly broken package', () => {
     expect(
       formatPkg({
+        ...BASE,
         name: 'whoever',
         main: [{ personalMain: 'index.mjs' }],
       }).moduleTypes
@@ -553,14 +609,20 @@ describe('getVersions', () => {
       getVersions(
         {
           other: {
+            'dist-tags': {},
+            _rev: '',
             time: {
+              created: 'a',
+              modified: 'b',
               '1.2.3': '2020-04-04T01:04:57.069Z',
             },
           },
         },
         {
           versions: {
-            '1.2.3': {},
+            '1.2.3': {
+              ...BASE_VERSION,
+            },
           },
         }
       )
@@ -574,6 +636,8 @@ describe('getVersions', () => {
       getVersions(
         {
           other: {
+            'dist-tags': {},
+            _rev: '',
             time: {
               created: '2020-04-04T01:04:57.069Z',
               modified: '2030-04-04T01:04:57.069Z',
@@ -583,7 +647,7 @@ describe('getVersions', () => {
         },
         {
           versions: {
-            '1.2.3': {},
+            '1.2.3': { ...BASE_VERSION },
           },
         }
       )
@@ -597,6 +661,8 @@ describe('getVersions', () => {
       getVersions(
         {
           other: {
+            'dist-tags': {},
+            _rev: '',
             time: {
               created: '2020-04-04T01:04:57.069Z',
               modified: '2030-04-04T01:04:57.069Z',
@@ -608,8 +674,8 @@ describe('getVersions', () => {
         },
         {
           versions: {
-            '1.2.3': {},
-            '2.3.4': {},
+            '1.2.3': { ...BASE_VERSION },
+            '2.3.4': { ...BASE_VERSION },
           },
         }
       )
