@@ -1,8 +1,8 @@
 export interface Owner {
   name: string;
-  email: string;
-  avatar: string;
-  link: string;
+  email?: string;
+  avatar?: string;
+  link?: string;
 }
 
 export interface Repo {

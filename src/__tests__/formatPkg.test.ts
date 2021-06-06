@@ -1,13 +1,21 @@
+import NicePackage from 'nice-package';
 import isISO8601 from 'validator/lib/isISO8601.js';
 
 import formatPkg, {
   getRepositoryInfo,
   getMains,
   getVersions,
-} from '../formatPkg.js';
+} from '../formatPkg';
 
 import preact from './preact-simplified.json';
 import rawPackages from './rawPackages.json';
+
+describe('nice-package', () => {
+  it('should nice', () => {
+    const cleaned = new NicePackage(preact);
+    expect(cleaned).toMatchSnapshot();
+  });
+});
 
 it('transforms correctly', () => {
   rawPackages
