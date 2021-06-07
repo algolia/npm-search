@@ -1,5 +1,5 @@
 import { getChangelogs } from './changelog';
-import formatPkg from './formatPkg.js';
+import formatPkg from './formatPkg';
 import * as jsDelivr from './jsDelivr';
 import * as npm from './npm';
 import { getTSSupport } from './typescriptSupport';

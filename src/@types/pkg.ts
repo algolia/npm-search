@@ -1,8 +1,10 @@
+import type { GetUser } from '../npm/types';
+
 export interface Owner {
   name: string;
-  email: string;
-  avatar: string;
-  link: string;
+  email?: string;
+  avatar?: string;
+  link?: string;
 }
 
 export interface Repo {
@@ -11,6 +13,7 @@ export interface Repo {
   user: string;
   project: string;
   path: string;
+  head?: string;
   branch?: string;
 }
 export interface GithubRepo {
@@ -31,6 +34,11 @@ export type TsType =
 
 export type ModuleType = 'esm' | 'cjs' | 'unknown';
 
+export type ComputedMeta = {
+  computedKeywords: string[];
+  computedMetadata: Record<string, unknown>;
+};
+
 export interface RawPkg {
   objectID: string;
   name: string;
@@ -44,23 +52,23 @@ export interface RawPkg {
   description: string | null;
   dependencies: Record<string, string>;
   devDependencies: Record<string, string>;
-  originalAuthor: string;
+  originalAuthor?: GetUser;
   repository: Repo | null;
   githubRepo: GithubRepo | null;
   gitHead: string | null;
   readme: string;
-  owner: Owner;
-  deprecated: string | false;
+  owner: Owner | null;
+  deprecated: boolean;
   homepage: string | null;
-  license: string;
+  license: string | null;
   keywords: string[];
-  computedKeywords: string[];
-  computedMetadata: string[];
+  computedKeywords: ComputedMeta['computedKeywords'];
+  computedMetadata: ComputedMeta['computedMetadata'];
   created: number;
   modified: number;
-  lastPublisher: Owner;
+  lastPublisher: Owner | null;
   owners: Owner[];
-  bin: string[];
+  bin: Record<string, string>;
   types: TsType;
   moduleTypes: ModuleType[];
   lastCrawl: string;
