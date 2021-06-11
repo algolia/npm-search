@@ -49,8 +49,8 @@
     "truncate-utf8-bytes": "1.0.2"
   },
   "devDependencies": {
-    "@babel/core": "7.14.3",
-    "@babel/preset-env": "7.14.4",
+    "@babel/core": "7.14.5",
+    "@babel/preset-env": "7.14.5",
     "babel-eslint": "10.1.0",
     "babel-jest": "27.0.2",
     "doctoc": "2.0.0",
