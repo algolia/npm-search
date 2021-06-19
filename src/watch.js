@@ -3,7 +3,7 @@ import ms from 'ms';
 
 import { config } from './config';
 import * as npm from './npm';
-import saveDocs from './saveDocs.js';
+import saveDocs from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';

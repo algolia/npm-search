@@ -76,3 +76,11 @@ export interface RawPkg {
     alternativeNames: string[];
   };
 }
+
+export type FinalPkg = RawPkg & {
+  _searchInternal: {
+    downloadsMagnitude?: number;
+    jsDelivrPopularity?: number;
+    popularName?: string;
+  };
+};

@@ -153,10 +153,9 @@ function getDependents(
 ): Promise<Array<{ dependents: number; humanDependents: string }>> {
   // we return 0, waiting for https://github.com/npm/registry/issues/361
   return Promise.all(
-    pkgs.map(() => ({
-      dependents: 0,
-      humanDependents: '0',
-    }))
+    pkgs.map(() => {
+      return { dependents: 0, humanDependents: '0' };
+    })
   );
 }
 
@@ -214,19 +213,16 @@ async function getDownload(
  * Get downloads for all packages passer in arguments.
  */
 async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
-  Array<
-    | {
-        downloadsLast30Days: number;
-        humanDownloadsLast30Days: string;
-        downloadsRatio: number;
-        popular: boolean;
-        _searchInternal: {
-          popularName?: string;
-          downloadsMagnitude: number;
-        };
-      }
-    | Record<string, unknown>
-  >
+  Array<{
+    downloadsLast30Days: number;
+    humanDownloadsLast30Days: string;
+    downloadsRatio: number;
+    popular: boolean;
+    _searchInternal: {
+      popularName?: string;
+      downloadsMagnitude: number;
+    };
+  } | null>
 > {
   const start = Date.now();
 
@@ -265,7 +261,7 @@ async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
 
   const all = pkgs.map(({ name }) => {
     if (downloadsPerPkgName[name] === undefined) {
-      return {};
+      return null;
     }
 
     const downloadsLast30Days = downloadsPerPkgName[name]
