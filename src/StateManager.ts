@@ -4,14 +4,17 @@ import { config } from './config';
 import { datadog } from './utils/datadog';
 
 type State = {
-  seq: number | null;
+  seq: number | undefined;
   bootstrapDone: boolean;
   bootstrapLastId?: number;
+  stage: 'bootstrap' | 'watch';
 };
+
 const defaultState: State = {
   seq: config.seq,
   bootstrapDone: false,
   bootstrapLastId: undefined,
+  stage: 'bootstrap',
 };
 
 export class StateManager {
@@ -24,7 +27,7 @@ export class StateManager {
   }
 
   async check(): Promise<State> {
-    if (config.seq !== null) {
+    if (config.seq !== undefined) {
       return this.reset();
     }
 
@@ -46,6 +49,7 @@ export class StateManager {
     const { userData } = await this.algoliaIndex.getSettings();
     datadog.timing('stateManager.get', Date.now() - start);
 
+    this.currentState = userData;
     this.refreshed = true;
     return userData;
   }

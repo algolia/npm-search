@@ -10,15 +10,6 @@ export interface GetInfo {
   update_seq: number;
 }
 
-export interface Options {
-  include_docs: boolean;
-  conflicts: boolean;
-  attachments: boolean;
-  limit?: number;
-  startkey?: string;
-  skip?: number;
-}
-
 export interface GetUser {
   name: string;
   email?: string;

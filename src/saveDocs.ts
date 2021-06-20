@@ -1,5 +1,5 @@
 import type { SearchIndex } from 'algoliasearch';
-import type nano from 'nano';
+import type { DocumentResponseRow } from 'nano';
 
 import type { FinalPkg, RawPkg } from './@types/pkg';
 import { getChangelogs } from './changelog';
@@ -15,30 +15,24 @@ export default async function saveDocs({
   docs,
   index,
 }: {
-  docs: Array<nano.DocumentResponseRow<GetPackage>>;
+  docs: Array<DocumentResponseRow<GetPackage>>;
   index: SearchIndex;
 }): Promise<number> {
   const start = Date.now();
+  const names: string[] = [];
 
   const rawPkgs = docs
-    .filter(
-      // must be a document & have a name
-      (result) => {
-        return (
-          // @ts-expect-error Docs is either a doc or changes, the types or the values need to be checked
-          !result.deleted &&
-          result &&
-          result.doc &&
-          result.doc.name !== undefined
-        );
-      }
-    )
     .map((result) => {
       const start1 = Date.now();
 
       const formatted = formatPkg(result.doc!);
 
       datadog.timing('formatPkg', Date.now() - start1);
+
+      if (formatted) {
+        names.push(formatted.name);
+      }
+
       return formatted;
     })
     .filter<RawPkg>((pkg): pkg is RawPkg => pkg !== undefined);
@@ -47,6 +41,8 @@ export default async function saveDocs({
     log.info('🔍 No pkgs found in response.');
     return Promise.resolve(0);
   }
+
+  log.info(`👔  Saving... ${names.length} packages`, names);
 
   let start2 = Date.now();
   const pkgs = await addMetaData(rawPkgs);

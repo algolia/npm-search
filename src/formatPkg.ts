@@ -76,16 +76,37 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
 
   const version = cleaned.version ? cleaned.version : '0.0.0';
   const versions = getVersions(cleaned, pkg);
-  const defaultRepository =
-    typeof cleaned.repository === 'string'
-      ? { type: 'git', url: cleaned.repository }
-      : cleaned.repository;
-  const githubRepo = cleaned.repository
-    ? getGitHubRepoInfo({
+
+  let githubRepo: GithubRepo | null = null;
+  let defaultRepository: PackageRepo | undefined;
+
+  if (cleaned.repository) {
+    let tmp = cleaned.repository;
+    if (Array.isArray(tmp)) {
+      tmp = tmp[0] as PackageRepo;
+    }
+
+    if (typeof tmp === 'string') {
+      defaultRepository = { type: 'git', url: tmp };
+    } else if (Object.keys(tmp).length > 0) {
+      defaultRepository = tmp as PackageRepo;
+    }
+
+    // At this point, we are not even sure the source is correct
+    if (
+      defaultRepository &&
+      (!defaultRepository.type || !defaultRepository.url)
+    ) {
+      defaultRepository = undefined;
+    }
+
+    if (defaultRepository) {
+      githubRepo = getGitHubRepoInfo({
         repository: defaultRepository,
         gitHead: cleaned.gitHead,
-      })
-    : null;
+      });
+    }
+  }
 
   if (!githubRepo && !lastPublisher && !author) {
     return undefined; // ignore this package, we cannot link it to anyone
