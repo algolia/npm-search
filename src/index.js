@@ -1,6 +1,6 @@
 import { StateManager } from './StateManager';
 import * as algolia from './algolia/index';
-import * as bootstrap from './bootstrap.js';
+import * as bootstrap from './bootstrap';
 import { config } from './config';
 import * as jsDelivr from './jsDelivr/index';
 import { datadog } from './utils/datadog';
