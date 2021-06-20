@@ -6,7 +6,7 @@ import * as jsDelivr from './jsDelivr/index';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
-import * as watch from './watch.js';
+import * as watch from './watch';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 

@@ -29,7 +29,7 @@ export interface NicePackageType {
   };
   owners?: GetUser[];
   readme?: string;
-  repository: string | PackageRepo;
+  repository?: string | Partial<PackageRepo> | Array<Partial<PackageRepo>>;
   scripts: Record<string, string>;
   schematics?: string;
   starsCount?: number;

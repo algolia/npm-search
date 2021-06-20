@@ -16,10 +16,10 @@ export const config = {
   apiKey: '',
   indexName: 'npm-search',
   bootstrapIndexName: 'npm-search-bootstrap',
-  replicateConcurrency: 10,
+  replicateConcurrency: 1,
   bootstrapConcurrency: 25,
   timeToRedoBootstrap: ms('2 weeks'),
-  seq: null,
+  seq: undefined,
   indexSettings: {
     searchableAttributes: [
       'unordered(_searchInternal.popularName)',

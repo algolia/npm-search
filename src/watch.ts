@@ -1,6 +1,10 @@
-import queue from 'async/queue.js';
+import type { SearchIndex } from 'algoliasearch';
+import type { QueueObject } from 'async';
+import { queue } from 'async';
 import ms from 'ms';
+import type { DatabaseChangesResultItem, DocumentLookupFailure } from 'nano';
 
+import type { StateManager } from './StateManager';
 import { config } from './config';
 import * as npm from './npm';
 import saveDocs from './saveDocs';
@@ -9,7 +13,8 @@ import { log } from './utils/log';
 import * as sentry from './utils/sentry';
 
 let loopStart = Date.now();
-let totalSequence; // Cached npmInfo.seq
+let totalSequence: number; // Cached npmInfo.seq
+let changesConsumer: QueueObject<DatabaseChangesResultItem>;
 
 /**
  * Run watch and catchup.
@@ -45,28 +50,31 @@ let totalSequence; // Cached npmInfo.seq
  *   When we are catched up, we could await between poll and we will receive N changes.
  *   But long-polling is more efficient in term of bandwidth and more reactive.
  */
-async function run(stateManager, mainIndex) {
+async function run(
+  stateManager: StateManager,
+  mainIndex: SearchIndex
+): Promise<void> {
   await stateManager.save({
     stage: 'watch',
   });
 
-  await catchup(stateManager, mainIndex);
+  changesConsumer = createChangeConsumer(stateManager, mainIndex);
+
+  await catchup(stateManager);
 
   log.info('🚀  Index is up to date, watch mode activated');
 
-  await watch(stateManager, mainIndex);
+  await watch(stateManager);
 
   log.info('🚀  watch is done');
 }
 
 /**
  * Loop through all changes that may have been missed.
- *
- * @param {object} stateManager - The state manager.
- * @param {object} mainIndex - Algolia index manager.
  */
-async function catchup(stateManager, mainIndex) {
-  let hasCaughtUp = false;
+async function catchup(stateManager: StateManager): Promise<void> {
+  let hasCaughtUp: boolean = false;
+
   while (!hasCaughtUp) {
     loopStart = Date.now();
 
@@ -75,11 +83,8 @@ async function catchup(stateManager, mainIndex) {
       totalSequence = npmInfo.seq;
 
       const { seq } = await stateManager.get();
-      log.info(
-        '🚀  Catchup: Asking for %d changes since sequence %d',
-        config.replicateConcurrency,
-        seq
-      );
+
+      log.info('🚀  Catchup: continue since sequence [%d]', seq);
 
       // Get one chunk of changes from registry
       const changes = await npm.getChanges({
@@ -87,7 +92,18 @@ async function catchup(stateManager, mainIndex) {
         limit: config.replicateConcurrency,
         include_docs: true,
       });
-      hasCaughtUp = await loop(stateManager, mainIndex, changes);
+
+      log.info(changes);
+
+      for (const change of changes.results) {
+        changesConsumer.push(change);
+      }
+      await changesConsumer.drain();
+
+      const newState = await stateManager.get();
+      if (newState.seq! >= totalSequence) {
+        hasCaughtUp = true;
+      }
     } catch (err) {
       sentry.report(err);
     }
@@ -98,65 +114,22 @@ async function catchup(stateManager, mainIndex) {
  * Active synchronous mode with Registry.
  * Changes are polled with a keep-alived connection.
  *
- * @param {object} stateManager - The state manager.
- * @param {object} mainIndex - Algolia index manager.
+ * @param stateManager - The state manager.
+ * @param mainIndex - Algolia index manager.
  */
-async function watch(stateManager, mainIndex) {
+async function watch(stateManager: StateManager): Promise<true> {
   const { seq } = await stateManager.get();
+
   const listener = npm.listenToChanges({
-    since: seq,
+    since: String(seq),
     include_docs: false,
     heartbeat: 30 * 1000,
-    limit: 100,
+    // limit: 100,
   });
 
-  /**
-   * Queue is ensuring we are processing changes ordered
-   * This also means we can not process more than 1 at the same time.
-   *
-   * --- Why ?
-   *   CouchDB send changes in an ordered fashion
-   *     Event A update package C
-   *     Event B delete package C.
-   *
-   *     If the events are not processed in the same order, you can have a broken state.
-   */
-  const changesConsumer = queue(async (change) => {
-    log.info('Processing... still in queue', changesConsumer._tasks.length);
-    try {
-      const doc = !change.deleted
-        ? (await npm.getDocs({ keys: [change.id] })).rows[0]
-        : null;
-
-      if (!doc) {
-        log.warn('Could not find doc', doc, change);
-        return;
-      }
-
-      await loop(
-        stateManager,
-        mainIndex,
-        { results: [doc], last_seq: change.seq },
-        change.seq
-      );
-    } catch (err) {
-      sentry.report(err);
-    }
-  }, 1);
-
   listener.on('change', (change) => {
-    log.info(
-      'we received 1 change',
-      change.seq,
-      '; in queue',
-      changesConsumer._tasks.length
-    );
     totalSequence = change.seq;
-    if (!change.id) {
-      // Can happen when NPM send an empty line (for example the hearthbeat) 🤷🏻‍
-      log.info('Change is null', change);
-      return;
-    }
+
     changesConsumer.push(change);
   });
 
@@ -168,7 +141,7 @@ async function watch(stateManager, mainIndex) {
 
   return new Promise((resolve) => {
     listener.on('stop', () => {
-      resolve();
+      resolve(true);
     });
   });
 }
@@ -176,42 +149,44 @@ async function watch(stateManager, mainIndex) {
 /**
  * Process changes.
  */
-async function loop(stateManager, mainIndex, changes) {
+async function loop(
+  mainIndex: SearchIndex,
+  change: DatabaseChangesResultItem
+): Promise<void> {
   const start = Date.now();
-  datadog.increment('packages', changes.results.length);
-  const names = changes.results.map((change) => change.id);
-  log.info(`🚀  Received ${changes.results.length} packages`, names.join(','));
+  datadog.increment('packages');
 
-  // eslint-disable-next-line no-param-reassign
-  changes.results = changes.results.filter((change) => {
-    if (change.deleted) {
-      // Delete package directly in index
-      // Filter does not support async/await but there is no concurrency issue with this
-      mainIndex.deleteObject(change.id);
-      log.info(`🚀  Deleted ${change.id}`);
-    }
-    return !change.deleted;
-  });
+  if (!change.id) {
+    // Can happen when NPM send an empty line (for example the hearthbeat) 🤷🏻‍
+    log.error('Got a document without name', change);
+    return;
+  }
 
-  await saveDocs({ docs: changes.results, index: mainIndex });
+  if (change.deleted) {
+    // Delete package directly in index
+    // Filter does not support async/await but there is no concurrency issue with this
+    mainIndex.deleteObject(change.id);
+    log.info(`🚀  Deleted ${change.id}`);
+    return;
+  }
 
-  await stateManager.save({
-    seq: changes.last_seq,
-  });
+  const doc = (await npm.getDocs({ keys: [change.id] })).rows[0];
 
-  logProgress(changes.last_seq, changes.results.length);
+  if (isFailure(doc)) {
+    log.error('Got an error', doc.error);
+    return;
+  }
+
+  await saveDocs({ docs: [doc], index: mainIndex });
 
   datadog.timing('watch.loop', Date.now() - start);
-  return changes.last_seq >= totalSequence;
 }
 
 /**
  * Log our process through catchup/watch.
  *
- * @param {number} seq - The current number of changes we have reached.
- * @param {number} nbChanges - Number of changes processed in this batch.
  */
-function logProgress(seq, nbChanges) {
+function logProgress(seq: number, nbChanges: number): void {
   const ratePerSecond = nbChanges / ((Date.now() - loopStart) / 1000);
   const remaining = ((totalSequence - seq) / ratePerSecond) * 1000 || 0;
 
@@ -223,6 +198,40 @@ function logProgress(seq, nbChanges) {
     Math.round(ratePerSecond),
     ms(remaining)
   );
+}
+
+/**
+ * Queue is ensuring we are processing changes ordered
+ * This also means we can not process more than 1 at the same time.
+ *
+ * --- Why ?
+ *   CouchDB send changes in an ordered fashion
+ *     Event A update package C
+ *     Event B delete package C.
+ *
+ *     If the events are not processed in the same order, you can have a broken state.
+ */
+function createChangeConsumer(
+  stateManager: StateManager,
+  mainIndex: SearchIndex
+): QueueObject<DatabaseChangesResultItem> {
+  return queue<DatabaseChangesResultItem>(async (change) => {
+    const seq = change.seq;
+    log.info(`🚀  Received change [%s]`, seq);
+    try {
+      await loop(mainIndex, change);
+      await stateManager.save({
+        seq,
+      });
+      logProgress(seq, 1);
+    } catch (err) {
+      sentry.report(err);
+    }
+  }, 1);
+}
+
+function isFailure(change: any): change is DocumentLookupFailure {
+  return change.error && !change.id;
 }
 
 export { run };

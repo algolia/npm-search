@@ -155,11 +155,11 @@ describe('adds vue-cli plugins', () => {
     name: '@dogs/vue-cli-plugin-dogs',
   };
 
-  const formattedDogs = formatPkg(pkg);
-  const formattedUnofficialDogs = formatPkg(unofficialDogs);
-  const formattedScopedDogs = formatPkg(scopedDogs);
-
   it('should format correctly', () => {
+    const formattedDogs = formatPkg(pkg);
+    const formattedUnofficialDogs = formatPkg(unofficialDogs);
+    const formattedScopedDogs = formatPkg(scopedDogs);
+
     expect(formattedDogs.keywords).toEqual([]);
     expect(formattedUnofficialDogs.keywords).toEqual([]);
     expect(formattedScopedDogs.keywords).toEqual([]);

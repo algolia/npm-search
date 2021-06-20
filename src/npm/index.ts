@@ -1,8 +1,11 @@
 import chunk from 'lodash/chunk';
 import type {
+  DatabaseChangesParams,
   DatabaseChangesResponse,
   DocumentFetchResponse,
+  DocumentListParams,
   DocumentListResponse,
+  DocumentScopeFollowUpdatesParams,
 } from 'nano';
 import nano from 'nano';
 import numeral from 'numeral';
@@ -13,7 +16,7 @@ import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
 import { request } from '../utils/request';
 
-import type { GetInfo, GetPackage, Options, PackageDownload } from './types';
+import type { GetInfo, GetPackage, PackageDownload } from './types';
 
 const registry = nano({
   url: config.npmRegistryEndpoint,
@@ -21,7 +24,7 @@ const registry = nano({
 const db = registry.use<GetPackage>(config.npmRegistryDBName);
 
 // Default request options
-const defaultOptions: Options = {
+const defaultOptions: DatabaseChangesParams = {
   include_docs: true,
   conflicts: false,
   attachments: false,
@@ -31,7 +34,7 @@ const defaultOptions: Options = {
  * Find all packages in registry.
  */
 async function findAll(
-  options: Partial<Options>
+  options: Partial<DocumentListParams>
 ): Promise<DocumentListResponse<GetPackage>> {
   const start = Date.now();
 
@@ -46,7 +49,7 @@ async function findAll(
 }
 
 async function getChanges(
-  options: Partial<Options>
+  options: Partial<DatabaseChangesParams>
 ): Promise<DatabaseChangesResponse> {
   const start = Date.now();
 
@@ -79,10 +82,12 @@ async function getDocs({
  *
  * @param options - Options param.
  */
-function listenToChanges(options): nano.FollowEmitter {
+function listenToChanges(
+  options: DocumentScopeFollowUpdatesParams
+): nano.FollowEmitter {
   const listener = db.follow({
     ...defaultOptions,
-    ...options,
+    ...(options as any), // there is an incompat between types but they are compat
   });
   listener.on('confirm', () => {
     log.info('Registry is confirmed/connected');
