@@ -17,7 +17,7 @@ const KILL_PROCESS_EVERY_MS = 12 * 60 * 60 * 1000; // every 12 hours
  *   - Bootstrap: will index the whole list of packages (if needed)
  *   - Watch    : will process update in real time.
  */
-async function main() {
+async function main(): Promise<void> {
   const start = Date.now();
 
   // We schedule to kill the process:
