@@ -6,14 +6,16 @@ import { datadog } from './utils/datadog';
 type State = {
   seq: number | undefined;
   bootstrapDone: boolean;
-  bootstrapLastId?: number;
+  bootstrapLastDone: number | null;
+  bootstrapLastId: string | null;
   stage: 'bootstrap' | 'watch';
 };
 
 const defaultState: State = {
   seq: config.seq,
   bootstrapDone: false,
-  bootstrapLastId: undefined,
+  bootstrapLastDone: null,
+  bootstrapLastId: null,
   stage: 'bootstrap',
 };
 
