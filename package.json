@@ -28,7 +28,7 @@
   "license": "MIT",
   "dependencies": {
     "@sentry/node": "6.5.1",
-    "algoliasearch": "4.9.1",
+    "algoliasearch": "4.9.3",
     "async": "3.2.0",
     "bunyan": "1.8.15",
     "bunyan-debug-stream": "2.0.0",
