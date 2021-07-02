@@ -1,4 +1,5 @@
-export default {
+// eslint-disable-next-line import/no-commonjs
+module.exports = {
   name: 'npm',
 
   transform: {

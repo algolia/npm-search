@@ -93,8 +93,6 @@ async function catchup(stateManager: StateManager): Promise<void> {
         include_docs: true,
       });
 
-      log.info(changes);
-
       for (const change of changes.results) {
         changesConsumer.push(change);
       }

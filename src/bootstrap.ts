@@ -58,11 +58,11 @@ async function run(
   log.info('-----');
 
   let lastProcessedId = state.bootstrapLastId;
-  while (lastProcessedId !== null) {
+  do {
     loopStart = Date.now();
 
     lastProcessedId = await loop(lastProcessedId, stateManager, bootstrapIndex);
-  }
+  } while (lastProcessedId !== null);
 
   log.info('-----');
   log.info('⛷   Bootstrap: done');
@@ -79,7 +79,7 @@ async function run(
  *   Fetch N packages from `lastId`, process and save them to Algolia.
  * */
 async function loop(
-  lastId: string,
+  lastId: string | null,
   stateManager: StateManager,
   bootstrapIndex: SearchIndex
 ): Promise<string | null> {
