@@ -2,6 +2,7 @@ import race from 'promise-rat-race';
 
 import type { RawPkg, Repo } from './@types/pkg';
 import { config } from './config';
+import * as jsDelivr from './jsDelivr/index';
 import { datadog } from './utils/datadog';
 import { request } from './utils/request';
 
@@ -43,7 +44,10 @@ const fileOptions = [
   'history.md',
   'HISTORY',
   'history',
+  'RELEASES.md',
+  'RELEASES',
 ];
+const fileRegex = /changelog|changes|history|release/i;
 
 async function handledGot(file: string): Promise<string> {
   const result = await request(file, { method: 'HEAD' });
@@ -76,13 +80,26 @@ async function raceFromPaths(files: string[]): Promise<{
   }
 }
 
-function getChangelog({
-  repository,
-  name,
-  version,
-}: Pick<RawPkg, 'repository' | 'name' | 'version'>): Promise<{
+export async function getChangelog(
+  pkg: Pick<RawPkg, 'repository' | 'name' | 'version'>
+): Promise<{
   changelogFilename: string | null;
 }> {
+  // Do a quick call to jsDelivr
+  // Only work if the package has published their changelog along with the code
+  const filesList = await jsDelivr.getFilesList(pkg);
+  for (const file of filesList) {
+    if (!fileRegex.test(file.name)) {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    return { changelogFilename: jsDelivr.getFullURL(pkg, file) };
+  }
+
+  const { repository, name, version } = pkg;
+
+  // Rollback to brut-force
   const unpkgFiles = fileOptions.map(
     (file) => `${config.unpkgRoot}/${name}@${version}/${file}`
   );
