@@ -541,9 +541,6 @@ function getTypes(pkg: NicePackageType): RawPkg['types'] {
   };
 }
 
-/**
- * @param name
- */
 function getAlternativeNames(name: string): string[] {
   const alternativeNames = new Set<string>();
 

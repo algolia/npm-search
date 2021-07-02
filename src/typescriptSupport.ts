@@ -49,9 +49,6 @@ export async function getTypeScriptSupport(
   return { types: { ts: false } };
 }
 
-/**
- * @param pkgs
- */
 export async function getTSSupport(
   pkgs: Array<Pick<RawPkg, 'name' | 'types' | 'version'>>
 ): Promise<Array<Pick<RawPkg, 'types'>>> {

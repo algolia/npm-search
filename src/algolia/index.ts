@@ -21,8 +21,6 @@ function createClient({
 
 /**
  * Prepare algolia for indexing.
- *
- * @param config
  */
 async function prepare(config: Config): Promise<{
   mainIndex: SearchIndex;
@@ -54,11 +52,6 @@ async function prepare(config: Config): Promise<{
   };
 }
 
-/**
- *
- * @param index
- * @param config
- */
 async function putDefaultSettings(
   index: SearchIndex,
   config: Config

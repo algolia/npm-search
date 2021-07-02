@@ -77,9 +77,7 @@ async function run(
 /**
  * Execute one loop for bootstrap,
  *   Fetch N packages from `lastId`, process and save them to Algolia.
- *
- * @param lastId
- */
+ * */
 async function loop(
   lastId: string,
   stateManager: StateManager,
