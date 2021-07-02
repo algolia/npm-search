@@ -124,7 +124,6 @@ async function watch(stateManager: StateManager): Promise<true> {
     since: String(seq),
     include_docs: false,
     heartbeat: 30 * 1000,
-    // limit: 100,
   });
 
   listener.on('change', (change) => {
