@@ -17,19 +17,27 @@ If the process fails, restart it and the replication process will continue at th
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
-- [Algolia Index](#algolia-index)
-  - [Schema](#schema)
-  - [Ranking](#ranking)
-- [Usage](#usage)
-  - [Production](#production)
-  - [Restart](#restart)
-  - [Development](#development)
-- [Env variables](#env-variables)
-- [How does it work?](#how-does-it-work)
-- [Tests](#tests)
-- [Deploying new version](#deploying-new-version)
-- [Forcing a complete re-index](#forcing-a-complete-re-index)
+- [🗿 npm-search ⛷ 🐌 🛰](#-npm-search---)
+  - [Algolia Index](#algolia-index)
+    - [Schema](#schema)
+    - [Ranking](#ranking)
+      - [Textual relevance](#textual-relevance)
+        - [Searchable Attributes](#searchable-attributes)
+        - [Prefix Search](#prefix-search)
+        - [Typo-tolerance](#typo-tolerance)
+        - [Exact Boosting](#exact-boosting)
+      - [Custom/Business relevance](#custombusiness-relevance)
+        - [Number of downloads](#number-of-downloads)
+        - [Popular packages](#popular-packages)
+  - [Usage](#usage)
+    - [Production](#production)
+    - [Restart](#restart)
+    - [Development](#development)
+  - [Env variables](#env-variables)
+  - [How does it work?](#how-does-it-work)
+  - [Tests](#tests)
+  - [Deploying new version](#deploying-new-version)
+  - [Forcing a complete re-index](#forcing-a-complete-re-index)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -81,7 +89,9 @@ For every single NPM package, we create a record in the Algolia index. The resul
     avatar: 'https://github.com/babel.png',
     link: 'https://github.com/babel',
   },
-  deprecated: false,
+  deprecated: 'Deprecated', // This field will be removed, please use `isDeprecated` instead
+  isDeprecated: true,
+  deprecatedReason: 'Deprecated',
   badPackage: false,
   homepage: 'https://babeljs.io/',
   license: 'MIT',

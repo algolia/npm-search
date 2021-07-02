@@ -58,7 +58,8 @@ export interface RawPkg {
   gitHead: string | null;
   readme: string;
   owner: Owner | null;
-  deprecated: boolean;
+  deprecated: string | boolean;
+  isDeprecated: boolean;
   deprecatedReason: string | null;
   homepage: string | null;
   license: string | null;

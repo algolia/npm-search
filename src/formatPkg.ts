@@ -159,7 +159,8 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     gitHead: githubRepo ? githubRepo.head : null, // remove this when we update to the new schema frontend
     readme: pkg.readme,
     owner,
-    deprecated: isDeprecated,
+    deprecated: isDeprecated ? cleaned.deprecated! : false,
+    isDeprecated,
     deprecatedReason: isDeprecated ? String(cleaned.deprecated) : null,
     homepage: getHomePage(cleaned),
     license,

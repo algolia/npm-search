@@ -14,7 +14,7 @@ Object {
   "computedMetadata": Object {},
   "created": NaN,
   "dependencies": Object {},
-  "deprecated": true,
+  "deprecated": "Yes this is deprecated",
   "deprecatedReason": "Yes this is deprecated",
   "description": null,
   "devDependencies": Object {},
@@ -29,6 +29,7 @@ Object {
   },
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": true,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": null,
@@ -744,6 +745,7 @@ Object {
   "githubRepo": null,
   "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [
     "atlaskit",
     "ui",
@@ -967,6 +969,7 @@ Object {
   },
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": Object {
@@ -1094,6 +1097,7 @@ Object {
   },
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [
     "algolia",
     "instantsearch",
@@ -1181,6 +1185,7 @@ Object {
   "githubRepo": null,
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [
     "index",
     "array",
@@ -1288,6 +1293,7 @@ Object {
   },
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [
     "prism",
     "highlight",
@@ -1474,6 +1480,7 @@ Object {
   },
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": null,

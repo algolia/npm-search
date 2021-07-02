@@ -717,7 +717,8 @@ describe('deprecated', () => {
 
     expect(formatted).toMatchSnapshot({
       lastCrawl: expect.any(String),
-      deprecated: true,
+      deprecated: 'Yes this is deprecated',
+      isDeprecated: true,
       deprecatedReason: 'Yes this is deprecated',
     });
   });
