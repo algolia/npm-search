@@ -7,7 +7,7 @@ export interface NicePackageType {
   bundlesize?: Array<Record<string, unknown>>;
   created: string;
   dependencies?: Record<string, string>;
-  deprecated?: boolean;
+  deprecated?: boolean | string;
   description: string;
   devDependencies?: Record<string, string>;
   gitHead?: string;

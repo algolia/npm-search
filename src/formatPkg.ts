@@ -160,7 +160,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     readme: pkg.readme,
     owner,
     deprecated: isDeprecated,
-    deprecatedReason: isDeprecated ? cleaned.deprecated : null,
+    deprecatedReason: isDeprecated ? String(cleaned.deprecated) : null,
     homepage: getHomePage(cleaned),
     license,
     keywords,
