@@ -1,5 +1,643 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`nice-package should nice atlaskit 1`] = `
+Package {
+  "_resolved": "file:packages/input",
+  "ak:webpack:raw": "src/index.jsx",
+  "config": Object {
+    "access": "public",
+  },
+  "created": "2017-01-29T23:47:18.021Z",
+  "dependencies": Object {
+    "@atlaskit/util-shared-styles": "^2.10.5",
+    "babel-runtime": "^6.11.6",
+    "keycode": "^2.1.8",
+    "prop-types": "^15.5.10",
+    "styled-components": "^1.4.6",
+  },
+  "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+  "devDependencies": Object {
+    "@atlaskit/field-base": "^8.0.2",
+  },
+  "files": Array [
+    "dist",
+  ],
+  "gitHead": "8bee5877efdc84f337a56a047438b8aaac078a2d",
+  "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+  "jsnext:experimental:main": "dist/es/index.js",
+  "keywords": Array [
+    "atlaskit",
+    "ui",
+    "internal",
+  ],
+  "lastPublisher": Object {
+    "email": "design-platform@atlassian.com",
+    "name": "atlaskit",
+  },
+  "license": "Apache-2.0",
+  "main": "dist/bundle.js",
+  "modified": "2017-11-15T23:59:01.980Z",
+  "name": "@atlaskit/input",
+  "other": Object {
+    "_attachments": Object {},
+    "_from": "packages/input",
+    "_id": "@atlaskit/input",
+    "_nodeVersion": "6.9.2",
+    "_npmOperationalInternal": Object {
+      "host": "s3://npm-registry-packages",
+      "tmp": "tmp/input-1.6.1.tgz_1510790341073_0.8378127568867058",
+    },
+    "_npmUser": Object {
+      "email": "design-platform@atlassian.com",
+      "name": "atlaskit",
+    },
+    "_npmVersion": "3.10.7",
+    "_rev": "31-8e30bdb8faac40e50fac00be93918981",
+    "_shasum": "4c20a218048b90b5e30ca183fd1ede95ae6ad497",
+    "author": Object {
+      "name": "Atlassian Pty Ltd",
+    },
+    "directories": Object {},
+    "dist": Object {
+      "shasum": "4c20a218048b90b5e30ca183fd1ede95ae6ad497",
+      "tarball": "https://registry.npmjs.org/@atlaskit/input/-/input-1.6.1.tgz",
+    },
+    "dist-tags": Object {
+      "latest": "1.6.1",
+    },
+    "maintainers": Array [
+      Object {
+        "email": "design-platform@atlassian.com",
+        "name": "atlaskit",
+      },
+    ],
+    "readmeFilename": "README.md",
+    "time": Object {
+      "1.0.0": "2017-01-29T23:47:18.021Z",
+      "1.0.1": "2017-02-06T07:15:19.995Z",
+      "1.0.10": "2017-03-21T23:36:29.545Z",
+      "1.0.11": "2017-03-21T23:42:04.163Z",
+      "1.0.2": "2017-02-10T00:06:17.992Z",
+      "1.0.3": "2017-02-16T01:58:08.818Z",
+      "1.0.4": "2017-02-22T04:10:46.203Z",
+      "1.0.5": "2017-02-27T22:04:48.880Z",
+      "1.0.6": "2017-02-28T03:20:33.829Z",
+      "1.0.8": "2017-02-28T06:13:18.349Z",
+      "1.0.9": "2017-02-28T23:59:42.921Z",
+      "1.1.0": "2017-03-29T06:21:41.688Z",
+      "1.1.1": "2017-04-26T10:47:09.649Z",
+      "1.1.2": "2017-04-27T05:48:55.305Z",
+      "1.1.3": "2017-07-13T08:31:37.060Z",
+      "1.2.0": "2017-07-17T05:23:53.444Z",
+      "1.3.0": "2017-07-17T06:38:13.785Z",
+      "1.4.0": "2017-07-17T08:15:21.975Z",
+      "1.5.0": "2017-07-17T11:37:29.134Z",
+      "1.5.1": "2017-07-25T02:42:58.085Z",
+      "1.5.2": "2017-07-27T05:11:40.487Z",
+      "1.5.3": "2017-09-05T00:40:57.454Z",
+      "1.5.4": "2017-10-22T23:26:17.015Z",
+      "1.6.0": "2017-10-24T04:22:45.064Z",
+      "1.6.1": "2017-11-15T23:59:01.980Z",
+      "created": "2017-01-29T23:47:18.021Z",
+      "modified": "2017-11-15T23:59:01.980Z",
+    },
+  },
+  "owners": Array [
+    Object {
+      "email": "design-platform@atlassian.com",
+      "name": "atlaskit",
+    },
+  ],
+  "peerDependencies": Object {
+    "react": "^15.3.2 || ^16.0.0",
+    "react-dom": "^15.3.2 || ^16.0.0",
+  },
+  "readme": "[![AtlasKit component registry](https://img.shields.io/badge/AtlasKit-components-FF5230.svg)](http://atlaskit.atlassian.com)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://Commitizen.github.io/cz-cli/)
+[![semantic-release](https://img.shields.io/badge/GitHub-semantic_release-ffab00.svg)](https://github.com/semantic-release/semantic-release)
+[![Report an issue](https://img.shields.io/badge/Report-an_issue-6554C0.svg)](http://go.atlassian.com/atlaskit-issues)
+
+# Input
+
+**YOU SHOULD ALMOST DEFINITELY NOT BE USING THIS COMPONENT DIRECTLY**
+
+**USE @atlaskit/field-text INSTEAD**
+
+
+## SingleLineTextInput
+A text input component with extremely basic styling that supports read/edit modes.
+
+Designed for use within other components, e.g. for the read/edit views required by
+ak-inline-edit, or within table cells.
+
+Note: In addition the props described below, all other props passed to this
+component will be forwarded to the underlying HTML 'input'. This allows change
+handlers, placeholders, etc, to be attached to it.
+
+**Kind**: global variable
+* Properties
+
+*  [SingleLineTextInput](#SingleLineTextInput)
+    *  [.value](#SingleLineTextInput.value) : <code>string</code>
+    *  [.style](#SingleLineTextInput.style) : <code>object</code>
+    *  [.isInitiallySelected](#SingleLineTextInput.isInitiallySelected) : <code>boolean</code>
+    *  [.isEditing](#SingleLineTextInput.isEditing) : <code>boolean</code>
+    *  [.onConfirm](#SingleLineTextInput.onConfirm) : <code>function</code>
+    *  [.onKeyDown](#SingleLineTextInput.onKeyDown) : <code>function</code>
+
+<a name=\\"SingleLineTextInput.value\\"></a>
+
+### SingleLineTextInput.value : <code>string</code>
+The value of the input field.
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+<a name=\\"SingleLineTextInput.style\\"></a>
+
+### SingleLineTextInput.style : <code>object</code>
+Custom styles that will be applied to the read and edit views.
+
+Typical use would be to specify a custom font size.
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+<a name=\\"SingleLineTextInput.isInitiallySelected\\"></a>
+
+### SingleLineTextInput.isInitiallySelected : <code>boolean</code>
+Whether the input text will initially be selected/highlighted.
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+**Default**: <code>false</code>
+<a name=\\"SingleLineTextInput.isEditing\\"></a>
+
+### SingleLineTextInput.isEditing : <code>boolean</code>
+Whether the component is in edit mode or read mode.
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+<a name=\\"SingleLineTextInput.onConfirm\\"></a>
+
+### SingleLineTextInput.onConfirm : <code>function</code>
+Called when the user confirms input by pressing the enter key
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+<a name=\\"SingleLineTextInput.onKeyDown\\"></a>
+
+### SingleLineTextInput.onKeyDown : <code>function</code>
+Regular onKeyDown handler passed to the input
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+
+_* Please note that this module could have dependencies that are governed by the Atlassian Design Guidelines license which will be automatically included on install. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies._
+
+## We're here to help!
+
+Let us know what you think of our components and docs, your feedback is really important for us.
+
+Are you in trouble? Read through our [contribution guidelines](https://bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md) and raise an issue to us.
+
+",
+  "repository": Object {
+    "type": "git",
+    "url": "git+https://bitbucket.org/atlassian/atlaskit.git",
+  },
+  "scripts": Object {
+    "eslint": "../../build/bin/lint.eslint.sh",
+    "prepublish": "../../node_modules/.bin/in-publish && { cd ../.. && npm run prepublish-with-babel/single @atlaskit/input; } || ../../node_modules/.bin/not-in-publish",
+    "storybook": "../../build/bin/storybook/run.local.js",
+    "storybook:static": "../../build/bin/storybook/build.static.js",
+    "test:unit": "../../node_modules/.bin/jest -c ../../build/config/jest.config.js",
+  },
+  "version": "1.6.1",
+  "versions": Array [
+    Object {
+      "date": "2017-01-29T23:47:18.021Z",
+      "number": "1.0.0",
+    },
+    Object {
+      "date": "2017-02-06T07:15:19.995Z",
+      "number": "1.0.1",
+    },
+    Object {
+      "date": "2017-02-10T00:06:17.992Z",
+      "number": "1.0.2",
+    },
+    Object {
+      "date": "2017-02-16T01:58:08.818Z",
+      "number": "1.0.3",
+    },
+    Object {
+      "date": "2017-02-22T04:10:46.203Z",
+      "number": "1.0.4",
+    },
+    Object {
+      "date": "2017-02-27T22:04:48.880Z",
+      "number": "1.0.5",
+    },
+    Object {
+      "date": "2017-02-28T03:20:33.829Z",
+      "number": "1.0.6",
+    },
+    Object {
+      "date": "2017-02-28T06:13:18.349Z",
+      "number": "1.0.8",
+    },
+    Object {
+      "date": "2017-02-28T23:59:42.921Z",
+      "number": "1.0.9",
+    },
+    Object {
+      "date": "2017-03-21T23:36:29.545Z",
+      "number": "1.0.10",
+    },
+    Object {
+      "date": "2017-03-21T23:42:04.163Z",
+      "number": "1.0.11",
+    },
+    Object {
+      "date": "2017-03-29T06:21:41.688Z",
+      "number": "1.1.0",
+    },
+    Object {
+      "date": "2017-04-26T10:47:09.649Z",
+      "number": "1.1.1",
+    },
+    Object {
+      "date": "2017-04-27T05:48:55.305Z",
+      "number": "1.1.2",
+    },
+    Object {
+      "date": "2017-07-13T08:31:37.060Z",
+      "number": "1.1.3",
+    },
+    Object {
+      "date": "2017-07-17T05:23:53.444Z",
+      "number": "1.2.0",
+    },
+    Object {
+      "date": "2017-07-17T06:38:13.785Z",
+      "number": "1.3.0",
+    },
+    Object {
+      "date": "2017-07-17T08:15:21.975Z",
+      "number": "1.4.0",
+    },
+    Object {
+      "date": "2017-07-17T11:37:29.134Z",
+      "number": "1.5.0",
+    },
+    Object {
+      "date": "2017-07-25T02:42:58.085Z",
+      "number": "1.5.1",
+    },
+    Object {
+      "date": "2017-07-27T05:11:40.487Z",
+      "number": "1.5.2",
+    },
+    Object {
+      "date": "2017-09-05T00:40:57.454Z",
+      "number": "1.5.3",
+    },
+    Object {
+      "date": "2017-10-22T23:26:17.015Z",
+      "number": "1.5.4",
+    },
+    Object {
+      "date": "2017-10-24T04:22:45.064Z",
+      "number": "1.6.0",
+    },
+    Object {
+      "date": "2017-11-15T23:59:01.980Z",
+      "number": "1.6.1",
+    },
+  ],
+  "webpack": "dist/bundle-cjs.js",
+}
+`;
+
+exports[`nice-package should nice preact 1`] = `
+Package {
+  "_hasShrinkwrap": false,
+  "browser": "dist/preact.umd.js",
+  "bundlesize": Array [
+    Object {
+      "path": "./dist/preact.min.js",
+      "threshold": "4Kb",
+    },
+  ],
+  "created": "2015-09-11T02:41:33.521Z",
+  "description": "Fast 3kb React alternative with the same modern API. Components & Virtual DOM.",
+  "dev:main": "dist/preact.dev.js",
+  "devDependencies": Object {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^9.6.40",
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^8.2.6",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
+    "bundlesize": "^0.17.0",
+    "chai": "^4.2.0",
+    "copyfiles": "^2.1.0",
+    "core-js": "^2.6.0",
+    "coveralls": "^3.0.0",
+    "cross-env": "^5.1.4",
+    "diff": "^3.0.0",
+    "eslint": "^4.18.2",
+    "eslint-plugin-react": "^7.11.1",
+    "flow-bin": "^0.89.0",
+    "gzip-size-cli": "^2.0.0",
+    "istanbul-instrumenter-loader": "^3.0.0",
+    "jscodeshift": "^0.5.0",
+    "karma": "^3.1.3",
+    "karma-babel-preprocessor": "^7.0.0",
+    "karma-chai-sinon": "^0.1.5",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-sauce-launcher": "^1.2.0",
+    "karma-sinon": "^1.0.5",
+    "karma-source-map-support": "^1.3.0",
+    "karma-sourcemap-loader": "^0.3.6",
+    "karma-webpack": "^3.0.5",
+    "mocha": "^5.0.4",
+    "npm-run-all": "^4.1.5",
+    "puppeteer": "^1.11.0",
+    "rimraf": "^2.5.3",
+    "rollup": "^0.57.1",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-memory": "^3.0.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "sinon": "^4.4.2",
+    "sinon-chai": "^3.3.0",
+    "typescript": "^3.0.1",
+    "uglify-js": "^2.7.5",
+    "webpack": "^4.27.1",
+  },
+  "eslintConfig": Object {
+    "extends": "./config/eslint-config.js",
+  },
+  "greenkeeper": Object {
+    "ignore": Array [
+      "babel-cli",
+      "babel-core",
+      "babel-eslint",
+      "babel-loader",
+      "jscodeshift",
+      "rollup-plugin-babel",
+    ],
+  },
+  "homepage": "https://github.com/developit/preact",
+  "jsnext:main": "dist/preact.mjs",
+  "keywords": Array [
+    "preact",
+    "react",
+    "virtual dom",
+    "vdom",
+    "components",
+    "virtual",
+    "dom",
+  ],
+  "lastPublisher": Object {
+    "email": "npm.leah@hrmny.sh",
+    "name": "harmony",
+  },
+  "license": "MIT",
+  "licenseText": "The MIT License (MIT)
+
+Copyright (c) 2015-present Jason Miller
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the \\"Software\\"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED \\"AS IS\\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+",
+  "main": "dist/preact.js",
+  "minified:main": "dist/preact.min.js",
+  "modified": "2019-08-02T20:34:48.321Z",
+  "module": "dist/preact.mjs",
+  "name": "preact",
+  "other": Object {
+    "_attachments": Object {},
+    "_id": "preact",
+    "_npmOperationalInternal": Object {
+      "host": "s3://npm-registry-packages",
+      "tmp": "tmp/preact_8.5.0_1564770863260_0.5179813670573445",
+    },
+    "_npmUser": Object {
+      "email": "npm.leah@hrmny.sh",
+      "name": "harmony",
+    },
+    "_rev": "202-877707b490a7d5d39e9f83d4b528254c",
+    "author": Object {
+      "email": "jason@developit.ca",
+      "name": "Jason Miller",
+    },
+    "bugs": Object {
+      "url": "https://github.com/developit/preact/issues",
+    },
+    "directories": Object {},
+    "dist": Object {
+      "fileCount": 56,
+      "integrity": "sha512-S2OOz+lRjfbqDbV5LOIcJ6yfYvshDtKvvsMwaFW84wuw4HtFUYH67T+hnWhdCDYtW8BfmyIg9utz16s6U80HbA==",
+      "npm-signature": "-----BEGIN PGP SIGNATURE-----
+Version: OpenPGP.js v3.0.4
+Comment: https://openpgpjs.org
+
+wsFcBAEBCAAQBQJdRIIwCRA9TVsSAnZWagAAFiUP/j+wGH4kdXgyELOhS5qd
+HP2hzGFDVm6oViJKM4AboDQJtoqirCQHpfjB+QkeiPn97HHEGfsDxbxzdMMw
+GiaQKum0A6crCuEPxohR7bsV3xN6ANLnFWCBsQ80aLZ50lVUTkRQRMAjgEcT
+5zl1CaS9GSSmE1B5fMVTWWFSVU/mbGPcAkXZMjwdqci88RHf3mtgn8IJ/5oC
+4xiZSobSvIBUlv9cBqIVaflvxHl9xZpdqzV1iddF4C7Ou71edxVjWBwXdEoa
+L8tNmJmtJPEUR4h12ZAjQFDp1wiM/iBbT/5yXGE8rqlDxtDf1WLtDI2sU0SK
+YykUj3yCNwCT9Li7A6O6I0cTQu8CKIQ8B7JtrBjMR/PzLQFSsxXBYVfc2IB9
+5VcuUpmGvqcnn4l36dPzBQEZlkRQSZ92N0L2WZtkwuN6uTqAOP85XSQ+FjyD
+k1kuNrwXimBKuL4g7LiClTYMRylwcA8WR8T93Lc5DbXMQRcUlAqhQyE/2UBf
+iTI2jBeJmjGyUJgyhmt56qaWk2Y+5ltXaq4evb5/JpAgrO0vMEsGbQ0B/RYo
+Ct/OHE/LAHhZ+/OCTuDsJS1PsWoT81tXqizE9/wQ5KJTeew7b7tZOn6Au5S/
+yv0eQmO6mqk0voLz60hLauHhFFPP4MkNFGhCr4Dt7QT+G2QRuQmwNXOeLuJg
+QE+S
+=36vW
+-----END PGP SIGNATURE-----
+",
+      "shasum": "05690de3af035cd8ad393e8b4057b8ab29aedee1",
+      "tarball": "https://registry.npmjs.org/preact/-/preact-8.5.0.tgz",
+      "unpackedSize": 978252,
+    },
+    "dist-tags": Object {
+      "latest": "8.5.0",
+      "next": "10.0.0-rc.1",
+    },
+    "maintainers": Array [
+      Object {
+        "email": "jason@developit.ca",
+        "name": "developit",
+      },
+      Object {
+        "email": "ulliftw@gmail.com",
+        "name": "harmony",
+      },
+      Object {
+        "email": "luke@lukeed.com",
+        "name": "lukeed",
+      },
+      Object {
+        "email": "marvin@marvinhagemeister.de",
+        "name": "marvinhagemeister",
+      },
+      Object {
+        "email": "prateek89born@gmail.com",
+        "name": "prateekbh",
+      },
+      Object {
+        "email": "hello@preactjs.com",
+        "name": "preactjs",
+      },
+      Object {
+        "email": "allamsetty.anup@gmail.com",
+        "name": "reznord",
+      },
+    ],
+    "readmeFilename": "",
+    "time": Object {
+      "10.0.0-rc.1": "2019-08-02T20:34:45.123Z",
+      "8.5.0": "2019-08-02T18:34:23.572Z",
+      "created": "2015-09-11T02:41:33.521Z",
+      "modified": "2019-08-02T20:34:48.321Z",
+    },
+    "users": Object {
+      "abhisekp": true,
+      "alexparish": true,
+      "billneff79": true,
+      "charlespeters": true,
+      "d-band": true,
+      "daniellink": true,
+      "developit": true,
+      "erikvold": true,
+      "gcwelborn": true,
+      "grahm": true,
+      "huiyifyj": true,
+      "iamale": true,
+      "karzanosman984": true,
+      "kkho595": true,
+      "kratyk": true,
+      "lassevolkmann": true,
+      "mdedirudianto": true,
+      "petershev": true,
+      "pixel67": true,
+      "pje": true,
+      "princetoad": true,
+      "rethinkflash": true,
+      "rexpan": true,
+      "sangdth": true,
+      "severen": true,
+      "shanewholloway": true,
+      "sshrike": true,
+      "sternelee": true,
+      "tztz": true,
+      "vpzomtrrfrt": true,
+      "wayn": true,
+      "xueboren": true,
+      "youtwo": true,
+    },
+  },
+  "owners": Array [
+    Object {
+      "email": "jason@developit.ca",
+      "name": "developit",
+    },
+    Object {
+      "email": "ulliftw@gmail.com",
+      "name": "harmony",
+    },
+    Object {
+      "email": "luke@lukeed.com",
+      "name": "lukeed",
+    },
+    Object {
+      "email": "marvin@marvinhagemeister.de",
+      "name": "marvinhagemeister",
+    },
+    Object {
+      "email": "prateek89born@gmail.com",
+      "name": "prateekbh",
+    },
+    Object {
+      "email": "hello@preactjs.com",
+      "name": "preactjs",
+    },
+    Object {
+      "email": "allamsetty.anup@gmail.com",
+      "name": "reznord",
+    },
+  ],
+  "readme": "",
+  "repository": "https://github.com/developit/preact",
+  "scripts": Object {
+    "build": "npm-run-all --silent clean transpile copy-flow-definition copy-typescript-definition strip optimize minify size",
+    "clean": "rimraf dist/ devtools.js devtools.js.map debug.js debug.js.map test/ts/**/*.js",
+    "copy-flow-definition": "copyfiles -f src/preact.js.flow dist",
+    "copy-typescript-definition": "copyfiles -f src/preact.d.ts dist",
+    "flow": "flow",
+    "lint": "eslint debug devtools src test",
+    "minify": "uglifyjs dist/preact.js -c collapse_vars,evaluate,screw_ie8,unsafe,loops=false,keep_fargs=false,pure_getters,unused,dead_code -m -o dist/preact.min.js -p relative --in-source-map dist/preact.js.map --source-map dist/preact.min.js.map",
+    "optimize": "uglifyjs dist/preact.dev.js -c conditionals=false,sequences=false,loops=false,join_vars=false,collapse_vars=false --pure-funcs=Object.defineProperty --mangle-props --mangle-regex=\\"/^(_|normalizedNodeName|nextBase|prev[CPS]|_parentC)/\\" --name-cache config/properties.json -b width=120,quote_style=3 -o dist/preact.js -p relative --in-source-map dist/preact.dev.js.map --source-map dist/preact.js.map",
+    "postinstall": "node -e \\"console.log('\\\\u001b[35m\\\\u001b[1mLove Preact? You can now donate to our open collective:\\\\u001b[22m\\\\u001b[39m\\\\n > \\\\u001b[34mhttps://opencollective.com/preact/donate\\\\u001b[0m')\\"",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run build",
+    "release": "cross-env npm run smart-release",
+    "size": "node -e \\"process.stdout.write('gzip size: ')\\" && gzip-size --raw dist/preact.min.js",
+    "smart-release": "npm run build && npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish",
+    "strip": "npm-run-all strip:main strip:esm",
+    "strip:esm": "jscodeshift --run-in-band -s -t config/codemod-strip-tdz.js dist/preact.mjs && jscodeshift --run-in-band -s -t config/codemod-const.js dist/preact.mjs && jscodeshift --run-in-band -s -t config/codemod-let-name.js dist/preact.mjs",
+    "strip:main": "jscodeshift --run-in-band -s -t config/codemod-strip-tdz.js dist/preact.dev.js && jscodeshift --run-in-band -s -t config/codemod-const.js dist/preact.dev.js && jscodeshift --run-in-band -s -t config/codemod-let-name.js dist/preact.dev.js",
+    "test": "npm-run-all lint --parallel test:mocha test:karma test:ts test:flow test:size",
+    "test:flow": "flow check",
+    "test:karma": "karma start test/karma.conf.js --single-run",
+    "test:karma:watch": "npm run test:karma -- no-single-run",
+    "test:mocha": "mocha --recursive --require babel-register test/shared test/node",
+    "test:mocha:watch": "npm run test:mocha -- --watch",
+    "test:size": "bundlesize",
+    "test:ts": "tsc -p test/ts/ && mocha --require babel-register test/ts/**/*-test.js",
+    "transpile": "npm-run-all transpile:main transpile:esm transpile:umd transpile:devtools transpile:debug",
+    "transpile:debug": "babel debug/ -o debug.js -s",
+    "transpile:devtools": "rollup -c config/rollup.config.devtools.js",
+    "transpile:esm": "rollup -c config/rollup.config.module.js",
+    "transpile:main": "rollup -c config/rollup.config.js",
+    "transpile:umd": "rollup -c config/rollup.config.umd.js",
+  },
+  "starsCount": 33,
+  "types": "dist/preact.d.ts",
+  "typings": "./dist/preact.d.ts",
+  "unpkg": "dist/preact.min.js",
+  "version": "8.5.0",
+  "versions": Array [
+    Object {
+      "date": "2019-08-02T18:34:23.572Z",
+      "number": "8.5.0",
+    },
+    Object {
+      "date": "2019-08-02T20:34:45.123Z",
+      "number": "10.0.0-rc.1",
+    },
+  ],
+}
+`;
+
 exports[`transforms correctly: @atlaskit/input 1`] = `
 Object {
   "_searchInternal": Object {
@@ -11,7 +649,7 @@ Object {
       "@atlaskit/input",
     ],
   },
-  "bin": undefined,
+  "bin": Object {},
   "computedKeywords": Array [],
   "computedMetadata": Object {},
   "created": 1485733638021,
@@ -52,7 +690,9 @@ Object {
   ],
   "name": "@atlaskit/input",
   "objectID": "@atlaskit/input",
-  "originalAuthor": undefined,
+  "originalAuthor": Object {
+    "name": "Atlassian Pty Ltd",
+  },
   "owner": Object {
     "avatar": "https://bitbucket.org/account/atlassian/avatar",
     "link": "https://bitbucket.org/atlassian",
@@ -207,7 +847,7 @@ Object {
       "@atomic-package/tab",
     ],
   },
-  "bin": undefined,
+  "bin": Object {},
   "computedKeywords": Array [],
   "computedMetadata": Object {},
   "created": 1498148375102,
@@ -268,7 +908,9 @@ Object {
   ],
   "name": "@atomic-package/tab",
   "objectID": "@atomic-package/tab",
-  "originalAuthor": undefined,
+  "originalAuthor": Object {
+    "name": "daisuke.takayama",
+  },
   "owner": Object {
     "avatar": "https://github.com/atomic-package.png",
     "link": "https://github.com/atomic-package",
@@ -291,6 +933,7 @@ Object {
     "host": "github.com",
     "path": "",
     "project": "tab",
+    "type": "git",
     "url": "https://github.com/atomic-package/tab",
     "user": "atomic-package",
   },
@@ -394,7 +1037,10 @@ Object {
   ],
   "name": "create-instantsearch-app",
   "objectID": "create-instantsearch-app",
-  "originalAuthor": undefined,
+  "originalAuthor": Object {
+    "email": "support@algolia.com",
+    "name": "Algolia",
+  },
   "owner": Object {
     "avatar": "https://github.com/algolia.png",
     "link": "https://github.com/algolia",
@@ -416,6 +1062,7 @@ Object {
     "host": "github.com",
     "path": "",
     "project": "create-instantsearch-app",
+    "type": "git",
     "url": "https://github.com/algolia/create-instantsearch-app",
     "user": "algolia",
   },
@@ -444,7 +1091,7 @@ Object {
       "indexofjs",
     ],
   },
-  "bin": undefined,
+  "bin": Object {},
   "computedKeywords": Array [],
   "computedMetadata": Object {},
   "created": 1346430013243,
@@ -528,7 +1175,7 @@ Object {
       "prism",
     ],
   },
-  "bin": undefined,
+  "bin": Object {},
   "computedKeywords": Array [],
   "computedMetadata": Object {},
   "created": 1431474880643,
@@ -582,7 +1229,9 @@ Object {
   ],
   "name": "prismjs",
   "objectID": "prismjs",
-  "originalAuthor": undefined,
+  "originalAuthor": Object {
+    "name": "Lea Verou",
+  },
   "owner": Object {
     "avatar": "https://github.com/LeaVerou.png",
     "link": "https://github.com/LeaVerou",
@@ -671,6 +1320,7 @@ Thank you so much for contributing!!
     "host": "github.com",
     "path": "",
     "project": "prism",
+    "type": "git",
     "url": "https://github.com/LeaVerou/prism",
     "user": "LeaVerou",
   },
@@ -727,7 +1377,7 @@ Object {
       "long-boy",
     ],
   },
-  "bin": undefined,
+  "bin": Object {},
   "computedKeywords": Array [],
   "computedMetadata": Object {},
   "created": NaN,
@@ -737,17 +1387,18 @@ Object {
   "devDependencies": Object {},
   "downloadsLast30Days": 0,
   "downloadsRatio": 0,
-  "gitHead": null,
-  "githubRepo": null,
+  "gitHead": "master",
+  "githubRepo": Object {
+    "head": "master",
+    "path": "",
+    "project": "npm-search",
+    "user": "algolia",
+  },
   "homepage": null,
   "humanDownloadsLast30Days": "0",
   "keywords": Array [],
   "lastCrawl": Any<String>,
-  "lastPublisher": Object {
-    "avatar": "https://www.gravatar.com/avatar/",
-    "link": "https://www.npmjs.com/~unknown",
-    "name": "unknown",
-  },
+  "lastPublisher": null,
   "license": null,
   "modified": NaN,
   "moduleTypes": Array [
@@ -757,14 +1408,23 @@ Object {
   "objectID": "long-boy",
   "originalAuthor": undefined,
   "owner": Object {
-    "avatar": "https://www.gravatar.com/avatar/",
-    "link": "https://www.npmjs.com/~unknown",
-    "name": "unknown",
+    "avatar": "https://github.com/algolia.png",
+    "link": "https://github.com/algolia",
+    "name": "algolia",
   },
   "owners": Array [],
   "popular": false,
   "readme": Any<String>,
-  "repository": null,
+  "repository": Object {
+    "branch": "master",
+    "head": undefined,
+    "host": "github.com",
+    "path": "",
+    "project": "npm-search",
+    "type": "git",
+    "url": "https://github.com/algolia/npm-search",
+    "user": "algolia",
+  },
   "tags": undefined,
   "types": Object {
     "ts": Object {

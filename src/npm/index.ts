@@ -1,30 +1,41 @@
-import chunk from 'lodash/chunk.js';
+import chunk from 'lodash/chunk';
+import type {
+  DatabaseChangesParams,
+  DatabaseChangesResponse,
+  DocumentFetchResponse,
+  DocumentListParams,
+  DocumentListResponse,
+  DocumentScopeFollowUpdatesParams,
+} from 'nano';
 import nano from 'nano';
 import numeral from 'numeral';
 
-import config from '../config.js';
-import datadog from '../datadog.js';
-import log from '../log.js';
-import { request } from '../utils/request.js';
+import type { RawPkg } from '../@types/pkg';
+import { config } from '../config';
+import { datadog } from '../utils/datadog';
+import { log } from '../utils/log';
+import { request } from '../utils/request';
+
+import type { GetInfo, GetPackage, PackageDownload } from './types';
 
 const registry = nano({
   url: config.npmRegistryEndpoint,
 });
-const db = registry.use(config.npmRegistryDBName);
+const db = registry.use<GetPackage>(config.npmRegistryDBName);
 
 // Default request options
-const defaultOptions = {
-  include_docs: true, // eslint-disable-line camelcase
+const defaultOptions: DatabaseChangesParams = {
+  include_docs: true,
   conflicts: false,
   attachments: false,
 };
 
 /**
  * Find all packages in registry.
- *
- * @param {object} options - Options param.
  */
-async function findAll(options) {
+async function findAll(
+  options: Partial<DocumentListParams>
+): Promise<DocumentListResponse<GetPackage>> {
   const start = Date.now();
 
   const results = await db.list({
@@ -37,7 +48,9 @@ async function findAll(options) {
   return results;
 }
 
-async function getChanges(options) {
+async function getChanges(
+  options: Partial<DatabaseChangesParams>
+): Promise<DatabaseChangesResponse> {
   const start = Date.now();
 
   const results = await db.changes({
@@ -50,7 +63,11 @@ async function getChanges(options) {
   return results;
 }
 
-async function getDocs({ keys }) {
+async function getDocs({
+  keys,
+}: {
+  keys: string[];
+}): Promise<DocumentFetchResponse<GetPackage>> {
   const start = Date.now();
 
   const docs = await db.fetch({ keys });
@@ -63,12 +80,14 @@ async function getDocs({ keys }) {
 /**
  * Listen to changes in registry.
  *
- * @param {object} options - Options param.
+ * @param options - Options param.
  */
-function listenToChanges(options) {
+function listenToChanges(
+  options: DocumentScopeFollowUpdatesParams
+): nano.FollowEmitter {
   const listener = db.follow({
     ...defaultOptions,
-    ...options,
+    ...(options as any), // there is an incompat between types but they are compat
   });
   listener.on('confirm', () => {
     log.info('Registry is confirmed/connected');
@@ -92,12 +111,12 @@ function listenToChanges(options) {
 /**
  * Get info about registry.
  */
-async function getInfo() {
+async function getInfo(): Promise<{ nbDocs: number; seq: number }> {
   const start = Date.now();
 
   const {
     body: { doc_count: nbDocs, update_seq: seq },
-  } = await request(config.npmRegistryEndpoint, {
+  } = await request<GetInfo>(config.npmRegistryEndpoint, {
     responseType: 'json',
   });
 
@@ -111,13 +130,11 @@ async function getInfo() {
 
 /**
  * Validate if a package exists.
- *
- * @param {string} pkgName - Package name.
  */
-async function validatePackageExists(pkgName) {
+async function validatePackageExists(pkgName: string): Promise<boolean> {
   const start = Date.now();
 
-  let exists;
+  let exists: boolean;
   try {
     const response = await request(`${config.npmRootEndpoint}/${pkgName}`, {
       method: 'HEAD',
@@ -134,27 +151,31 @@ async function validatePackageExists(pkgName) {
 /**
  * Get list of packages that depends of them.
  *
- * @param {Array} pkgs - Package list.
+ * @param pkgs - Package list.
  */
-function getDependents(pkgs) {
+function getDependents(
+  pkgs: Array<Pick<RawPkg, 'name'>>
+): Promise<Array<{ dependents: number; humanDependents: string }>> {
   // we return 0, waiting for https://github.com/npm/registry/issues/361
   return Promise.all(
-    pkgs.map(() => ({
-      dependents: 0,
-      humanDependents: '0',
-    }))
+    pkgs.map(() => {
+      return { dependents: 0, humanDependents: '0' };
+    })
   );
 }
 
 /**
  * Get total npm downloads.
  */
-async function getTotalDownloads() {
+async function getTotalDownloads(): Promise<number> {
   const {
     body: { downloads: totalNpmDownloadsPerDay },
-  } = await request(`${config.npmDownloadsEndpoint}/range/last-month`, {
-    responseType: 'json',
-  });
+  } = await request<{ downloads: Array<{ downloads: number }> }>(
+    `${config.npmDownloadsEndpoint}/range/last-month`,
+    {
+      responseType: 'json',
+    }
+  );
 
   return totalNpmDownloadsPerDay.reduce(
     (total, { downloads: dayDownloads }) => total + dayDownloads,
@@ -164,21 +185,29 @@ async function getTotalDownloads() {
 
 /**
  * Get download stats for a list of packages.
- *
- * @param {string} pkgNames - Packages name.
  */
-async function getDownload(pkgNames) {
+async function getDownload(
+  pkgNames: string
+): Promise<{ body: Record<string, PackageDownload | null> }> {
   try {
-    const response = await request(
-      `${config.npmDownloadsEndpoint}/point/last-month/${pkgNames}`,
-      {
-        responseType: 'json',
-      }
-    );
-    if (response.body.downloads) {
-      return { body: { [response.body.package]: response.body } };
+    const response = await request<
+      Record<string, PackageDownload | null> | (PackageDownload | null)
+    >(`${config.npmDownloadsEndpoint}/point/last-month/${pkgNames}`, {
+      responseType: 'json',
+    });
+    if (response.statusCode !== 200 || !response.body) {
+      return { body: {} };
     }
-    return response;
+
+    // Single package
+    if (response.body.downloads) {
+      return {
+        body: {
+          [response.body.package as string]: response.body as PackageDownload,
+        },
+      };
+    }
+    return response as { body: Record<string, PackageDownload | null> };
   } catch (error) {
     log.warn(`An error ocurred when getting download of ${pkgNames} ${error}`);
     return { body: {} };
@@ -187,10 +216,19 @@ async function getDownload(pkgNames) {
 
 /**
  * Get downloads for all packages passer in arguments.
- *
- * @param {Array} pkgs - Packages.
  */
-async function getDownloads(pkgs) {
+async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
+  Array<{
+    downloadsLast30Days: number;
+    humanDownloadsLast30Days: string;
+    downloadsRatio: number;
+    popular: boolean;
+    _searchInternal: {
+      popularName?: string;
+      downloadsMagnitude: number;
+    };
+  } | null>
+> {
   const start = Date.now();
 
   // npm has a weird API to get downloads via GET params, so we split pkgs into chunks
@@ -217,17 +255,18 @@ async function getDownloads(pkgs) {
     ...encodedScopedPackageNames.map(getDownload),
   ]);
 
-  const downloadsPerPkgName = downloadsPerPkgNameChunks.reduce(
-    (res, { body: downloadsPerPkgNameChunk }) => ({
-      ...res,
-      ...downloadsPerPkgNameChunk,
-    }),
-    {}
-  );
+  const downloadsPerPkgName: Record<string, PackageDownload> =
+    downloadsPerPkgNameChunks.reduce(
+      (res, { body: downloadsPerPkgNameChunk }) => ({
+        ...res,
+        ...downloadsPerPkgNameChunk,
+      }),
+      {}
+    );
 
   const all = pkgs.map(({ name }) => {
     if (downloadsPerPkgName[name] === undefined) {
-      return {};
+      return null;
     }
 
     const downloadsLast30Days = downloadsPerPkgName[name]

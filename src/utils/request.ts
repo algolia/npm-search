@@ -1,6 +1,7 @@
 import http from 'http';
 import https from 'https';
 
+import type { OptionsOfJSONResponseBody } from 'got';
 import got from 'got';
 
 const options = {
@@ -14,8 +15,12 @@ const options = {
 export const httpAgent = new http.Agent(options);
 export const httpsAgent = new https.Agent(options);
 
-export async function request(url, opts) {
-  return await got(url, {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+export async function request<TRes>(
+  url: string,
+  opts: OptionsOfJSONResponseBody
+) {
+  return await got<TRes>(url, {
     ...opts,
     agent: {
       http: httpAgent,

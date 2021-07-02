@@ -1,10 +1,12 @@
-import log from '../../log.js';
-import * as api from '../index.js';
+import { log } from '../../utils/log';
+import * as api from '../index';
 
-jest.mock('../../log.js', () => {
+jest.mock('../../utils/log', () => {
   return {
-    info: jest.fn(),
-    warn: jest.fn(),
+    log: {
+      info: jest.fn(),
+      warn: jest.fn(),
+    },
   };
 });
 
@@ -13,10 +15,46 @@ beforeEach(() => {
 });
 
 describe('hits', () => {
-  beforeAll(async () => {
-    await api.loadHits();
+  describe('getHits()', () => {
+    beforeAll(() => {
+      api.hits.clear();
+      api.hits.set('jquery', 1234);
+    });
+
+    it('should get one formatted hit', () => {
+      expect(api.getHits([{ name: 'jquery' }])).toEqual([
+        {
+          jsDelivrHits: 1234,
+          _searchInternal: {
+            jsDelivrPopularity: 1,
+          },
+        },
+      ]);
+    });
+    it('should get multiple formatted hits', () => {
+      expect(
+        api.getHits([{ name: 'jquery' }, { name: 'thispackagedoesnotexist' }])
+      ).toEqual([
+        {
+          jsDelivrHits: 1234,
+          _searchInternal: {
+            jsDelivrPopularity: 1,
+          },
+        },
+        {
+          jsDelivrHits: 0,
+          _searchInternal: {
+            jsDelivrPopularity: 0,
+          },
+        },
+      ]);
+    });
   });
+
   describe('loadHits()', () => {
+    beforeAll(async () => {
+      await api.loadHits();
+    });
     it('should download all packages hits', () => {
       expect(api.hits.size).toBeGreaterThan(60000); // 66790 (2019-08)
     });
@@ -27,35 +65,6 @@ describe('hits', () => {
 
     it('should not get one hit', () => {
       expect(api.hits.get('thispackagedoesnotexist')).toBe(undefined);
-    });
-  });
-
-  describe('getHits()', () => {
-    it('should get one formatted hit', () => {
-      expect(api.getHits(['jquery'])).toEqual([
-        {
-          jsDelivrHits: expect.any(Number),
-          _searchInternal: {
-            jsDelivrPopularity: expect.any(Number),
-          },
-        },
-      ]);
-    });
-    it('should get multiple formatted hits', () => {
-      expect(api.getHits(['jquery', 'thispackagedoesnotexist'])).toEqual([
-        {
-          jsDelivrHits: expect.any(Number),
-          _searchInternal: {
-            jsDelivrPopularity: expect.any(Number),
-          },
-        },
-        {
-          jsDelivrHits: 0,
-          _searchInternal: {
-            jsDelivrPopularity: 0,
-          },
-        },
-      ]);
     });
   });
 });

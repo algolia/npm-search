@@ -1,13 +1,16 @@
+import type { SearchClient, SearchIndex } from 'algoliasearch';
 import ms from 'ms';
+import type { DocumentListParams } from 'nano';
 
-import * as algolia from './algolia/index.js';
-import config from './config.js';
-import datadog from './datadog.js';
-import log from './log.js';
-import * as npm from './npm/index.js';
-import saveDocs from './saveDocs.js';
+import type { StateManager } from './StateManager';
+import * as algolia from './algolia';
+import { config } from './config';
+import * as npm from './npm';
+import saveDocs from './saveDocs';
+import { datadog } from './utils/datadog';
+import { log } from './utils/log';
 
-let loopStart;
+let loopStart: number = Date.now();
 
 /**
  * Bootstrap is the mode that goes from 0 to all the packages in NPM
@@ -21,10 +24,15 @@ let loopStart;
  * Watch mode should/can be reliably left running for weeks/months as CouchDB is made for that.
  * BUT for the moment it's mandatory to relaunch it because it's the only way to update: typescript, downloads stats.
  */
-async function run(stateManager, algoliaClient, mainIndex, bootstrapIndex) {
+async function run(
+  stateManager: StateManager,
+  algoliaClient: SearchClient,
+  mainIndex: SearchIndex,
+  bootstrapIndex: SearchIndex
+): Promise<void> {
   const state = await stateManager.check();
 
-  if (state.seq > 0 && state.bootstrapDone === true) {
+  if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
     await algolia.putDefaultSettings(mainIndex, config);
     log.info('⛷   Bootstrap: done');
     return;
@@ -50,11 +58,11 @@ async function run(stateManager, algoliaClient, mainIndex, bootstrapIndex) {
   log.info('-----');
 
   let lastProcessedId = state.bootstrapLastId;
-  while (lastProcessedId !== null) {
+  do {
     loopStart = Date.now();
 
     lastProcessedId = await loop(lastProcessedId, stateManager, bootstrapIndex);
-  }
+  } while (lastProcessedId !== null);
 
   log.info('-----');
   log.info('⛷   Bootstrap: done');
@@ -69,14 +77,16 @@ async function run(stateManager, algoliaClient, mainIndex, bootstrapIndex) {
 /**
  * Execute one loop for bootstrap,
  *   Fetch N packages from `lastId`, process and save them to Algolia.
- *
- * @param {string} lastId
- */
-async function loop(lastId, stateManager, bootstrapIndex) {
+ * */
+async function loop(
+  lastId: string | null,
+  stateManager: StateManager,
+  bootstrapIndex: SearchIndex
+): Promise<string | null> {
   const start = Date.now();
   log.info('loop()', '::', lastId);
 
-  const options = {
+  const options: DocumentListParams = {
     limit: config.bootstrapConcurrency,
   };
   if (lastId) {
@@ -110,7 +120,10 @@ async function loop(lastId, stateManager, bootstrapIndex) {
   return newLastId;
 }
 
-async function moveToProduction(stateManager, algoliaClient) {
+async function moveToProduction(
+  stateManager: StateManager,
+  algoliaClient: SearchClient
+): Promise<void> {
   log.info('🚚  starting move to production');
 
   const currentState = await stateManager.get();
@@ -119,7 +132,7 @@ async function moveToProduction(stateManager, algoliaClient) {
   await stateManager.save(currentState);
 }
 
-async function logProgress(offset, nbDocs) {
+async function logProgress(offset: number, nbDocs: number): Promise<void> {
   const { nbDocs: totalDocs } = await npm.getInfo();
 
   const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);

@@ -1,12 +1,12 @@
-import * as algolia from './algolia/index.js';
-import * as bootstrap from './bootstrap.js';
-import config from './config.js';
-import createStateManager from './createStateManager.js';
-import datadog from './datadog.js';
-import * as jsDelivr from './jsDelivr/index.js';
-import log from './log.js';
-import * as sentry from './utils/sentry.js';
-import * as watch from './watch.js';
+import { StateManager } from './StateManager';
+import * as algolia from './algolia/index';
+import * as bootstrap from './bootstrap';
+import { config } from './config';
+import * as jsDelivr from './jsDelivr/index';
+import { datadog } from './utils/datadog';
+import { log } from './utils/log';
+import * as sentry from './utils/sentry';
+import * as watch from './watch';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
@@ -17,7 +17,7 @@ const KILL_PROCESS_EVERY_MS = 12 * 60 * 60 * 1000; // every 12 hours
  *   - Bootstrap: will index the whole list of packages (if needed)
  *   - Watch    : will process update in real time.
  */
-async function main() {
+async function main(): Promise<void> {
   const start = Date.now();
 
   // We schedule to kill the process:
@@ -39,7 +39,7 @@ async function main() {
   datadog.timing('main.init_algolia', Date.now() - start);
 
   // Create State Manager that holds progression of indexing
-  const stateManager = createStateManager(mainIndex);
+  const stateManager = new StateManager(mainIndex);
 
   // Preload some useful data
   await jsDelivr.loadHits();

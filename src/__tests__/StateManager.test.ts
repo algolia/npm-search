@@ -1,4 +1,4 @@
-import createStateManager from '../createStateManager.js';
+import { StateManager } from '../StateManager';
 
 describe('stateManager', () => {
   describe('get()', () => {
@@ -9,8 +9,8 @@ describe('stateManager', () => {
             userData: 'foobar',
           };
         }),
-      };
-      const stateManager = createStateManager(mock);
+      } as any;
+      const stateManager = new StateManager(mock);
       const userData = await stateManager.get();
 
       expect(mock.getSettings).toHaveBeenCalled();
@@ -22,12 +22,12 @@ describe('stateManager', () => {
     it('should set userData to algolia', async () => {
       const mock = {
         setSettings: jest.fn(),
-      };
-      const stateManager = createStateManager(mock);
-      await stateManager.set('state');
+      } as any;
+      const stateManager = new StateManager(mock);
+      await stateManager.set({ seq: 1, bootstrapDone: false });
 
       expect(mock.setSettings).toHaveBeenCalledWith({
-        userData: 'state',
+        userData: { seq: 1, bootstrapDone: false },
       });
     });
   });
@@ -36,8 +36,8 @@ describe('stateManager', () => {
     it('should reset userData', async () => {
       const mock = {
         setSettings: jest.fn(),
-      };
-      const stateManager = createStateManager(mock);
+      } as any;
+      const stateManager = new StateManager(mock);
       await stateManager.reset();
 
       expect(mock.setSettings).toHaveBeenCalled();
@@ -53,9 +53,9 @@ describe('stateManager', () => {
           };
         }),
         setSettings: jest.fn(),
-      };
-      const stateManager = createStateManager(mock);
-      await stateManager.save({ foo: 'bar' });
+      } as any;
+      const stateManager = new StateManager(mock);
+      await stateManager.save({ foo: 'bar' } as any);
 
       expect(mock.getSettings).toHaveBeenCalled();
       expect(mock.setSettings).toHaveBeenCalledWith({

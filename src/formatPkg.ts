@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import escape from 'escape-html';
 import gravatarUrl from 'gravatar-url';
 import hostedGitInfo from 'hosted-git-info';
@@ -7,13 +8,59 @@ import sizeof from 'object-sizeof';
 import traverse from 'traverse';
 import truncate from 'truncate-utf8-bytes';
 
-import config from './config.js';
+import type { NicePackageType } from './@types/nice-package';
+import type {
+  ComputedMeta,
+  GithubRepo,
+  ModuleType,
+  Owner,
+  RawPkg,
+  Repo,
+} from './@types/pkg';
+import { config } from './config';
+import type { GetPackage, GetUser, PackageRepo } from './npm/types';
 
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 
-export default function formatPkg(pkg) {
-  const cleaned = new NicePackage(pkg);
-  if (!cleaned.name) {
+type Subset = {
+  name: string;
+  include: boolean;
+  metadata?: { schematics: string };
+};
+
+const registrySubsetRules: Array<(pkg: NicePackageType) => Subset> = [
+  ({ name }): Subset => ({
+    name: 'babel-plugin',
+    include:
+      name.startsWith('@babel/plugin') || name.startsWith('babel-plugin-'),
+  }),
+
+  ({ name }): Subset => ({
+    name: 'vue-cli-plugin',
+    include: /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
+  }),
+
+  ({ name, keywords = [] }): Subset => ({
+    name: 'yeoman-generator',
+    include:
+      name.startsWith('generator-') && keywords.includes('yeoman-generator'),
+  }),
+
+  ({ schematics = '' }): Subset => ({
+    name: 'angular-cli-schematic',
+    include: schematics.length > 0,
+    metadata: { schematics },
+  }),
+
+  ({ name }): Subset => ({
+    name: 'webpack-scaffold',
+    include: name.startsWith('webpack-scaffold-'),
+  }),
+];
+
+export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
+  const cleaned: NicePackageType | undefined = new NicePackage(pkg);
+  if (!cleaned || !cleaned.name) {
     return undefined;
   }
   if (Array.isArray(cleaned.main)) {
@@ -29,28 +76,50 @@ export default function formatPkg(pkg) {
 
   const version = cleaned.version ? cleaned.version : '0.0.0';
   const versions = getVersions(cleaned, pkg);
-  const githubRepo = cleaned.repository
-    ? getGitHubRepoInfo({
-        repository: cleaned.repository,
+
+  let githubRepo: GithubRepo | null = null;
+  let defaultRepository: PackageRepo | undefined;
+
+  if (cleaned.repository) {
+    let tmp = cleaned.repository;
+    if (Array.isArray(tmp)) {
+      tmp = tmp[0] as PackageRepo;
+    }
+
+    if (typeof tmp === 'string') {
+      defaultRepository = { type: 'git', url: tmp };
+    } else if (Object.keys(tmp).length > 0) {
+      defaultRepository = tmp as PackageRepo;
+    }
+
+    // At this point, we are not even sure the source is correct
+    if (
+      defaultRepository &&
+      (!defaultRepository.type || !defaultRepository.url)
+    ) {
+      defaultRepository = undefined;
+    }
+
+    if (defaultRepository) {
+      githubRepo = getGitHubRepoInfo({
+        repository: defaultRepository,
         gitHead: cleaned.gitHead,
-      })
-    : null;
+      });
+    }
+  }
 
   if (!githubRepo && !lastPublisher && !author) {
     return undefined; // ignore this package, we cannot link it to anyone
   }
 
-  const defaultRepository =
-    typeof cleaned.repository === 'string'
-      ? { url: cleaned.repository }
-      : cleaned.repository;
+  const repoInfo = getRepositoryInfo(defaultRepository);
   // If defaultRepository is undefined or it does not have an URL
   // we don't include it.
-  const repository =
-    defaultRepository && defaultRepository.url
+  const repository: Repo | null =
+    defaultRepository?.url && repoInfo
       ? {
           ...defaultRepository, // Default info: type, url
-          ...getRepositoryInfo(cleaned.repository), // Extra info: host, project, user...
+          ...repoInfo, // Extra info: host, project, user...
           head: cleaned.gitHead,
           branch: cleaned.gitHead || 'master',
         }
@@ -58,7 +127,7 @@ export default function formatPkg(pkg) {
 
   const types = getTypes(cleaned);
 
-  const owner = getOwner(repository, lastPublisher, author); // always favor the repository owner
+  const owner = getOwner({ repository, lastPublisher, author }); // always favor the repository owner
   const { computedKeywords, computedMetadata } = getComputedData(cleaned);
   const keywords = getKeywords(cleaned);
 
@@ -69,7 +138,7 @@ export default function formatPkg(pkg) {
 
   const tags = pkg['dist-tags'];
 
-  const rawPkg = {
+  const rawPkg: RawPkg = {
     objectID: cleaned.name,
     name: cleaned.name,
     downloadsLast30Days: 0,
@@ -82,14 +151,14 @@ export default function formatPkg(pkg) {
     description: cleaned.description ? cleaned.description : null,
     dependencies,
     devDependencies,
-    originalAuthor: cleaned.author,
+    originalAuthor: cleaned.other.author,
     repository,
     githubRepo,
-    gitHead: githubRepo && githubRepo.head, // remove this when we update to the new schema frontend
+    gitHead: githubRepo ? githubRepo.head : null, // remove this when we update to the new schema frontend
     readme: pkg.readme,
     owner,
     deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
-    homepage: getHomePage(cleaned.homepage, cleaned.repository),
+    homepage: getHomePage(cleaned),
     license,
     keywords,
     computedKeywords,
@@ -98,7 +167,7 @@ export default function formatPkg(pkg) {
     modified: Date.parse(cleaned.modified),
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
-    bin: cleaned.bin,
+    bin: cleaned.bin || {},
     types,
     moduleTypes,
     lastCrawl: new Date().toISOString(),
@@ -112,7 +181,11 @@ export default function formatPkg(pkg) {
   return traverse(truncated).forEach(maybeEscape);
 }
 
-function checkSize(pkg) {
+function checkSize(pkg: RawPkg): {
+  size: number;
+  diff: number;
+  isTooBig: boolean;
+} {
   const size = sizeof(pkg);
   const diff = size - config.maxObjSize;
 
@@ -123,12 +196,12 @@ function checkSize(pkg) {
   };
 }
 
-function truncatePackage(pkg) {
-  let smallerPkg = { ...pkg };
+function truncatePackage(pkg: RawPkg): RawPkg | null {
+  const smallerPkg = { ...pkg };
 
   {
     const { diff, isTooBig } = checkSize(smallerPkg);
-    if (isTooBig) {
+    if (isTooBig && pkg.readme) {
       const postfix = ' **TRUNCATED**';
       // sizeof is * 2 what truncate expects
       const maxReadmeLength = (sizeof(pkg.readme) - diff - sizeof(postfix)) / 2;
@@ -142,31 +215,30 @@ function truncatePackage(pkg) {
     if (isTooBig) {
       smallerPkg.readme =
         '** TRUNCATED ** this package was too big, so non-essential information was removed';
-      smallerPkg.versions =
-        pkg.versions && pkg.version
-          ? {
-              [pkg.version]: pkg.versions[pkg.version],
-            }
-          : null;
-      smallerPkg.tags =
-        pkg.tags && pkg.tags.latest
-          ? {
-              latest: pkg.tags.latest,
-            }
-          : null;
-      smallerPkg.owners = [smallerPkg.owner];
+      smallerPkg.versions = pkg.versions[pkg.version]
+        ? {
+            [pkg.version]: pkg.versions[pkg.version],
+          }
+        : {};
+      smallerPkg.tags = pkg?.tags?.latest
+        ? {
+            latest: pkg.tags.latest,
+          }
+        : {};
+      smallerPkg.owners = smallerPkg.owner ? [smallerPkg.owner] : [];
     }
   }
 
-  {
-    const { isTooBig } = checkSize(smallerPkg);
-    if (isTooBig) {
-      smallerPkg = {
-        name: smallerPkg.name,
-        readme: smallerPkg.readme,
-      };
-    }
-  }
+  // This modify the type without warning,
+  // {
+  //   const { isTooBig } = checkSize(smallerPkg);
+  //   if (isTooBig) {
+  //     smallerPkg = {
+  //       name: smallerPkg.name,
+  //       readme: smallerPkg.readme,
+  //     };
+  //   }
+  // }
 
   {
     const { isTooBig } = checkSize(smallerPkg);
@@ -178,7 +250,7 @@ function truncatePackage(pkg) {
   return smallerPkg;
 }
 
-function maybeEscape(node) {
+function maybeEscape(this: any, node: any): void {
   if (this.isLeaf && typeof node === 'string') {
     if (this.key === 'readme') {
       this.update(node);
@@ -188,9 +260,9 @@ function maybeEscape(node) {
   }
 }
 
-function getAuthor(cleaned) {
-  if (cleaned.author && typeof cleaned.author === 'object') {
-    return formatUser(cleaned.author);
+function getAuthor(cleaned: NicePackageType): Owner | null {
+  if (cleaned.other.author && typeof cleaned.other.author === 'object') {
+    return formatUser(cleaned.other.author);
   }
   if (Array.isArray(cleaned.owners) && typeof cleaned.owners[0] === 'object') {
     return formatUser(cleaned.owners[0]);
@@ -198,23 +270,33 @@ function getAuthor(cleaned) {
   return null;
 }
 
-function getLicense(cleaned) {
-  if (cleaned.license) {
-    if (
-      typeof cleaned.license === 'object' &&
-      typeof cleaned.license.type === 'string'
-    ) {
-      return cleaned.license.type;
-    }
-    if (typeof cleaned.license === 'string') {
-      return cleaned.license;
-    }
+function getLicense(cleaned: NicePackageType): string | null {
+  if (!cleaned.license) {
+    return null;
+  }
+  if (
+    typeof cleaned.license === 'object' &&
+    typeof cleaned.license.type === 'string'
+  ) {
+    return cleaned.license.type;
+  }
+
+  if (typeof cleaned.license === 'string') {
+    return cleaned.license;
   }
   return null;
 }
 
-function getOwner(repository, lastPublisher, author) {
-  if (repository && repository.user) {
+function getOwner({
+  repository,
+  lastPublisher,
+  author,
+}: {
+  repository: RawPkg['repository'] | null;
+  lastPublisher: RawPkg['lastPublisher'] | null;
+  author: NicePackageType['other']['author'] | null;
+}): Owner | null {
+  if (repository?.user) {
     const { user } = repository;
 
     if (repository.host === 'github.com') {
@@ -228,7 +310,7 @@ function getOwner(repository, lastPublisher, author) {
     if (repository.host === 'gitlab.com') {
       return {
         name: user,
-        avatar: lastPublisher && lastPublisher.avatar,
+        avatar: lastPublisher?.avatar,
         link: `https://gitlab.com/${user}`,
       };
     }
@@ -246,23 +328,26 @@ function getOwner(repository, lastPublisher, author) {
     return lastPublisher;
   }
 
-  return author;
+  return author || null;
 }
 
-function getGravatar(obj) {
+function getGravatar(user: GetUser): string {
   if (
-    !obj.email ||
-    typeof obj.email !== 'string' ||
-    obj.email.indexOf('@') === -1
+    !user.email ||
+    typeof user.email !== 'string' ||
+    user.email.indexOf('@') === -1
   ) {
     return defaultGravatar;
   }
 
-  return gravatarUrl(obj.email);
+  return gravatarUrl(user.email);
 }
 
-export function getVersions(cleaned, rawPkg) {
-  if (cleaned.other && cleaned.other.time) {
+export function getVersions(
+  cleaned: Pick<NicePackageType, 'other'>,
+  rawPkg: Pick<GetPackage, 'versions'>
+): Record<string, string> {
+  if (cleaned?.other?.time) {
     const realVersions = Object.keys(rawPkg.versions);
 
     return Object.fromEntries(
@@ -274,56 +359,23 @@ export function getVersions(cleaned, rawPkg) {
   return {};
 }
 
-const registrySubsetRules = [
-  ({ name }) => ({
-    name: 'babel-plugin',
-    include:
-      name.startsWith('@babel/plugin') || name.startsWith('babel-plugin-'),
-  }),
-
-  ({ name }) => ({
-    name: 'vue-cli-plugin',
-    include: /^(@vue\/|vue-|@[\w-]+\/vue-)cli-plugin-/.test(name),
-  }),
-
-  ({ name, keywords = [] }) => ({
-    name: 'yeoman-generator',
-    include:
-      name.startsWith('generator-') && keywords.includes('yeoman-generator'),
-  }),
-
-  ({ schematics = '' }) => ({
-    name: 'angular-cli-schematic',
-    include: schematics.length > 0,
-    metadata: { schematics },
-  }),
-
-  ({ name }) => ({
-    name: 'webpack-scaffold',
-    include: name.startsWith('webpack-scaffold-'),
-  }),
-];
-
-function getComputedData(cleaned) {
-  const registrySubsets = registrySubsetRules.reduce(
-    (acc, matcher) => {
-      const { include, metadata, name } = matcher(cleaned);
-      return include
-        ? {
-            computedKeywords: [...acc.computedKeywords, name],
-            computedMetadata: {
-              ...acc.computedMetadata,
-              ...metadata,
-            },
-          }
-        : acc;
-    },
-    { computedKeywords: [], computedMetadata: {} }
-  );
-  return registrySubsets;
+function getComputedData(cleaned: NicePackageType): ComputedMeta {
+  const res: ComputedMeta = { computedKeywords: [], computedMetadata: {} };
+  registrySubsetRules.forEach((matcher) => {
+    const { include, metadata, name } = matcher(cleaned);
+    if (!include) {
+      return;
+    }
+    res.computedKeywords.push(name);
+    res.computedMetadata = {
+      ...res.computedMetadata,
+      ...metadata,
+    };
+  });
+  return res;
 }
 
-function getKeywords(cleaned) {
+function getKeywords(cleaned: NicePackageType): string[] {
   if (cleaned.keywords) {
     if (Array.isArray(cleaned.keywords)) {
       return [...cleaned.keywords];
@@ -335,10 +387,14 @@ function getKeywords(cleaned) {
   return [];
 }
 
-function getGitHubRepoInfo({ repository, gitHead = 'master' }) {
-  if (!repository || typeof repository !== 'string') return null;
-
-  const result = repository.match(
+function getGitHubRepoInfo({
+  repository,
+  gitHead = 'master',
+}: {
+  repository: PackageRepo;
+  gitHead?: string;
+}): GithubRepo | null {
+  const result = repository.url.match(
     /^https:\/\/(?:www\.)?github.com\/([^/]+)\/([^/]+)(\/.+)?$/
   );
 
@@ -361,15 +417,15 @@ function getGitHubRepoInfo({ repository, gitHead = 'master' }) {
   };
 }
 
-function getHomePage(homepage, repository) {
+function getHomePage(pkg: NicePackageType): string | null {
   if (
-    homepage &&
-    typeof homepage === 'string' && // if there's a homepage
-    (!repository || // and there's no repo,
-      typeof repository !== 'string' || // or repo is not a string
-      homepage.indexOf(repository) < 0) // or repo is different than homepage
+    pkg.homepage &&
+    typeof pkg.homepage === 'string' && // if there's a homepage
+    (!pkg.repository || // and there's no repo,
+      typeof pkg.repository !== 'string' || // or repo is not a string
+      pkg.homepage.indexOf(pkg.repository) < 0) // or repo is different than homepage
   ) {
-    return homepage; // then we consider it a valuable homepage
+    return pkg.homepage; // then we consider it a valuable homepage
   }
 
   return null;
@@ -383,7 +439,7 @@ function getHomePage(homepage, repository) {
  *
  * This function is like getGitHubRepoInfo (above), but support github, gitlab and bitbucket.
  */
-function getRepositoryInfoFromHttpUrl(repository) {
+function getRepositoryInfoFromHttpUrl(repository: string): Repo | null {
   const result = repository.match(
     /^https?:\/\/(?:www\.)?((?:github|gitlab|bitbucket)).((?:com|org))\/([^/]+)\/([^/]+)(\/.+)?$/
   );
@@ -395,6 +451,7 @@ function getRepositoryInfoFromHttpUrl(repository) {
   const [, domain, domainTld, user, project, path = ''] = result;
 
   return {
+    url: repository,
     host: `${domain}.${domainTld}`,
     user,
     project,
@@ -402,7 +459,9 @@ function getRepositoryInfoFromHttpUrl(repository) {
   };
 }
 
-export function getRepositoryInfo(repository) {
+export function getRepositoryInfo(
+  repository: string | GetPackage['repository']
+): Repo | null {
   if (!repository) {
     return null;
   }
@@ -422,6 +481,7 @@ export function getRepositoryInfo(repository) {
   if (repositoryInfo) {
     const { project, user, domain } = repositoryInfo;
     return {
+      url,
       project,
       user,
       host: domain,
@@ -444,7 +504,7 @@ export function getRepositoryInfo(repository) {
   };
 }
 
-function formatUser(user) {
+function formatUser(user: GetUser): Owner {
   return {
     ...user,
     avatar: getGravatar(user),
@@ -452,7 +512,7 @@ function formatUser(user) {
   };
 }
 
-function getTypes(pkg) {
+function getTypes(pkg: NicePackageType): RawPkg['types'] {
   // The cheap and simple (+ recommended by TS) way
   // of adding a types section to your package.json
   if (pkg.types) {
@@ -481,11 +541,8 @@ function getTypes(pkg) {
   };
 }
 
-/**
- * @param {string} name
- */
-function getAlternativeNames(name) {
-  const alternativeNames = new Set();
+function getAlternativeNames(name: string): string[] {
+  const alternativeNames = new Set<string>();
 
   const concatenatedName = name.replace(/[-/@_.]+/g, '');
   alternativeNames.add(concatenatedName);
@@ -510,7 +567,7 @@ function getAlternativeNames(name) {
   return Array.from(alternativeNames);
 }
 
-export function getMains(pkg) {
+export function getMains(pkg: Pick<NicePackageType, 'main'>): string[] {
   if (Array.isArray(pkg.main)) {
     // we can not deal with non-string mains for now
     return pkg.main.filter((main) => typeof main === 'string');
@@ -525,9 +582,9 @@ export function getMains(pkg) {
   return [];
 }
 
-function getModuleTypes(pkg) {
+function getModuleTypes(pkg: NicePackageType): ModuleType[] {
   const mains = getMains(pkg);
-  const moduleTypes = [];
+  const moduleTypes: ModuleType[] = [];
 
   mains.forEach((main) => {
     if (

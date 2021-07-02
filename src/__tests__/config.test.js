@@ -1,4 +1,7 @@
-import config from '../config.js';
+/* eslint-disable import/first */
+process.env.apiKey = 'fake-api-key';
+
+import { config } from '../config';
 
 it('gets the correct keys from env variables', () => {
   // from mocked .env
