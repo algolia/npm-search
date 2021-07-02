@@ -59,6 +59,7 @@ export interface RawPkg {
   readme: string;
   owner: Owner | null;
   deprecated: boolean;
+  deprecatedReason: string | null;
   homepage: string | null;
   license: string | null;
   keywords: string[];
