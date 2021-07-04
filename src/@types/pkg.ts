@@ -72,6 +72,7 @@ export interface RawPkg {
   types: TsType;
   moduleTypes: ModuleType[];
   lastCrawl: string;
+  expiresAt: string;
   _searchInternal: {
     alternativeNames: string[];
   };

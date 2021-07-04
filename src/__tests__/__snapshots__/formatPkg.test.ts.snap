@@ -667,6 +667,7 @@ Object {
   },
   "downloadsLast30Days": 0,
   "downloadsRatio": 0,
+  "expiresAt": Any<String>,
   "gitHead": null,
   "githubRepo": null,
   "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
@@ -884,6 +885,7 @@ Object {
   },
   "downloadsLast30Days": 0,
   "downloadsRatio": 0,
+  "expiresAt": Any<String>,
   "gitHead": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
   "githubRepo": Object {
     "head": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
@@ -1010,6 +1012,7 @@ Object {
   },
   "downloadsLast30Days": 0,
   "downloadsRatio": 0,
+  "expiresAt": Any<String>,
   "gitHead": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
   "githubRepo": Object {
     "head": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
@@ -1101,6 +1104,7 @@ Object {
   "devDependencies": Object {},
   "downloadsLast30Days": 0,
   "downloadsRatio": 0,
+  "expiresAt": Any<String>,
   "gitHead": null,
   "githubRepo": null,
   "homepage": null,
@@ -1202,6 +1206,7 @@ Object {
   },
   "downloadsLast30Days": 0,
   "downloadsRatio": 0,
+  "expiresAt": Any<String>,
   "gitHead": "81670053da263b0fe814d58de66213a43f439b98",
   "githubRepo": Object {
     "head": "81670053da263b0fe814d58de66213a43f439b98",
@@ -1387,6 +1392,7 @@ Object {
   "devDependencies": Object {},
   "downloadsLast30Days": 0,
   "downloadsRatio": 0,
+  "expiresAt": Any<String>,
   "gitHead": "master",
   "githubRepo": Object {
     "head": "master",

@@ -217,12 +217,15 @@ async function getDownload(
 /**
  * Get downloads for all packages passer in arguments.
  */
-async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
+async function getDownloads(
+  pkgs: Array<Pick<RawPkg, 'name' | 'expiresAt'>>
+): Promise<
   Array<{
     downloadsLast30Days: number;
     humanDownloadsLast30Days: string;
     downloadsRatio: number;
     popular: boolean;
+    expiresAt: string;
     _searchInternal: {
       popularName?: string;
       downloadsMagnitude: number;
@@ -264,7 +267,7 @@ async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
       {}
     );
 
-  const all = pkgs.map(({ name }) => {
+  const all = pkgs.map(({ name, expiresAt }) => {
     if (downloadsPerPkgName[name] === undefined) {
       return null;
     }
@@ -283,6 +286,11 @@ async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
       humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
       downloadsRatio,
       popular,
+      expiresAt: popular
+        ? new Date(Date.now() + config.populareExpiresAt)
+            .toISOString()
+            .split('T')[0]
+        : expiresAt,
       _searchInternal: {
         // if the package is popular, we copy its name to a dedicated attribute
         // which will make popular records' `name` matches to be ranked higher than other matches
