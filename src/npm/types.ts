@@ -20,6 +20,8 @@ export interface GetVersion {
   _id: string;
   _npmUser?: GetUser;
   _npmVersion?: string;
+  _nodeVersion?: string;
+  _npmOperationalInternal?: Record<string, string>;
   author?: GetUser;
   description: string;
   dist: {
@@ -32,6 +34,7 @@ export interface GetVersion {
   name: string;
   scripts?: Record<string, string>;
   version: string;
+  deprecated?: string | boolean;
 }
 
 export interface PackageRepo {
