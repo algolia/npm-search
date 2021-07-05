@@ -19,7 +19,7 @@ const indexSettings: Settings = {
     'types.ts',
     'moduleTypes',
     'popular',
-    'expiresAt',
+    '_searchInternal.expiresAt',
   ],
   customRanking: [
     'desc(_searchInternal.downloadsMagnitude)',

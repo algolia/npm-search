@@ -62,7 +62,9 @@ it('transforms correctly', () => {
       expect(formattedPackage).toMatchSnapshot(
         {
           lastCrawl: expect.any(String),
-          expiresAt: expect.any(String),
+          _searchInternal: {
+            expiresAt: expect.any(String),
+          },
         },
         formattedPackage.objectID
       )
@@ -101,7 +103,9 @@ it('truncates long readmes', () => {
   expect(formatted).toMatchSnapshot({
     readme: expect.any(String),
     lastCrawl: expect.any(String),
-    expiresAt: expect.any(String),
+    _searchInternal: {
+      expiresAt: expect.any(String),
+    },
   });
 });
 
