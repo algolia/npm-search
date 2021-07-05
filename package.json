@@ -14,8 +14,8 @@
     "doctoc": "doctoc --notitle --maxlevel 3 README.md",
     "lint": "eslint --ext=jsx,ts,tsx,js .",
     "prepare": "husky install",
-    "start": "UV_THREADPOOL_SIZE=12 node -r dotenv/config --async-stack-traces --max-old-space-size=420 dist/index.js",
-    "start_new": "indexName=npm-search-new bootstrapIndexName=npm-search-new.tmp UV_THREADPOOL_SIZE=22 node --async-stack-traces --max-old-space-size=420 dist/index.js",
+    "start": "UV_THREADPOOL_SIZE=12 node -r dotenv/config --async-stack-traces --max-old-space-size=920 dist/index.js",
+    "start_new": "indexName=npm-search-new bootstrapIndexName=npm-search-new.tmp UV_THREADPOOL_SIZE=22 node --async-stack-traces --max-old-space-size=920 dist/index.js",
     "test:watch": "jest --watchAll --no-watchman",
     "test": "jest --forceExit"
   },
