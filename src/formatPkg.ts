@@ -531,20 +531,8 @@ function getTypes(pkg: NicePackageType): RawPkg['types'] {
     return { ts: 'included' };
   }
 
-  // we only look at the first entry in main here
-  const main = getMains(pkg)[0];
-  if (typeof main === 'string' && main.endsWith('.js')) {
-    const dtsMain = main.replace(/js$/, 'd.ts');
-    return {
-      ts: {
-        possible: true,
-        dtsMain,
-      },
-    };
-  }
-
   return {
-    ts: false,
+    ts: { possible: true },
   };
 }
 

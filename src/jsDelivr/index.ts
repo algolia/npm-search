@@ -5,7 +5,7 @@ import { log } from '../utils/log';
 import { request } from '../utils/request';
 
 type Hit = { type: 'npm'; name: string; hits: number };
-type File = { name: string; hash: string; time: string; size: number };
+export type File = { name: string; hash: string; time: string; size: number };
 
 export const hits = new Map<string, number>();
 

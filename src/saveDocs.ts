@@ -57,12 +57,16 @@ export default async function saveDocs({
 }
 
 async function addMetaData(pkgs: RawPkg[]): Promise<FinalPkg[]> {
-  const [downloads, dependents, changelogs, hits, ts] = await Promise.all([
+  const [downloads, dependents, hits, filelists] = await Promise.all([
     npm.getDownloads(pkgs),
     npm.getDependents(pkgs),
-    getChangelogs(pkgs),
     jsDelivr.getHits(pkgs),
-    getTSSupport(pkgs),
+    jsDelivr.getAllFilesList(pkgs),
+  ]);
+
+  const [changelogs, ts] = await Promise.all([
+    getChangelogs(pkgs, filelists),
+    getTSSupport(pkgs, filelists),
   ]);
 
   const start = Date.now();

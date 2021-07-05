@@ -1,5 +1,4 @@
 import { getChangelogs, baseUrlMap, getChangelog } from '../changelog';
-import * as jsDelivr from '../jsDelivr';
 
 jest.mock('got', () => {
   const gotSnapshotUrls = new Set([
@@ -16,12 +15,6 @@ jest.mock('got', () => {
       : Promise.reject(new Error(`got mock does not exist for ${url}`));
   };
 });
-
-const spy = jest
-  .spyOn(jsDelivr, 'getFilesList')
-  .mockImplementation((): Promise<any[]> => {
-    return Promise.resolve([]);
-  });
 
 describe('should test baseUrlMap', () => {
   it('should work with paths', () => {
@@ -116,7 +109,7 @@ it('should handle not found changelog for github', async () => {
     },
   };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg]);
+  const [{ changelogFilename }] = await getChangelogs([pkg], []);
   expect(changelogFilename).toBe(null);
 });
 
@@ -135,7 +128,7 @@ it('should get changelog for github', async () => {
     },
   };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg]);
+  const [{ changelogFilename }] = await getChangelogs([pkg], []);
   expect(changelogFilename).toBe(
     'https://raw.githubusercontent.com/algolia/algoliasearch-netlify/master/CHANGELOG.md'
   );
@@ -148,7 +141,7 @@ it('should get changelog from unpkg if there is no repository field', async () =
     repository: null,
   };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg]);
+  const [{ changelogFilename }] = await getChangelogs([pkg], []);
 
   expect(changelogFilename).toBe(
     'https://unpkg.com/@atlaskit/button@13.3.7/CHANGELOG.md'
@@ -170,7 +163,7 @@ it('should get changelog for gitlab', async () => {
     },
   };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg]);
+  const [{ changelogFilename }] = await getChangelogs([pkg], []);
   expect(changelogFilename).toBe(
     'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md'
   );
@@ -191,7 +184,7 @@ it('should get changelog for bitbucket', async () => {
     },
   };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg]);
+  const [{ changelogFilename }] = await getChangelogs([pkg], []);
   expect(changelogFilename).toBe(
     'https://bitbucket.org/atlassian/aui/raw/master/changelog.md'
   );
@@ -212,7 +205,7 @@ it('should work with HISTORY.md', async () => {
     },
   };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg]);
+  const [{ changelogFilename }] = await getChangelogs([pkg], []);
   expect(changelogFilename).toBe(
     'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md'
   );
@@ -220,73 +213,69 @@ it('should work with HISTORY.md', async () => {
 
 describe('jsDelivr', () => {
   it('should early return when finding changelog', async () => {
-    spy.mockResolvedValue([
-      { name: '/package.json', hash: '', time: '1', size: 1 },
-      { name: '/CHANGELOG.md', hash: '', time: '1', size: 1 },
-    ]);
-
-    const { changelogFilename } = await getChangelog({
-      name: 'foo',
-      version: '1.0.0',
-      repository: {
-        url: '',
-        host: 'github.com',
-        user: 'expressjs',
-        project: 'body-parser',
-        path: '',
-        head: 'master',
-        branch: 'master',
+    const { changelogFilename } = await getChangelog(
+      {
+        name: 'foo',
+        version: '1.0.0',
+        repository: {
+          url: '',
+          host: 'github.com',
+          user: 'expressjs',
+          project: 'body-parser',
+          path: '',
+          head: 'master',
+          branch: 'master',
+        },
       },
-    });
-    expect(jsDelivr.getFilesList).toHaveBeenCalled();
+      [
+        { name: '/package.json', hash: '', time: '1', size: 1 },
+        { name: '/CHANGELOG.md', hash: '', time: '1', size: 1 },
+      ]
+    );
     expect(changelogFilename).toEqual(
       'https://cdn.jsdelivr.net/npm/foo@1.0.0/CHANGELOG.md'
     );
   });
 
   it('should early return when finding changelog in nested file', async () => {
-    spy.mockResolvedValue([
-      { name: '/pkg/CHANGELOG.md', hash: '', time: '1', size: 1 },
-    ]);
-
-    const { changelogFilename } = await getChangelog({
-      name: 'foo',
-      version: '1.0.0',
-      repository: {
-        url: '',
-        host: 'github.com',
-        user: 'expressjs',
-        project: 'body-parser',
-        path: '',
-        head: 'master',
-        branch: 'master',
+    const { changelogFilename } = await getChangelog(
+      {
+        name: 'foo',
+        version: '1.0.0',
+        repository: {
+          url: '',
+          host: 'github.com',
+          user: 'expressjs',
+          project: 'body-parser',
+          path: '',
+          head: 'master',
+          branch: 'master',
+        },
       },
-    });
-    expect(jsDelivr.getFilesList).toHaveBeenCalled();
+      [{ name: '/pkg/CHANGELOG.md', hash: '', time: '1', size: 1 }]
+    );
     expect(changelogFilename).toEqual(
       'https://cdn.jsdelivr.net/npm/foo@1.0.0/pkg/CHANGELOG.md'
     );
   });
 
   it('should not register a file looking like a changelog', async () => {
-    spy.mockResolvedValue([
-      { name: '/dist/changelog.js', hash: '', time: '1', size: 1 },
-    ]);
-
-    const { changelogFilename } = await getChangelog({
-      name: 'foo',
-      version: '1.0.0',
-      repository: {
-        url: '',
-        host: 'github.com',
-        user: 'hello',
-        project: 'foo',
-        path: '',
-        head: 'master',
-        branch: 'master',
+    const { changelogFilename } = await getChangelog(
+      {
+        name: 'foo',
+        version: '1.0.0',
+        repository: {
+          url: '',
+          host: 'github.com',
+          user: 'hello',
+          project: 'foo',
+          path: '',
+          head: 'master',
+          branch: 'master',
+        },
       },
-    });
-    expect(jsDelivr.getFilesList).toHaveBeenCalled();
+      [{ name: '/dist/changelog.js', hash: '', time: '1', size: 1 }]
+    );
     expect(changelogFilename).toEqual(null);
   });
 });

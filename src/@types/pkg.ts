@@ -25,7 +25,7 @@ export interface GithubRepo {
 
 export type TsType =
   | {
-      ts: 'included' | false | { possible: true; dtsMain: string };
+      ts: 'included' | false | { possible: true };
     }
   | {
       ts: 'definitely-typed';

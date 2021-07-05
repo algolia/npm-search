@@ -1,6 +1,6 @@
 import type { RawPkg } from '../@types/pkg';
 import { config } from '../config';
-import { fileExistsInUnpkg } from '../unpkg';
+import type { File } from '../jsDelivr';
 import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
 import { request } from '../utils/request';
@@ -54,9 +54,10 @@ export function unmangle(name: string): string {
  *   - { types: { ts: "@types/module" }} - for definitely typed support
  *   - { types: { ts: "included" }} - for types shipped with the module.
  */
-export async function getTypeScriptSupport(
-  pkg: Pick<RawPkg, 'name' | 'types' | 'version'>
-): Promise<Pick<RawPkg, 'types'>> {
+export function getTypeScriptSupport(
+  pkg: Pick<RawPkg, 'name' | 'types' | 'version'>,
+  filelist: File[]
+): Pick<RawPkg, 'types'> {
   // Already calculated in `formatPkg`
   if (pkg.types.ts === 'included') {
     return { types: pkg.types };
@@ -73,22 +74,17 @@ export async function getTypeScriptSupport(
     };
   }
 
-  if (pkg.types.ts === false) {
-    return { types: { ts: false } };
-  }
-
-  // Do we have a main .d.ts file?
-  // TO DO: replace this with a list of files check
-  if (pkg.types.ts !== 'definitely-typed' && pkg.types.ts.possible === true) {
-    const resolved = await fileExistsInUnpkg(
-      pkg.name,
-      pkg.version,
-      pkg.types.ts.dtsMain
-    );
-    if (resolved) {
-      return { types: { ts: 'included' } };
+  for (const file of filelist) {
+    if (!file.name.endsWith('.d.ts')) {
+      // eslint-disable-next-line no-continue
+      continue;
     }
+
+    datadog.increment('jsdelivr.getTSSupport.hit');
+
+    return { types: { ts: 'included' } };
   }
+  datadog.increment('jsdelivr.getTSSupport.miss');
 
   return { types: { ts: false } };
 }
@@ -97,11 +93,16 @@ export async function getTypeScriptSupport(
  * Check if packages have Typescript definitions.
  */
 export async function getTSSupport(
-  pkgs: Array<Pick<RawPkg, 'name' | 'types' | 'version'>>
+  pkgs: Array<Pick<RawPkg, 'name' | 'types' | 'version'>>,
+  filelists: File[][]
 ): Promise<Array<Pick<RawPkg, 'types'>>> {
   const start = Date.now();
 
-  const all = await Promise.all(pkgs.map(getTypeScriptSupport));
+  const all = await Promise.all(
+    pkgs.map((pkg, index) => {
+      return getTypeScriptSupport(pkg, filelists[index] || []);
+    })
+  );
 
   datadog.timing('getTSSupport', Date.now() - start);
   return all;

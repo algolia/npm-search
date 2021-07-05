@@ -245,41 +245,6 @@ describe('adds TypeScript information', () => {
       })
     ).toEqual(expect.objectContaining({ types: { ts: 'included' } }));
   });
-
-  it('adds types possible if we can find a main file', () => {
-    expect(
-      formatPkg({
-        ...BASE,
-        name: 'xxx',
-        main: 'main.js',
-      })
-    ).toEqual(
-      expect.objectContaining({
-        types: { ts: { possible: true, dtsMain: 'main.d.ts' } },
-      })
-    );
-
-    expect(
-      formatPkg({
-        ...BASE,
-        name: 'xxx',
-      })
-    ).toEqual(
-      expect.objectContaining({
-        types: { ts: { possible: true, dtsMain: 'index.d.ts' } },
-      })
-    );
-  });
-
-  it('gives up when no main is not js', () => {
-    expect(
-      formatPkg({
-        ...BASE,
-        name: 'xxx',
-        main: 'shell-script.sh',
-      })
-    ).toEqual(expect.objectContaining({ types: { ts: false } }));
-  });
 });
 
 describe('getRepositoryInfo', () => {

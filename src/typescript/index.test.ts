@@ -1,10 +1,4 @@
-import * as npm from '../npm';
-import { fileExistsInUnpkg } from '../unpkg';
-
 import * as api from './index';
-
-jest.mock('../npm');
-jest.mock('../unpkg');
 
 describe('loadTypesIndex()', () => {
   it('should download and cache all @types', async () => {
@@ -26,32 +20,41 @@ describe('loadTypesIndex()', () => {
 });
 
 describe('getTypeScriptSupport()', () => {
-  it('If types are already calculated - return early', async () => {
-    const typesSupport = await api.getTypeScriptSupport({
-      name: 'Has Types',
-      types: { ts: 'included' },
-      version: '1.0',
-    });
+  it('If types are already calculated - return early', () => {
+    const typesSupport = api.getTypeScriptSupport(
+      {
+        name: 'Has Types',
+        types: { ts: 'included' },
+        version: '1.0',
+      },
+      []
+    );
 
     expect(typesSupport).toEqual({ types: { ts: 'included' } });
   });
 
-  it('Handles not having any possible TS types', async () => {
-    const typesSupport = await api.getTypeScriptSupport({
-      name: 'my-lib',
-      types: { ts: false },
-      version: '1.0',
-    });
+  it('Handles not having any possible TS types', () => {
+    const typesSupport = api.getTypeScriptSupport(
+      {
+        name: 'my-lib',
+        types: { ts: false },
+        version: '1.0',
+      },
+      []
+    );
     expect(typesSupport).toEqual({ types: { ts: false } });
   });
 
   describe('Definitely Typed', () => {
-    it('Checks for @types/[name]', async () => {
-      const atTypesSupport = await api.getTypeScriptSupport({
-        name: 'lodash.valuesin',
-        types: { ts: false },
-        version: '1.0',
-      });
+    it('Checks for @types/[name]', () => {
+      const atTypesSupport = api.getTypeScriptSupport(
+        {
+          name: 'lodash.valuesin',
+          types: { ts: false },
+          version: '1.0',
+        },
+        []
+      );
       expect(atTypesSupport).toEqual({
         types: {
           ts: 'definitely-typed',
@@ -60,12 +63,15 @@ describe('getTypeScriptSupport()', () => {
       });
     });
 
-    it('Checks for @types/[scope__name]', async () => {
-      const atTypesSupport = await api.getTypeScriptSupport({
-        name: '@mapbox/geojson-area',
-        types: { ts: false },
-        version: '1.0',
-      });
+    it('Checks for @types/[scope__name]', () => {
+      const atTypesSupport = api.getTypeScriptSupport(
+        {
+          name: '@mapbox/geojson-area',
+          types: { ts: false },
+          version: '1.0',
+        },
+        []
+      );
       expect(atTypesSupport).toEqual({
         types: {
           ts: 'definitely-typed',
@@ -73,11 +79,14 @@ describe('getTypeScriptSupport()', () => {
         },
       });
 
-      const atTypesSupport2 = await api.getTypeScriptSupport({
-        name: '@reach/router',
-        types: { ts: false },
-        version: '1.0',
-      });
+      const atTypesSupport2 = api.getTypeScriptSupport(
+        {
+          name: '@reach/router',
+          types: { ts: false },
+          version: '1.0',
+        },
+        []
+      );
       expect(atTypesSupport2).toEqual({
         types: {
           ts: 'definitely-typed',
@@ -87,57 +96,44 @@ describe('getTypeScriptSupport()', () => {
     });
   });
 
-  describe('unpkg', () => {
-    it('Checks for a d.ts resolved version of main', async () => {
-      // @ts-expect-error
-      npm.validatePackageExists.mockResolvedValue(false);
-      // @ts-expect-error
-      fileExistsInUnpkg.mockResolvedValue(true);
-
-      const typesSupport = await api.getTypeScriptSupport({
-        name: 'my-lib',
-        types: { ts: { possible: true, dtsMain: 'main.d.ts' } },
-        version: '1.0.0',
+  describe('FilesList', () => {
+    it('should match a correct filesList', () => {
+      const atTypesSupport = api.getTypeScriptSupport(
+        {
+          name: 'doesnotexist',
+          types: { ts: false },
+          version: '1.0',
+        },
+        [
+          { name: 'index.js', hash: '', time: '', size: 0 },
+          { name: 'index.d.ts', hash: '', time: '', size: 0 },
+        ]
+      );
+      expect(atTypesSupport).toEqual({
+        types: {
+          ts: 'included',
+        },
       });
-      expect(typesSupport).toEqual({ types: { ts: 'included' } });
+    });
+
+    it('should not match an incorrect filesList', () => {
+      const atTypesSupport = api.getTypeScriptSupport(
+        {
+          name: 'doesnotexist',
+          types: { ts: false },
+          version: '1.0',
+        },
+        [
+          { name: 'index.js', hash: '', time: '', size: 0 },
+          { name: 'index.ts', hash: '', time: '', size: 0 },
+          { name: 'index.md', hash: '', time: '', size: 0 },
+        ]
+      );
+      expect(atTypesSupport).toEqual({
+        types: {
+          ts: false,
+        },
+      });
     });
   });
-
-  // TO DO : reup this
-  // adescribe('FilesList', () => {
-  //   ait('should match a correct filesList', async () => {
-  //     const atTypesSupport = await api.getTypeScriptSupport(
-  //       {
-  //         name: 'doesnotexist',
-  //         types: { ts: false },
-  //     version: '1.0',
-
-  //       },
-  //       [{ name: 'index.js' }, { name: 'index.d.ts' }]
-  //     );
-  //     expect(atTypesSupport).toEqual({
-  //       types: {
-  //         _where: 'filesList',
-  //         ts: 'included',
-  //       },
-  //     });
-  //   });
-
-  //   ait('should not match an incorrect filesList', async () => {
-  //     const atTypesSupport = await api.getTypeScriptSupport(
-  //       {
-  //         name: 'doesnotexist',
-  //         types: { ts: false },
-  //     version: '1.0',
-
-  //       },
-  //       [{ name: 'index.js' }, { name: 'index.ts' }, { name: 'index.md' }]
-  //     );
-  //     expect(atTypesSupport).toEqual({
-  //       types: {
-  //         ts: false,
-  //       },
-  //     });
-  //   });
-  // });
 });
