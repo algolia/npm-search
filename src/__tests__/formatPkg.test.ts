@@ -726,6 +726,9 @@ describe('deprecated', () => {
       deprecated: 'Yes this is deprecated',
       isDeprecated: true,
       deprecatedReason: 'Yes this is deprecated',
+      _searchInternal: {
+        expiresAt: expect.any(String),
+      },
     });
   });
 });

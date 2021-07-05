@@ -8,6 +8,7 @@ Object {
       "0.js",
       "0js",
     ],
+    "expiresAt": Any<String>,
   },
   "bin": Object {},
   "computedKeywords": Array [],
