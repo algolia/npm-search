@@ -114,7 +114,7 @@ export async function getChangelog(
 
   const { repository, name, version } = pkg;
 
-  // Rollback to brut-force
+  // Rollback to brute-force the source code
   const unpkgFiles = fileOptions.map(
     (file) => `${config.unpkgRoot}/${name}@${version}/${file}`
   );
