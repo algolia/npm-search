@@ -65,7 +65,6 @@ Object {
   },
   "types": Object {
     "ts": Object {
-      "dtsMain": "index.d.ts",
       "possible": true,
     },
   },
@@ -881,7 +880,6 @@ Are you in trouble? Read through our [contribution guidelines](https://bitbucket
   },
   "types": Object {
     "ts": Object {
-      "dtsMain": "dist/bundle.d.ts",
       "possible": true,
     },
   },
@@ -1022,7 +1020,6 @@ Object {
   },
   "types": Object {
     "ts": Object {
-      "dtsMain": "dist/atomic-package.tab.d.ts",
       "possible": true,
     },
   },
@@ -1154,7 +1151,6 @@ Object {
   },
   "types": Object {
     "ts": Object {
-      "dtsMain": "index.d.ts",
       "possible": true,
     },
   },
@@ -1242,7 +1238,6 @@ index(arr, obj);
   },
   "types": Object {
     "ts": Object {
-      "dtsMain": "index.d.ts",
       "possible": true,
     },
   },
@@ -1418,7 +1413,6 @@ Thank you so much for contributing!!
   },
   "types": Object {
     "ts": Object {
-      "dtsMain": "prism.d.ts",
       "possible": true,
     },
   },
@@ -1520,7 +1514,6 @@ Object {
   "tags": undefined,
   "types": Object {
     "ts": Object {
-      "dtsMain": "index.d.ts",
       "possible": true,
     },
   },

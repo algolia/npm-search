@@ -183,9 +183,6 @@ describe('getDownloads()', () => {
       pkg.downloadsLast30Days.toString()
     );
 
-    // eslint-disable-next-line no-console
-    console.log('downloads', { jest, angular, holmes });
-
     expect(jest.length).toBeGreaterThanOrEqual(6);
     expect(jest.length).toBeLessThanOrEqual(8);
 

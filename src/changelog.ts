@@ -95,22 +95,24 @@ async function raceFromPaths(files: string[]): Promise<{
 }
 
 export async function getChangelog(
-  pkg: Pick<RawPkg, 'repository' | 'name' | 'version'>
+  pkg: Pick<RawPkg, 'repository' | 'name' | 'version'>,
+  filelist: jsDelivr.File[]
 ): Promise<{
   changelogFilename: string | null;
 }> {
-  // Do a quick call to jsDelivr
-  // Only work if the package has published their changelog along with the code
-  const filesList = await jsDelivr.getFilesList(pkg);
-  for (const file of filesList) {
+  for (const file of filelist) {
     const name = path.basename(file.name);
     if (!fileRegex.test(name)) {
       // eslint-disable-next-line no-continue
       continue;
     }
 
+    datadog.increment('jsdelivr.getChangelog.hit');
+
     return { changelogFilename: jsDelivr.getFullURL(pkg, file) };
   }
+
+  datadog.increment('jsdelivr.getChangelog.miss');
 
   const { repository, name, version } = pkg;
 
@@ -120,19 +122,19 @@ export async function getChangelog(
   );
 
   if (repository === null) {
-    return raceFromPaths(unpkgFiles);
+    return await raceFromPaths(unpkgFiles);
   }
 
   const user = repository.user || '';
   const project = repository.project || '';
   const host = repository.host || '';
   if (user.length < 1 || project.length < 1) {
-    return raceFromPaths(unpkgFiles);
+    return await raceFromPaths(unpkgFiles);
   }
 
   // Check if we know how to handle this host
   if (!baseUrlMap.has(host)) {
-    return raceFromPaths(unpkgFiles);
+    return await raceFromPaths(unpkgFiles);
   }
 
   const baseUrl = baseUrlMap.get(host)!(repository);
@@ -141,11 +143,12 @@ export async function getChangelog(
     [baseUrl.replace(/\/$/, ''), file].join('/')
   );
 
-  return raceFromPaths([...files, ...unpkgFiles]);
+  return await raceFromPaths([...files, ...unpkgFiles]);
 }
 
 export async function getChangelogs(
-  pkgs: Array<Pick<RawPkg, 'repository' | 'name' | 'version'>>
+  pkgs: Array<Pick<RawPkg, 'repository' | 'name' | 'version'>>,
+  filelists: jsDelivr.File[][]
 ): Promise<
   Array<{
     changelogFilename: string | null;
@@ -153,7 +156,11 @@ export async function getChangelogs(
 > {
   const start = Date.now();
 
-  const all = await Promise.all(pkgs.map(getChangelog));
+  const all = await Promise.all(
+    pkgs.map((pkg, index) => {
+      return getChangelog(pkg, filelists[index] || []);
+    })
+  );
 
   datadog.timing('changelogs.getChangelogs', Date.now() - start);
   return all;
