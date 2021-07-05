@@ -273,7 +273,9 @@ async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
     const downloadsLast30Days = downloadsPerPkgName[name]
       ? downloadsPerPkgName[name].downloads
       : 0;
-    const downloadsRatio = (downloadsLast30Days / totalNpmDownloads) * 100;
+    const downloadsRatio = Number(
+      ((downloadsLast30Days / totalNpmDownloads) * 100).toFixed(4)
+    );
     const popular = downloadsRatio > config.popularDownloadsRatio;
     const downloadsMagnitude = downloadsLast30Days
       ? downloadsLast30Days.toString().length

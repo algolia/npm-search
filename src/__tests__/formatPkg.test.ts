@@ -704,3 +704,28 @@ describe('getVersions', () => {
     });
   });
 });
+
+describe('deprecated', () => {
+  it('log deprecated reason and flag', () => {
+    const pkg: GetPackage = {
+      ...BASE,
+      'dist-tags': {
+        latest: '1.2.3',
+      },
+      versions: {
+        '1.2.3': {
+          ...BASE_VERSION,
+          deprecated: 'Yes this is deprecated',
+        },
+      },
+    };
+    const formatted = formatPkg(pkg);
+
+    expect(formatted).toMatchSnapshot({
+      lastCrawl: expect.any(String),
+      deprecated: 'Yes this is deprecated',
+      isDeprecated: true,
+      deprecatedReason: 'Yes this is deprecated',
+    });
+  });
+});

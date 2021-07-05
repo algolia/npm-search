@@ -137,6 +137,8 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
   const moduleTypes = getModuleTypes(cleaned);
 
   const tags = pkg['dist-tags'];
+  const isDeprecated =
+    cleaned.deprecated !== undefined && cleaned.deprecated !== false;
 
   const rawPkg: RawPkg = {
     objectID: cleaned.name,
@@ -157,7 +159,9 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     gitHead: githubRepo ? githubRepo.head : null, // remove this when we update to the new schema frontend
     readme: pkg.readme,
     owner,
-    deprecated: cleaned.deprecated !== undefined ? cleaned.deprecated : false,
+    deprecated: isDeprecated ? cleaned.deprecated! : false,
+    isDeprecated,
+    deprecatedReason: isDeprecated ? String(cleaned.deprecated) : null,
     homepage: getHomePage(cleaned),
     license,
     keywords,

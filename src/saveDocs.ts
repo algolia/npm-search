@@ -7,7 +7,7 @@ import formatPkg from './formatPkg';
 import * as jsDelivr from './jsDelivr';
 import * as npm from './npm';
 import type { GetPackage } from './npm/types';
-import { getTSSupport } from './typescriptSupport';
+import { getTSSupport } from './typescript/index';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 

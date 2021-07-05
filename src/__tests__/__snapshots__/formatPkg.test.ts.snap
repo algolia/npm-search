@@ -1,5 +1,78 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`deprecated log deprecated reason and flag 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "0",
+      "0.js",
+      "0js",
+    ],
+  },
+  "bin": Object {},
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": NaN,
+  "dependencies": Object {},
+  "deprecated": "Yes this is deprecated",
+  "deprecatedReason": "Yes this is deprecated",
+  "description": null,
+  "devDependencies": Object {},
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": "master",
+  "githubRepo": Object {
+    "head": "master",
+    "path": "",
+    "project": "npm-search",
+    "user": "algolia",
+  },
+  "homepage": null,
+  "humanDownloadsLast30Days": "0",
+  "isDeprecated": true,
+  "keywords": Array [],
+  "lastCrawl": Any<String>,
+  "lastPublisher": null,
+  "license": null,
+  "modified": NaN,
+  "moduleTypes": Array [
+    "unknown",
+  ],
+  "name": "0",
+  "objectID": "0",
+  "originalAuthor": undefined,
+  "owner": Object {
+    "avatar": "https://github.com/algolia.png",
+    "link": "https://github.com/algolia",
+    "name": "algolia",
+  },
+  "owners": Array [],
+  "popular": false,
+  "readme": "",
+  "repository": Object {
+    "branch": "master",
+    "head": undefined,
+    "host": "github.com",
+    "path": "",
+    "project": "npm-search",
+    "type": "git",
+    "url": "https://github.com/algolia/npm-search",
+    "user": "algolia",
+  },
+  "tags": Object {
+    "latest": "1.2.3",
+  },
+  "types": Object {
+    "ts": Object {
+      "dtsMain": "index.d.ts",
+      "possible": true,
+    },
+  },
+  "version": "0.0.0",
+  "versions": Object {},
+}
+`;
+
 exports[`nice-package should nice atlaskit 1`] = `
 Package {
   "_resolved": "file:packages/input",
@@ -662,6 +735,7 @@ Object {
     "styled-components": "^1.4.6",
   },
   "deprecated": false,
+  "deprecatedReason": null,
   "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
   "devDependencies": Object {
     "@atlaskit/field-base": "^8.0.2",
@@ -672,6 +746,7 @@ Object {
   "githubRepo": null,
   "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [
     "atlaskit",
     "ui",
@@ -858,6 +933,7 @@ Object {
     "@atomic-package/utility": "0.0.2",
   },
   "deprecated": false,
+  "deprecatedReason": null,
   "description": "atomic-package - tab",
   "devDependencies": Object {
     "@types/node": "^7.0.14",
@@ -895,6 +971,7 @@ Object {
   },
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": Object {
@@ -993,6 +1070,7 @@ Object {
     "validate-npm-package-name": "3.0.0",
   },
   "deprecated": false,
+  "deprecatedReason": null,
   "description": "⚡️ Build InstantSearch apps at the speed of thought",
   "devDependencies": Object {
     "babel-eslint": "10.0.1",
@@ -1022,6 +1100,7 @@ Object {
   },
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [
     "algolia",
     "instantsearch",
@@ -1101,6 +1180,7 @@ Object {
   "created": 1346430013243,
   "dependencies": Object {},
   "deprecated": false,
+  "deprecatedReason": null,
   "description": "Microsoft sucks",
   "devDependencies": Object {},
   "downloadsLast30Days": 0,
@@ -1109,6 +1189,7 @@ Object {
   "githubRepo": null,
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [
     "index",
     "array",
@@ -1188,6 +1269,7 @@ Object {
     "clipboard": "^2.0.0",
   },
   "deprecated": false,
+  "deprecatedReason": null,
   "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
   "devDependencies": Object {
     "chai": "^4.2.0",
@@ -1216,6 +1298,7 @@ Object {
   },
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [
     "prism",
     "highlight",
@@ -1389,6 +1472,7 @@ Object {
   "created": NaN,
   "dependencies": Object {},
   "deprecated": false,
+  "deprecatedReason": null,
   "description": null,
   "devDependencies": Object {},
   "downloadsLast30Days": 0,
@@ -1402,6 +1486,7 @@ Object {
   },
   "homepage": null,
   "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": null,

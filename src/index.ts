@@ -3,6 +3,7 @@ import * as algolia from './algolia/index';
 import * as bootstrap from './bootstrap';
 import { config } from './config';
 import * as jsDelivr from './jsDelivr/index';
+import * as typescript from './typescript/index';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
@@ -43,6 +44,7 @@ async function main(): Promise<void> {
 
   // Preload some useful data
   await jsDelivr.loadHits();
+  await typescript.loadTypesIndex();
 
   // then we run the bootstrap
   // after a bootstrap is done, it's moved to main (with settings)
