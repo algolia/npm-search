@@ -19,6 +19,8 @@ const indexSettings: Settings = {
     'isDeprecated',
     'types.ts',
     'moduleTypes',
+    'popular',
+    '_searchInternal.expiresAt',
   ],
   customRanking: [
     'desc(_searchInternal.downloadsMagnitude)',
@@ -168,6 +170,8 @@ export const config = {
   indexSettings,
   indexSynonyms,
   indexRules,
+  expiresAt: ms('30 days'),
+  popularExpiresAt: ms('7 days'),
 };
 
 export type Config = typeof config;

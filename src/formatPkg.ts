@@ -177,6 +177,9 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       alternativeNames,
+      expiresAt: new Date(Date.now() + config.expiresAt)
+        .toISOString()
+        .split('T')[0],
     },
   };
 
