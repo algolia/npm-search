@@ -1,3 +1,5 @@
+import path from 'path';
+
 import race from 'promise-rat-race';
 
 import type { RawPkg, Repo } from './@types/pkg';
@@ -10,21 +12,30 @@ export const baseUrlMap = new Map<
   string,
   (opts: Pick<Repo, 'user' | 'project' | 'path' | 'branch'>) => string
 >();
-baseUrlMap.set('github.com', ({ user, project, path, branch }): string => {
-  return `https://raw.githubusercontent.com/${user}/${project}/${
-    path ? '' : branch
-  }${`${path.replace('/tree/', '')}`}`;
-});
-baseUrlMap.set('gitlab.com', ({ user, project, path, branch }): string => {
-  return `https://gitlab.com/${user}/${project}${
-    path ? path.replace('tree', 'raw') : `/raw/${branch}`
-  }`;
-});
-baseUrlMap.set('bitbucket.org', ({ user, project, path, branch }): string => {
-  return `https://bitbucket.org/${user}/${project}${
-    path ? path.replace('src', 'raw') : `/raw/${branch}`
-  }`;
-});
+baseUrlMap.set(
+  'github.com',
+  ({ user, project, path: pathName, branch }): string => {
+    return `https://raw.githubusercontent.com/${user}/${project}/${
+      pathName ? '' : branch
+    }${`${pathName.replace('/tree/', '')}`}`;
+  }
+);
+baseUrlMap.set(
+  'gitlab.com',
+  ({ user, project, path: pathName, branch }): string => {
+    return `https://gitlab.com/${user}/${project}${
+      pathName ? pathName.replace('tree', 'raw') : `/raw/${branch}`
+    }`;
+  }
+);
+baseUrlMap.set(
+  'bitbucket.org',
+  ({ user, project, path: pathName, branch }): string => {
+    return `https://bitbucket.org/${user}/${project}${
+      pathName ? pathName.replace('src', 'raw') : `/raw/${branch}`
+    }`;
+  }
+);
 
 const fileOptions = [
   'CHANGELOG.md',
@@ -47,7 +58,10 @@ const fileOptions = [
   'RELEASES.md',
   'RELEASES',
 ];
-const fileRegex = /changelog|changes|history|release/i;
+
+// https://regex101.com/r/zU2gjr/1
+const fileRegex =
+  /^(((changelogs?)|changes|history|(releases?)))((.(md|markdown))?$)/i;
 
 async function handledGot(file: string): Promise<string> {
   const result = await request(file, { method: 'HEAD' });
@@ -89,7 +103,8 @@ export async function getChangelog(
   // Only work if the package has published their changelog along with the code
   const filesList = await jsDelivr.getFilesList(pkg);
   for (const file of filesList) {
-    if (!fileRegex.test(file.name)) {
+    const name = path.basename(file.name);
+    if (!fileRegex.test(name)) {
       // eslint-disable-next-line no-continue
       continue;
     }
