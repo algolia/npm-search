@@ -224,6 +224,7 @@ async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
     downloadsRatio: number;
     popular: boolean;
     _searchInternal: {
+      expiresAt?: string;
       popularName?: string;
       downloadsMagnitude: number;
     };
@@ -289,7 +290,12 @@ async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
         // if the package is popular, we copy its name to a dedicated attribute
         // which will make popular records' `name` matches to be ranked higher than other matches
         // see the `searchableAttributes` index setting
-        ...(popular && { popularName: name }),
+        ...(popular && {
+          popularName: name,
+          expiresAt: new Date(Date.now() + config.popularExpiresAt)
+            .toISOString()
+            .split('T')[0],
+        }),
         downloadsMagnitude,
       },
     };

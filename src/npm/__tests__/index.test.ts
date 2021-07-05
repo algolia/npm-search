@@ -152,6 +152,7 @@ describe('getDownloads()', () => {
         _searchInternal: {
           popularName: 'jest',
           downloadsMagnitude: expect.any(Number),
+          expiresAt: expect.any(String),
         },
       }),
       expect.objectContaining({
@@ -162,6 +163,7 @@ describe('getDownloads()', () => {
         _searchInternal: {
           popularName: '@angular/core',
           downloadsMagnitude: expect.any(Number),
+          expiresAt: expect.any(String),
         },
       }),
       expect.objectContaining({

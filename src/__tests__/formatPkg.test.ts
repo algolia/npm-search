@@ -62,6 +62,9 @@ it('transforms correctly', () => {
       expect(formattedPackage).toMatchSnapshot(
         {
           lastCrawl: expect.any(String),
+          _searchInternal: {
+            expiresAt: expect.any(String),
+          },
         },
         formattedPackage.objectID
       )
@@ -100,6 +103,9 @@ it('truncates long readmes', () => {
   expect(formatted).toMatchSnapshot({
     readme: expect.any(String),
     lastCrawl: expect.any(String),
+    _searchInternal: {
+      expiresAt: expect.any(String),
+    },
   });
 });
 
@@ -720,6 +726,9 @@ describe('deprecated', () => {
       deprecated: 'Yes this is deprecated',
       isDeprecated: true,
       deprecatedReason: 'Yes this is deprecated',
+      _searchInternal: {
+        expiresAt: expect.any(String),
+      },
     });
   });
 });
