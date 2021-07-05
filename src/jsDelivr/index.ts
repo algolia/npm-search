@@ -6,12 +6,13 @@ import { request } from '../utils/request';
 
 type Hit = { type: 'npm'; name: string; hits: number };
 type File = { name: string; hash: string; time: string; size: number };
-const hits = new Map<string, number>();
+
+export const hits = new Map<string, number>();
 
 /**
  * Load downloads hits.
  */
-async function loadHits(): Promise<void> {
+export async function loadHits(): Promise<void> {
   const start = Date.now();
   log.info('📦  Loading hits from jsDelivr');
 
@@ -34,7 +35,7 @@ async function loadHits(): Promise<void> {
 /**
  * Get download hits.
  */
-function getHits(pkgs: Array<Pick<RawPkg, 'name'>>): Array<{
+export function getHits(pkgs: Array<Pick<RawPkg, 'name'>>): Array<{
   jsDelivrHits: number;
   _searchInternal: { jsDelivrPopularity: number };
 }> {
@@ -59,7 +60,7 @@ function getHits(pkgs: Array<Pick<RawPkg, 'name'>>): Array<{
 /**
  * Get packages files list.
  */
-async function getAllFilesList(
+export async function getAllFilesList(
   pkgs: Array<Pick<RawPkg, 'name' | 'version'>>
 ): Promise<File[][]> {
   const start = Date.now();
@@ -73,7 +74,7 @@ async function getAllFilesList(
 /**
  * Get one package files list.
  */
-async function getFilesList(
+export async function getFilesList(
   pkg: Pick<RawPkg, 'name' | 'version'>
 ): Promise<File[]> {
   const start = Date.now();
@@ -100,4 +101,9 @@ async function getFilesList(
   return files;
 }
 
-export { hits, loadHits, getHits, getAllFilesList, getFilesList };
+export function getFullURL(
+  pkg: Pick<RawPkg, 'name' | 'version'>,
+  file: File
+): string {
+  return `https://cdn.jsdelivr.net/npm/${pkg.name}@${pkg.version}${file.name}`;
+}

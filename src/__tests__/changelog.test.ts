@@ -1,4 +1,5 @@
-import { getChangelogs, baseUrlMap } from '../changelog';
+import { getChangelogs, baseUrlMap, getChangelog } from '../changelog';
+import * as jsDelivr from '../jsDelivr';
 
 jest.mock('got', () => {
   const gotSnapshotUrls = new Set([
@@ -15,6 +16,12 @@ jest.mock('got', () => {
       : Promise.reject(new Error(`got mock does not exist for ${url}`));
   };
 });
+
+const spy = jest
+  .spyOn(jsDelivr, 'getFilesList')
+  .mockImplementation((): Promise<any[]> => {
+    return Promise.resolve([]);
+  });
 
 describe('should test baseUrlMap', () => {
   it('should work with paths', () => {
@@ -209,4 +216,77 @@ it('should work with HISTORY.md', async () => {
   expect(changelogFilename).toBe(
     'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md'
   );
+});
+
+describe('jsDelivr', () => {
+  it('should early return when finding changelog', async () => {
+    spy.mockResolvedValue([
+      { name: '/package.json', hash: '', time: '1', size: 1 },
+      { name: '/CHANGELOG.md', hash: '', time: '1', size: 1 },
+    ]);
+
+    const { changelogFilename } = await getChangelog({
+      name: 'foo',
+      version: '1.0.0',
+      repository: {
+        url: '',
+        host: 'github.com',
+        user: 'expressjs',
+        project: 'body-parser',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    });
+    expect(jsDelivr.getFilesList).toHaveBeenCalled();
+    expect(changelogFilename).toEqual(
+      'https://cdn.jsdelivr.net/npm/foo@1.0.0/CHANGELOG.md'
+    );
+  });
+
+  it('should early return when finding changelog in nested file', async () => {
+    spy.mockResolvedValue([
+      { name: '/pkg/CHANGELOG.md', hash: '', time: '1', size: 1 },
+    ]);
+
+    const { changelogFilename } = await getChangelog({
+      name: 'foo',
+      version: '1.0.0',
+      repository: {
+        url: '',
+        host: 'github.com',
+        user: 'expressjs',
+        project: 'body-parser',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    });
+    expect(jsDelivr.getFilesList).toHaveBeenCalled();
+    expect(changelogFilename).toEqual(
+      'https://cdn.jsdelivr.net/npm/foo@1.0.0/pkg/CHANGELOG.md'
+    );
+  });
+
+  it('should not register a file looking like a changelog', async () => {
+    spy.mockResolvedValue([
+      { name: '/dist/changelog.js', hash: '', time: '1', size: 1 },
+    ]);
+
+    const { changelogFilename } = await getChangelog({
+      name: 'foo',
+      version: '1.0.0',
+      repository: {
+        url: '',
+        host: 'github.com',
+        user: 'hello',
+        project: 'foo',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    });
+    expect(jsDelivr.getFilesList).toHaveBeenCalled();
+    expect(changelogFilename).toEqual(null);
+  });
 });

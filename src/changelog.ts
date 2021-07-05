@@ -1,7 +1,10 @@
+import path from 'path';
+
 import race from 'promise-rat-race';
 
 import type { RawPkg, Repo } from './@types/pkg';
 import { config } from './config';
+import * as jsDelivr from './jsDelivr/index';
 import { datadog } from './utils/datadog';
 import { request } from './utils/request';
 
@@ -9,21 +12,30 @@ export const baseUrlMap = new Map<
   string,
   (opts: Pick<Repo, 'user' | 'project' | 'path' | 'branch'>) => string
 >();
-baseUrlMap.set('github.com', ({ user, project, path, branch }): string => {
-  return `https://raw.githubusercontent.com/${user}/${project}/${
-    path ? '' : branch
-  }${`${path.replace('/tree/', '')}`}`;
-});
-baseUrlMap.set('gitlab.com', ({ user, project, path, branch }): string => {
-  return `https://gitlab.com/${user}/${project}${
-    path ? path.replace('tree', 'raw') : `/raw/${branch}`
-  }`;
-});
-baseUrlMap.set('bitbucket.org', ({ user, project, path, branch }): string => {
-  return `https://bitbucket.org/${user}/${project}${
-    path ? path.replace('src', 'raw') : `/raw/${branch}`
-  }`;
-});
+baseUrlMap.set(
+  'github.com',
+  ({ user, project, path: pathName, branch }): string => {
+    return `https://raw.githubusercontent.com/${user}/${project}/${
+      pathName ? '' : branch
+    }${`${pathName.replace('/tree/', '')}`}`;
+  }
+);
+baseUrlMap.set(
+  'gitlab.com',
+  ({ user, project, path: pathName, branch }): string => {
+    return `https://gitlab.com/${user}/${project}${
+      pathName ? pathName.replace('tree', 'raw') : `/raw/${branch}`
+    }`;
+  }
+);
+baseUrlMap.set(
+  'bitbucket.org',
+  ({ user, project, path: pathName, branch }): string => {
+    return `https://bitbucket.org/${user}/${project}${
+      pathName ? pathName.replace('src', 'raw') : `/raw/${branch}`
+    }`;
+  }
+);
 
 const fileOptions = [
   'CHANGELOG.md',
@@ -43,7 +55,13 @@ const fileOptions = [
   'history.md',
   'HISTORY',
   'history',
+  'RELEASES.md',
+  'RELEASES',
 ];
+
+// https://regex101.com/r/zU2gjr/1
+const fileRegex =
+  /^(((changelogs?)|changes|history|(releases?)))((.(md|markdown))?$)/i;
 
 async function handledGot(file: string): Promise<string> {
   const result = await request(file, { method: 'HEAD' });
@@ -76,13 +94,27 @@ async function raceFromPaths(files: string[]): Promise<{
   }
 }
 
-function getChangelog({
-  repository,
-  name,
-  version,
-}: Pick<RawPkg, 'repository' | 'name' | 'version'>): Promise<{
+export async function getChangelog(
+  pkg: Pick<RawPkg, 'repository' | 'name' | 'version'>
+): Promise<{
   changelogFilename: string | null;
 }> {
+  // Do a quick call to jsDelivr
+  // Only work if the package has published their changelog along with the code
+  const filesList = await jsDelivr.getFilesList(pkg);
+  for (const file of filesList) {
+    const name = path.basename(file.name);
+    if (!fileRegex.test(name)) {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
+    return { changelogFilename: jsDelivr.getFullURL(pkg, file) };
+  }
+
+  const { repository, name, version } = pkg;
+
+  // Rollback to brute-force the source code
   const unpkgFiles = fileOptions.map(
     (file) => `${config.unpkgRoot}/${name}@${version}/${file}`
   );
