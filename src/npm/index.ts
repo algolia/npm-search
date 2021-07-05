@@ -287,7 +287,7 @@ async function getDownloads(
       downloadsRatio,
       popular,
       expiresAt: popular
-        ? new Date(Date.now() + config.populareExpiresAt)
+        ? new Date(Date.now() + config.popularExpiresAt)
             .toISOString()
             .split('T')[0]
         : expiresAt,

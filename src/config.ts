@@ -166,8 +166,8 @@ export const config = {
   indexSettings,
   indexSynonyms,
   indexRules,
-  expiresAt: 30 * 24 * 3600 * 1000,
-  populareExpiresAt: 7 * 24 * 3600 * 1000,
+  expiresAt: ms('30 days'),
+  popularExpiresAt: ms('7 days'),
 };
 
 export type Config = typeof config;
