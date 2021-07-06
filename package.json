@@ -14,8 +14,8 @@
     "doctoc": "doctoc --notitle --maxlevel 3 README.md",
     "lint": "eslint --ext=jsx,ts,tsx,js .",
     "prepare": "husky install",
-    "start": "UV_THREADPOOL_SIZE=12 node -r dotenv/config --async-stack-traces --max-old-space-size=920 dist/index.js",
-    "start_new": "indexName=npm-search-new bootstrapIndexName=npm-search-new.tmp UV_THREADPOOL_SIZE=22 node --async-stack-traces --max-old-space-size=920 dist/index.js",
+    "start": "UV_THREADPOOL_SIZE=64 node -r dotenv/config --async-stack-traces --max-old-space-size=920 dist/index.js",
+    "start_new": "indexName=npm-search-new bootstrapIndexName=npm-search-new.tmp UV_THREADPOOL_SIZE=64 node --async-stack-traces --max-old-space-size=920 dist/index.js",
     "test:watch": "jest --watchAll --no-watchman",
     "test": "jest --forceExit"
   },
@@ -27,8 +27,9 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@algolia/requester-node-http": "4.10.3",
     "@sentry/node": "6.5.1",
-    "algoliasearch": "4.9.3",
+    "algoliasearch": "4.10.3",
     "async": "3.2.0",
     "bunyan": "1.8.15",
     "bunyan-debug-stream": "2.0.0",

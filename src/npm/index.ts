@@ -14,12 +14,18 @@ import type { RawPkg } from '../@types/pkg';
 import { config } from '../config';
 import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
-import { request } from '../utils/request';
+import { httpsAgent, request, USER_AGENT } from '../utils/request';
 
 import type { GetInfo, GetPackage, PackageDownload } from './types';
 
 const registry = nano({
   url: config.npmRegistryEndpoint,
+  requestDefaults: {
+    agent: httpsAgent,
+    headers: {
+      'user-agent': USER_AGENT,
+    },
+  },
 });
 const db = registry.use<GetPackage>(config.npmRegistryDBName);
 
