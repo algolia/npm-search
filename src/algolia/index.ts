@@ -1,7 +1,15 @@
+import { createNodeHttpRequester } from '@algolia/requester-node-http';
 import type { SearchClient, SearchIndex } from 'algoliasearch';
 import algoliasearch from 'algoliasearch';
 
 import type { Config } from '../config';
+import { httpAgent, httpsAgent, USER_AGENT } from '../utils/request';
+
+const requester = createNodeHttpRequester({
+  agent: httpsAgent,
+  httpAgent,
+  httpsAgent,
+});
 
 function createClient({
   appId,
@@ -12,7 +20,10 @@ function createClient({
   apiKey: string;
   indexName: string;
 }): { index: SearchIndex; client: SearchClient } {
-  const client = algoliasearch(appId, apiKey);
+  const client = algoliasearch(appId, apiKey, {
+    requester,
+  });
+  client.addAlgoliaAgent(USER_AGENT);
   return {
     index: client.initIndex(indexName),
     client,
