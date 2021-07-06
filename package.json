@@ -29,7 +29,7 @@
   "dependencies": {
     "@algolia/requester-node-http": "4.10.3",
     "@sentry/node": "6.5.1",
-    "algoliasearch": "4.9.3",
+    "algoliasearch": "4.10.3",
     "async": "3.2.0",
     "bunyan": "1.8.15",
     "bunyan-debug-stream": "2.0.0",
