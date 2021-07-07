@@ -37,7 +37,6 @@ CHANGELOG.md
 CONTRIBUTING.md
 **/*.test.ts
 **/*.test.tsx
-**/*.integration-test.ts
 **/*.test.js
 **/*.stories.tsx
 **/*.spec.ts
@@ -48,7 +47,6 @@ renovate.json
 **/jest*
 **/.DS_Store
 .vscode
-GA_PRIVATE_KEY_FOR_TESTING.key.enc
 **/.storybook/
 **/__fixtures__/
 **/__snapshots__/
@@ -56,5 +54,4 @@ GA_PRIVATE_KEY_FOR_TESTING.key.enc
 **/__mock__/
 **/__tests__/
 **/tsconfig.tsbuildinfo
-icon.png
 Procfile
