@@ -26,7 +26,7 @@ export async function loadHits(): Promise<void> {
       hits.set(pkg.name, pkg.hits);
     });
   } catch (e) {
-    log.error(e);
+    log.error('Failed to fetch', e);
   }
 
   datadog.timing('jsdelivr.loadHits', Date.now() - start);
@@ -85,16 +85,14 @@ export async function getFilesList(
   }
 
   let files: File[] = [];
+  const url = `${config.jsDelivrPackageEndpoint}/${pkg.name}@${pkg.version}/flat`;
   try {
-    const response = await request<{ default: string; files: File[] }>(
-      `${config.jsDelivrPackageEndpoint}/${pkg.name}@${pkg.version}/flat`,
-      {
-        responseType: 'json',
-      }
-    );
+    const response = await request<{ default: string; files: File[] }>(url, {
+      responseType: 'json',
+    });
     files = response.body.files;
   } catch (e) {
-    log.warn(e);
+    log.error(`Failed to fetch ${url}`, e);
   }
 
   datadog.timing('jsdelivr.getFilesList', Date.now() - start);

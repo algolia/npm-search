@@ -107,12 +107,10 @@ async function loop(
 
   const newLastId = res.rows[res.rows.length - 1].id;
 
-  const saved = await saveDocs({ docs: res.rows, index: bootstrapIndex });
+  await saveDocs({ docs: res.rows, index: bootstrapIndex });
   await stateManager.save({
     bootstrapLastId: newLastId,
   });
-  log.info(`  - saved ${saved} packages`);
-
   await logProgress(res.offset, res.rows.length);
 
   datadog.timing('loop', Date.now() - start);
