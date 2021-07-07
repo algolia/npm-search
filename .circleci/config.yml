@@ -1,16 +1,17 @@
 version: 2.1
 
-
 orbs:
   node: circleci/node@4.5.1
 
----
 aliases:
   # Forward the current folder when using workflows
   - &persist_work_dir
     root: .
     paths:
       - .
+
+  - &attach_work_dir
+    at: ~/repo
 
 jobs:
   # Step build
