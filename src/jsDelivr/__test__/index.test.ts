@@ -6,6 +6,7 @@ jest.mock('../../utils/log', () => {
     log: {
       info: jest.fn(),
       warn: jest.fn(),
+      error: jest.fn(),
     },
   };
 });
@@ -85,8 +86,8 @@ describe('files', () => {
         version: '3.33.0',
       });
       expect(files).toEqual([]);
-      expect(log.warn.mock.calls[0][0].message).toMatchInlineSnapshot(
-        `"Response code 404 (Not Found)"`
+      expect(log.error.mock.calls[0][0]).toEqual(
+        'Failed to fetch https://data.jsdelivr.com/v1/package/npm/thispackagedoesnotexist@3.33.0/flat'
       );
     });
   });
@@ -111,8 +112,8 @@ describe('files', () => {
         },
       ]);
       expect(files).toMatchSnapshot();
-      expect(log.warn.mock.calls[0][0].message).toMatchInlineSnapshot(
-        `"Response code 404 (Not Found)"`
+      expect(log.error.mock.calls[0][0]).toEqual(
+        'Failed to fetch https://data.jsdelivr.com/v1/package/npm/thispackagedoesnotexist@3.33.0/flat'
       );
     });
   });

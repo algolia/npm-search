@@ -41,16 +41,20 @@ export default async function saveDocs({
     log.info('🔍 No pkgs found in response.');
     return Promise.resolve(0);
   }
-
-  log.info(`👔  Saving... ${names.length} packages`, names);
+  log.info('  => ', names);
+  log.info('  Adding metadata...');
 
   let start2 = Date.now();
   const pkgs = await addMetaData(rawPkgs);
   datadog.timing('saveDocs.addMetaData', Date.now() - start2);
 
+  log.info(` Saving...`);
+
   start2 = Date.now();
   await index.saveObjects(pkgs);
   datadog.timing('saveDocs.saveObjects', Date.now() - start2);
+
+  log.info(`  Saved`);
 
   datadog.timing('saveDocs', Date.now() - start);
   return pkgs.length;

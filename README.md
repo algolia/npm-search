@@ -233,8 +233,7 @@ See [config.js](./config.js):
 - `apiKey`: [Algolia](https://www.algolia.com/) apiKey - **required**
 - `appId`: [Algolia](https://www.algolia.com/) appId - _default `OFCNCOG2CU`_
 - `indexName`: [Algolia](https://www.algolia.com/) indexName - _default `npm-search`_
-- `bootstrapConcurrency`: How many docs to grab from npm registry at once in the bootstrap phase - _default `100`_
-- `replicateConcurrency`: How many changes to grab from npm registry at once in the replicate phase - _default `10`_
+- `bootstrapConcurrency`: How many docs to grab from npm registry at once in the bootstrap phase - _default `25`_
 - `seq`: npm registry first [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
   to start replication. In normal operations you should never have to use this. - _default `0`_
 - `npmRegistryEndpoint`: npm registry endpoint to replicate from - _default `https://replicate.npmjs.com/registry`_
