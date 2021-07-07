@@ -1,9 +1,19 @@
 version: 2.1
 
+
 orbs:
   node: circleci/node@4.5.1
 
+---
+aliases:
+  # Forward the current folder when using workflows
+  - &persist_work_dir
+    root: .
+    paths:
+      - .
+
 jobs:
+  # Step build
   build:
     docker:
       - image: cimg/node:14.16.1
@@ -12,9 +22,10 @@ jobs:
 
     steps:
       - checkout
+      - persist_to_workspace: *persist_work_dir
 
       - node/install-packages:
-                pkg-manager: yarn
+          pkg-manager: yarn
 
       - run:
           name: Lint
@@ -28,10 +39,32 @@ jobs:
           name: Test
           command: yarn test
 
+      - persist_to_workspace: *persist_work_dir
       - store_test_results:
           path: junit/
+
+  # Step release
+  release:
+    docker:
+      - image: cimg/node:14.16.1
+    working_directory: ~/repo
+    steps:
+      - attach_workspace: *attach_work_dir
+      - run:
+          name: Release
+          command: yarn semantic-release
+      - run:
+          name: Docker
+          command: yarn docker:build && yarn docker:release
 
 workflows:
   suite:
     jobs:
       - build
+
+      - release:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
