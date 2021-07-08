@@ -58,10 +58,10 @@ jobs:
           name: Docker Build
           command: yarn docker:build
       - run:
-        name: Docker publish
-        command: |
-          echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
-          yarn docker:release
+          name: Docker publish
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            yarn docker:release
 
 workflows:
   suite:
