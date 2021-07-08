@@ -2,7 +2,7 @@
 
 set -e
 
-current=$(npx json -f package.json version)
+current=$(node -e "console.log(require('./package.json').version)")
 echo "Releasing: $current"
 echo ""
 

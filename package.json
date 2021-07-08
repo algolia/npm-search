@@ -19,7 +19,7 @@
     "test:watch": "jest --watchAll --no-watchman",
     "test": "jest --forceExit",
     "docker:build": "./scripts/build.sh",
-    "docker:release": "VERSION=$(npx json -f package.json version) && docker push algolia/npm-search && docker push algolia/npm-search:$VERSION"
+    "docker:release": "VERSION=$(node -e \"console.log(require('./package.json').version)\") && echo \"Releasing $VERSION\" && docker push algolia/npm-search && docker push algolia/npm-search:$VERSION"
   },
   "renovate": {
     "extends": [
