@@ -19,11 +19,11 @@ RUN true \
 COPY . /app
 RUN ls -lah /app
 
-# Builds the UI install only the prod dependencies
+# Builds the code and reinstall node_modules in prod mode
 RUN true \
   && yarn build \
   && yarn install --production=true \
-  && rm -rf src \
+  && rm -rf src/ \
   && rm -rf .yarn/
 
 # ---- Final ----

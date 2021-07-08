@@ -55,8 +55,13 @@ jobs:
           name: Release
           command: yarn semantic-release
       - run:
-          name: Docker
-          command: yarn docker:build && yarn docker:release
+          name: Docker Build
+          command: yarn docker:build
+      - run:
+        name: Docker publish
+        command: |
+          echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+          yarn docker:release
 
 workflows:
   suite:
