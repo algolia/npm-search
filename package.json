@@ -100,5 +100,10 @@
       "node_modules",
       "lib"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algolia/npm-search.git"
+  },
+  "homepage": "https://github.com/algolia/npm-search"
 }
