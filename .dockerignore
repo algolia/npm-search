@@ -56,3 +56,4 @@ renovate.json
 **/__tests__/
 **/tsconfig.tsbuildinfo
 Procfile
+release.config.js
