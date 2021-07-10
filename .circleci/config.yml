@@ -51,6 +51,10 @@ jobs:
     working_directory: ~/repo
     steps:
       - attach_workspace: *attach_work_dir
+
+      - setup_remote_docker:
+        version: 19.03.13
+
       # - run:
       #     name: Release
       #     command: yarn semantic-release
@@ -71,6 +75,6 @@ workflows:
       - release:
           requires:
             - build
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
