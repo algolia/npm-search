@@ -1,5 +1,6 @@
 import { StateManager } from './StateManager';
 import * as algolia from './algolia/index';
+import { createAPI } from './api';
 import * as bootstrap from './bootstrap';
 import { config } from './config';
 import * as jsDelivr from './jsDelivr/index';
@@ -29,6 +30,8 @@ async function main(): Promise<void> {
     // eslint-disable-next-line no-process-exit
     process.exit(0);
   }, KILL_PROCESS_EVERY_MS);
+
+  createAPI();
 
   // first we make sure the bootstrap index has the correct settings
   log.info('💪  Setting up Algolia');
