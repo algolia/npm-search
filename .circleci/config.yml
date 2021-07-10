@@ -75,6 +75,6 @@ workflows:
       - release:
           requires:
             - build
-          # filters:
-          #   branches:
-          #     only: master
+          filters:
+            branches:
+              only: master
