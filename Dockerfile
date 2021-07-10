@@ -3,6 +3,9 @@ FROM node:14.16.1-alpine AS base
 
 ENV NODE_ENV production
 
+# Install dependencies for native deps
+RUN apk add --no-cache bash python3
+
 # Setup the app WORKDIR
 WORKDIR /app
 
