@@ -170,5 +170,5 @@ function createPkgConsumer(
     } finally {
       datadog.timing('loop', Date.now() - start);
     }
-  }, 3);
+  }, config.bootstrapConcurrency);
 }
