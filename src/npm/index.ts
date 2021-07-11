@@ -30,6 +30,7 @@ type GetDownload = {
     downloadsMagnitude: number;
   };
 };
+let cacheTotalDownloads: { total: number; date: number } | undefined;
 
 const registry = nano({
   url: config.npmRegistryEndpoint,
@@ -187,6 +188,15 @@ function getDependent(_pkg: Pick<RawPkg, 'name'>): GetDependent {
  * Get total npm downloads.
  */
 async function getTotalDownloads(): Promise<number> {
+  const start = Date.now();
+
+  if (
+    cacheTotalDownloads &&
+    Date.now() - cacheTotalDownloads.date < 60 * 1000
+  ) {
+    return cacheTotalDownloads.total;
+  }
+
   const {
     body: { downloads: totalNpmDownloadsPerDay },
   } = await request<{ downloads: Array<{ downloads: number }> }>(
@@ -196,10 +206,18 @@ async function getTotalDownloads(): Promise<number> {
     }
   );
 
-  return totalNpmDownloadsPerDay.reduce(
-    (total, { downloads: dayDownloads }) => total + dayDownloads,
+  const total = totalNpmDownloadsPerDay.reduce(
+    (agg, { downloads: dayDownloads }) => agg + dayDownloads,
     0
   );
+  cacheTotalDownloads = {
+    date: start,
+    total,
+  };
+
+  datadog.timing('npm.getTotalDownloads', Date.now() - start);
+
+  return total;
 }
 
 /**
