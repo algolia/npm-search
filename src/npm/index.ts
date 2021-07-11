@@ -192,7 +192,7 @@ async function getTotalDownloads(): Promise<number> {
 
   if (
     cacheTotalDownloads &&
-    Date.now() - cacheTotalDownloads.date < 60 * 1000
+    Date.now() - cacheTotalDownloads.date < config.cacheTotalDownloads
   ) {
     return cacheTotalDownloads.total;
   }
