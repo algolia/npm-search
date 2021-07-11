@@ -31,6 +31,8 @@ export async function request<TRes>(
       ...(opts.headers || {}),
       'user-agent': USER_AGENT,
     },
+    dnsCache: true,
+    dnsLookupIpVersion: 'ipv4',
     agent: {
       http: httpAgent,
       https: httpsAgent,
