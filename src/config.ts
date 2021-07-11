@@ -171,6 +171,7 @@ export const config = {
   indexRules,
   expiresAt: ms('30 days'),
   popularExpiresAt: ms('7 days'),
+  cacheTotalDownloads: ms('1 minute'),
 };
 
 export type Config = typeof config;
