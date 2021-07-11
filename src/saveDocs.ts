@@ -78,20 +78,13 @@ export async function saveDoc({
     return;
   }
 
-  log.info('  => ', formatted.name);
-  log.info('  Adding metadata...');
-
   let start2 = Date.now();
   const pkg = await addMetaData(formatted);
   datadog.timing('saveDocs.addMetaData.one', Date.now() - start2);
 
-  log.info(` Saving...`);
-
   start2 = Date.now();
   await index.saveObject(pkg);
   datadog.timing('saveDocs.saveObject.one', Date.now() - start2);
-
-  log.info(`  Saved`);
 
   datadog.timing('saveDocs.one', Date.now() - start);
 }

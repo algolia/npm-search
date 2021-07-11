@@ -34,7 +34,10 @@ async function main(): Promise<void> {
   createAPI();
 
   // first we make sure the bootstrap index has the correct settings
-  log.info('💪  Setting up Algolia');
+  log.info('💪  Setting up Algolia', [
+    config.bootstrapIndexName,
+    config.indexName,
+  ]);
   const {
     client: algoliaClient,
     mainIndex,

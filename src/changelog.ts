@@ -105,7 +105,6 @@ export async function getChangelog(
     for (const file of filelist) {
       const name = path.basename(file.name);
       if (!fileRegex.test(name)) {
-        // eslint-disable-next-line no-continue
         continue;
       }
 
