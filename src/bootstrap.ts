@@ -1,16 +1,20 @@
 import type { SearchClient, SearchIndex } from 'algoliasearch';
-import ms from 'ms';
-import type { DocumentListParams } from 'nano';
+import type { QueueObject } from 'async';
+import { queue } from 'async';
 
 import type { StateManager } from './StateManager';
 import * as algolia from './algolia';
 import { config } from './config';
 import * as npm from './npm';
-import { saveDocs } from './saveDocs';
+import { Prefetcher } from './npm/Prefetcher';
+import type { GetPackage } from './npm/types';
+import { saveDoc } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
+import * as sentry from './utils/sentry';
+import { wait } from './utils/wait';
 
-let loopStart: number = Date.now();
+let prefetcher: Prefetcher;
 
 /**
  * Bootstrap is the mode that goes from 0 to all the packages in NPM
@@ -57,12 +61,27 @@ async function run(
   log.info(`Total packages   ${totalDocs}`);
   log.info('-----');
 
-  let lastProcessedId = state.bootstrapLastId;
-  do {
-    loopStart = Date.now();
+  prefetcher = new Prefetcher({
+    nextKey: state.bootstrapLastId,
+  });
+  prefetcher.launch();
 
-    lastProcessedId = await loop(lastProcessedId, stateManager, bootstrapIndex);
-  } while (lastProcessedId !== null);
+  let done = 0;
+  const consumer = createPkgConsumer(stateManager, bootstrapIndex);
+  consumer.unsaturated(async () => {
+    const next = await prefetcher.getNext();
+    consumer.push(next);
+    done += 1;
+  });
+
+  let processing = true;
+  while (processing) {
+    await wait(5000);
+
+    processing = prefetcher.isFinished;
+    logProgress(prefetcher.offset, done);
+    done = 0;
+  }
 
   log.info('-----');
   log.info('⛷   Bootstrap: done');
@@ -75,49 +94,8 @@ async function run(
 }
 
 /**
- * Execute one loop for bootstrap,
- *   Fetch N packages from `lastId`, process and save them to Algolia.
- * */
-async function loop(
-  lastId: string | null,
-  stateManager: StateManager,
-  bootstrapIndex: SearchIndex
-): Promise<string | null> {
-  const start = Date.now();
-  log.info('loop()', '::', lastId);
-
-  const options: DocumentListParams = {
-    limit: config.bootstrapConcurrency,
-  };
-  if (lastId) {
-    options.startkey = lastId;
-    options.skip = 1;
-  }
-
-  const res = await npm.findAll(options);
-
-  if (res.rows.length <= 0) {
-    // Nothing left to process
-    // We return null to stop the bootstraping
-    return null;
-  }
-
-  datadog.increment('packages', res.rows.length);
-  log.info('  - fetched', res.rows.length, 'packages');
-
-  const newLastId = res.rows[res.rows.length - 1].id;
-
-  await saveDocs({ docs: res.rows, index: bootstrapIndex });
-  await stateManager.save({
-    bootstrapLastId: newLastId,
-  });
-  await logProgress(res.offset, res.rows.length);
-
-  datadog.timing('loop', Date.now() - start);
-
-  return newLastId;
-}
-
+ * Move algolia index to prod.
+ */
 async function moveToProduction(
   stateManager: StateManager,
   algoliaClient: SearchClient
@@ -130,18 +108,51 @@ async function moveToProduction(
   await stateManager.save(currentState);
 }
 
+/**
+ * Log approximate progress.
+ */
 async function logProgress(offset: number, nbDocs: number): Promise<void> {
   const { nbDocs: totalDocs } = await npm.getInfo();
 
-  const ratePerSecond = nbDocs / ((Date.now() - loopStart) / 1000);
   log.info(
-    `[progress] %d/%d docs (%d%), current rate: %d docs/s (%s remaining)`,
+    `[progress] %d/%d docs (%d%) (%s remaining)`,
     offset + nbDocs,
     totalDocs,
-    Math.floor((Math.max(offset + nbDocs, 1) / totalDocs) * 100),
-    Math.round(ratePerSecond),
-    ms(((totalDocs - offset - nbDocs) / ratePerSecond) * 1000)
+    Math.floor((Math.max(offset + nbDocs, 1) / totalDocs) * 100)
   );
+}
+
+/**
+ * Consume packages.
+ */
+function createPkgConsumer(
+  stateManager: StateManager,
+  index: SearchIndex
+): QueueObject<GetPackage> {
+  return queue<GetPackage>(async (pkg) => {
+    log.info(`Processing:`, pkg.name);
+    const start = Date.now();
+
+    try {
+      datadog.increment('packages');
+
+      const res = await npm.getDoc(pkg.name);
+
+      await saveDoc({ row: res, index });
+
+      // Because of concurrency we can have processed a package after in the list but sooner in the process.
+      if ((await stateManager.get())!.bootstrapLastId! < pkg.name) {
+        await stateManager.save({
+          bootstrapLastId: pkg.name,
+        });
+      }
+      log.info(`Saved`, pkg.name);
+    } catch (err) {
+      sentry.report(err);
+    } finally {
+      datadog.timing('loop', Date.now() - start);
+    }
+  }, 20);
 }
 
 export { run };

@@ -1,10 +1,11 @@
 import type { SearchIndex } from 'algoliasearch';
 import type { QueueObject } from 'async';
 import { queue } from 'async';
-import type { DatabaseChangesResultItem, DocumentLookupFailure } from 'nano';
+import type { DatabaseChangesResultItem } from 'nano';
 
 import type { StateManager } from './StateManager';
 import * as npm from './npm';
+import { isFailure } from './npm/types';
 import { saveDocs } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
@@ -36,7 +37,7 @@ let changesConsumer: QueueObject<DatabaseChangesResultItem>;
  *      It will never be up to date because he receive event at the same pace
  *      as they arrive in listener A, even if it's not the same package.
  */
-async function run(
+export async function run(
   stateManager: StateManager,
   mainIndex: SearchIndex
 ): Promise<void> {
@@ -110,14 +111,14 @@ async function loop(
     return;
   }
 
-  const doc = (await npm.getDocs({ keys: [change.id] })).rows[0];
+  const res = (await npm.getDocs({ keys: [change.id] })).rows[0];
 
-  if (isFailure(doc)) {
-    log.error('Got an error', doc.error);
+  if (isFailure(res)) {
+    log.error('Got an error', res.error);
     return;
   }
 
-  await saveDocs({ docs: [doc], index: mainIndex });
+  await saveDocs({ docs: [res], index: mainIndex });
 
   datadog.timing('watch.loop', Date.now() - start);
 }
@@ -164,9 +165,3 @@ function createChangeConsumer(
     }
   }, 1);
 }
-
-function isFailure(change: any): change is DocumentLookupFailure {
-  return change.error && !change.id;
-}
-
-export { run };
