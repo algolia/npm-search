@@ -31,6 +31,7 @@ export async function request<TRes>(
       ...(opts.headers || {}),
       'user-agent': USER_AGENT,
     },
+    timeout: 15000,
     dnsCache: true,
     dnsLookupIpVersion: 'ipv4',
     agent: {
