@@ -92,7 +92,7 @@ export async function saveDoc({
 
   log.info(`  Saved`);
 
-  datadog.timing('saveDocs', Date.now() - start);
+  datadog.timing('saveDocs.one', Date.now() - start);
 }
 
 async function addMetaDatas(pkgs: RawPkg[]): Promise<FinalPkg[]> {
