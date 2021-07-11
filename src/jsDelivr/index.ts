@@ -6,6 +6,10 @@ import { request } from '../utils/request';
 
 type Hit = { type: 'npm'; name: string; hits: number };
 export type File = { name: string; hash: string; time: string; size: number };
+type GetHit = {
+  jsDelivrHits: number;
+  _searchInternal: { jsDelivrPopularity: number };
+};
 
 export const hits = new Map<string, number>();
 
@@ -35,26 +39,25 @@ export async function loadHits(): Promise<void> {
 /**
  * Get download hits.
  */
-export function getHits(pkgs: Array<Pick<RawPkg, 'name'>>): Array<{
-  jsDelivrHits: number;
-  _searchInternal: { jsDelivrPopularity: number };
-}> {
+export function getHits(pkgs: Array<Pick<RawPkg, 'name'>>): GetHit[] {
   const start = Date.now();
-  const all = pkgs.map(({ name }) => {
-    const jsDelivrHits = hits.get(name) || 0;
-
-    return {
-      jsDelivrHits,
-      _searchInternal: {
-        // anything below 1000 hits/month is likely to mean that
-        // someone just made a few random requests so we count that as 0
-        jsDelivrPopularity: Math.max(jsDelivrHits.toString().length - 3, 0),
-      },
-    };
-  });
+  const all = pkgs.map(getHit);
 
   datadog.timing('jsdelivr.getHits', Date.now() - start);
   return all;
+}
+
+export function getHit(pkg: Pick<RawPkg, 'name'>): GetHit {
+  const jsDelivrHits = hits.get(pkg.name) || 0;
+
+  return {
+    jsDelivrHits,
+    _searchInternal: {
+      // anything below 1000 hits/month is likely to mean that
+      // someone just made a few random requests so we count that as 0
+      jsDelivrPopularity: Math.max(jsDelivrHits.toString().length - 3, 0),
+    },
+  };
 }
 
 /**

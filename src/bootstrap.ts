@@ -6,7 +6,7 @@ import type { StateManager } from './StateManager';
 import * as algolia from './algolia';
 import { config } from './config';
 import * as npm from './npm';
-import saveDocs from './saveDocs';
+import { saveDocs } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 

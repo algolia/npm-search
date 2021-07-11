@@ -58,35 +58,41 @@ export function getTypeScriptSupport(
   pkg: Pick<RawPkg, 'name' | 'types' | 'version'>,
   filelist: File[]
 ): Pick<RawPkg, 'types'> {
-  // Already calculated in `formatPkg`
-  if (pkg.types.ts === 'included') {
-    return { types: pkg.types };
-  }
+  const start = Date.now();
 
-  // The 2nd most likely is definitely typed
-  const defTyped = isDefinitelyTyped({ name: pkg.name });
-  if (defTyped) {
-    return {
-      types: {
-        ts: 'definitely-typed',
-        definitelyTyped: `@types/${defTyped}`,
-      },
-    };
-  }
-
-  for (const file of filelist) {
-    if (!file.name.endsWith('.d.ts')) {
-      // eslint-disable-next-line no-continue
-      continue;
+  try {
+    // Already calculated in `formatPkg`
+    if (pkg.types.ts === 'included') {
+      return { types: pkg.types };
     }
 
-    datadog.increment('jsdelivr.getTSSupport.hit');
+    // The 2nd most likely is definitely typed
+    const defTyped = isDefinitelyTyped({ name: pkg.name });
+    if (defTyped) {
+      return {
+        types: {
+          ts: 'definitely-typed',
+          definitelyTyped: `@types/${defTyped}`,
+        },
+      };
+    }
 
-    return { types: { ts: 'included' } };
+    for (const file of filelist) {
+      if (!file.name.endsWith('.d.ts')) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      datadog.increment('jsdelivr.getTSSupport.hit');
+
+      return { types: { ts: 'included' } };
+    }
+    datadog.increment('jsdelivr.getTSSupport.miss');
+
+    return { types: { ts: false } };
+  } finally {
+    datadog.timing('typescript.getSupport', Date.now() - start);
   }
-  datadog.increment('jsdelivr.getTSSupport.miss');
-
-  return { types: { ts: false } };
 }
 
 /**

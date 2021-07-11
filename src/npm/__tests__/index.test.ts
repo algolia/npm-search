@@ -102,9 +102,9 @@ describe('getDependents()', () => {
   });
 });
 
-describe('getDownload()', () => {
+describe('fetchDownload()', () => {
   it('should download one package and return correct response', async () => {
-    const dl = await api.getDownload('jest');
+    const dl = await api.fetchDownload('jest');
     expect(dl.body).toHaveProperty('jest');
     expect(dl.body.jest).toEqual({
       downloads: expect.any(Number),
@@ -115,7 +115,7 @@ describe('getDownload()', () => {
   });
 
   it('should download one scoped package and return correct response', async () => {
-    const dl = await api.getDownload('@angular/core');
+    const dl = await api.fetchDownload('@angular/core');
     expect(dl.body).toHaveProperty('@angular/core');
     expect(dl.body['@angular/core']).toEqual({
       downloads: expect.any(Number),
@@ -126,7 +126,7 @@ describe('getDownload()', () => {
   });
 
   it('should download 2 packages and return correct response', async () => {
-    const dl = await api.getDownload('jest,holmes.js');
+    const dl = await api.fetchDownload('jest,holmes.js');
     expect(dl.body).toHaveProperty('jest');
     expect(dl.body).toHaveProperty(['holmes.js']);
   });
