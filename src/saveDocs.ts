@@ -2,16 +2,16 @@ import type { SearchIndex } from 'algoliasearch';
 import type { DocumentResponseRow } from 'nano';
 
 import type { FinalPkg, RawPkg } from './@types/pkg';
-import { getChangelogs } from './changelog';
+import { getChangelogs, getChangelog } from './changelog';
 import formatPkg from './formatPkg';
 import * as jsDelivr from './jsDelivr';
 import * as npm from './npm';
 import type { GetPackage } from './npm/types';
-import { getTSSupport } from './typescript/index';
+import { getTSSupport, getTypeScriptSupport } from './typescript/index';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 
-export default async function saveDocs({
+export async function saveDocs({
   docs,
   index,
 }: {
@@ -45,7 +45,7 @@ export default async function saveDocs({
   log.info('  Adding metadata...');
 
   let start2 = Date.now();
-  const pkgs = await addMetaData(rawPkgs);
+  const pkgs = await addMetaDatas(rawPkgs);
   datadog.timing('saveDocs.addMetaData', Date.now() - start2);
 
   log.info(` Saving...`);
@@ -60,7 +60,42 @@ export default async function saveDocs({
   return pkgs.length;
 }
 
-async function addMetaData(pkgs: RawPkg[]): Promise<FinalPkg[]> {
+export async function saveDoc({
+  row,
+  index,
+}: {
+  row: DocumentResponseRow<GetPackage>;
+  index: SearchIndex;
+}): Promise<void> {
+  const start = Date.now();
+
+  const formatted = formatPkg(row.doc!);
+
+  datadog.timing('formatPkg', Date.now() - start);
+
+  if (!formatted) {
+    return;
+  }
+
+  log.info('  => ', formatted.name);
+  log.info('  Adding metadata...');
+
+  let start2 = Date.now();
+  const pkg = await addMetaData(formatted);
+  datadog.timing('saveDocs.addMetaData.one', Date.now() - start2);
+
+  log.info(` Saving...`);
+
+  start2 = Date.now();
+  await index.saveObject(pkg);
+  datadog.timing('saveDocs.saveObject.one', Date.now() - start2);
+
+  log.info(`  Saved`);
+
+  datadog.timing('saveDocs', Date.now() - start);
+}
+
+async function addMetaDatas(pkgs: RawPkg[]): Promise<FinalPkg[]> {
   const [downloads, dependents, hits, filelists] = await Promise.all([
     npm.getDownloads(pkgs),
     npm.getDependents(pkgs),
@@ -92,4 +127,36 @@ async function addMetaData(pkgs: RawPkg[]): Promise<FinalPkg[]> {
 
   datadog.timing('saveDocs.addMetaData', Date.now() - start);
   return all;
+}
+
+async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
+  const [download, dependent, hit, filelist] = await Promise.all([
+    npm.getDownload(pkg),
+    npm.getDependent(pkg),
+    jsDelivr.getHit(pkg),
+    jsDelivr.getFilesList(pkg),
+  ]);
+
+  const [changelog, ts] = await Promise.all([
+    getChangelog(pkg, filelist),
+    getTypeScriptSupport(pkg, filelist),
+  ]);
+
+  const start = Date.now();
+  const final = {
+    ...pkg,
+    ...download,
+    ...dependent,
+    ...changelog,
+    ...hit,
+    ...ts,
+    _searchInternal: {
+      ...pkg._searchInternal,
+      ...(download ? download!._searchInternal : {}),
+      ...hit._searchInternal,
+    },
+  };
+
+  datadog.timing('saveDocs.addMetaData.one', Date.now() - start);
+  return final;
 }

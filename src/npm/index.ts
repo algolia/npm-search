@@ -18,6 +18,19 @@ import { httpsAgent, request, USER_AGENT } from '../utils/request';
 
 import type { GetInfo, GetPackage, PackageDownload } from './types';
 
+type GetDependent = { dependents: number; humanDependents: string };
+type GetDownload = {
+  downloadsLast30Days: number;
+  humanDownloadsLast30Days: string;
+  downloadsRatio: number;
+  popular: boolean;
+  _searchInternal: {
+    expiresAt?: string;
+    popularName?: string;
+    downloadsMagnitude: number;
+  };
+};
+
 const registry = nano({
   url: config.npmRegistryEndpoint,
   requestDefaults: {
@@ -161,13 +174,13 @@ async function validatePackageExists(pkgName: string): Promise<boolean> {
  */
 function getDependents(
   pkgs: Array<Pick<RawPkg, 'name'>>
-): Promise<Array<{ dependents: number; humanDependents: string }>> {
+): Promise<GetDependent[]> {
   // we return 0, waiting for https://github.com/npm/registry/issues/361
-  return Promise.all(
-    pkgs.map(() => {
-      return { dependents: 0, humanDependents: '0' };
-    })
-  );
+  return Promise.all(pkgs.map(getDependent));
+}
+
+function getDependent(_pkg: Pick<RawPkg, 'name'>): GetDependent {
+  return { dependents: 0, humanDependents: '0' };
 }
 
 /**
@@ -192,9 +205,11 @@ async function getTotalDownloads(): Promise<number> {
 /**
  * Get download stats for a list of packages.
  */
-async function getDownload(
+async function fetchDownload(
   pkgNames: string
 ): Promise<{ body: Record<string, PackageDownload | null> }> {
+  const start = Date.now();
+
   try {
     const response = await request<
       Record<string, PackageDownload | null> | (PackageDownload | null)
@@ -217,25 +232,55 @@ async function getDownload(
   } catch (error) {
     log.warn(`An error ocurred when getting download of ${pkgNames} ${error}`);
     return { body: {} };
+  } finally {
+    datadog.timing('npm.fetchDownload', Date.now() - start);
   }
+}
+
+function computeDownload(
+  pkg: Pick<RawPkg, 'name'>,
+  downloads: PackageDownload | null,
+  totalNpmDownloads: number
+): GetDownload | null {
+  if (!downloads) {
+    return null;
+  }
+
+  const downloadsLast30Days = downloads.downloads;
+  const downloadsRatio = Number(
+    ((downloadsLast30Days / totalNpmDownloads) * 100).toFixed(4)
+  );
+  const popular = downloadsRatio > config.popularDownloadsRatio;
+  const downloadsMagnitude = downloadsLast30Days
+    ? downloadsLast30Days.toString().length
+    : 0;
+
+  return {
+    downloadsLast30Days,
+    humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
+    downloadsRatio,
+    popular,
+    _searchInternal: {
+      // if the package is popular, we copy its name to a dedicated attribute
+      // which will make popular records' `name` matches to be ranked higher than other matches
+      // see the `searchableAttributes` index setting
+      ...(popular && {
+        popularName: pkg.name,
+        expiresAt: new Date(Date.now() + config.popularExpiresAt)
+          .toISOString()
+          .split('T')[0],
+      }),
+      downloadsMagnitude,
+    },
+  };
 }
 
 /**
  * Get downloads for all packages passer in arguments.
  */
-async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
-  Array<{
-    downloadsLast30Days: number;
-    humanDownloadsLast30Days: string;
-    downloadsRatio: number;
-    popular: boolean;
-    _searchInternal: {
-      expiresAt?: string;
-      popularName?: string;
-      downloadsMagnitude: number;
-    };
-  } | null>
-> {
+async function getDownloads(
+  pkgs: Array<Pick<RawPkg, 'name'>>
+): Promise<Array<GetDownload | null>> {
   const start = Date.now();
 
   // npm has a weird API to get downloads via GET params, so we split pkgs into chunks
@@ -258,8 +303,8 @@ async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
   const totalNpmDownloads = await getTotalDownloads();
 
   const downloadsPerPkgNameChunks = await Promise.all([
-    ...pkgsNamesChunks.map(getDownload),
-    ...encodedScopedPackageNames.map(getDownload),
+    ...pkgsNamesChunks.map(fetchDownload),
+    ...encodedScopedPackageNames.map(fetchDownload),
   ]);
 
   const downloadsPerPkgName: Record<string, PackageDownload> =
@@ -271,44 +316,31 @@ async function getDownloads(pkgs: Array<Pick<RawPkg, 'name'>>): Promise<
       {}
     );
 
-  const all = pkgs.map(({ name }) => {
-    if (downloadsPerPkgName[name] === undefined) {
-      return null;
-    }
-
-    const downloadsLast30Days = downloadsPerPkgName[name]
-      ? downloadsPerPkgName[name].downloads
-      : 0;
-    const downloadsRatio = Number(
-      ((downloadsLast30Days / totalNpmDownloads) * 100).toFixed(4)
+  const all = pkgs.map((pkg) => {
+    return computeDownload(
+      pkg,
+      downloadsPerPkgName[pkg.name],
+      totalNpmDownloads
     );
-    const popular = downloadsRatio > config.popularDownloadsRatio;
-    const downloadsMagnitude = downloadsLast30Days
-      ? downloadsLast30Days.toString().length
-      : 0;
-
-    return {
-      downloadsLast30Days,
-      humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
-      downloadsRatio,
-      popular,
-      _searchInternal: {
-        // if the package is popular, we copy its name to a dedicated attribute
-        // which will make popular records' `name` matches to be ranked higher than other matches
-        // see the `searchableAttributes` index setting
-        ...(popular && {
-          popularName: name,
-          expiresAt: new Date(Date.now() + config.popularExpiresAt)
-            .toISOString()
-            .split('T')[0],
-        }),
-        downloadsMagnitude,
-      },
-    };
   });
 
   datadog.timing('npm.getDownloads', Date.now() - start);
   return all;
+}
+
+async function getDownload(
+  pkg: Pick<RawPkg, 'name'>
+): Promise<GetDownload | null> {
+  const start = Date.now();
+
+  try {
+    const name = encodeURIComponent(pkg.name);
+    const totalNpmDownloads = await getTotalDownloads();
+    const downloads = await fetchDownload(name);
+    return computeDownload(pkg, downloads.body[pkg.name], totalNpmDownloads);
+  } finally {
+    datadog.timing('npm.getDownload', Date.now() - start);
+  }
 }
 
 export {
@@ -319,6 +351,8 @@ export {
   getDocs,
   validatePackageExists,
   getDependents,
+  getDependent,
   getDownload,
+  fetchDownload,
   getDownloads,
 };

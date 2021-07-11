@@ -100,50 +100,55 @@ export async function getChangelog(
 ): Promise<{
   changelogFilename: string | null;
 }> {
-  for (const file of filelist) {
-    const name = path.basename(file.name);
-    if (!fileRegex.test(name)) {
-      // eslint-disable-next-line no-continue
-      continue;
+  const start = Date.now();
+  try {
+    for (const file of filelist) {
+      const name = path.basename(file.name);
+      if (!fileRegex.test(name)) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      datadog.increment('jsdelivr.getChangelog.hit');
+
+      return { changelogFilename: jsDelivr.getFullURL(pkg, file) };
     }
 
-    datadog.increment('jsdelivr.getChangelog.hit');
+    datadog.increment('jsdelivr.getChangelog.miss');
 
-    return { changelogFilename: jsDelivr.getFullURL(pkg, file) };
+    const { repository, name, version } = pkg;
+
+    // Rollback to brute-force the source code
+    const unpkgFiles = fileOptions.map(
+      (file) => `${config.unpkgRoot}/${name}@${version}/${file}`
+    );
+
+    if (repository === null) {
+      return await raceFromPaths(unpkgFiles);
+    }
+
+    const user = repository.user || '';
+    const project = repository.project || '';
+    const host = repository.host || '';
+    if (user.length < 1 || project.length < 1) {
+      return await raceFromPaths(unpkgFiles);
+    }
+
+    // Check if we know how to handle this host
+    if (!baseUrlMap.has(host)) {
+      return await raceFromPaths(unpkgFiles);
+    }
+
+    const baseUrl = baseUrlMap.get(host)!(repository);
+
+    const files = fileOptions.map((file) =>
+      [baseUrl.replace(/\/$/, ''), file].join('/')
+    );
+
+    return await raceFromPaths([...files, ...unpkgFiles]);
+  } finally {
+    datadog.timing('changelogs.getChangelog', Date.now() - start);
   }
-
-  datadog.increment('jsdelivr.getChangelog.miss');
-
-  const { repository, name, version } = pkg;
-
-  // Rollback to brute-force the source code
-  const unpkgFiles = fileOptions.map(
-    (file) => `${config.unpkgRoot}/${name}@${version}/${file}`
-  );
-
-  if (repository === null) {
-    return await raceFromPaths(unpkgFiles);
-  }
-
-  const user = repository.user || '';
-  const project = repository.project || '';
-  const host = repository.host || '';
-  if (user.length < 1 || project.length < 1) {
-    return await raceFromPaths(unpkgFiles);
-  }
-
-  // Check if we know how to handle this host
-  if (!baseUrlMap.has(host)) {
-    return await raceFromPaths(unpkgFiles);
-  }
-
-  const baseUrl = baseUrlMap.get(host)!(repository);
-
-  const files = fileOptions.map((file) =>
-    [baseUrl.replace(/\/$/, ''), file].join('/')
-  );
-
-  return await raceFromPaths([...files, ...unpkgFiles]);
 }
 
 export async function getChangelogs(

@@ -5,7 +5,7 @@ import type { DatabaseChangesResultItem, DocumentLookupFailure } from 'nano';
 
 import type { StateManager } from './StateManager';
 import * as npm from './npm';
-import saveDocs from './saveDocs';
+import { saveDocs } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
