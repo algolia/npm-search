@@ -3,6 +3,7 @@ import type {
   DatabaseChangesParams,
   DatabaseChangesResponse,
   DocumentFetchResponse,
+  DocumentGetResponse,
   DocumentListParams,
   DocumentListResponse,
   DocumentScopeFollowUpdatesParams,
@@ -83,6 +84,16 @@ async function getChanges(
   return results;
 }
 
+async function getDoc(name: string): Promise<DocumentGetResponse & GetPackage> {
+  const start = Date.now();
+
+  const doc = await db.get(name);
+
+  datadog.timing('npm.getDoc', Date.now() - start);
+
+  return doc;
+}
+
 async function getDocs({
   keys,
 }: {
@@ -148,25 +159,49 @@ async function getInfo(): Promise<{ nbDocs: number; seq: number }> {
   };
 }
 
-/**
- * Validate if a package exists.
- */
-async function validatePackageExists(pkgName: string): Promise<boolean> {
-  const start = Date.now();
+// /**
+//  * Get a package version.
+//  *
+//  * Doc: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md.
+//  */
+// async function getPackageLight(pkgName: string): Promise<GetPackageLight> {
+//   const start = Date.now();
 
-  let exists: boolean;
-  try {
-    const response = await request(`${config.npmRootEndpoint}/${pkgName}`, {
-      method: 'HEAD',
-    });
-    exists = response.statusCode === 200;
-  } catch (e) {
-    exists = false;
-  }
+//   const { body } = await request<GetPackageLight>(
+//     `${config.npmRootEndpoint}/${pkgName}`,
+//     {
+//       method: 'GET',
+//       headers: {
+//         Accept: 'application/vnd.npm.install-v1+json',
+//       },
+//       responseType: 'json',
+//     }
+//   );
 
-  datadog.timing('npm.validatePackageExists', Date.now() - start);
-  return exists;
-}
+//   datadog.timing('npm.getPackageLight', Date.now() - start);
+//   return body;
+// }
+
+// /**
+//  * Get a package version.
+//  */
+// async function getPackageAtVersion(
+//   pkgName: string,
+//   version: string
+// ): Promise<GetVersion> {
+//   const start = Date.now();
+
+//   const { body } = await request<GetVersion>(
+//     `${config.npmRootEndpoint}/${pkgName}/${version}`,
+//     {
+//       method: 'GET',
+//       responseType: 'json',
+//     }
+//   );
+
+//   datadog.timing('npm.getPackageLight', Date.now() - start);
+//   return body;
+// }
 
 /**
  * Get list of packages that depends of them.
@@ -367,7 +402,7 @@ export {
   getChanges,
   getInfo,
   getDocs,
-  validatePackageExists,
+  getDoc,
   getDependents,
   getDependent,
   getDownload,

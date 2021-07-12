@@ -34,6 +34,8 @@ RUN true \
 # This image must have the minimum amount of layers
 FROM node:14.16.1-alpine as final
 
+ENV NODE_ENV production
+
 # Do not use root to run the app
 USER node
 

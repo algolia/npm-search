@@ -1,3 +1,5 @@
+import type { DocumentLookupFailure } from 'nano';
+
 export interface PackageDownload {
   downloads: number;
   package: string;
@@ -64,4 +66,15 @@ export interface GetPackage {
   contributors?: Array<{ name: string }>;
   repository?: PackageRepo;
   schematics?: string;
+}
+
+export interface GetPackageLight {
+  name: string;
+  'dist-tags': Record<string, string>;
+  versions: Record<string, Pick<GetVersion, 'name' | 'version' | 'dist'>>;
+  modified: string;
+}
+
+export function isFailure(change: any): change is DocumentLookupFailure {
+  return change.error && !change.id;
 }

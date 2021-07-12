@@ -213,7 +213,7 @@ it('should be similar batch vs one', async () => {
 
   const row = { id: '', key: 'preact', value: { rev: 'a' }, doc: preact };
   await saveDocs({ docs: [row], index });
-  await saveDoc({ row, index });
+  await saveDoc({ row: preact, index });
 
   expect(index.saveObjects).toHaveBeenCalledWith([clean]);
   expect(index.saveObject).toHaveBeenCalledWith(clean);

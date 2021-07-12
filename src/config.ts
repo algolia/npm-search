@@ -172,6 +172,8 @@ export const config = {
   expiresAt: ms('30 days'),
   popularExpiresAt: ms('7 days'),
   cacheTotalDownloads: ms('1 minute'),
+  prefetchWaitBetweenPage: 5000,
+  prefetchMaxIdle: 100,
 };
 
 export type Config = typeof config;

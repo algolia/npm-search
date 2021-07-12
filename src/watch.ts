@@ -1,11 +1,13 @@
 import type { SearchIndex } from 'algoliasearch';
 import type { QueueObject } from 'async';
 import { queue } from 'async';
-import type { DatabaseChangesResultItem, DocumentLookupFailure } from 'nano';
+import chalk from 'chalk';
+import type { DatabaseChangesResultItem } from 'nano';
 
 import type { StateManager } from './StateManager';
 import * as npm from './npm';
-import { saveDocs } from './saveDocs';
+import { isFailure } from './npm/types';
+import { saveDoc } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
@@ -36,10 +38,14 @@ let changesConsumer: QueueObject<DatabaseChangesResultItem>;
  *      It will never be up to date because he receive event at the same pace
  *      as they arrive in listener A, even if it's not the same package.
  */
-async function run(
+export async function run(
   stateManager: StateManager,
   mainIndex: SearchIndex
 ): Promise<void> {
+  log.info('-----');
+  log.info('🚀  Watch: starting');
+  log.info('-----');
+
   await stateManager.save({
     stage: 'watch',
   });
@@ -48,7 +54,9 @@ async function run(
 
   await watch(stateManager);
 
-  log.info('🚀  watch is done');
+  log.info('-----');
+  log.info('🚀  Watch: done');
+  log.info('-----');
 }
 
 /**
@@ -93,7 +101,6 @@ async function loop(
   mainIndex: SearchIndex,
   change: DatabaseChangesResultItem
 ): Promise<void> {
-  const start = Date.now();
   datadog.increment('packages');
 
   if (!change.id) {
@@ -106,20 +113,18 @@ async function loop(
     // Delete package directly in index
     // Filter does not support async/await but there is no concurrency issue with this
     mainIndex.deleteObject(change.id);
-    log.info(`🚀  Deleted ${change.id}`);
+    log.info(`Deleted`, change.id);
     return;
   }
 
-  const doc = (await npm.getDocs({ keys: [change.id] })).rows[0];
+  const res = await npm.getDoc(change.id);
 
-  if (isFailure(doc)) {
-    log.error('Got an error', doc.error);
+  if (isFailure(res)) {
+    log.error('Got an error', res.error);
     return;
   }
 
-  await saveDocs({ docs: [doc], index: mainIndex });
-
-  datadog.timing('watch.loop', Date.now() - start);
+  await saveDoc({ row: res, index: mainIndex });
 }
 
 /**
@@ -128,10 +133,12 @@ async function loop(
  */
 function logProgress(seq: number): void {
   log.info(
-    `🚀  Synced %d/%d changes (%d%)`,
+    chalk.dim.italic
+      .white`[progress] Synced %d/%d changes (%d%) (%s remaining)`,
     seq,
     totalSequence,
-    Math.floor((Math.max(seq, 1) / totalSequence) * 100)
+    Math.floor((Math.max(seq, 1) / totalSequence) * 100),
+    totalSequence - seq
   );
 }
 
@@ -151,22 +158,22 @@ function createChangeConsumer(
   mainIndex: SearchIndex
 ): QueueObject<DatabaseChangesResultItem> {
   return queue<DatabaseChangesResultItem>(async (change) => {
+    const start = Date.now();
+
     const seq = change.seq;
-    log.info(`🚀  Received change [%s]`, seq);
+    log.info(`Start:`, change.id);
+
     try {
       await loop(mainIndex, change);
       await stateManager.save({
         seq,
       });
-      logProgress(seq);
     } catch (err) {
       sentry.report(err);
+    } finally {
+      log.info(`Done:`, change.id);
+      logProgress(seq);
+      datadog.timing('watch.loop', Date.now() - start);
     }
   }, 1);
 }
-
-function isFailure(change: any): change is DocumentLookupFailure {
-  return change.error && !change.id;
-}
-
-export { run };

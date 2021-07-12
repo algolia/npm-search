@@ -5,6 +5,7 @@
     "algolia/typescript"
   ],
   "rules": {
+    "no-continue": "off",
     "valid-jsdoc": "off",
     "import/extensions": [
       "error",
