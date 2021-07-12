@@ -84,10 +84,13 @@ async function getChanges(
   return results;
 }
 
-async function getDoc(name: string): Promise<DocumentGetResponse & GetPackage> {
+async function getDoc(
+  name: string,
+  rev: string
+): Promise<DocumentGetResponse & GetPackage> {
   const start = Date.now();
 
-  const doc = await db.get(name);
+  const doc = await db.get(name, { rev });
 
   datadog.timing('npm.getDoc', Date.now() - start);
 

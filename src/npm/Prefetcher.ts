@@ -1,12 +1,17 @@
-import type { DocumentListParams } from 'nano';
+import type { DocumentListParams, DocumentResponseRow } from 'nano';
 
 import { config } from '../config';
 import { log } from '../utils/log';
 import { wait } from '../utils/wait';
 
+import type { GetPackage } from './types';
+
 import * as npm from './index';
 
-export type PrefetchedPkg = { id: string };
+export type PrefetchedPkg = Pick<
+  DocumentResponseRow<GetPackage>,
+  'id' | 'value'
+>;
 
 export class Prefetcher {
   #limit: number = config.bootstrapConcurrency;
