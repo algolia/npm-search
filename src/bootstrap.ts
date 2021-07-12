@@ -92,7 +92,6 @@ export async function run(
 
     // Push nothing to trigger event
     consumer.push(null as any);
-    processing = false;
   }
 
   consumer.pause();
@@ -159,7 +158,7 @@ function createPkgConsumer(
     try {
       datadog.increment('packages');
 
-      const res = await npm.getDoc(pkg.id);
+      const res = await npm.getDoc(pkg.id, pkg.value.rev);
 
       if (isFailure(res)) {
         log.error('Got an error', res.error);
