@@ -112,19 +112,27 @@ async function loop(
   if (change.deleted) {
     // Delete package directly in index
     // Filter does not support async/await but there is no concurrency issue with this
-    mainIndex.deleteObject(change.id);
-    log.info(`Deleted`, change.id);
-    return;
+    throw new Error('deleted');
   }
 
-  const res = await npm.getDoc(change.id);
+  try {
+    const res = await npm.getDoc(change.id, change.changes[0].rev);
 
-  if (isFailure(res)) {
-    log.error('Got an error', res.error);
-    return;
+    if (isFailure(res)) {
+      log.error('Got an error', res.error);
+      return;
+    }
+
+    await saveDoc({ row: res, index: mainIndex });
+  } catch (e) {
+    // this error can be thrown by us or by nano if:
+    // - we received a change that is not marked as "deleted"
+    // - and the package has since been deleted
+    if (e.message === 'deleted') {
+      mainIndex.deleteObject(change.id);
+      log.info(`deleted`, change.id);
+    }
   }
-
-  await saveDoc({ row: res, index: mainIndex });
 }
 
 /**
