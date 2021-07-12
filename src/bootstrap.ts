@@ -9,6 +9,7 @@ import { config } from './config';
 import * as npm from './npm';
 import type { PrefetchedPkg } from './npm/Prefetcher';
 import { Prefetcher } from './npm/Prefetcher';
+import { isFailure } from './npm/types';
 import { saveDoc } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
@@ -36,11 +37,14 @@ export async function run(
   mainIndex: SearchIndex,
   bootstrapIndex: SearchIndex
 ): Promise<void> {
+  log.info('-----');
+  log.info('⛷   Bootstrap: starting');
   const state = await stateManager.check();
 
   if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
     await algolia.putDefaultSettings(mainIndex, config);
     log.info('⛷   Bootstrap: done');
+    log.info('-----');
     return;
   }
 
@@ -88,10 +92,14 @@ export async function run(
 
     // Push nothing to trigger event
     consumer.push(null as any);
+    processing = false;
   }
+
+  consumer.pause();
 
   log.info('-----');
   log.info('⛷   Bootstrap: done');
+  log.info('-----');
   await stateManager.save({
     bootstrapDone: true,
     bootstrapLastDone: Date.now(),
@@ -153,6 +161,11 @@ function createPkgConsumer(
 
       const res = await npm.getDoc(pkg.id);
 
+      if (isFailure(res)) {
+        log.error('Got an error', res.error);
+        return;
+      }
+
       await saveDoc({ row: res, index });
 
       const lastId = (await stateManager.get()).bootstrapLastId;
@@ -163,11 +176,10 @@ function createPkgConsumer(
           bootstrapLastId: pkg.id,
         });
       }
-
-      log.info(`Done:`, pkg.id);
     } catch (err) {
       sentry.report(err);
     } finally {
+      log.info(`Done:`, pkg.id);
       datadog.timing('loop', Date.now() - start);
     }
   }, config.bootstrapConcurrency);

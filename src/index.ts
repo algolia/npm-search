@@ -59,7 +59,6 @@ async function main(): Promise<void> {
 
   // then we figure out which updates we missed since
   // the last time main index was updated
-  log.info('🚀  Launching Watch');
   await watch.run(stateManager, mainIndex);
 }
 

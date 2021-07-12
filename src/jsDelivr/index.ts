@@ -95,7 +95,7 @@ export async function getFilesList(
     });
     files = response.body.files;
   } catch (e) {
-    log.error(`Failed to fetch ${url}`, e);
+    log.error(`Failed to fetch ${url}`, e.message);
   }
 
   datadog.timing('jsdelivr.getFilesList', Date.now() - start);
