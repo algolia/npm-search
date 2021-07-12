@@ -85,7 +85,7 @@ export async function run(
   while (processing) {
     logProgress(done);
 
-    await wait(5000);
+    await wait(config.prefetchWaitBetweenPage);
 
     processing = !prefetcher.isFinished;
     done = 0;

@@ -15,7 +15,7 @@ export class Prefetcher {
   #running: boolean = false;
   #offset: number = 0;
   #finished: boolean = false;
-  #maxIdle = 100;
+  #maxIdle = config.prefetchMaxIdle;
 
   constructor(opts: { nextKey: string | null }) {
     this.#nextKey = opts.nextKey;
@@ -45,7 +45,7 @@ export class Prefetcher {
     this.#running = true;
     while (this.#running) {
       if (this.#ready.length >= this.#maxIdle) {
-        await wait(5000);
+        await wait(config.prefetchWaitBetweenPage);
         continue;
       }
 
