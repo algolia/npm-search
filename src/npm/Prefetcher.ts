@@ -34,15 +34,11 @@ export class Prefetcher {
   }
 
   async getNext(): Promise<PrefetchedPkg> {
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
-      if (this.#ready.length <= 0) {
-        await wait(100);
-        continue;
-      }
-
-      return this.#ready.shift()!;
+    while (this.#ready.length <= 0) {
+      await wait(100);
     }
+
+    return this.#ready.shift()!;
   }
 
   async launch(): Promise<void> {
