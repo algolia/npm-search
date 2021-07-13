@@ -96,7 +96,7 @@ export async function run(
 
   consumer.pause();
 
-  // The while will stop before the queue has been fully consumed
+  // While we no longer are in "processing" mode, it's possible that there's a last iteration in the queue
   await consumer.drain();
 
   await stateManager.save({
