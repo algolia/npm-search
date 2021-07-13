@@ -109,13 +109,12 @@ async function loop(
     return;
   }
 
-  if (change.deleted) {
-    // Delete package directly in index
-    // Filter does not support async/await but there is no concurrency issue with this
-    throw new Error('deleted');
-  }
-
   try {
+    if (change.deleted) {
+      // Delete package directly in index
+      // Filter does not support async/await but there is no concurrency issue with this
+      throw new Error('deleted');
+    }
     const res = await npm.getDoc(change.id, change.changes[0].rev);
 
     if (isFailure(res)) {
