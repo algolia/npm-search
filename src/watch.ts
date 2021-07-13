@@ -140,12 +140,14 @@ async function loop(
  *
  */
 function logProgress(seq: number): void {
+  datadog.gauge('watch.sequence.total', totalSequence);
+  datadog.gauge('watch.sequence.current', seq);
   log.info(
     chalk.dim.italic
-      .white`[progress] Synced %d/%d changes (%d%) (%s remaining)`,
+      .white`[progress] Synced %d/%d changes (%s%) (%s remaining)`,
     seq,
     totalSequence,
-    Math.floor((Math.max(seq, 1) / totalSequence) * 100),
+    ((Math.max(seq, 1) / totalSequence) * 100).toFixed(2),
     totalSequence - seq
   );
 }

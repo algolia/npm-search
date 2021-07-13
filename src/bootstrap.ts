@@ -96,15 +96,19 @@ export async function run(
 
   consumer.pause();
 
-  log.info('-----');
-  log.info('⛷   Bootstrap: done');
-  log.info('-----');
+  // The while will stop before the queue has been fully consumed
+  await consumer.drain();
+
   await stateManager.save({
     bootstrapDone: true,
     bootstrapLastDone: Date.now(),
   });
 
   await moveToProduction(stateManager, algoliaClient);
+
+  log.info('-----');
+  log.info('⛷   Bootstrap: done');
+  log.info('-----');
 }
 
 /**
@@ -117,7 +121,9 @@ async function moveToProduction(
   log.info('🚚  starting move to production');
 
   const currentState = await stateManager.get();
-  await algoliaClient.copyIndex(config.bootstrapIndexName, config.indexName);
+  await algoliaClient
+    .copyIndex(config.bootstrapIndexName, config.indexName)
+    .wait();
 
   await stateManager.save(currentState);
 }
@@ -131,10 +137,10 @@ async function logProgress(nbDocs: number): Promise<void> {
 
   log.info(
     chalk.dim.italic
-      .white`[progress] %d/%d docs (%d%) (%s prefetched) (%s processing)`,
+      .white`[progress] %d/%d docs (%s%) (%s prefetched) (%s processing)`,
     offset + nbDocs,
     totalDocs,
-    Math.floor((Math.max(offset + nbDocs, 1) / totalDocs) * 100),
+    Math.floor((Math.max(offset + nbDocs, 1) / totalDocs) * 100).toFixed(2),
     prefetcher.idleCount,
     consumer.running()
   );
