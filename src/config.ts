@@ -164,7 +164,7 @@ export const config = {
   indexName: 'npm-search',
   bootstrapIndexName: 'npm-search-bootstrap',
   bootstrapConcurrency: 25,
-  timeToRedoBootstrap: ms('2 weeks'),
+  timeToRedoBootstrap: ms('1 month'),
   seq: undefined,
   indexSettings,
   indexSynonyms,
