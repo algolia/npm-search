@@ -11,7 +11,7 @@ import type {
 import nano from 'nano';
 import numeral from 'numeral';
 
-import type { RawPkg } from '../@types/pkg';
+import type { FinalPkg, RawPkg } from '../@types/pkg';
 import { config } from '../config';
 import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
@@ -25,11 +25,10 @@ type GetDownload = {
   humanDownloadsLast30Days: string;
   downloadsRatio: number;
   popular: boolean;
-  _searchInternal: {
-    expiresAt?: string;
-    popularName?: string;
-    downloadsMagnitude: number;
-  };
+  _searchInternal: Pick<
+    FinalPkg['_searchInternal'],
+    'expiresAt' | 'popularName' | 'downloadsMagnitude'
+  >;
 };
 let cacheTotalDownloads: { total: number; date: number } | undefined;
 
@@ -311,22 +310,28 @@ function computeDownload(
     ? downloadsLast30Days.toString().length
     : 0;
 
+  // Rand -48h to +48h, to spread refresh
+  const randHours = Math.floor(Math.random() * (-48 - 48 + 1)) + 48;
+  const expiresAt =
+    new Date(
+      Date.now() + (popular ? config.popularExpiresAt : config.expiresAt)
+    ).getTime() +
+    randHours * 3600 * 1000;
+
   return {
     downloadsLast30Days,
     humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
     downloadsRatio,
     popular,
     _searchInternal: {
+      expiresAt,
+      downloadsMagnitude,
       // if the package is popular, we copy its name to a dedicated attribute
       // which will make popular records' `name` matches to be ranked higher than other matches
       // see the `searchableAttributes` index setting
       ...(popular && {
         popularName: pkg.name,
-        expiresAt: new Date(Date.now() + config.popularExpiresAt)
-          .toISOString()
-          .split('T')[0],
       }),
-      downloadsMagnitude,
     },
   };
 }

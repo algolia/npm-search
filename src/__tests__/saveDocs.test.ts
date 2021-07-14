@@ -207,7 +207,7 @@ it('should be similar batch vs one', async () => {
     modified: expect.any(Number),
     _searchInternal: expect.objectContaining({
       downloadsMagnitude: expect.any(Number),
-      expiresAt: expect.any(String),
+      expiresAt: expect.any(Number),
     }),
   });
 
