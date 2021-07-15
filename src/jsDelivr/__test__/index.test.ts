@@ -11,6 +11,8 @@ jest.mock('../../utils/log', () => {
   };
 });
 
+jest.setTimeout(10000);
+
 beforeEach(() => {
   jest.resetAllMocks();
 });
