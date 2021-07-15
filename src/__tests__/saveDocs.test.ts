@@ -220,5 +220,8 @@ it('should be similar batch vs one', async () => {
   expect(single).toMatchObject({
     ...batch,
     lastCrawl: expect.any(String),
+    _searchInternal: {
+      expiresAt: expect.any(Number),
+    },
   });
 });
