@@ -207,18 +207,21 @@ it('should be similar batch vs one', async () => {
     modified: expect.any(Number),
     _searchInternal: expect.objectContaining({
       downloadsMagnitude: expect.any(Number),
-      expiresAt: expect.any(String),
+      expiresAt: expect.any(Number),
     }),
   });
 
   const row = { id: '', key: 'preact', value: { rev: 'a' }, doc: preact };
   await saveDocs({ docs: [row], index });
-  await saveDoc({ row, index });
+  await saveDoc({ row: preact, index });
 
   expect(index.saveObjects).toHaveBeenCalledWith([clean]);
   expect(index.saveObject).toHaveBeenCalledWith(clean);
   expect(single).toMatchObject({
     ...batch,
     lastCrawl: expect.any(String),
+    _searchInternal: {
+      expiresAt: expect.any(Number),
+    },
   });
 });

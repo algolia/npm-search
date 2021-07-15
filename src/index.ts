@@ -34,7 +34,10 @@ async function main(): Promise<void> {
   createAPI();
 
   // first we make sure the bootstrap index has the correct settings
-  log.info('💪  Setting up Algolia');
+  log.info('💪  Setting up Algolia', [
+    config.bootstrapIndexName,
+    config.indexName,
+  ]);
   const {
     client: algoliaClient,
     mainIndex,
@@ -56,7 +59,6 @@ async function main(): Promise<void> {
 
   // then we figure out which updates we missed since
   // the last time main index was updated
-  log.info('🚀  Launching Watch');
   await watch.run(stateManager, mainIndex);
 }
 

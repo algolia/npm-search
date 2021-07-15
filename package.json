@@ -1,6 +1,6 @@
 {
   "name": "npm-search",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "author": {
     "name": "Algolia, Inc.",
@@ -35,6 +35,7 @@
     "async": "3.2.0",
     "bunyan": "1.8.15",
     "bunyan-debug-stream": "2.0.0",
+    "chalk": "4.1.1",
     "dtrace-provider": "0.8.8",
     "escape-html": "1.0.3",
     "got": "11.8.2",
@@ -91,7 +92,7 @@
     "validator": "13.6.0"
   },
   "engines": {
-    "node": "14.16.1",
+    "node": "14.17.3",
     "yarn": "^1.22.0"
   },
   "jest": {

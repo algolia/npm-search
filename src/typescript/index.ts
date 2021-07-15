@@ -79,7 +79,6 @@ export function getTypeScriptSupport(
 
     for (const file of filelist) {
       if (!file.name.endsWith('.d.ts')) {
-        // eslint-disable-next-line no-continue
         continue;
       }
 

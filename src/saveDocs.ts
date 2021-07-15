@@ -42,6 +42,7 @@ export async function saveDocs({
     return Promise.resolve(0);
   }
   log.info('  => ', names);
+
   log.info('  Adding metadata...');
 
   let start2 = Date.now();
@@ -64,12 +65,12 @@ export async function saveDoc({
   row,
   index,
 }: {
-  row: DocumentResponseRow<GetPackage>;
+  row: GetPackage;
   index: SearchIndex;
 }): Promise<void> {
   const start = Date.now();
 
-  const formatted = formatPkg(row.doc!);
+  const formatted = formatPkg(row);
 
   datadog.timing('formatPkg', Date.now() - start);
 
@@ -77,20 +78,13 @@ export async function saveDoc({
     return;
   }
 
-  log.info('  => ', formatted.name);
-  log.info('  Adding metadata...');
-
   let start2 = Date.now();
   const pkg = await addMetaData(formatted);
   datadog.timing('saveDocs.addMetaData.one', Date.now() - start2);
 
-  log.info(` Saving...`);
-
   start2 = Date.now();
   await index.saveObject(pkg);
   datadog.timing('saveDocs.saveObject.one', Date.now() - start2);
-
-  log.info(`  Saved`);
 
   datadog.timing('saveDocs.one', Date.now() - start);
 }

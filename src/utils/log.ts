@@ -5,7 +5,8 @@ const stream = bunyanDebugStream({
   showDate: process.env.NODE_ENV !== 'production',
   showProcess: false,
   showLoggerName: false,
-  showPid: process.env.NODE_ENV !== 'production',
+  showPid: false,
+  showLevel: process.env.NODE_ENV === 'production',
 });
 
 export const log = bunyan.createLogger({
