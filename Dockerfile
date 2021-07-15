@@ -1,5 +1,5 @@
 # ---- Base ----
-FROM node:14.16.1-alpine AS base
+FROM node:14.17.3-alpine AS base
 
 ENV NODE_ENV production
 
@@ -32,7 +32,7 @@ RUN true \
 # ---- Final ----
 # Resulting new, minimal image
 # This image must have the minimum amount of layers
-FROM node:14.16.1-alpine as final
+FROM node:14.17.3-alpine as final
 
 ENV NODE_ENV production
 
