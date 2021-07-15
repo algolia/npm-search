@@ -63,7 +63,7 @@ it('transforms correctly', () => {
         {
           lastCrawl: expect.any(String),
           _searchInternal: {
-            expiresAt: expect.any(String),
+            expiresAt: expect.any(Number),
           },
         },
         formattedPackage.objectID
@@ -104,7 +104,7 @@ it('truncates long readmes', () => {
     readme: expect.any(String),
     lastCrawl: expect.any(String),
     _searchInternal: {
-      expiresAt: expect.any(String),
+      expiresAt: expect.any(Number),
     },
   });
 });
@@ -692,7 +692,7 @@ describe('deprecated', () => {
       isDeprecated: true,
       deprecatedReason: 'Yes this is deprecated',
       _searchInternal: {
-        expiresAt: expect.any(String),
+        expiresAt: expect.any(Number),
       },
     });
   });

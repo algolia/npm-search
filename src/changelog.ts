@@ -3,7 +3,6 @@ import path from 'path';
 import race from 'promise-rat-race';
 
 import type { RawPkg, Repo } from './@types/pkg';
-import { config } from './config';
 import * as jsDelivr from './jsDelivr/index';
 import { datadog } from './utils/datadog';
 import { request } from './utils/request';
@@ -105,7 +104,6 @@ export async function getChangelog(
     for (const file of filelist) {
       const name = path.basename(file.name);
       if (!fileRegex.test(name)) {
-        // eslint-disable-next-line no-continue
         continue;
       }
 
@@ -116,36 +114,27 @@ export async function getChangelog(
 
     datadog.increment('jsdelivr.getChangelog.miss');
 
-    const { repository, name, version } = pkg;
+    const { repository } = pkg;
 
-    // Rollback to brute-force the source code
-    const unpkgFiles = fileOptions.map(
-      (file) => `${config.unpkgRoot}/${name}@${version}/${file}`
-    );
-
-    if (repository === null) {
-      return await raceFromPaths(unpkgFiles);
+    if (repository === null || !repository.host) {
+      return { changelogFilename: null };
     }
 
-    const user = repository.user || '';
-    const project = repository.project || '';
     const host = repository.host || '';
-    if (user.length < 1 || project.length < 1) {
-      return await raceFromPaths(unpkgFiles);
+    const knownHost = baseUrlMap.get(host);
+
+    // No known git hosts
+    if (!knownHost) {
+      return { changelogFilename: null };
     }
 
-    // Check if we know how to handle this host
-    if (!baseUrlMap.has(host)) {
-      return await raceFromPaths(unpkgFiles);
-    }
-
-    const baseUrl = baseUrlMap.get(host)!(repository);
-
+    const baseUrl = knownHost(repository);
     const files = fileOptions.map((file) =>
       [baseUrl.replace(/\/$/, ''), file].join('/')
     );
 
-    return await raceFromPaths([...files, ...unpkgFiles]);
+    // Brute-force from git host
+    return await raceFromPaths([...files]);
   } finally {
     datadog.timing('changelogs.getChangelog', Date.now() - start);
   }

@@ -1,5 +1,7 @@
 import * as api from '../index';
 
+jest.setTimeout(10000);
+
 describe('findAll()', () => {
   it('contains the correct keys', async () => {
     const all = await api.findAll({ limit: 2, startkey: '0' });
@@ -152,7 +154,7 @@ describe('getDownloads()', () => {
         _searchInternal: {
           popularName: 'jest',
           downloadsMagnitude: expect.any(Number),
-          expiresAt: expect.any(String),
+          expiresAt: expect.any(Number),
         },
       }),
       expect.objectContaining({
@@ -163,7 +165,7 @@ describe('getDownloads()', () => {
         _searchInternal: {
           popularName: '@angular/core',
           downloadsMagnitude: expect.any(Number),
-          expiresAt: expect.any(String),
+          expiresAt: expect.any(Number),
         },
       }),
       expect.objectContaining({
@@ -173,6 +175,7 @@ describe('getDownloads()', () => {
         popular: false,
         _searchInternal: {
           downloadsMagnitude: expect.any(Number),
+          expiresAt: expect.any(Number),
         },
       }),
     ]);
