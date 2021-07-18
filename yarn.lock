@@ -1367,10 +1367,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/hosted-git-info@3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@types/hosted-git-info/-/hosted-git-info-3.0.1.tgz#ae017651a1c3aab1c72674ff0924aa5a0c325437"
-  integrity sha512-aiwBC0e2PndtyQ9pOwA9ujBJ6ayysuvbQzQ4M38LGHLZniuTFAqjlKnW5TZLqpF3rgD+kevFoLjkw8ZJSdqhzQ==
+"@types/hosted-git-info@3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@types/hosted-git-info/-/hosted-git-info-3.0.2.tgz#aa671076f5edefa4fab1189b467e6c63987be818"
+  integrity sha512-RURNTeEFUwF+ifnp7kK3WLLlTmBSlRynLNS9jeAsI6RHtSrupV0l0nO6kmpaz75EUJVexy348bR452SvmH98vQ==
 
 "@types/http-cache-semantics@*":
   version "4.0.0"
