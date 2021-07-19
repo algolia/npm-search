@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/algolia/npm-search/compare/v1.0.0...v1.1.0) (2021-07-19)
+
+
+### Features
+
+* upgrade deps ([#668](https://github.com/algolia/npm-search/issues/668)) ([3a58cf5](https://github.com/algolia/npm-search/commit/3a58cf5588b943a663f8e9eecbc4d0a41b639105))
+
 # 1.0.0 (2021-07-19)
 
 
