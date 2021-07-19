@@ -52,6 +52,10 @@ export async function run(
 
   changesConsumer = createChangeConsumer(stateManager, mainIndex);
 
+  setInterval(async () => {
+    totalSequence = (await npm.getInfo()).nbDocs;
+  }, 5000);
+
   await watch(stateManager);
 
   log.info('-----');
@@ -69,26 +73,21 @@ export async function run(
 async function watch(stateManager: StateManager): Promise<true> {
   const { seq } = await stateManager.get();
 
-  const listener = npm.listenToChanges({
-    since: String(seq),
-    include_docs: false,
-    heartbeat: 30 * 1000,
-  });
-
-  listener.on('change', (change) => {
-    totalSequence = change.seq;
-
-    changesConsumer.push(change);
-  });
-
-  listener.on('error', (err) => {
-    sentry.report(err);
-  });
-
-  listener.follow();
+  const listener = npm.db.changesReader
+    .start({
+      includeDocs: false,
+      batchSize: 1,
+      since: String(seq),
+    })
+    .on('change', (change) => {
+      changesConsumer.push(change);
+    })
+    .on('error', (err) => {
+      sentry.report(err);
+    });
 
   return new Promise((resolve) => {
-    listener.on('stop', () => {
+    listener.on('end', () => {
       resolve(true);
     });
   });
@@ -177,6 +176,7 @@ function createChangeConsumer(
       await stateManager.save({
         seq,
       });
+      totalSequence = (await npm.getInfo()).nbDocs;
     } catch (err) {
       sentry.report(err);
     } finally {

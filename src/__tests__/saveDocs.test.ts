@@ -4,6 +4,8 @@ import { saveDocs, saveDoc } from '../saveDocs';
 
 import preact from './preact-simplified.json';
 
+jest.setTimeout(10000);
+
 it('should be similar batch vs one', async () => {
   const client = algoliasearch('e', '');
   const index = client.initIndex('a');

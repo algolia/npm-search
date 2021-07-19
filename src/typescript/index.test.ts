@@ -1,5 +1,7 @@
 import * as api from './index';
 
+jest.setTimeout(10000);
+
 describe('loadTypesIndex()', () => {
   it('should download and cache all @types', async () => {
     expect(api.typesCache).not.toHaveProperty('algoliasearch');

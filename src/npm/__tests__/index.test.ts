@@ -26,35 +26,6 @@ describe('findAll()', () => {
   });
 });
 
-describe('getChanges()', () => {
-  it('contains the correct keys', async () => {
-    const changes = await api.getChanges({ limit: 1, startkey: '0' });
-
-    expect(changes).toEqual({
-      last_seq: 3299,
-      results: expect.any(Array),
-    });
-  });
-});
-
-describe('getDocs()', () => {
-  it('contains the correct keys', async () => {
-    const docs = await api.getDocs({ keys: ['0'] });
-
-    expect(docs.rows).toHaveLength(1);
-
-    // @ts-expect-error
-    expect(docs.rows[0].doc).toEqual(
-      expect.objectContaining({
-        _id: '0',
-        _rev: '1-5fbff37e48e1dd03ce6e7ffd17b98998',
-        name: '0',
-        license: 'BSD-2-Clause',
-      })
-    );
-  });
-});
-
 describe('getInfo()', () => {
   let registryInfo;
   beforeAll(async () => {
