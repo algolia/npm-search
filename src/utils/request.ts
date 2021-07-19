@@ -9,7 +9,7 @@ const { version } = require('../../package.json');
 
 export const USER_AGENT = `Algolia npm-search/${version} (https://github.com/algolia/npm-search)`;
 
-const options = {
+const options: http.AgentOptions = {
   keepAlive: true,
   timeout: 60000,
   maxFreeSockets: 2000,
