@@ -55,9 +55,9 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
 
-      # - run:
-      #     name: Release
-      #     command: yarn semantic-release
+      - run:
+          name: Release
+          command: yarn semantic-release
       - run:
           name: Docker Build
           command: yarn docker:build
