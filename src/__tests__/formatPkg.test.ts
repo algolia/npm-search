@@ -5,6 +5,7 @@ import formatPkg, {
   getRepositoryInfo,
   getMains,
   getVersions,
+  getExportKeys,
 } from '../formatPkg';
 import type { GetPackage } from '../npm/types';
 
@@ -560,13 +561,14 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'whoever',
+        // @ts-expect-error
         main: [{ personalMain: 'index.mjs' }],
       }).moduleTypes
     ).toEqual(['unknown']);
   });
 });
 
-describe('getMain', () => {
+describe('getMains', () => {
   test('main === string', () => {
     expect(getMains({ main: 'index.js' })).toEqual(['index.js']);
   });
@@ -583,7 +585,65 @@ describe('getMain', () => {
   });
 
   test('nothing if object', () => {
+    // @ts-expect-error
     expect(getMains({ main: { something: 'cool.js' } })).toEqual([]);
+  });
+});
+
+describe('getExportKeys', () => {
+  test('exports is missing', () => {
+    expect(getExportKeys(undefined)).toEqual([]);
+  });
+
+  test('exports is one level', () => {
+    expect(getExportKeys({ import: './lol.js', require: './cjs.js' })).toEqual([
+      'import',
+      'require',
+    ]);
+  });
+
+  test('exports is two levels', () => {
+    expect(
+      getExportKeys({ '.': { import: './lol.js', require: './cjs.js' } })
+    ).toEqual(['.', 'import', 'require']);
+  });
+
+  test('exports is repeated', () => {
+    expect(
+      getExportKeys({
+        something: { import: './lol.js', require: './cjs.js' },
+        bazoo: { import: './bazoo.js', require: './cjs.js' },
+      })
+    ).toEqual(['something', 'bazoo', 'import', 'require', 'import', 'require']);
+  });
+
+  test('exports is many levels', () => {
+    expect(
+      getExportKeys({
+        something: { import: './lol.js', require: './cjs.js' },
+        bazoo: {
+          lol: { import: './bazoo.js', require: './cjs.js' },
+          kol: 'test.js',
+          mol: {
+            bol: {
+              condition: 'test.js',
+            },
+          },
+        },
+      })
+    ).toEqual([
+      'something',
+      'bazoo',
+      'import',
+      'require',
+      'lol',
+      'kol',
+      'mol',
+      'import',
+      'require',
+      'bol',
+      'condition',
+    ]);
   });
 });
 

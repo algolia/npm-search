@@ -45,6 +45,10 @@ export interface PackageRepo {
   directory?: string;
 }
 
+export interface PackageExports {
+  [key: string]: string | PackageExports;
+}
+
 export interface GetPackage {
   _id: string;
   _rev: string;
@@ -66,6 +70,12 @@ export interface GetPackage {
   contributors?: Array<{ name: string }>;
   repository?: PackageRepo;
   schematics?: string;
+  types?: string;
+  typings?: string;
+  type?: 'module' | 'commonjs';
+  module?: string;
+  main?: string;
+  exports?: PackageExports;
 }
 
 export interface GetPackageLight {

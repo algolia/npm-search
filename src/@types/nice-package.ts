@@ -19,6 +19,7 @@ export interface NicePackageType {
   main?: string | string[];
   modified: string;
   module?: string;
+  exports?: GetPackage['exports'];
   name: string;
   other: {
     _id?: string;
