@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/algolia/npm-search/compare/v1.1.0...v1.2.0) (2021-07-28)
+
+
+### Features
+
+* **modules:** detect exports for moduleTypes ([#673](https://github.com/algolia/npm-search/issues/673)) ([ecaca21](https://github.com/algolia/npm-search/commit/ecaca210467814bcda183c046facabb116aa51e1))
+
 # [1.1.0](https://github.com/algolia/npm-search/compare/v1.0.0...v1.1.0) (2021-07-19)
 
 
