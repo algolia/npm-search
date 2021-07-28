@@ -31,12 +31,20 @@ export interface GetVersion {
     tarball: string;
   };
   license?: string;
+
+  type?: 'module' | 'commonjs';
+  module?: string;
   main?: string;
+  exports?: PackageExports;
+
   maintainers: GetUser[];
   name: string;
   scripts?: Record<string, string>;
   version: string;
   deprecated?: string | boolean;
+  schematics?: string;
+  types?: string;
+  typings?: string;
 }
 
 export interface PackageRepo {
@@ -69,13 +77,6 @@ export interface GetPackage {
   keywords?: string[] | string;
   contributors?: Array<{ name: string }>;
   repository?: PackageRepo;
-  schematics?: string;
-  types?: string;
-  typings?: string;
-  type?: 'module' | 'commonjs';
-  module?: string;
-  main?: string;
-  exports?: PackageExports;
 }
 
 export interface GetPackageLight {

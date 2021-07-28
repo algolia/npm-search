@@ -1,4 +1,9 @@
-import type { GetPackage, GetUser, PackageRepo } from '../npm/types';
+import type {
+  GetPackage,
+  GetUser,
+  GetVersion,
+  PackageRepo,
+} from '../npm/types';
 
 export interface NicePackageType {
   _hasShrinkwrap?: false;
@@ -19,7 +24,7 @@ export interface NicePackageType {
   main?: string | string[];
   modified: string;
   module?: string;
-  exports?: GetPackage['exports'];
+  exports?: GetVersion['exports'];
   name: string;
   other: {
     _id?: string;
