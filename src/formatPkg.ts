@@ -586,16 +586,20 @@ export function getExportKeys(
   return [...keys, ...nestedKeys];
 }
 
+const typeToModuleTypeMapping: Record<
+  Required<NicePackageType>['type'],
+  ModuleType
+> = {
+  commonjs: 'cjs',
+  module: 'esm',
+};
+
 function getModuleTypes(pkg: NicePackageType): ModuleType[] {
   const moduleTypes: Set<ModuleType> = new Set();
 
   // type is declared
   if (pkg.type) {
-    const mapping: Record<Required<NicePackageType>['type'], ModuleType> = {
-      commonjs: 'cjs',
-      module: 'esm',
-    };
-    moduleTypes.add(mapping[pkg.type]);
+    moduleTypes.add(typeToModuleTypeMapping[pkg.type]);
   }
 
   // get all explicit exports (supporting cjs in esm or other way round)
