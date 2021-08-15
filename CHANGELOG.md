@@ -1,3 +1,10 @@
+## [1.2.2](https://github.com/algolia/npm-search/compare/v1.2.1...v1.2.2) (2021-08-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency chalk to v4.1.2 ([4f3442f](https://github.com/algolia/npm-search/commit/4f3442f3f8657b9112d59dc579e20d1d24c4d247))
+
 ## [1.2.1](https://github.com/algolia/npm-search/compare/v1.2.0...v1.2.1) (2021-08-13)
 
 
