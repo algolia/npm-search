@@ -20,9 +20,10 @@ export function getStyleTypes(
 
   try {
     const styleTypes = new Set(pkg.styleTypes);
+    const filePattern = createFilePattern(styleFileExtensions);
 
     for (const file of filelist) {
-      if (!createFilePattern(styleFileExtensions).test(file.name)) {
+      if (!filePattern.test(file.name)) {
         continue;
       }
 
@@ -66,9 +67,11 @@ export function getModuleTypes(
       return { moduleTypes: pkg.moduleTypes };
     }
 
+    const filePattern = createFilePattern(jsFileExtensions);
+
     for (const file of filelist) {
       // JS file found - it can't be non anymore
-      if (createFilePattern(jsFileExtensions).test(file.name)) {
+      if (filePattern.test(file.name)) {
         return { moduleTypes: pkg.moduleTypes };
       }
     }
