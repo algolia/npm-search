@@ -39,6 +39,7 @@ export interface NicePackageType {
   scripts: Record<string, string>;
   schematics?: string;
   starsCount?: number;
+  style?: string;
   type?: 'module' | 'commonjs';
   types?: string;
   typings?: string;

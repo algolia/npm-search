@@ -647,6 +647,43 @@ describe('getExportKeys', () => {
   });
 });
 
+describe('getStyleTypes', () => {
+  test('style=css', () => {
+    expect(
+      formatPkg({
+        ...BASE,
+        style: '/style.min.css',
+      }).styleTypes
+    ).toEqual(['css']);
+  });
+
+  test('style=js', () => {
+    expect(
+      formatPkg({
+        ...BASE,
+        style: '/style.js',
+      }).styleTypes
+    ).toEqual([]);
+  });
+
+  test('style=empty', () => {
+    expect(
+      formatPkg({
+        ...BASE,
+        style: '',
+      }).styleTypes
+    ).toEqual([]);
+  });
+
+  test('style=undefined', () => {
+    expect(
+      formatPkg({
+        ...BASE,
+      }).styleTypes
+    ).toEqual([]);
+  });
+});
+
 describe('getVersions', () => {
   test("renames 'time' to versions", () => {
     expect(

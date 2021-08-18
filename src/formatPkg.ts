@@ -13,12 +13,14 @@ import type {
   ComputedMeta,
   GithubRepo,
   ModuleType,
+  StyleType,
   Owner,
   RawPkg,
   Repo,
 } from './@types/pkg';
 import { config } from './config';
 import type { GetPackage, GetUser, PackageRepo } from './npm/types';
+import { styleFileExtensions } from './pkgTypes';
 
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 
@@ -135,6 +137,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
   const devDependencies = cleaned.devDependencies || {};
   const alternativeNames = getAlternativeNames(cleaned.name);
   const moduleTypes = getModuleTypes(cleaned);
+  const styleTypes = getStyleTypes(cleaned);
 
   const tags = pkg['dist-tags'];
   const isDeprecated =
@@ -174,6 +177,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     bin: cleaned.bin || {},
     types,
     moduleTypes,
+    styleTypes,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       alternativeNames,
@@ -633,4 +637,18 @@ function getModuleTypes(pkg: NicePackageType): ModuleType[] {
   }
 
   return [...moduleTypes];
+}
+
+function getStyleTypes(pkg: NicePackageType): StyleType[] {
+  // style not declared - we will detect it later based on file list
+  if (!pkg.style) {
+    return [];
+  }
+
+  const ext = pkg.style.split('.').pop() as StyleType;
+  if (ext && styleFileExtensions.includes(ext)) {
+    return [ext];
+  }
+
+  return [];
 }

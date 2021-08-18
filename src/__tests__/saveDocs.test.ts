@@ -118,6 +118,7 @@ it('should be similar batch vs one', async () => {
     license: 'MIT',
     modified: 1564778088321,
     moduleTypes: ['esm'],
+    styleTypes: ['none'],
     name: 'preact',
     objectID: 'preact',
     originalAuthor: {

@@ -32,7 +32,9 @@ export type TsType =
       definitelyTyped: string;
     };
 
-export type ModuleType = 'esm' | 'cjs' | 'unknown';
+export type ModuleType = 'esm' | 'cjs' | 'none' | 'unknown';
+
+export type StyleType = 'css' | 'less' | 'scss' | 'none';
 
 export type ComputedMeta = {
   computedKeywords: string[];
@@ -73,6 +75,7 @@ export interface RawPkg {
   bin: Record<string, string>;
   types: TsType;
   moduleTypes: ModuleType[];
+  styleTypes: StyleType[];
   lastCrawl: string;
   _searchInternal: {
     expiresAt: number;

@@ -60,6 +60,7 @@ Object {
     "url": "https://github.com/algolia/npm-search",
     "user": "algolia",
   },
+  "styleTypes": Array [],
   "tags": Object {
     "latest": "1.2.3",
   },
@@ -875,6 +876,7 @@ Are you in trouble? Read through our [contribution guidelines](https://bitbucket
     "url": "git+https://bitbucket.org/atlassian/atlaskit.git",
     "user": "atlassian",
   },
+  "styleTypes": Array [],
   "tags": Object {
     "latest": "1.6.1",
   },
@@ -1015,6 +1017,7 @@ Object {
     "url": "https://github.com/atomic-package/tab",
     "user": "atomic-package",
   },
+  "styleTypes": Array [],
   "tags": Object {
     "latest": "0.0.4",
   },
@@ -1146,6 +1149,7 @@ Object {
     "url": "https://github.com/algolia/create-instantsearch-app",
     "user": "algolia",
   },
+  "styleTypes": Array [],
   "tags": Object {
     "latest": "4.4.2",
   },
@@ -1233,6 +1237,7 @@ index(arr, obj);
 
   MIT",
   "repository": null,
+  "styleTypes": Array [],
   "tags": Object {
     "latest": "0.0.1",
   },
@@ -1408,6 +1413,9 @@ Thank you so much for contributing!!
     "url": "https://github.com/LeaVerou/prism",
     "user": "LeaVerou",
   },
+  "styleTypes": Array [
+    "css",
+  ],
   "tags": Object {
     "latest": "1.20.0",
   },
@@ -1511,6 +1519,7 @@ Object {
     "url": "https://github.com/algolia/npm-search",
     "user": "algolia",
   },
+  "styleTypes": Array [],
   "tags": undefined,
   "types": Object {
     "ts": Object {

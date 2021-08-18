@@ -45,6 +45,7 @@ export interface GetVersion {
   schematics?: string;
   types?: string;
   typings?: string;
+  style?: string;
 }
 
 export interface PackageRepo {
