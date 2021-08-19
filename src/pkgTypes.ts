@@ -2,7 +2,7 @@ import type { RawPkg, StyleType } from './@types/pkg';
 import type { File } from './jsDelivr';
 import { datadog } from './utils/datadog';
 
-export const styleFileExtensions: StyleType[] = ['css', 'less', 'scss'];
+const styleFileExtensions: StyleType[] = ['css', 'less', 'scss'];
 const jsFileExtensions = ['js', 'mjs', 'cjs'];
 
 function createFilePattern(extensions: string[]): RegExp {

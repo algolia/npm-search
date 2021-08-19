@@ -20,7 +20,6 @@ import type {
 } from './@types/pkg';
 import { config } from './config';
 import type { GetPackage, GetUser, PackageRepo } from './npm/types';
-import { styleFileExtensions } from './pkgTypes';
 
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 
@@ -645,10 +644,7 @@ function getStyleTypes(pkg: NicePackageType): StyleType[] {
     return [];
   }
 
-  const ext = pkg.style.split('.').pop() as StyleType;
-  if (ext && styleFileExtensions.includes(ext)) {
-    return [ext];
-  }
+  const ext = pkg.style.split('.').pop();
 
-  return [];
+  return ext ? [ext.toLowerCase() as StyleType] : [];
 }

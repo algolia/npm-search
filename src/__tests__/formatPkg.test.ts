@@ -657,13 +657,22 @@ describe('getStyleTypes', () => {
     ).toEqual(['css']);
   });
 
-  test('style=js', () => {
+  test('style=woff', () => {
     expect(
       formatPkg({
         ...BASE,
-        style: '/style.js',
+        style: '/font.woff',
       }).styleTypes
-    ).toEqual([]);
+    ).toEqual(['woff']);
+  });
+
+  test('style=uppercase', () => {
+    expect(
+      formatPkg({
+        ...BASE,
+        style: '/STYLE.SCSS',
+      }).styleTypes
+    ).toEqual(['scss']);
   });
 
   test('style=empty', () => {
