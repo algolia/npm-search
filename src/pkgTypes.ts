@@ -2,11 +2,16 @@ import type { RawPkg, StyleType } from './@types/pkg';
 import type { File } from './jsDelivr';
 import { datadog } from './utils/datadog';
 
-const styleFileExtensions: StyleType[] = ['css', 'less', 'scss'];
+const styleFileExtensions = ['css', 'less', 'scss'];
+const styleFilePattern = createFilePattern(styleFileExtensions);
+
 const jsFileExtensions = ['js', 'mjs', 'cjs'];
+const jsFilePattern = createFilePattern(jsFileExtensions);
 
 function createFilePattern(extensions: string[]): RegExp {
   const extPattern = extensions.join('|');
+
+  // https://regex101.com/r/X5jQfH/2
   return new RegExp(
     `^(?:(?!\\/(docs?|documentation|examples?|samples?|demos?|tests?)\\/)(?!\\/[._]).)+\\.(${extPattern})$`
   );
@@ -19,11 +24,10 @@ export function getStyleTypes(
   const start = Date.now();
 
   try {
-    const styleTypes = new Set(pkg.styleTypes);
-    const filePattern = createFilePattern(styleFileExtensions);
+    const styleTypes = new Set<StyleType>(pkg.styleTypes);
 
     for (const file of filelist) {
-      if (!filePattern.test(file.name)) {
+      if (!styleFilePattern.test(file.name)) {
         continue;
       }
 
@@ -70,11 +74,9 @@ export function getModuleTypes(
       return { moduleTypes: pkg.moduleTypes };
     }
 
-    const filePattern = createFilePattern(jsFileExtensions);
-
     for (const file of filelist) {
       // JS file found - it can't be non anymore
-      if (filePattern.test(file.name)) {
+      if (jsFilePattern.test(file.name)) {
         return { moduleTypes: pkg.moduleTypes };
       }
     }
