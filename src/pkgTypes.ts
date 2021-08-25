@@ -28,7 +28,10 @@ export function getStyleTypes(
       }
 
       const type = file.name.split('.').pop();
-      styleTypes.add(type as StyleType);
+
+      if (type) {
+        styleTypes.add(type);
+      }
     }
 
     if (styleTypes.size === 0) {

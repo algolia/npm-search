@@ -34,7 +34,7 @@ export type TsType =
 
 export type ModuleType = 'esm' | 'cjs' | 'none' | 'unknown';
 
-export type StyleType = 'css' | 'less' | 'scss' | 'none';
+export type StyleType = string | 'none';
 
 export type ComputedMeta = {
   computedKeywords: string[];

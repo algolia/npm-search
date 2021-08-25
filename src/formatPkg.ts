@@ -646,5 +646,5 @@ function getStyleTypes(pkg: NicePackageType): StyleType[] {
 
   const ext = pkg.style.split('.').pop();
 
-  return ext ? [ext.toLowerCase() as StyleType] : [];
+  return ext ? [ext.toLowerCase()] : [];
 }
