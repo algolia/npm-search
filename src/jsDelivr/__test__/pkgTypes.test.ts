@@ -1,4 +1,4 @@
-import type { File } from '../jsDelivr';
+import type { File } from '../index';
 import * as api from '../pkgTypes';
 
 const BASE_FILE: File = {

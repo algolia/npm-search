@@ -1,6 +1,7 @@
-import type { RawPkg, StyleType } from './@types/pkg';
-import type { File } from './jsDelivr';
-import { datadog } from './utils/datadog';
+import type { RawPkg, StyleType } from '../@types/pkg';
+import { datadog } from '../utils/datadog';
+
+import type { File } from './index';
 
 const styleFileExtensions = ['css', 'less', 'scss'];
 const styleFilePattern = createFilePattern(styleFileExtensions);

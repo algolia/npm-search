@@ -5,14 +5,14 @@ import type { FinalPkg, RawPkg } from './@types/pkg';
 import { getChangelogs, getChangelog } from './changelog';
 import formatPkg from './formatPkg';
 import * as jsDelivr from './jsDelivr';
-import * as npm from './npm';
-import type { GetPackage } from './npm/types';
 import {
   getModuleTypes,
   getStyleTypes,
   getStyleTypesForAll,
   getModuleTypesForAll,
-} from './pkgTypes';
+} from './jsDelivr/pkgTypes';
+import * as npm from './npm';
+import type { GetPackage } from './npm/types';
 import { getTSSupport, getTypeScriptSupport } from './typescript/index';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
