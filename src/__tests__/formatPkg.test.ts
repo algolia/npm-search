@@ -498,8 +498,13 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-        type: 'module',
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, type: 'module' },
+        },
+      })?.moduleTypes
     ).toEqual(['esm']);
   });
 
@@ -508,8 +513,13 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-        type: 'commonjs',
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, type: 'commonjs' },
+        },
+      })?.moduleTypes
     ).toEqual(['cjs']);
   });
 
@@ -518,8 +528,13 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-        module: 'index.js',
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, module: 'index.js' },
+        },
+      })?.moduleTypes
     ).toEqual(['esm']);
   });
 
@@ -528,8 +543,13 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-        main: 'index.mjs',
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, main: 'index.mjs' },
+        },
+      })?.moduleTypes
     ).toEqual(['esm']);
   });
 
@@ -538,8 +558,13 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-        main: 'index.cjs',
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, main: 'index.cjs' },
+        },
+      })?.moduleTypes
     ).toEqual(['cjs']);
   });
 
@@ -548,12 +573,12 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-      }).moduleTypes
+      })?.moduleTypes
     ).toEqual(['unknown']);
   });
 
   test('preact (esm & umd)', () => {
-    expect(formatPkg(preact).moduleTypes).toEqual(['esm']);
+    expect(formatPkg(preact)?.moduleTypes).toEqual(['esm']);
   });
 
   test('silly broken package', () => {
@@ -561,9 +586,14 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'whoever',
-        // @ts-expect-error
-        main: [{ personalMain: 'index.mjs' }],
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          // @ts-expect-error
+          '1.0.0': { ...BASE_VERSION, main: [{ personalMain: 'index.mjs' }] },
+        },
+      })?.moduleTypes
     ).toEqual(['unknown']);
   });
 });
@@ -652,8 +682,13 @@ describe('getStyleTypes', () => {
     expect(
       formatPkg({
         ...BASE,
-        style: '/style.min.css',
-      }).styleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, style: '/style.min.css' },
+        },
+      })?.styleTypes
     ).toEqual(['css']);
   });
 
@@ -661,8 +696,13 @@ describe('getStyleTypes', () => {
     expect(
       formatPkg({
         ...BASE,
-        style: '/font.woff',
-      }).styleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, style: '/font.woff' },
+        },
+      })?.styleTypes
     ).toEqual(['woff']);
   });
 
@@ -670,8 +710,13 @@ describe('getStyleTypes', () => {
     expect(
       formatPkg({
         ...BASE,
-        style: '/STYLE.SCSS',
-      }).styleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, style: '/STYLE.SCSS' },
+        },
+      })?.styleTypes
     ).toEqual(['scss']);
   });
 
@@ -679,8 +724,13 @@ describe('getStyleTypes', () => {
     expect(
       formatPkg({
         ...BASE,
-        style: '',
-      }).styleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, style: '' },
+        },
+      })?.styleTypes
     ).toEqual([]);
   });
 
@@ -688,7 +738,7 @@ describe('getStyleTypes', () => {
     expect(
       formatPkg({
         ...BASE,
-      }).styleTypes
+      })?.styleTypes
     ).toEqual([]);
   });
 });

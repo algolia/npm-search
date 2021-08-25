@@ -1,6 +1,13 @@
 import type { File } from '../jsDelivr';
 import * as api from '../pkgTypes';
 
+const BASE_FILE: File = {
+  name: '0',
+  hash: 'sha256:',
+  size: 0,
+  time: '1985-10-26T08:15:00.000Z',
+};
+
 describe('package module/style types', () => {
   describe('package style types', () => {
     it('should return correct style types for multiple packages', () => {
@@ -14,16 +21,16 @@ describe('package module/style types', () => {
         ],
         [
           [],
-          [{ name: '/dist/style/style.min.css' }],
+          [{ ...BASE_FILE, name: '/dist/style/style.min.css' }],
           [
-            { name: '/src/style/style.less' },
-            { name: '/dist/style/style.min.css' },
-            { name: '/dist/js/lib.min.js' },
-            { name: '/style.scss' },
+            { ...BASE_FILE, name: '/src/style/style.less' },
+            { ...BASE_FILE, name: '/dist/style/style.min.css' },
+            { ...BASE_FILE, name: '/dist/js/lib.min.js' },
+            { ...BASE_FILE, name: '/style.scss' },
           ],
-          undefined,
-          [{ name: '/src/style/style.less' }],
-        ] as File[][]
+          undefined as any,
+          [{ ...BASE_FILE, name: '/src/style/style.less' }],
+        ]
       );
       expect(styleTypes).toEqual([
         { styleTypes: ['none'] },
@@ -36,14 +43,14 @@ describe('package module/style types', () => {
 
     it('should ignore blacklisted paths', () => {
       const styleTypes = api.getStyleTypes({ styleTypes: [] }, [
-        { name: '/dist/style/style.min.css' },
-        { name: '/dist/style/_source.scss' },
-        { name: '/docs/file.scss' },
-        { name: '/test/file.scss' },
-        { name: '/.hidden/file.scss' },
-        { name: '/dist/.hidden.scss' },
-        { name: '/dist/.hidden/style.scss' },
-      ] as File[]);
+        { ...BASE_FILE, name: '/dist/style/style.min.css' },
+        { ...BASE_FILE, name: '/dist/style/_source.scss' },
+        { ...BASE_FILE, name: '/docs/file.scss' },
+        { ...BASE_FILE, name: '/test/file.scss' },
+        { ...BASE_FILE, name: '/.hidden/file.scss' },
+        { ...BASE_FILE, name: '/dist/.hidden.scss' },
+        { ...BASE_FILE, name: '/dist/.hidden/style.scss' },
+      ]);
       expect(styleTypes).toEqual({ styleTypes: ['css'] });
     });
   });
@@ -62,13 +69,13 @@ describe('package module/style types', () => {
         ],
         [
           [],
-          [{ name: '/dist/style/style.min.css' }],
-          [{ name: '/dist/js/lib.min.js' }],
-          [{ name: '/dist/js/lib.min.mjs' }],
-          [{ name: '/dist/js/lib.min.cjs' }],
+          [{ ...BASE_FILE, name: '/dist/style/style.min.css' }],
+          [{ ...BASE_FILE, name: '/dist/js/lib.min.js' }],
+          [{ ...BASE_FILE, name: '/dist/js/lib.min.mjs' }],
+          [{ ...BASE_FILE, name: '/dist/js/lib.min.cjs' }],
           [],
-          undefined,
-        ] as File[][]
+          undefined as any,
+        ]
       );
 
       expect(moduleTypes).toEqual([
@@ -84,13 +91,13 @@ describe('package module/style types', () => {
 
     it('should ignore blacklisted paths', () => {
       const moduleTypes = api.getModuleTypes({ moduleTypes: ['unknown'] }, [
-        { name: '/dist/js/_hidden.mjs' },
-        { name: '/dist/js/.hidden.mjs' },
-        { name: '/docs/lib.js' },
-        { name: '/test/lib.js' },
-        { name: '/.hidden/lib.cjs' },
-        { name: '/dist/.hidden/lib.js' },
-      ] as File[]);
+        { ...BASE_FILE, name: '/dist/js/_hidden.mjs' },
+        { ...BASE_FILE, name: '/dist/js/.hidden.mjs' },
+        { ...BASE_FILE, name: '/docs/lib.js' },
+        { ...BASE_FILE, name: '/test/lib.js' },
+        { ...BASE_FILE, name: '/.hidden/lib.cjs' },
+        { ...BASE_FILE, name: '/dist/.hidden/lib.js' },
+      ]);
       expect(moduleTypes).toEqual({ moduleTypes: ['none'] });
     });
   });
