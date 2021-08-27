@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/algolia/npm-search/compare/v1.2.3...v1.2.4) (2021-08-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @algolia/requester-node-http to v4.10.5 ([c734e39](https://github.com/algolia/npm-search/commit/c734e39fe3b9b81a435e37769a50467c1d814c7c))
+
 ## [1.2.3](https://github.com/algolia/npm-search/compare/v1.2.2...v1.2.3) (2021-08-21)
 
 
