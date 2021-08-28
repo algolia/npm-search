@@ -1,3 +1,10 @@
+## [1.2.5](https://github.com/algolia/npm-search/compare/v1.2.4...v1.2.5) (2021-08-28)
+
+
+### Bug Fixes
+
+* **deps:** update dependency algoliasearch to v4.10.5 ([0f3ce32](https://github.com/algolia/npm-search/commit/0f3ce320eb78252348c101668467d70f344c6d91))
+
 ## [1.2.4](https://github.com/algolia/npm-search/compare/v1.2.3...v1.2.4) (2021-08-27)
 
 
