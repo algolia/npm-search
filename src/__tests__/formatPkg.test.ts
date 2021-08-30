@@ -52,100 +52,102 @@ describe('nice-package', () => {
   });
 });
 
-it('transforms correctly', () => {
-  rawPackages
-    .map(formatPkg)
-    .map((element) => {
-      expect(isISO8601(element.lastCrawl)).toBe(true);
-      return element;
-    })
-    .map((formattedPackage) =>
-      expect(formattedPackage).toMatchSnapshot(
-        {
-          lastCrawl: expect.any(String),
-          _searchInternal: {
-            expiresAt: expect.any(Number),
+describe('general', () => {
+  it('transforms correctly', () => {
+    rawPackages
+      .map(formatPkg)
+      .map((element) => {
+        expect(isISO8601(element.lastCrawl)).toBe(true);
+        return element;
+      })
+      .map((formattedPackage) =>
+        expect(formattedPackage).toMatchSnapshot(
+          {
+            lastCrawl: expect.any(String),
+            _searchInternal: {
+              expiresAt: expect.any(Number),
+            },
           },
-        },
-        formattedPackage.objectID
-      )
-    );
-});
+          formattedPackage.objectID
+        )
+      );
+  });
 
-it('keeps .bin intact', () => {
-  const createInstantSearchApp = rawPackages.find(
-    (pkg) => pkg.name === 'create-instantsearch-app'
-  );
-  const formatted = formatPkg(createInstantSearchApp);
-  expect(formatted.bin).toMatchInlineSnapshot(`
+  it('keeps .bin intact', () => {
+    const createInstantSearchApp = rawPackages.find(
+      (pkg) => pkg.name === 'create-instantsearch-app'
+    );
+    const formatted = formatPkg(createInstantSearchApp);
+    expect(formatted.bin).toMatchInlineSnapshot(`
   Object {
     "create-instantsearch-app": "src/cli/index.js",
   }
   `);
-});
-
-it('truncates long readmes', () => {
-  const pkg: GetPackage = {
-    ...BASE,
-    name: 'long-boy',
-    readme: 'Hello, World! '.repeat(40000),
-  };
-  const formatted = formatPkg(pkg);
-  const postfix = ' **TRUNCATED**';
-  const ending = formatted.readme.substr(
-    formatted.readme.length - postfix.length
-  );
-
-  const readmeLength = formatted.readme.length;
-
-  expect(readmeLength).toBeLessThan(475000);
-  expect(ending).toBe(postfix);
-
-  expect(formatted).toMatchSnapshot({
-    readme: expect.any(String),
-    lastCrawl: expect.any(String),
-    _searchInternal: {
-      expiresAt: expect.any(Number),
-    },
   });
-});
 
-it('adds angular cli schematics', () => {
-  const pkg: GetPackage = {
-    ...BASE,
-    name: 'angular-cli-schema-1',
-    schematics: 'bli-blo',
-    keywords: ['hi'],
-  };
+  it('truncates long readmes', () => {
+    const pkg: GetPackage = {
+      ...BASE,
+      name: 'long-boy',
+      readme: 'Hello, World! '.repeat(40000),
+    };
+    const formatted = formatPkg(pkg);
+    const postfix = ' **TRUNCATED**';
+    const ending = formatted.readme.substr(
+      formatted.readme.length - postfix.length
+    );
 
-  const formatted = formatPkg(pkg);
-  expect(formatted.keywords).toEqual(['hi']);
-  expect(formatted.computedKeywords).toEqual(['angular-cli-schematic']);
-  expect(formatted.computedMetadata).toEqual({
-    schematics: 'bli-blo',
+    const readmeLength = formatted.readme.length;
+
+    expect(readmeLength).toBeLessThan(475000);
+    expect(ending).toBe(postfix);
+
+    expect(formatted).toMatchSnapshot({
+      readme: expect.any(String),
+      lastCrawl: expect.any(String),
+      _searchInternal: {
+        expiresAt: expect.any(Number),
+      },
+    });
   });
-});
 
-it('adds babel plugins', () => {
-  const pkg: GetPackage = {
-    ...BASE,
-    name: '@babel/plugin-dogs',
-    keywords: 'babel',
-  };
-  const unofficialDogs = {
-    ...BASE,
-    name: 'babel-plugin-dogs',
-    keywords: ['dogs'],
-  };
+  it('adds angular cli schematics', () => {
+    const pkg: GetPackage = {
+      ...BASE,
+      name: 'angular-cli-schema-1',
+      schematics: 'bli-blo',
+      keywords: ['hi'],
+    };
 
-  const formattedDogs = formatPkg(pkg);
-  const formattedUnofficialDogs = formatPkg(unofficialDogs);
+    const formatted = formatPkg(pkg);
+    expect(formatted.keywords).toEqual(['hi']);
+    expect(formatted.computedKeywords).toEqual(['angular-cli-schematic']);
+    expect(formatted.computedMetadata).toEqual({
+      schematics: 'bli-blo',
+    });
+  });
 
-  expect(formattedDogs.keywords).toEqual(['babel']);
-  expect(formattedUnofficialDogs.keywords).toEqual(['dogs']);
+  it('adds babel plugins', () => {
+    const pkg: GetPackage = {
+      ...BASE,
+      name: '@babel/plugin-dogs',
+      keywords: 'babel',
+    };
+    const unofficialDogs = {
+      ...BASE,
+      name: 'babel-plugin-dogs',
+      keywords: ['dogs'],
+    };
 
-  expect(formattedDogs.computedKeywords).toEqual(['babel-plugin']);
-  expect(formattedUnofficialDogs.computedKeywords).toEqual(['babel-plugin']);
+    const formattedDogs = formatPkg(pkg);
+    const formattedUnofficialDogs = formatPkg(unofficialDogs);
+
+    expect(formattedDogs.keywords).toEqual(['babel']);
+    expect(formattedUnofficialDogs.keywords).toEqual(['dogs']);
+
+    expect(formattedDogs.computedKeywords).toEqual(['babel-plugin']);
+    expect(formattedUnofficialDogs.computedKeywords).toEqual(['babel-plugin']);
+  });
 });
 
 describe('adds vue-cli plugins', () => {
@@ -405,15 +407,15 @@ describe('getRepositoryInfo', () => {
   });
 
   it('should return null if it cannot get information', () => {
-    expect(getRepositoryInfo('')).toBe(null);
-    expect(getRepositoryInfo(undefined)).toBe(null);
-    expect(getRepositoryInfo(null)).toBe(null);
-    expect(getRepositoryInfo('aaaaaaaa')).toBe(null);
+    expect(getRepositoryInfo('')).toBeNull();
+    expect(getRepositoryInfo(undefined)).toBeNull();
+    expect(getRepositoryInfo(null)).toBeNull();
+    expect(getRepositoryInfo('aaaaaaaa')).toBeNull();
   });
 });
 
 describe('alternative names', () => {
-  test('name not yet ending in .js', () => {
+  it('name not yet ending in .js', () => {
     const pkg: GetPackage = {
       ...BASE,
       name: 'places',
@@ -428,7 +430,7 @@ describe('alternative names', () => {
     `);
   });
 
-  test('name ending in .js', () => {
+  it('name ending in .js', () => {
     const pkg: GetPackage = {
       ...BASE,
       name: 'places.js',
@@ -444,7 +446,7 @@ describe('alternative names', () => {
         `);
   });
 
-  test('name ending in js', () => {
+  it('name ending in js', () => {
     const pkg: GetPackage = {
       ...BASE,
       name: 'prismjs',
@@ -458,7 +460,7 @@ describe('alternative names', () => {
     `);
   });
 
-  test('scoped package', () => {
+  it('scoped package', () => {
     const pkg: GetPackage = {
       ...BASE,
       name: '@algolia/places.js',
@@ -474,7 +476,7 @@ describe('alternative names', () => {
         `);
   });
 
-  test('name with - and _', () => {
+  it('name with - and _', () => {
     const pkg: GetPackage = {
       ...BASE,
       name: 'this-is_a-dumb-name',
@@ -493,7 +495,7 @@ describe('alternative names', () => {
 });
 
 describe('moduleTypes', () => {
-  test('type=module', () => {
+  it('type=module', () => {
     expect(
       formatPkg({
         ...BASE,
@@ -503,7 +505,7 @@ describe('moduleTypes', () => {
     ).toEqual(['esm']);
   });
 
-  test('type=commonjs', () => {
+  it('type=commonjs', () => {
     expect(
       formatPkg({
         ...BASE,
@@ -513,7 +515,7 @@ describe('moduleTypes', () => {
     ).toEqual(['cjs']);
   });
 
-  test('module=xxx.js', () => {
+  it('module=xxx.js', () => {
     expect(
       formatPkg({
         ...BASE,
@@ -523,7 +525,7 @@ describe('moduleTypes', () => {
     ).toEqual(['esm']);
   });
 
-  test('main: index.mjs', () => {
+  it('main: index.mjs', () => {
     expect(
       formatPkg({
         ...BASE,
@@ -533,7 +535,7 @@ describe('moduleTypes', () => {
     ).toEqual(['esm']);
   });
 
-  test('main: index.cjs', () => {
+  it('main: index.cjs', () => {
     expect(
       formatPkg({
         ...BASE,
@@ -543,7 +545,7 @@ describe('moduleTypes', () => {
     ).toEqual(['cjs']);
   });
 
-  test('unknown', () => {
+  it('unknown', () => {
     expect(
       formatPkg({
         ...BASE,
@@ -552,11 +554,11 @@ describe('moduleTypes', () => {
     ).toEqual(['unknown']);
   });
 
-  test('preact (esm & umd)', () => {
+  it('preact (esm & umd)', () => {
     expect(formatPkg(preact).moduleTypes).toEqual(['esm']);
   });
 
-  test('silly broken package', () => {
+  it('silly broken package', () => {
     expect(
       formatPkg({
         ...BASE,
@@ -569,46 +571,46 @@ describe('moduleTypes', () => {
 });
 
 describe('getMains', () => {
-  test('main === string', () => {
+  it('main === string', () => {
     expect(getMains({ main: 'index.js' })).toEqual(['index.js']);
   });
 
-  test('first if array', () => {
+  it('first if array', () => {
     expect(getMains({ main: ['index.js', 'ondex.jsx'] })).toEqual([
       'index.js',
       'ondex.jsx',
     ]);
   });
 
-  test('index.js if undefined', () => {
+  it('index.js if undefined', () => {
     expect(getMains({ main: undefined })).toEqual(['index.js']);
   });
 
-  test('nothing if object', () => {
+  it('nothing if object', () => {
     // @ts-expect-error
     expect(getMains({ main: { something: 'cool.js' } })).toEqual([]);
   });
 });
 
 describe('getExportKeys', () => {
-  test('exports is missing', () => {
+  it('exports is missing', () => {
     expect(getExportKeys(undefined)).toEqual([]);
   });
 
-  test('exports is one level', () => {
+  it('exports is one level', () => {
     expect(getExportKeys({ import: './lol.js', require: './cjs.js' })).toEqual([
       'import',
       'require',
     ]);
   });
 
-  test('exports is two levels', () => {
+  it('exports is two levels', () => {
     expect(
       getExportKeys({ '.': { import: './lol.js', require: './cjs.js' } })
     ).toEqual(['.', 'import', 'require']);
   });
 
-  test('exports is repeated', () => {
+  it('exports is repeated', () => {
     expect(
       getExportKeys({
         something: { import: './lol.js', require: './cjs.js' },
@@ -617,7 +619,7 @@ describe('getExportKeys', () => {
     ).toEqual(['something', 'bazoo', 'import', 'require', 'import', 'require']);
   });
 
-  test('exports is many levels', () => {
+  it('exports is many levels', () => {
     expect(
       getExportKeys({
         something: { import: './lol.js', require: './cjs.js' },
@@ -648,7 +650,7 @@ describe('getExportKeys', () => {
 });
 
 describe('getVersions', () => {
-  test("renames 'time' to versions", () => {
+  it("renames 'time' to versions", () => {
     expect(
       getVersions(
         {
@@ -675,7 +677,7 @@ describe('getVersions', () => {
     });
   });
 
-  test("removes the 'created' and 'modified' keys", () => {
+  it("removes the 'created' and 'modified' keys", () => {
     expect(
       getVersions(
         {
@@ -700,7 +702,7 @@ describe('getVersions', () => {
     });
   });
 
-  test("removes versions which don't exist in 'versions'", () => {
+  it("removes versions which don't exist in 'versions'", () => {
     expect(
       getVersions(
         {

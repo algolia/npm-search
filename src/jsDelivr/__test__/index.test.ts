@@ -13,6 +13,7 @@ jest.mock('../../utils/log', () => {
 
 jest.setTimeout(10000);
 
+// eslint-disable-next-line jest/require-top-level-describe
 beforeEach(() => {
   jest.resetAllMocks();
 });
@@ -67,7 +68,7 @@ describe('hits', () => {
     });
 
     it('should not get one hit', () => {
-      expect(api.hits.get('thispackagedoesnotexist')).toBe(undefined);
+      expect(api.hits.get('thispackagedoesnotexist')).toBeUndefined();
     });
   });
 });
