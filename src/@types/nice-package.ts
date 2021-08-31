@@ -21,7 +21,7 @@ export interface NicePackageType {
   lastPublisher?: GetUser;
   license?: string | { type: string };
   licenseText?: string;
-  main?: string | string[];
+  main?: string[] | string;
   modified: string;
   module?: string;
   exports?: GetVersion['exports'];
@@ -35,12 +35,12 @@ export interface NicePackageType {
   };
   owners?: GetUser[];
   readme?: string;
-  repository?: string | Partial<PackageRepo> | Array<Partial<PackageRepo>>;
+  repository?: Array<Partial<PackageRepo>> | Partial<PackageRepo> | string;
   scripts: Record<string, string>;
   schematics?: string;
   starsCount?: number;
   style?: string;
-  type?: 'module' | 'commonjs';
+  type?: 'commonjs' | 'module';
   types?: string;
   typings?: string;
   unpkg?: string;

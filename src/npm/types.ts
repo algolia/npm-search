@@ -32,7 +32,7 @@ export interface GetVersion {
   };
   license?: string;
 
-  type?: 'module' | 'commonjs';
+  type?: 'commonjs' | 'module';
   module?: string;
   main?: string;
   exports?: PackageExports;
@@ -41,7 +41,7 @@ export interface GetVersion {
   name: string;
   scripts?: Record<string, string>;
   version: string;
-  deprecated?: string | boolean;
+  deprecated?: boolean | string;
   schematics?: string;
   types?: string;
   typings?: string;
@@ -55,7 +55,7 @@ export interface PackageRepo {
 }
 
 export interface PackageExports {
-  [key: string]: string | PackageExports;
+  [key: string]: PackageExports | string;
 }
 
 export interface GetPackage {
@@ -83,7 +83,7 @@ export interface GetPackage {
 export interface GetPackageLight {
   name: string;
   'dist-tags': Record<string, string>;
-  versions: Record<string, Pick<GetVersion, 'name' | 'version' | 'dist'>>;
+  versions: Record<string, Pick<GetVersion, 'dist' | 'name' | 'version'>>;
   modified: string;
 }
 

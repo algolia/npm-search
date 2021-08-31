@@ -468,7 +468,7 @@ function getRepositoryInfoFromHttpUrl(repository: string): Repo | null {
 }
 
 export function getRepositoryInfo(
-  repository: string | GetPackage['repository']
+  repository: GetPackage['repository'] | string
 ): Repo | null {
   if (!repository) {
     return null;
