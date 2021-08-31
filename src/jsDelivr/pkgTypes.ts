@@ -14,7 +14,8 @@ function createFilePattern(extensions: string[]): RegExp {
 
   // https://regex101.com/r/X5jQfH/2
   return new RegExp(
-    `^(?:(?!\\/(docs?|documentation|examples?|samples?|demos?|tests?)\\/)(?!\\/[._]).)+\\.(${extPattern})$`
+    `^(?:(?!\\/(docs?|documentation|examples?|samples?|demos?|tests?)\\/)(?!\\/[._]).)+\\.(${extPattern})$`,
+    'i'
   );
 }
 
@@ -35,7 +36,7 @@ export function getStyleTypes(
       const type = file.name.split('.').pop();
 
       if (type) {
-        styleTypes.add(type);
+        styleTypes.add(type.toLowerCase());
       }
     }
 

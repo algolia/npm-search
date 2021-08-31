@@ -18,6 +18,7 @@ describe('package module/style types', () => {
           { styleTypes: [] },
           { styleTypes: [] },
           { styleTypes: ['css'] },
+          { styleTypes: [] },
         ],
         [
           [],
@@ -30,6 +31,7 @@ describe('package module/style types', () => {
           ],
           undefined as any,
           [{ ...BASE_FILE, name: '/src/style/style.less' }],
+          [{ ...BASE_FILE, name: '/DIST/STYLE/STYLE.MIN.CSS' }],
         ]
       );
       expect(styleTypes).toEqual([
@@ -38,6 +40,7 @@ describe('package module/style types', () => {
         { styleTypes: ['less', 'css', 'scss'] },
         { styleTypes: ['none'] },
         { styleTypes: ['css', 'less'] },
+        { styleTypes: ['css'] },
       ]);
     });
 
