@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/algolia/npm-search/compare/v1.2.5...v1.3.0) (2021-09-01)
+
+
+### Features
+
+* add package style types information ([#683](https://github.com/algolia/npm-search/issues/683)) ([fdc08ba](https://github.com/algolia/npm-search/commit/fdc08ba099fb522dbd4f4138b4983205c192dccf))
+
 ## [1.2.5](https://github.com/algolia/npm-search/compare/v1.2.4...v1.2.5) (2021-08-28)
 
 
