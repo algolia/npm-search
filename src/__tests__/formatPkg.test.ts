@@ -500,8 +500,13 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-        type: 'module',
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, type: 'module' },
+        },
+      })?.moduleTypes
     ).toEqual(['esm']);
   });
 
@@ -510,8 +515,13 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-        type: 'commonjs',
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, type: 'commonjs' },
+        },
+      })?.moduleTypes
     ).toEqual(['cjs']);
   });
 
@@ -520,8 +530,13 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-        module: 'index.js',
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, module: 'index.js' },
+        },
+      })?.moduleTypes
     ).toEqual(['esm']);
   });
 
@@ -530,8 +545,13 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-        main: 'index.mjs',
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, main: 'index.mjs' },
+        },
+      })?.moduleTypes
     ).toEqual(['esm']);
   });
 
@@ -540,8 +560,13 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-        main: 'index.cjs',
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, main: 'index.cjs' },
+        },
+      })?.moduleTypes
     ).toEqual(['cjs']);
   });
 
@@ -550,12 +575,12 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'irrelevant',
-      }).moduleTypes
+      })?.moduleTypes
     ).toEqual(['unknown']);
   });
 
   it('preact (esm & umd)', () => {
-    expect(formatPkg(preact).moduleTypes).toEqual(['esm']);
+    expect(formatPkg(preact)?.moduleTypes).toEqual(['esm']);
   });
 
   it('silly broken package', () => {
@@ -563,9 +588,14 @@ describe('moduleTypes', () => {
       formatPkg({
         ...BASE,
         name: 'whoever',
-        // @ts-expect-error
-        main: [{ personalMain: 'index.mjs' }],
-      }).moduleTypes
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          // @ts-expect-error
+          '1.0.0': { ...BASE_VERSION, main: [{ personalMain: 'index.mjs' }] },
+        },
+      })?.moduleTypes
     ).toEqual(['unknown']);
   });
 });
@@ -646,6 +676,72 @@ describe('getExportKeys', () => {
       'bol',
       'condition',
     ]);
+  });
+});
+
+describe('getStyleTypes', () => {
+  it('style=css', () => {
+    expect(
+      formatPkg({
+        ...BASE,
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, style: '/style.min.css' },
+        },
+      })?.styleTypes
+    ).toEqual(['css']);
+  });
+
+  it('style=woff', () => {
+    expect(
+      formatPkg({
+        ...BASE,
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, style: '/font.woff' },
+        },
+      })?.styleTypes
+    ).toEqual(['woff']);
+  });
+
+  it('style=uppercase', () => {
+    expect(
+      formatPkg({
+        ...BASE,
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, style: '/STYLE.SCSS' },
+        },
+      })?.styleTypes
+    ).toEqual(['scss']);
+  });
+
+  it('style=empty', () => {
+    expect(
+      formatPkg({
+        ...BASE,
+        'dist-tags': {
+          latest: '1.0.0',
+        },
+        versions: {
+          '1.0.0': { ...BASE_VERSION, style: '' },
+        },
+      })?.styleTypes
+    ).toEqual([]);
+  });
+
+  it('style=undefined', () => {
+    expect(
+      formatPkg({
+        ...BASE,
+      })?.styleTypes
+    ).toEqual([]);
   });
 });
 

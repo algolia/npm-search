@@ -5,6 +5,12 @@ import type { FinalPkg, RawPkg } from './@types/pkg';
 import { getChangelogs, getChangelog } from './changelog';
 import formatPkg from './formatPkg';
 import * as jsDelivr from './jsDelivr';
+import {
+  getModuleTypes,
+  getStyleTypes,
+  getStyleTypesForAll,
+  getModuleTypesForAll,
+} from './jsDelivr/pkgTypes';
 import * as npm from './npm';
 import type { GetPackage } from './npm/types';
 import { getTSSupport, getTypeScriptSupport } from './typescript/index';
@@ -97,9 +103,11 @@ async function addMetaDatas(pkgs: RawPkg[]): Promise<FinalPkg[]> {
     jsDelivr.getAllFilesList(pkgs),
   ]);
 
-  const [changelogs, ts] = await Promise.all([
+  const [changelogs, ts, moduleTypes, styleTypes] = await Promise.all([
     getChangelogs(pkgs, filelists),
     getTSSupport(pkgs, filelists),
+    getModuleTypesForAll(pkgs, filelists),
+    getStyleTypesForAll(pkgs, filelists),
   ]);
 
   const start = Date.now();
@@ -111,6 +119,8 @@ async function addMetaDatas(pkgs: RawPkg[]): Promise<FinalPkg[]> {
       ...changelogs[index],
       ...hits[index],
       ...ts[index],
+      ...moduleTypes[index],
+      ...styleTypes[index],
       _searchInternal: {
         ...pkg._searchInternal,
         ...(downloads[index] ? downloads[index]!._searchInternal : {}),
@@ -131,9 +141,11 @@ async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
     jsDelivr.getFilesList(pkg),
   ]);
 
-  const [changelog, ts] = await Promise.all([
+  const [changelog, ts, moduleTypes, styleTypes] = await Promise.all([
     getChangelog(pkg, filelist),
     getTypeScriptSupport(pkg, filelist),
+    getModuleTypes(pkg, filelist),
+    getStyleTypes(pkg, filelist),
   ]);
 
   const start = Date.now();
@@ -144,6 +156,8 @@ async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
     ...changelog,
     ...hit,
     ...ts,
+    ...moduleTypes,
+    ...styleTypes,
     _searchInternal: {
       ...pkg._searchInternal,
       ...(download ? download!._searchInternal : {}),
