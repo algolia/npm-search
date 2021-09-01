@@ -13,6 +13,7 @@ import type {
   ComputedMeta,
   GithubRepo,
   ModuleType,
+  StyleType,
   Owner,
   RawPkg,
   Repo,
@@ -135,6 +136,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
   const devDependencies = cleaned.devDependencies || {};
   const alternativeNames = getAlternativeNames(cleaned.name);
   const moduleTypes = getModuleTypes(cleaned);
+  const styleTypes = getStyleTypes(cleaned);
 
   const tags = pkg['dist-tags'];
   const isDeprecated =
@@ -174,6 +176,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     bin: cleaned.bin || {},
     types,
     moduleTypes,
+    styleTypes,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       alternativeNames,
@@ -633,4 +636,15 @@ function getModuleTypes(pkg: NicePackageType): ModuleType[] {
   }
 
   return [...moduleTypes];
+}
+
+function getStyleTypes(pkg: NicePackageType): StyleType[] {
+  // style not declared - we will detect it later based on file list
+  if (!pkg.style) {
+    return [];
+  }
+
+  const ext = pkg.style.split('.').pop();
+
+  return ext ? [ext.toLowerCase()] : [];
 }

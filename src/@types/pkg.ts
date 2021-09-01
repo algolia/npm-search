@@ -32,7 +32,9 @@ export type TsType =
       ts: 'included' | false | { possible: true };
     };
 
-export type ModuleType = 'cjs' | 'esm' | 'unknown';
+export type ModuleType = 'cjs' | 'esm' | 'none' | 'unknown';
+
+export type StyleType = string | 'none';
 
 export type ComputedMeta = {
   computedKeywords: string[];
@@ -73,6 +75,7 @@ export interface RawPkg {
   bin: Record<string, string>;
   types: TsType;
   moduleTypes: ModuleType[];
+  styleTypes: StyleType[];
   lastCrawl: string;
   _searchInternal: {
     expiresAt: number;

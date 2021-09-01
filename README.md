@@ -133,7 +133,8 @@ For every single NPM package, we create a record in the Algolia index. The resul
     ts: 'definitely-typed', // definitely-typed | included | false
     definitelyTyped: '@types/babel__core',
   },
-  moduleTypes: ['unknown'], // esm | cjs | unknown
+  moduleTypes: ['unknown'], // esm | cjs | none | unknown
+  styleTypes: ['none'], // file extensions like css, less, scss or none if no style files present
   humanDependents: '3.3k',
   changelogFilename: null, // if babel-core had a changelog, it would be the raw GitHub url here
   objectID: 'babel-core',
