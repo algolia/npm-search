@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/algolia/npm-search/compare/v1.3.0...v1.3.1) (2021-09-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.12.0 ([#707](https://github.com/algolia/npm-search/issues/707)) ([8cea751](https://github.com/algolia/npm-search/commit/8cea7519f7a74024de7dc4c68f34f3ffbe1592b2))
+
 # [1.3.0](https://github.com/algolia/npm-search/compare/v1.2.5...v1.3.0) (2021-09-01)
 
 
