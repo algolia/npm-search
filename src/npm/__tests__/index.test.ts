@@ -28,10 +28,10 @@ describe('findAll()', () => {
 
 describe('getChanges()', () => {
   it('contains the correct keys', async () => {
-    const changes = await api.getChanges({ limit: 1, startkey: '0' });
+    const changes = await api.getChanges({ limit: 1 });
 
     expect(changes).toEqual({
-      last_seq: 3299,
+      last_seq: 10334,
       results: expect.any(Array),
     });
   });
