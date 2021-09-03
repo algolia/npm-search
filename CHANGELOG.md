@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/algolia/npm-search/compare/v1.3.1...v1.3.2) (2021-09-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency hot-shots to v8.5.1 ([fc0e5c7](https://github.com/algolia/npm-search/commit/fc0e5c7902df339b8c03de4c12e2c0efa5b9775f))
+
 ## [1.3.1](https://github.com/algolia/npm-search/compare/v1.3.0...v1.3.1) (2021-09-03)
 
 
