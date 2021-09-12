@@ -6232,10 +6232,10 @@ registry-auth-token@^4.0.0:
   dependencies:
     rc "^1.2.8"
 
-renovate-config-algolia@2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/renovate-config-algolia/-/renovate-config-algolia-2.1.4.tgz#d428158651a282195dda364d0fa30c479f41153b"
-  integrity sha512-+TMIlJrmWsvILxGj/23vVYavia5UNBPHfLGRSkohew4UOxTGqK7uIt8xZVxGqS60dG6VWj9r7zoeEBqu5Sa6ow==
+renovate-config-algolia@2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/renovate-config-algolia/-/renovate-config-algolia-2.1.5.tgz#42f9aa1ccab9410d1580aef9b6ea3a5568a9d208"
+  integrity sha512-oGA1FCgKt5vY6CUVemO6GAWSW2ChuSnAOUHxSec/t6WU2N5/fuwSawTWQJArMUhyhP1WHSB9GuuAPlG8QaBvjQ==
 
 request@^2.88.0, request@^2.88.2:
   version "2.88.2"
