@@ -31,7 +31,7 @@ describe('getChanges()', () => {
     const changes = await api.getChanges({ limit: 1 });
 
     expect(changes).toEqual({
-      last_seq: 10334,
+      last_seq: 2,
       results: expect.any(Array),
     });
   });
