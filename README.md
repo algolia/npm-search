@@ -48,6 +48,12 @@ The Algolia index is currently used, for free, by a few selected projects (e.g: 
 
 If you want to include this index to your project please reach out to: [support@algolia.com](mailto:support@algolia.com).
 
+To be eligible your project must meet these requirements:
+
+- Publicly available: The project must be publicly usable and, if applicable, include documentation or instructions on how the community can use it.
+- Non-commercial: The project cannot be used to promote a product or service; it has to provide something of value to the community at no cost. Applications for non-commercial projects backed by commercial entities will be reviewed on a case-by-base basis.
+
+
 You can also use the code or the [public docker image](https://hub.docker.com/r/algolia/npm-search) to run your own (as of September 2021 it will create ~3M records x2).
 
 ### Schema
