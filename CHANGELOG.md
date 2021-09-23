@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/algolia/npm-search/compare/v1.3.2...v1.4.0) (2021-09-23)
+
+
+### Features
+
+* add eligibility requirements ([#727](https://github.com/algolia/npm-search/issues/727)) ([14142b5](https://github.com/algolia/npm-search/commit/14142b59738da4f09c5ef3e263f5c13a80680817))
+
 ## [1.3.2](https://github.com/algolia/npm-search/compare/v1.3.1...v1.3.2) (2021-09-03)
 
 
