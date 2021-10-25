@@ -24,10 +24,22 @@ describe('stateManager', () => {
         setSettings: jest.fn(),
       } as any;
       const stateManager = new StateManager(mock);
-      await stateManager.set({ seq: 1, bootstrapDone: false });
+      await stateManager.set({
+        seq: 1,
+        bootstrapDone: false,
+        bootstrapLastDone: 1635196220508,
+        bootstrapLastId: '',
+        stage: 'bootstrap',
+      });
 
       expect(mock.setSettings).toHaveBeenCalledWith({
-        userData: { seq: 1, bootstrapDone: false },
+        userData: {
+          seq: 1,
+          bootstrapDone: false,
+          bootstrapLastDone: 1635196220508,
+          bootstrapLastId: '',
+          stage: 'bootstrap',
+        },
       });
     });
   });

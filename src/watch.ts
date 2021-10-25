@@ -52,6 +52,10 @@ export async function run(
 
   changesConsumer = createChangeConsumer(stateManager, mainIndex);
 
+  setInterval(async () => {
+    totalSequence = (await npm.db.info()).update_seq;
+  }, 5000);
+
   await watch(stateManager);
 
   log.info('-----');
@@ -69,26 +73,33 @@ export async function run(
 async function watch(stateManager: StateManager): Promise<true> {
   const { seq } = await stateManager.get();
 
-  const listener = npm.listenToChanges({
-    since: String(seq),
-    include_docs: false,
-    heartbeat: 30 * 1000,
+  const listener = npm.db.changesReader
+    .start({
+      includeDocs: false,
+      batchSize: 1,
+      since: String(seq),
+    })
+    .on('change', (change) => {
+      changesConsumer.push(change);
+
+      // on:change will not wait for us to process to trigger again
+      // So we need to control the fetch manually otherwise it will fetch thousand/millions of update in advance
+      if (changesConsumer.length() > 10) {
+        npm.db.changesReader.pause();
+      }
+    })
+    .on('error', (err) => {
+      sentry.report(err);
+    });
+
+  changesConsumer.saturated(() => {
+    if (changesConsumer.length() < 5) {
+      npm.db.changesReader.resume();
+    }
   });
-
-  listener.on('change', (change) => {
-    totalSequence = change.seq;
-
-    changesConsumer.push(change);
-  });
-
-  listener.on('error', (err) => {
-    sentry.report(err);
-  });
-
-  listener.follow();
 
   return new Promise((resolve) => {
-    listener.on('stop', () => {
+    listener.on('end', () => {
       resolve(true);
     });
   });
@@ -143,11 +154,12 @@ function logProgress(seq: number): void {
   datadog.gauge('watch.sequence.current', seq);
   log.info(
     chalk.dim.italic
-      .white`[progress] Synced %d/%d changes (%s%) (%s remaining)`,
+      .white`[progress] Synced %d/%d changes (%s%) (%s remaining) (%s in memory)`,
     seq,
     totalSequence,
     ((Math.max(seq, 1) / totalSequence) * 100).toFixed(2),
-    totalSequence - seq
+    totalSequence - seq,
+    changesConsumer.length()
   );
 }
 

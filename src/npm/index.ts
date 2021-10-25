@@ -1,12 +1,8 @@
 import chunk from 'lodash/chunk';
 import type {
-  DatabaseChangesParams,
-  DatabaseChangesResponse,
-  DocumentFetchResponse,
   DocumentGetResponse,
   DocumentListParams,
   DocumentListResponse,
-  DocumentScopeFollowUpdatesParams,
 } from 'nano';
 import nano from 'nano';
 import numeral from 'numeral';
@@ -36,19 +32,17 @@ const registry = nano({
   url: config.npmRegistryEndpoint,
   requestDefaults: {
     agent: httpsAgent,
+    timeout: 15000,
     headers: {
       'user-agent': USER_AGENT,
+      'Accept-Encoding': 'deflate, gzip',
+      'content-type': 'application/json',
+      accept: 'application/json',
     },
   },
 });
-const db = registry.use<GetPackage>(config.npmRegistryDBName);
 
-// Default request options
-const defaultOptions: DatabaseChangesParams = {
-  include_docs: true,
-  conflicts: false,
-  attachments: false,
-};
+export const db = registry.use<GetPackage>(config.npmRegistryDBName);
 
 /**
  * Find all packages in registry.
@@ -59,26 +53,10 @@ async function findAll(
   const start = Date.now();
 
   const results = await db.list({
-    ...defaultOptions,
     ...options,
   });
 
   datadog.timing('db.allDocs', Date.now() - start);
-
-  return results;
-}
-
-async function getChanges(
-  options: Partial<DatabaseChangesParams>
-): Promise<DatabaseChangesResponse> {
-  const start = Date.now();
-
-  const results = await db.changes({
-    ...defaultOptions,
-    ...options,
-  });
-
-  datadog.timing('db.getChanges', Date.now() - start);
 
   return results;
 }
@@ -94,51 +72,6 @@ async function getDoc(
   datadog.timing('npm.getDoc', Date.now() - start);
 
   return doc;
-}
-
-async function getDocs({
-  keys,
-}: {
-  keys: string[];
-}): Promise<DocumentFetchResponse<GetPackage>> {
-  const start = Date.now();
-
-  const docs = await db.fetch({ keys });
-
-  datadog.timing('npm.getDocs', Date.now() - start);
-
-  return docs;
-}
-
-/**
- * Listen to changes in registry.
- *
- * @param options - Options param.
- */
-function listenToChanges(
-  options: DocumentScopeFollowUpdatesParams
-): nano.FollowEmitter {
-  const listener = db.follow({
-    ...defaultOptions,
-    ...(options as any), // there is an incompat between types but they are compat
-  });
-  listener.on('confirm', () => {
-    log.info('Registry is confirmed/connected');
-  });
-  listener.on('catchup', () => {
-    log.info('Watch has catchup');
-  });
-  listener.on('retry', (info) => {
-    log.info('Registry is retrying to connect', info);
-  });
-  listener.on('timeout', (info) => {
-    log.info('Watch has timeouted', info);
-  });
-  listener.on('stop', () => {
-    log.info('Watch has stopped');
-  });
-
-  return listener;
 }
 
 /**
@@ -406,10 +339,7 @@ async function getDownload(
 
 export {
   findAll,
-  listenToChanges,
-  getChanges,
   getInfo,
-  getDocs,
   getDoc,
   getDependents,
   getDependent,
