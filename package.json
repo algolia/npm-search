@@ -90,7 +90,7 @@
     "validator": "13.6.0"
   },
   "engines": {
-    "node": "14.17.6",
+    "node": "16.12.0",
     "yarn": "^1.22.0"
   },
   "repository": {
