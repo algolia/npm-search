@@ -89,7 +89,7 @@ describe('files', () => {
         version: '3.33.0',
       });
       expect(files).toEqual([]);
-      expect(log.error.mock.calls[0][0]).toEqual(
+      expect(log.error.mock.calls[0][0]).toBe(
         'Failed to fetch https://data.jsdelivr.com/v1/package/npm/thispackagedoesnotexist@3.33.0/flat'
       );
     });
@@ -115,7 +115,7 @@ describe('files', () => {
         },
       ]);
       expect(files).toMatchSnapshot();
-      expect(log.error.mock.calls[0][0]).toEqual(
+      expect(log.error.mock.calls[0][0]).toBe(
         'Failed to fetch https://data.jsdelivr.com/v1/package/npm/thispackagedoesnotexist@3.33.0/flat'
       );
     });
