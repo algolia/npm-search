@@ -198,7 +198,7 @@ describe('jsDelivr', () => {
         { name: '/CHANGELOG.md', hash: '', time: '1', size: 1 },
       ]
     );
-    expect(changelogFilename).toEqual(
+    expect(changelogFilename).toBe(
       'https://cdn.jsdelivr.net/npm/foo@1.0.0/CHANGELOG.md'
     );
   });
@@ -220,7 +220,7 @@ describe('jsDelivr', () => {
       },
       [{ name: '/pkg/CHANGELOG.md', hash: '', time: '1', size: 1 }]
     );
-    expect(changelogFilename).toEqual(
+    expect(changelogFilename).toBe(
       'https://cdn.jsdelivr.net/npm/foo@1.0.0/pkg/CHANGELOG.md'
     );
   });
