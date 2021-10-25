@@ -1,3 +1,10 @@
+## [1.4.4](https://github.com/algolia/npm-search/compare/v1.4.3...v1.4.4) (2021-10-25)
+
+
+### Bug Fixes
+
+* **deps:** update algoliasearch client javascript to v4.11.0 ([#764](https://github.com/algolia/npm-search/issues/764)) ([a2e8568](https://github.com/algolia/npm-search/commit/a2e8568f6f8a5944184bb48ca0934e802a8b1b64))
+
 ## [1.4.3](https://github.com/algolia/npm-search/compare/v1.4.2...v1.4.3) (2021-10-09)
 
 
