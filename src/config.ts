@@ -19,6 +19,7 @@ const indexSettings: Settings = {
     'isDeprecated',
     'types.ts',
     'moduleTypes',
+    'styleTypes',
     'popular',
   ],
   customRanking: [

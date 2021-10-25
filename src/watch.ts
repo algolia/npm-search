@@ -122,11 +122,11 @@ async function loop(
     }
 
     await saveDoc({ row: res, index: mainIndex });
-  } catch (e) {
+  } catch (err) {
     // this error can be thrown by us or by nano if:
     // - we received a change that is not marked as "deleted"
     // - and the package has since been deleted
-    if (e.message === 'deleted') {
+    if (err instanceof Error && err.message === 'deleted') {
       mainIndex.deleteObject(change.id);
       log.info(`deleted`, change.id);
     }

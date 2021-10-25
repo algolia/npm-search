@@ -18,7 +18,7 @@ describe('findAll()', () => {
     expect(all.rows[0].doc).toEqual(
       expect.objectContaining({
         _id: '0',
-        _rev: '1-5fbff37e48e1dd03ce6e7ffd17b98998',
+        _rev: '9-2f99061d7a24f3ac9730d35566e66db9',
         name: '0',
         license: 'BSD-2-Clause',
       })
@@ -32,7 +32,7 @@ describe('getInfo()', () => {
     registryInfo = await api.getInfo();
   });
 
-  test('contains the correct keys', () => {
+  it('contains the correct keys', () => {
     expect(registryInfo).toEqual(
       expect.objectContaining({
         nbDocs: expect.any(Number),

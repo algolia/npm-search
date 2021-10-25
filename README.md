@@ -2,7 +2,9 @@
 
 [npm](https://www.npmjs.com/) ↔️ [Algolia](https://www.algolia.com/) replication tool.
 
-[![CircleCI](https://circleci.com/gh/algolia/npm-search/tree/master.svg?style=svg)](https://circleci.com/gh/algolia/npm-search/tree/master)
+[![CircleCI](https://circleci.com/gh/algolia/npm-search/tree/master.svg?style=svg)](https://circleci.com/gh/algolia/npm-search/tree/master) <a title="Public Status powered by Datadog" href="https://p.datadoghq.com/sb/2b51baa8-c54a-11eb-a5a4-da7ad0900002-4973ed88f5be0d93c350fcb0ea2e7f0c">
+  <img width="100" alt="Datadog Status" src="https://www.datocms-assets.com/2885/1611308816-datadog-horizontal-rgb.png?fit=max&fm=png&q=80" />
+</a>
 
 ---
 
@@ -19,6 +21,7 @@ If the process fails, restart it and the replication process will continue at th
 
 - [🗿 npm-search ⛷ 🐌 🛰](#-npm-search---)
   - [Algolia Index](#algolia-index)
+    - [Using the public index](#using-the-public-index)
     - [Schema](#schema)
     - [Ranking](#ranking)
       - [Textual relevance](#textual-relevance)
@@ -32,16 +35,26 @@ If the process fails, restart it and the replication process will continue at th
   - [Usage](#usage)
     - [Production](#production)
     - [Restart](#restart)
-    - [Development](#development)
-  - [Env variables](#env-variables)
   - [How does it work?](#how-does-it-work)
-  - [Tests](#tests)
-  - [Deploying new version](#deploying-new-version)
-  - [Forcing a complete re-index](#forcing-a-complete-re-index)
+  - [Contributing](#contributing)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Algolia Index
+
+### Using the public index
+
+The Algolia index is currently used, for free, by a few selected projects (e.g: [yarnpkg.com](https://yarnpkg.com), [codesandbox.io](https://codesandbox.io), [jsdelivr.com](https://www.jsdelivr.com/), etc...).
+
+If you want to include this index to your project please reach out to: [support@algolia.com](mailto:support@algolia.com).
+
+To be eligible your project must meet these requirements:
+
+- Publicly available: The project must be publicly usable and, if applicable, include documentation or instructions on how the community can use it.
+- Non-commercial: The project cannot be used to promote a product or service; it has to provide something of value to the community at no cost. Applications for non-commercial projects backed by commercial entities will be reviewed on a case-by-base basis.
+
+
+You can also use the code or the [public docker image](https://hub.docker.com/r/algolia/npm-search) to run your own (as of September 2021 it will create ~3M records x2).
 
 ### Schema
 
@@ -133,7 +146,8 @@ For every single NPM package, we create a record in the Algolia index. The resul
     ts: 'definitely-typed', // definitely-typed | included | false
     definitelyTyped: '@types/babel__core',
   },
-  moduleTypes: ['unknown'], // esm | cjs | unknown
+  moduleTypes: ['unknown'], // esm | cjs | none | unknown
+  styleTypes: ['none'], // file extensions like css, less, scss or none if no style files present
   humanDependents: '3.3k',
   changelogFilename: null, // if babel-core had a changelog, it would be the raw GitHub url here
   objectID: 'babel-core',
@@ -215,36 +229,6 @@ This is useful when you want to completely resync the npm registry because:
 `seq` represents a [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
 in CouchDB lingo.
 
-### Development
-
-Since the code is in ES6 and node.js, we compile to ES5 at the `install` process. To avoid having to rebuild
-while developing, use:
-
-```sh
-seq=0 apiKey=... yarn dev
-```
-
-Be careful to develop on a different index than the production one when necessary.
-
-## Env variables
-
-See [config.js](./config.js):
-
-- `apiKey`: [Algolia](https://www.algolia.com/) apiKey - **required**
-- `appId`: [Algolia](https://www.algolia.com/) appId - _default `OFCNCOG2CU`_
-- `indexName`: [Algolia](https://www.algolia.com/) indexName - _default `npm-search`_
-- `bootstrapConcurrency`: How many docs to grab from npm registry at once in the bootstrap phase - _default `25`_
-- `seq`: npm registry first [change sequence](http://docs.couchdb.org/en/2.0.0/json-structure.html#changes-information-for-a-database)
-  to start replication. In normal operations you should never have to use this. - _default `0`_
-- `npmRegistryEndpoint`: npm registry endpoint to replicate from - _default `https://replicate.npmjs.com/registry`_
-  This should be the only valid endpoint to replicate (even if a bit slow), see [this comment](https://github.com/npm/registry/issues/44#issuecomment-267732513).
-- `npmDownloadsEndpoint`: Where to look for the last 30 days download of packages - _default `https://api.npmjs.org/downloads`_
-- `popularDownloadsRatio`: % of total npm downloads for a package to be considered as popular
-  how much % of it is needed for a package to be popular - _default 0.2_ This is a bit lower than
-  the jQuery download range.
-- `DOGSTATSD_HOST`: Metrics reporting - _default `localhost`_
-- `SENTRY_DSN`: Error reporting - _default `empty`_
-
 ## How does it work?
 
 Our goal with this project is to:
@@ -266,31 +250,6 @@ Replicate and watch are separated because:
 2. In watch we want new changes as fast as possible, one by one. If watch was
     asking for batches of 100, new packages would be added too late to the index
 
-## Tests
+## Contributing
 
-```sh
-yarn test
-```
-
-Only linting.
-
-## Deploying new version
-
-[Setup heroku](https://devcenter.heroku.com/articles/git), then:
-
-```sh
-git push heroku master
-```
-
-## Forcing a complete re-index
-
-This will force a reindex, without removing any existing package
-
-```sh
-heroku config:add seq=0
-# check logs to see if it re-started
-heroku logs -t
-heroku config:remove seq
-# check logs to see if it re-started
-heroku logs -t
-```
+See [CONTRIBUTING.md](./CONTRIBUTING.md)

@@ -93,107 +93,88 @@ describe('should test baseUrlMap', () => {
   });
 });
 
-it('should handle not found changelog for github', async () => {
-  const pkg = {
-    name: 'foo',
-    version: '0.0.0',
-    repository: {
-      url: '',
-      host: 'github.com',
-      user: 'visionmedia',
-      project: 'debug',
-      path: '',
-      head: 'master',
-      branch: 'master',
-    },
-  };
+describe('hosts', () => {
+  it('should handle not found changelog for github', async () => {
+    const pkg = {
+      name: 'foo',
+      version: '0.0.0',
+      repository: {
+        url: '',
+        host: 'github.com',
+        user: 'visionmedia',
+        project: 'debug',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg], []);
-  expect(changelogFilename).toBe(null);
-});
+    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    expect(changelogFilename).toBeNull();
+  });
 
-it('should get changelog for github', async () => {
-  const pkg = {
-    name: 'foo',
-    version: '0.0.0',
-    repository: {
-      url: '',
-      host: 'github.com',
-      user: 'algolia',
-      project: 'algoliasearch-netlify',
-      path: '',
-      head: 'master',
-      branch: 'master',
-    },
-  };
+  it('should get changelog for github', async () => {
+    const pkg = {
+      name: 'foo',
+      version: '0.0.0',
+      repository: {
+        url: '',
+        host: 'github.com',
+        user: 'algolia',
+        project: 'algoliasearch-netlify',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg], []);
-  expect(changelogFilename).toBe(
-    'https://raw.githubusercontent.com/algolia/algoliasearch-netlify/master/CHANGELOG.md'
-  );
-});
+    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    expect(changelogFilename).toBe(
+      'https://raw.githubusercontent.com/algolia/algoliasearch-netlify/master/CHANGELOG.md'
+    );
+  });
 
-it('should get changelog for gitlab', async () => {
-  const pkg = {
-    name: 'foo',
-    version: '0.0.0',
-    repository: {
-      url: '',
-      host: 'gitlab.com',
-      user: 'janslow',
-      project: 'gitlab-fetch',
-      path: '',
-      head: 'master',
-      branch: 'master',
-    },
-  };
+  it('should get changelog for gitlab', async () => {
+    const pkg = {
+      name: 'foo',
+      version: '0.0.0',
+      repository: {
+        url: '',
+        host: 'gitlab.com',
+        user: 'janslow',
+        project: 'gitlab-fetch',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg], []);
-  expect(changelogFilename).toBe(
-    'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md'
-  );
-});
+    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    expect(changelogFilename).toBe(
+      'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md'
+    );
+  });
 
-it('should get changelog for bitbucket', async () => {
-  const pkg = {
-    name: 'foo',
-    version: '0.0.0',
-    repository: {
-      url: '',
-      host: 'bitbucket.org',
-      user: 'atlassian',
-      project: 'aui',
-      path: '',
-      head: 'master',
-      branch: 'master',
-    },
-  };
+  it('should get changelog for bitbucket', async () => {
+    const pkg = {
+      name: 'foo',
+      version: '0.0.0',
+      repository: {
+        url: '',
+        host: 'bitbucket.org',
+        user: 'atlassian',
+        project: 'aui',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    };
 
-  const [{ changelogFilename }] = await getChangelogs([pkg], []);
-  expect(changelogFilename).toBe(
-    'https://bitbucket.org/atlassian/aui/raw/master/changelog.md'
-  );
-});
-
-it('should work with HISTORY.md', async () => {
-  const pkg = {
-    name: 'foo',
-    version: '0.0.0',
-    repository: {
-      url: '',
-      host: 'github.com',
-      user: 'expressjs',
-      project: 'body-parser',
-      path: '',
-      head: 'master',
-      branch: 'master',
-    },
-  };
-
-  const [{ changelogFilename }] = await getChangelogs([pkg], []);
-  expect(changelogFilename).toBe(
-    'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md'
-  );
+    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    expect(changelogFilename).toBe(
+      'https://bitbucket.org/atlassian/aui/raw/master/changelog.md'
+    );
+  });
 });
 
 describe('jsDelivr', () => {
@@ -217,7 +198,7 @@ describe('jsDelivr', () => {
         { name: '/CHANGELOG.md', hash: '', time: '1', size: 1 },
       ]
     );
-    expect(changelogFilename).toEqual(
+    expect(changelogFilename).toBe(
       'https://cdn.jsdelivr.net/npm/foo@1.0.0/CHANGELOG.md'
     );
   });
@@ -239,7 +220,7 @@ describe('jsDelivr', () => {
       },
       [{ name: '/pkg/CHANGELOG.md', hash: '', time: '1', size: 1 }]
     );
-    expect(changelogFilename).toEqual(
+    expect(changelogFilename).toBe(
       'https://cdn.jsdelivr.net/npm/foo@1.0.0/pkg/CHANGELOG.md'
     );
   });
@@ -261,6 +242,29 @@ describe('jsDelivr', () => {
       },
       [{ name: '/dist/changelog.js', hash: '', time: '1', size: 1 }]
     );
-    expect(changelogFilename).toEqual(null);
+    expect(changelogFilename).toBeNull();
+  });
+});
+
+describe('filename', () => {
+  it('should work with HISTORY.md', async () => {
+    const pkg = {
+      name: 'foo',
+      version: '0.0.0',
+      repository: {
+        url: '',
+        host: 'github.com',
+        user: 'expressjs',
+        project: 'body-parser',
+        path: '',
+        head: 'master',
+        branch: 'master',
+      },
+    };
+
+    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    expect(changelogFilename).toBe(
+      'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md'
+    );
   });
 });

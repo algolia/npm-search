@@ -1,4 +1,9 @@
-import type { GetPackage, GetUser, PackageRepo } from '../npm/types';
+import type {
+  GetPackage,
+  GetUser,
+  GetVersion,
+  PackageRepo,
+} from '../npm/types';
 
 export interface NicePackageType {
   _hasShrinkwrap?: false;
@@ -16,9 +21,10 @@ export interface NicePackageType {
   lastPublisher?: GetUser;
   license?: string | { type: string };
   licenseText?: string;
-  main?: string | string[];
+  main?: string[] | string;
   modified: string;
   module?: string;
+  exports?: GetVersion['exports'];
   name: string;
   other: {
     _id?: string;
@@ -29,11 +35,12 @@ export interface NicePackageType {
   };
   owners?: GetUser[];
   readme?: string;
-  repository?: string | Partial<PackageRepo> | Array<Partial<PackageRepo>>;
+  repository?: Array<Partial<PackageRepo>> | Partial<PackageRepo> | string;
   scripts: Record<string, string>;
   schematics?: string;
   starsCount?: number;
-  type?: 'module' | 'commonjs';
+  style?: string;
+  type?: 'commonjs' | 'module';
   types?: string;
   typings?: string;
   unpkg?: string;

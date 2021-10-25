@@ -13,6 +13,7 @@ jest.mock('../../utils/log', () => {
 
 jest.setTimeout(10000);
 
+// eslint-disable-next-line jest/require-top-level-describe
 beforeEach(() => {
   jest.resetAllMocks();
 });
@@ -67,7 +68,7 @@ describe('hits', () => {
     });
 
     it('should not get one hit', () => {
-      expect(api.hits.get('thispackagedoesnotexist')).toBe(undefined);
+      expect(api.hits.get('thispackagedoesnotexist')).toBeUndefined();
     });
   });
 });
@@ -88,7 +89,7 @@ describe('files', () => {
         version: '3.33.0',
       });
       expect(files).toEqual([]);
-      expect(log.error.mock.calls[0][0]).toEqual(
+      expect(log.error.mock.calls[0][0]).toBe(
         'Failed to fetch https://data.jsdelivr.com/v1/package/npm/thispackagedoesnotexist@3.33.0/flat'
       );
     });
@@ -114,7 +115,7 @@ describe('files', () => {
         },
       ]);
       expect(files).toMatchSnapshot();
-      expect(log.error.mock.calls[0][0]).toEqual(
+      expect(log.error.mock.calls[0][0]).toBe(
         'Failed to fetch https://data.jsdelivr.com/v1/package/npm/thispackagedoesnotexist@3.33.0/flat'
       );
     });

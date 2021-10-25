@@ -60,9 +60,829 @@ Object {
     "url": "https://github.com/algolia/npm-search",
     "user": "algolia",
   },
+  "styleTypes": Array [],
   "tags": Object {
     "latest": "1.2.3",
   },
+  "types": Object {
+    "ts": Object {
+      "possible": true,
+    },
+  },
+  "version": "0.0.0",
+  "versions": Object {},
+}
+`;
+
+exports[`general transforms correctly: @atlaskit/input 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "atlaskitinput",
+      " atlaskit input",
+      "@atlaskit/input.js",
+      "@atlaskit/inputjs",
+      "@atlaskit/input",
+    ],
+    "expiresAt": Any<Number>,
+  },
+  "bin": Object {},
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": 1485733638021,
+  "dependencies": Object {
+    "@atlaskit/util-shared-styles": "^2.10.5",
+    "babel-runtime": "^6.11.6",
+    "keycode": "^2.1.8",
+    "prop-types": "^15.5.10",
+    "styled-components": "^1.4.6",
+  },
+  "deprecated": false,
+  "deprecatedReason": null,
+  "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
+  "devDependencies": Object {
+    "@atlaskit/field-base": "^8.0.2",
+  },
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": null,
+  "githubRepo": null,
+  "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
+  "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
+  "keywords": Array [
+    "atlaskit",
+    "ui",
+    "internal",
+  ],
+  "lastCrawl": Any<String>,
+  "lastPublisher": Object {
+    "avatar": "https://gravatar.com/avatar/f5f2da89496e4ad75ac1f9d7166e6b99",
+    "email": "design-platform@atlassian.com",
+    "link": "https://www.npmjs.com/~atlaskit",
+    "name": "atlaskit",
+  },
+  "license": "Apache-2.0",
+  "modified": 1510790341980,
+  "moduleTypes": Array [
+    "unknown",
+  ],
+  "name": "@atlaskit/input",
+  "objectID": "@atlaskit/input",
+  "originalAuthor": Object {
+    "name": "Atlassian Pty Ltd",
+  },
+  "owner": Object {
+    "avatar": "https://bitbucket.org/account/atlassian/avatar",
+    "link": "https://bitbucket.org/atlassian",
+    "name": "atlassian",
+  },
+  "owners": Array [
+    Object {
+      "avatar": "https://gravatar.com/avatar/f5f2da89496e4ad75ac1f9d7166e6b99",
+      "email": "design-platform@atlassian.com",
+      "link": "https://www.npmjs.com/~atlaskit",
+      "name": "atlaskit",
+    },
+  ],
+  "popular": false,
+  "readme": "[![AtlasKit component registry](https://img.shields.io/badge/AtlasKit-components-FF5230.svg)](http://atlaskit.atlassian.com)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://Commitizen.github.io/cz-cli/)
+[![semantic-release](https://img.shields.io/badge/GitHub-semantic_release-ffab00.svg)](https://github.com/semantic-release/semantic-release)
+[![Report an issue](https://img.shields.io/badge/Report-an_issue-6554C0.svg)](http://go.atlassian.com/atlaskit-issues)
+
+# Input
+
+**YOU SHOULD ALMOST DEFINITELY NOT BE USING THIS COMPONENT DIRECTLY**
+
+**USE @atlaskit/field-text INSTEAD**
+
+
+## SingleLineTextInput
+A text input component with extremely basic styling that supports read/edit modes.
+
+Designed for use within other components, e.g. for the read/edit views required by
+ak-inline-edit, or within table cells.
+
+Note: In addition the props described below, all other props passed to this
+component will be forwarded to the underlying HTML 'input'. This allows change
+handlers, placeholders, etc, to be attached to it.
+
+**Kind**: global variable
+* Properties
+
+*  [SingleLineTextInput](#SingleLineTextInput)
+    *  [.value](#SingleLineTextInput.value) : <code>string</code>
+    *  [.style](#SingleLineTextInput.style) : <code>object</code>
+    *  [.isInitiallySelected](#SingleLineTextInput.isInitiallySelected) : <code>boolean</code>
+    *  [.isEditing](#SingleLineTextInput.isEditing) : <code>boolean</code>
+    *  [.onConfirm](#SingleLineTextInput.onConfirm) : <code>function</code>
+    *  [.onKeyDown](#SingleLineTextInput.onKeyDown) : <code>function</code>
+
+<a name=\\"SingleLineTextInput.value\\"></a>
+
+### SingleLineTextInput.value : <code>string</code>
+The value of the input field.
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+<a name=\\"SingleLineTextInput.style\\"></a>
+
+### SingleLineTextInput.style : <code>object</code>
+Custom styles that will be applied to the read and edit views.
+
+Typical use would be to specify a custom font size.
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+<a name=\\"SingleLineTextInput.isInitiallySelected\\"></a>
+
+### SingleLineTextInput.isInitiallySelected : <code>boolean</code>
+Whether the input text will initially be selected/highlighted.
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+**Default**: <code>false</code>
+<a name=\\"SingleLineTextInput.isEditing\\"></a>
+
+### SingleLineTextInput.isEditing : <code>boolean</code>
+Whether the component is in edit mode or read mode.
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+<a name=\\"SingleLineTextInput.onConfirm\\"></a>
+
+### SingleLineTextInput.onConfirm : <code>function</code>
+Called when the user confirms input by pressing the enter key
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+<a name=\\"SingleLineTextInput.onKeyDown\\"></a>
+
+### SingleLineTextInput.onKeyDown : <code>function</code>
+Regular onKeyDown handler passed to the input
+
+**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
+
+_* Please note that this module could have dependencies that are governed by the Atlassian Design Guidelines license which will be automatically included on install. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies._
+
+## We're here to help!
+
+Let us know what you think of our components and docs, your feedback is really important for us.
+
+Are you in trouble? Read through our [contribution guidelines](https://bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md) and raise an issue to us.
+
+",
+  "repository": Object {
+    "branch": "8bee5877efdc84f337a56a047438b8aaac078a2d",
+    "head": "8bee5877efdc84f337a56a047438b8aaac078a2d",
+    "host": "bitbucket.org",
+    "path": "",
+    "project": "atlaskit",
+    "type": "git",
+    "url": "git+https://bitbucket.org/atlassian/atlaskit.git",
+    "user": "atlassian",
+  },
+  "styleTypes": Array [],
+  "tags": Object {
+    "latest": "1.6.1",
+  },
+  "types": Object {
+    "ts": Object {
+      "possible": true,
+    },
+  },
+  "version": "1.6.1",
+  "versions": Object {
+    "1.0.0": "2017-01-29T23:47:18.021Z",
+    "1.0.1": "2017-02-06T07:15:19.995Z",
+    "1.0.10": "2017-03-21T23:36:29.545Z",
+    "1.0.11": "2017-03-21T23:42:04.163Z",
+    "1.0.2": "2017-02-10T00:06:17.992Z",
+    "1.0.3": "2017-02-16T01:58:08.818Z",
+    "1.0.4": "2017-02-22T04:10:46.203Z",
+    "1.0.5": "2017-02-27T22:04:48.880Z",
+    "1.0.6": "2017-02-28T03:20:33.829Z",
+    "1.0.8": "2017-02-28T06:13:18.349Z",
+    "1.0.9": "2017-02-28T23:59:42.921Z",
+    "1.1.0": "2017-03-29T06:21:41.688Z",
+    "1.1.1": "2017-04-26T10:47:09.649Z",
+    "1.1.2": "2017-04-27T05:48:55.305Z",
+    "1.1.3": "2017-07-13T08:31:37.060Z",
+    "1.5.0": "2017-07-17T11:37:29.134Z",
+    "1.5.1": "2017-07-25T02:42:58.085Z",
+    "1.5.2": "2017-07-27T05:11:40.487Z",
+    "1.5.3": "2017-09-05T00:40:57.454Z",
+    "1.5.4": "2017-10-22T23:26:17.015Z",
+    "1.6.0": "2017-10-24T04:22:45.064Z",
+    "1.6.1": "2017-11-15T23:59:01.980Z",
+  },
+}
+`;
+
+exports[`general transforms correctly: @atomic-package/tab 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "atomicpackagetab",
+      " atomic package tab",
+      "@atomic-package/tab.js",
+      "@atomic-package/tabjs",
+      "@atomic-package/tab",
+    ],
+    "expiresAt": Any<Number>,
+  },
+  "bin": Object {},
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": 1498148375102,
+  "dependencies": Object {
+    "@atomic-package/common": "0.0.1",
+    "@atomic-package/utility": "0.0.2",
+  },
+  "deprecated": false,
+  "deprecatedReason": null,
+  "description": "atomic-package - tab",
+  "devDependencies": Object {
+    "@types/node": "^7.0.14",
+    "browser-sync": "^2.18.8",
+    "chai": "^3.5.0",
+    "concurrently": "^3.4.0",
+    "cssmin": "^0.4.3",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-mocha": "^4.3.1",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-uglify": "^2.1.2",
+    "gulp-watch": "^4.3.11",
+    "jsdom": "^10.0.0",
+    "path": "^0.12.7",
+    "power-assert": "^1.4.2",
+    "run-sequence": "^1.2.2",
+    "ts-loader": "^2.0.3",
+    "typescript": "^2.3.1",
+    "typings": "^2.1.1",
+    "webpack": "^2.4.1",
+  },
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
+  "githubRepo": Object {
+    "head": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
+    "path": "",
+    "project": "tab",
+    "user": "atomic-package",
+  },
+  "homepage": null,
+  "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
+  "keywords": Array [],
+  "lastCrawl": Any<String>,
+  "lastPublisher": Object {
+    "avatar": "https://gravatar.com/avatar/7daea8c42c6c43368b212ff96d0cb147",
+    "email": "d.takayama.web@gmail.com",
+    "link": "https://www.npmjs.com/~daisuke.takayama",
+    "name": "daisuke.takayama",
+  },
+  "license": "MIT",
+  "modified": 1498153976616,
+  "moduleTypes": Array [
+    "unknown",
+  ],
+  "name": "@atomic-package/tab",
+  "objectID": "@atomic-package/tab",
+  "originalAuthor": Object {
+    "name": "daisuke.takayama",
+  },
+  "owner": Object {
+    "avatar": "https://github.com/atomic-package.png",
+    "link": "https://github.com/atomic-package",
+    "name": "atomic-package",
+  },
+  "owners": Array [
+    Object {
+      "avatar": "https://gravatar.com/avatar/7daea8c42c6c43368b212ff96d0cb147",
+      "email": "d.takayama.web@gmail.com",
+      "link": "https://www.npmjs.com/~daisuke.takayama",
+      "name": "daisuke.takayama",
+    },
+  ],
+  "popular": false,
+  "readme": "# Atomic Package - tab
+",
+  "repository": Object {
+    "branch": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
+    "head": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
+    "host": "github.com",
+    "path": "",
+    "project": "tab",
+    "type": "git",
+    "url": "https://github.com/atomic-package/tab",
+    "user": "atomic-package",
+  },
+  "styleTypes": Array [],
+  "tags": Object {
+    "latest": "0.0.4",
+  },
+  "types": Object {
+    "ts": Object {
+      "possible": true,
+    },
+  },
+  "version": "0.0.4",
+  "versions": Object {
+    "0.0.1": "2017-06-22T16:19:35.102Z",
+    "0.0.2": "2017-06-22T17:49:18.317Z",
+    "0.0.3": "2017-06-22T17:51:16.866Z",
+    "0.0.4": "2017-06-22T17:52:56.616Z",
+  },
+}
+`;
+
+exports[`general transforms correctly: create-instantsearch-app 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "createinstantsearchapp",
+      "create instantsearch app",
+      "create-instantsearch-app.js",
+      "create-instantsearch-appjs",
+      "create-instantsearch-app",
+    ],
+    "expiresAt": Any<Number>,
+  },
+  "bin": Object {
+    "create-instantsearch-app": "src/cli/index.js",
+  },
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": 1500453698313,
+  "dependencies": Object {
+    "algoliasearch": "3.32.1",
+    "chalk": "2.4.2",
+    "commander": "2.20.0",
+    "inquirer": "6.2.2",
+    "jstransformer-handlebars": "1.1.0",
+    "latest-semver": "1.0.0",
+    "load-json-file": "5.2.0",
+    "lodash.camelcase": "4.3.0",
+    "metalsmith": "2.3.0",
+    "metalsmith-ignore": "1.0.0",
+    "metalsmith-in-place": "4.2.0",
+    "metalsmith-rename": "1.0.0",
+    "semver": "6.0.0",
+    "validate-npm-package-name": "3.0.0",
+  },
+  "deprecated": false,
+  "deprecatedReason": null,
+  "description": "⚡️ Build InstantSearch apps at the speed of thought",
+  "devDependencies": Object {
+    "babel-eslint": "10.0.1",
+    "conventional-changelog-cli": "2.0.12",
+    "doctoc": "1.4.0",
+    "eslint": "5.16.0",
+    "eslint-config-algolia": "13.2.3",
+    "eslint-config-prettier": "4.1.0",
+    "eslint-plugin-html": "5.0.3",
+    "eslint-plugin-import": "2.16.0",
+    "eslint-plugin-jest": "22.4.1",
+    "eslint-plugin-prettier": "3.0.1",
+    "jest": "24.7.1",
+    "jest-image-snapshot": "2.8.1",
+    "prettier": "1.16.4",
+    "release-it": "7.6.3",
+    "walk-sync": "1.1.3",
+  },
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
+  "githubRepo": Object {
+    "head": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
+    "path": "",
+    "project": "create-instantsearch-app",
+    "user": "algolia",
+  },
+  "homepage": null,
+  "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
+  "keywords": Array [
+    "algolia",
+    "instantsearch",
+  ],
+  "lastCrawl": Any<String>,
+  "lastPublisher": Object {
+    "avatar": "https://gravatar.com/avatar/9cc6ca4fa944d31b00fa880fcc08cc5b",
+    "email": "francois.chalifour@gmail.com",
+    "link": "https://www.npmjs.com/~francoischalifour",
+    "name": "francoischalifour",
+  },
+  "license": "MIT",
+  "modified": 1554896045753,
+  "moduleTypes": Array [
+    "unknown",
+  ],
+  "name": "create-instantsearch-app",
+  "objectID": "create-instantsearch-app",
+  "originalAuthor": Object {
+    "email": "support@algolia.com",
+    "name": "Algolia",
+  },
+  "owner": Object {
+    "avatar": "https://github.com/algolia.png",
+    "link": "https://github.com/algolia",
+    "name": "algolia",
+  },
+  "owners": Array [
+    Object {
+      "avatar": "https://gravatar.com/avatar/5bd4a014c260f733feecc1f3f146f7d7",
+      "email": "bobylito@gmail.com",
+      "link": "https://www.npmjs.com/~bobylito",
+      "name": "bobylito",
+    },
+  ],
+  "popular": false,
+  "readme": "# Create InstantSearch App",
+  "repository": Object {
+    "branch": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
+    "head": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
+    "host": "github.com",
+    "path": "",
+    "project": "create-instantsearch-app",
+    "type": "git",
+    "url": "https://github.com/algolia/create-instantsearch-app",
+    "user": "algolia",
+  },
+  "styleTypes": Array [],
+  "tags": Object {
+    "latest": "4.4.2",
+  },
+  "types": Object {
+    "ts": Object {
+      "possible": true,
+    },
+  },
+  "version": "4.4.2",
+  "versions": Object {
+    "4.4.2": "2019-04-10T11:34:01.895Z",
+  },
+}
+`;
+
+exports[`general transforms correctly: indexof 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "indexof",
+      "indexof.js",
+      "indexofjs",
+    ],
+    "expiresAt": Any<Number>,
+  },
+  "bin": Object {},
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": 1346430013243,
+  "dependencies": Object {},
+  "deprecated": false,
+  "deprecatedReason": null,
+  "description": "Microsoft sucks",
+  "devDependencies": Object {},
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": null,
+  "githubRepo": null,
+  "homepage": null,
+  "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
+  "keywords": Array [
+    "index",
+    "array",
+    "indexOf",
+  ],
+  "lastCrawl": Any<String>,
+  "lastPublisher": null,
+  "license": null,
+  "modified": 1424001480609,
+  "moduleTypes": Array [
+    "unknown",
+  ],
+  "name": "indexof",
+  "objectID": "indexof",
+  "originalAuthor": undefined,
+  "owner": Object {
+    "avatar": "https://gravatar.com/avatar/f1e3ab214a976a39cfd713bc93deb10f",
+    "email": "tj@vision-media.ca",
+    "link": "https://www.npmjs.com/~tjholowaychuk",
+    "name": "tjholowaychuk",
+  },
+  "owners": Array [
+    Object {
+      "avatar": "https://gravatar.com/avatar/f1e3ab214a976a39cfd713bc93deb10f",
+      "email": "tj@vision-media.ca",
+      "link": "https://www.npmjs.com/~tjholowaychuk",
+      "name": "tjholowaychuk",
+    },
+  ],
+  "popular": false,
+  "readme": "
+# indexOf
+
+  Lame indexOf thing, thanks microsoft
+
+## Example
+
+\`\`\`js
+var index = require('indexof');
+index(arr, obj);
+\`\`\`
+
+## License
+
+  MIT",
+  "repository": null,
+  "styleTypes": Array [],
+  "tags": Object {
+    "latest": "0.0.1",
+  },
+  "types": Object {
+    "ts": Object {
+      "possible": true,
+    },
+  },
+  "version": "0.0.1",
+  "versions": Object {
+    "0.0.1": "2012-08-31T16:20:14.894Z",
+  },
+}
+`;
+
+exports[`general transforms correctly: prismjs 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "prismjs",
+      "prism",
+    ],
+    "expiresAt": Any<Number>,
+  },
+  "bin": Object {},
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": 1431474880643,
+  "dependencies": Object {
+    "clipboard": "^2.0.0",
+  },
+  "deprecated": false,
+  "deprecatedReason": null,
+  "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
+  "devDependencies": Object {
+    "chai": "^4.2.0",
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.3.4",
+    "gulp-header": "^2.0.7",
+    "gulp-rename": "^1.2.0",
+    "gulp-replace": "^1.0.0",
+    "gulp-uglify": "^3.0.1",
+    "htmlparser2": "^4.0.0",
+    "jsdom": "^13.0.0",
+    "mocha": "^6.2.0",
+    "pump": "^3.0.0",
+    "regexpp": "^2.0.1",
+    "simple-git": "^1.107.0",
+    "yargs": "^13.2.2",
+  },
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": "81670053da263b0fe814d58de66213a43f439b98",
+  "githubRepo": Object {
+    "head": "81670053da263b0fe814d58de66213a43f439b98",
+    "path": "",
+    "project": "prism",
+    "user": "LeaVerou",
+  },
+  "homepage": null,
+  "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
+  "keywords": Array [
+    "prism",
+    "highlight",
+  ],
+  "lastCrawl": Any<String>,
+  "lastPublisher": Object {
+    "avatar": "https://gravatar.com/avatar/9a2965a86b7596abaca73ba46716c2a1",
+    "email": "jamesorodig@gmail.com",
+    "link": "https://www.npmjs.com/~jamesdigioia",
+    "name": "jamesdigioia",
+  },
+  "license": "MIT",
+  "modified": 1585962297069,
+  "moduleTypes": Array [
+    "unknown",
+  ],
+  "name": "prismjs",
+  "objectID": "prismjs",
+  "originalAuthor": Object {
+    "name": "Lea Verou",
+  },
+  "owner": Object {
+    "avatar": "https://github.com/LeaVerou.png",
+    "link": "https://github.com/LeaVerou",
+    "name": "LeaVerou",
+  },
+  "owners": Array [
+    Object {
+      "avatar": "https://gravatar.com/avatar/db1b1b2f3e2c48fa9ba7fae82a08dfb2",
+      "email": "golmote@gmail.com",
+      "link": "https://www.npmjs.com/~golmote",
+      "name": "golmote",
+    },
+    Object {
+      "avatar": "https://gravatar.com/avatar/24e5dceb090d80f5e21c9430820d5373",
+      "email": "gpleiss@gmail.com",
+      "link": "https://www.npmjs.com/~gpleiss",
+      "name": "gpleiss",
+    },
+    Object {
+      "avatar": "https://gravatar.com/avatar/9a2965a86b7596abaca73ba46716c2a1",
+      "email": "jamesorodig@gmail.com",
+      "link": "https://www.npmjs.com/~jamesdigioia",
+      "name": "jamesdigioia",
+    },
+    Object {
+      "avatar": "https://gravatar.com/avatar/3869e93ce6b2a22e37cf13281d9e6f75",
+      "email": "lea@verou.me",
+      "link": "https://www.npmjs.com/~leaverou",
+      "name": "leaverou",
+    },
+    Object {
+      "avatar": "https://gravatar.com/avatar/0fbf1502ee778cc11715219b412c38d5",
+      "email": "ryan.dy@gmail.com",
+      "link": "https://www.npmjs.com/~rdy",
+      "name": "rdy",
+    },
+    Object {
+      "avatar": "https://gravatar.com/avatar/1d153775485e41e8474b115e2b30413d",
+      "email": "nicole@stubbornella.org",
+      "link": "https://www.npmjs.com/~stubbornella",
+      "name": "stubbornella",
+    },
+    Object {
+      "avatar": "https://gravatar.com/avatar/1394eef0c510132173c0e7392cac54b6",
+      "email": "vinsonchuong@gmail.com",
+      "link": "https://www.npmjs.com/~vinsonchuong",
+      "name": "vinsonchuong",
+    },
+  ],
+  "popular": false,
+  "readme": "# [Prism](https://prismjs.com/)
+
+[![Build Status](https://travis-ci.org/PrismJS/prism.svg?branch=master)](https://travis-ci.org/PrismJS/prism)
+[![npm](https://img.shields.io/npm/dw/prismjs.svg)](https://www.npmjs.com/package/prismjs)
+
+Prism is a lightweight, robust, elegant syntax highlighting library. It's a spin-off project from [Dabblet](https://dabblet.com/).
+
+You can learn more on [prismjs.com](https://prismjs.com/).
+
+[Why another syntax highlighter?](https://lea.verou.me/2012/07/introducing-prism-an-awesome-new-syntax-highlighter/#more-1841)
+
+[More themes for Prism!](https://github.com/PrismJS/prism-themes)
+
+## Contribute to Prism!
+
+Prism depends on community contributions to expand and cover a wider array of use cases. If you like it, considering giving back by sending a pull request. Here are a few tips:
+
+- Read the [documentation](https://prismjs.com/extending.html). Prism was designed to be extensible.
+- Do not edit \`prism.js\`, itâ€™s just the version of Prism used by the Prism website and is built automatically. Limit your changes to the unminified files in the \`components/\` folder. The minified files are also generated automatically.
+- The build system uses [gulp](https://github.com/gulpjs/gulp) to minify the files and build \`prism.js\`. Having gulp installed, you just need to run the command \`gulp\`.
+- Please follow the code conventions used in the files already. For example, I use [tabs for indentation and spaces for alignment](http://lea.verou.me/2012/01/why-tabs-are-clearly-superior/). Opening braces are on the same line, closing braces on their own line regardless of construct. There is a space before the opening brace. etc etc.
+- Please try to err towards more smaller PRs rather than few huge PRs. If a PR includes changes I want to merge and changes I don't, handling it becomes difficult.
+- My time is very limited these days, so it might take a long time to review longer PRs (short ones are usually merged very quickly), especially those modifying the Prism Core. This doesn't mean your PR is rejected.
+- If you contribute a new language definition, you will be responsible for handling bug reports about that language definition.
+- If you add a new language definition, theme or plugin, you need to add it to \`components.json\` as well and rebuild Prism by running \`gulp\`, so that it becomes available to the download build page. For new languages, please also add a few [tests](https://prismjs.com/test-suite.html) and an example in the \`examples/\` folder.
+
+Thank you so much for contributing!!
+
+## Translations
+
+* [![ä¸­æ–‡è¯´æ˜Ž](http://awesomes.oss-cn-beijing.aliyuncs.com/readme.png)](https://www.awesomes.cn/repo/PrismJS/prism)
+",
+  "repository": Object {
+    "branch": "81670053da263b0fe814d58de66213a43f439b98",
+    "head": "81670053da263b0fe814d58de66213a43f439b98",
+    "host": "github.com",
+    "path": "",
+    "project": "prism",
+    "type": "git",
+    "url": "https://github.com/LeaVerou/prism",
+    "user": "LeaVerou",
+  },
+  "styleTypes": Array [
+    "css",
+  ],
+  "tags": Object {
+    "latest": "1.20.0",
+  },
+  "types": Object {
+    "ts": Object {
+      "possible": true,
+    },
+  },
+  "version": "1.20.0",
+  "versions": Object {
+    "0.0.1": "2015-05-13T00:37:38.541Z",
+    "1.1.0": "2015-10-06T00:03:04.995Z",
+    "1.10.0": "2018-01-17T22:58:11.306Z",
+    "1.11.0": "2018-02-05T08:03:40.974Z",
+    "1.12.0": "2018-03-07T20:47:42.924Z",
+    "1.12.2": "2018-03-08T22:48:14.877Z",
+    "1.13.0": "2018-03-21T07:33:19.843Z",
+    "1.14.0": "2018-04-11T07:07:37.342Z",
+    "1.15.0": "2018-06-17T01:52:23.178Z",
+    "1.16.0": "2019-03-25T11:37:08.871Z",
+    "1.17.0": "2019-07-22T02:05:58.666Z",
+    "1.17.1": "2019-07-22T02:08:37.262Z",
+    "1.18.0": "2020-01-04T21:36:41.973Z",
+    "1.19.0": "2020-01-13T13:39:48.212Z",
+    "1.2.0": "2015-10-07T17:35:20.776Z",
+    "1.20.0": "2020-04-04T01:04:54.672Z",
+    "1.3.0": "2015-10-27T02:35:27.738Z",
+    "1.4.1": "2016-02-05T03:02:10.903Z",
+    "1.5.0": "2016-05-16T19:27:36.144Z",
+    "1.5.1": "2016-06-07T01:45:09.291Z",
+    "1.6.0": "2016-12-05T15:15:07.039Z",
+    "1.7.0": "2017-09-09T13:17:53.558Z",
+    "1.8.0": "2017-09-16T11:26:30.833Z",
+    "1.8.1": "2017-09-16T11:35:42.623Z",
+    "1.8.3": "2017-10-19T19:59:49.084Z",
+    "1.8.4": "2017-11-05T16:39:11.337Z",
+    "1.9.0": "2017-12-05T23:52:53.059Z",
+  },
+}
+`;
+
+exports[`general truncates long readmes 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "longboy",
+      "long boy",
+      "long-boy.js",
+      "long-boyjs",
+      "long-boy",
+    ],
+    "expiresAt": Any<Number>,
+  },
+  "bin": Object {},
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": NaN,
+  "dependencies": Object {},
+  "deprecated": false,
+  "deprecatedReason": null,
+  "description": null,
+  "devDependencies": Object {},
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": "master",
+  "githubRepo": Object {
+    "head": "master",
+    "path": "",
+    "project": "npm-search",
+    "user": "algolia",
+  },
+  "homepage": null,
+  "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
+  "keywords": Array [],
+  "lastCrawl": Any<String>,
+  "lastPublisher": null,
+  "license": null,
+  "modified": NaN,
+  "moduleTypes": Array [
+    "unknown",
+  ],
+  "name": "long-boy",
+  "objectID": "long-boy",
+  "originalAuthor": undefined,
+  "owner": Object {
+    "avatar": "https://github.com/algolia.png",
+    "link": "https://github.com/algolia",
+    "name": "algolia",
+  },
+  "owners": Array [],
+  "popular": false,
+  "readme": Any<String>,
+  "repository": Object {
+    "branch": "master",
+    "head": undefined,
+    "host": "github.com",
+    "path": "",
+    "project": "npm-search",
+    "type": "git",
+    "url": "https://github.com/algolia/npm-search",
+    "user": "algolia",
+  },
+  "styleTypes": Array [],
+  "tags": undefined,
   "types": Object {
     "ts": Object {
       "possible": true,
@@ -708,816 +1528,5 @@ QE+S
       "number": "10.0.0-rc.1",
     },
   ],
-}
-`;
-
-exports[`transforms correctly: @atlaskit/input 1`] = `
-Object {
-  "_searchInternal": Object {
-    "alternativeNames": Array [
-      "atlaskitinput",
-      " atlaskit input",
-      "@atlaskit/input.js",
-      "@atlaskit/inputjs",
-      "@atlaskit/input",
-    ],
-    "expiresAt": Any<Number>,
-  },
-  "bin": Object {},
-  "computedKeywords": Array [],
-  "computedMetadata": Object {},
-  "created": 1485733638021,
-  "dependencies": Object {
-    "@atlaskit/util-shared-styles": "^2.10.5",
-    "babel-runtime": "^6.11.6",
-    "keycode": "^2.1.8",
-    "prop-types": "^15.5.10",
-    "styled-components": "^1.4.6",
-  },
-  "deprecated": false,
-  "deprecatedReason": null,
-  "description": "Internal component used by field-base to create field-text. DO NOT USE DIRECTLY",
-  "devDependencies": Object {
-    "@atlaskit/field-base": "^8.0.2",
-  },
-  "downloadsLast30Days": 0,
-  "downloadsRatio": 0,
-  "gitHead": null,
-  "githubRepo": null,
-  "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
-  "humanDownloadsLast30Days": "0",
-  "isDeprecated": false,
-  "keywords": Array [
-    "atlaskit",
-    "ui",
-    "internal",
-  ],
-  "lastCrawl": Any<String>,
-  "lastPublisher": Object {
-    "avatar": "https://gravatar.com/avatar/f5f2da89496e4ad75ac1f9d7166e6b99",
-    "email": "design-platform@atlassian.com",
-    "link": "https://www.npmjs.com/~atlaskit",
-    "name": "atlaskit",
-  },
-  "license": "Apache-2.0",
-  "modified": 1510790341980,
-  "moduleTypes": Array [
-    "unknown",
-  ],
-  "name": "@atlaskit/input",
-  "objectID": "@atlaskit/input",
-  "originalAuthor": Object {
-    "name": "Atlassian Pty Ltd",
-  },
-  "owner": Object {
-    "avatar": "https://bitbucket.org/account/atlassian/avatar",
-    "link": "https://bitbucket.org/atlassian",
-    "name": "atlassian",
-  },
-  "owners": Array [
-    Object {
-      "avatar": "https://gravatar.com/avatar/f5f2da89496e4ad75ac1f9d7166e6b99",
-      "email": "design-platform@atlassian.com",
-      "link": "https://www.npmjs.com/~atlaskit",
-      "name": "atlaskit",
-    },
-  ],
-  "popular": false,
-  "readme": "[![AtlasKit component registry](https://img.shields.io/badge/AtlasKit-components-FF5230.svg)](http://atlaskit.atlassian.com)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://Commitizen.github.io/cz-cli/)
-[![semantic-release](https://img.shields.io/badge/GitHub-semantic_release-ffab00.svg)](https://github.com/semantic-release/semantic-release)
-[![Report an issue](https://img.shields.io/badge/Report-an_issue-6554C0.svg)](http://go.atlassian.com/atlaskit-issues)
-
-# Input
-
-**YOU SHOULD ALMOST DEFINITELY NOT BE USING THIS COMPONENT DIRECTLY**
-
-**USE @atlaskit/field-text INSTEAD**
-
-
-## SingleLineTextInput
-A text input component with extremely basic styling that supports read/edit modes.
-
-Designed for use within other components, e.g. for the read/edit views required by
-ak-inline-edit, or within table cells.
-
-Note: In addition the props described below, all other props passed to this
-component will be forwarded to the underlying HTML 'input'. This allows change
-handlers, placeholders, etc, to be attached to it.
-
-**Kind**: global variable
-* Properties
-
-*  [SingleLineTextInput](#SingleLineTextInput)
-    *  [.value](#SingleLineTextInput.value) : <code>string</code>
-    *  [.style](#SingleLineTextInput.style) : <code>object</code>
-    *  [.isInitiallySelected](#SingleLineTextInput.isInitiallySelected) : <code>boolean</code>
-    *  [.isEditing](#SingleLineTextInput.isEditing) : <code>boolean</code>
-    *  [.onConfirm](#SingleLineTextInput.onConfirm) : <code>function</code>
-    *  [.onKeyDown](#SingleLineTextInput.onKeyDown) : <code>function</code>
-
-<a name=\\"SingleLineTextInput.value\\"></a>
-
-### SingleLineTextInput.value : <code>string</code>
-The value of the input field.
-
-**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
-<a name=\\"SingleLineTextInput.style\\"></a>
-
-### SingleLineTextInput.style : <code>object</code>
-Custom styles that will be applied to the read and edit views.
-
-Typical use would be to specify a custom font size.
-
-**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
-<a name=\\"SingleLineTextInput.isInitiallySelected\\"></a>
-
-### SingleLineTextInput.isInitiallySelected : <code>boolean</code>
-Whether the input text will initially be selected/highlighted.
-
-**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
-**Default**: <code>false</code>
-<a name=\\"SingleLineTextInput.isEditing\\"></a>
-
-### SingleLineTextInput.isEditing : <code>boolean</code>
-Whether the component is in edit mode or read mode.
-
-**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
-<a name=\\"SingleLineTextInput.onConfirm\\"></a>
-
-### SingleLineTextInput.onConfirm : <code>function</code>
-Called when the user confirms input by pressing the enter key
-
-**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
-<a name=\\"SingleLineTextInput.onKeyDown\\"></a>
-
-### SingleLineTextInput.onKeyDown : <code>function</code>
-Regular onKeyDown handler passed to the input
-
-**Kind**: static property of <code>[SingleLineTextInput](#SingleLineTextInput)</code>
-
-_* Please note that this module could have dependencies that are governed by the Atlassian Design Guidelines license which will be automatically included on install. Each dependency has a license file that indicates whether the Atlassian Design Guidelines license applies._
-
-## We're here to help!
-
-Let us know what you think of our components and docs, your feedback is really important for us.
-
-Are you in trouble? Read through our [contribution guidelines](https://bitbucket.org/atlassian/atlaskit/src/HEAD/CONTRIBUTING.md) and raise an issue to us.
-
-",
-  "repository": Object {
-    "branch": "8bee5877efdc84f337a56a047438b8aaac078a2d",
-    "head": "8bee5877efdc84f337a56a047438b8aaac078a2d",
-    "host": "bitbucket.org",
-    "path": "",
-    "project": "atlaskit",
-    "type": "git",
-    "url": "git+https://bitbucket.org/atlassian/atlaskit.git",
-    "user": "atlassian",
-  },
-  "tags": Object {
-    "latest": "1.6.1",
-  },
-  "types": Object {
-    "ts": Object {
-      "possible": true,
-    },
-  },
-  "version": "1.6.1",
-  "versions": Object {
-    "1.0.0": "2017-01-29T23:47:18.021Z",
-    "1.0.1": "2017-02-06T07:15:19.995Z",
-    "1.0.10": "2017-03-21T23:36:29.545Z",
-    "1.0.11": "2017-03-21T23:42:04.163Z",
-    "1.0.2": "2017-02-10T00:06:17.992Z",
-    "1.0.3": "2017-02-16T01:58:08.818Z",
-    "1.0.4": "2017-02-22T04:10:46.203Z",
-    "1.0.5": "2017-02-27T22:04:48.880Z",
-    "1.0.6": "2017-02-28T03:20:33.829Z",
-    "1.0.8": "2017-02-28T06:13:18.349Z",
-    "1.0.9": "2017-02-28T23:59:42.921Z",
-    "1.1.0": "2017-03-29T06:21:41.688Z",
-    "1.1.1": "2017-04-26T10:47:09.649Z",
-    "1.1.2": "2017-04-27T05:48:55.305Z",
-    "1.1.3": "2017-07-13T08:31:37.060Z",
-    "1.5.0": "2017-07-17T11:37:29.134Z",
-    "1.5.1": "2017-07-25T02:42:58.085Z",
-    "1.5.2": "2017-07-27T05:11:40.487Z",
-    "1.5.3": "2017-09-05T00:40:57.454Z",
-    "1.5.4": "2017-10-22T23:26:17.015Z",
-    "1.6.0": "2017-10-24T04:22:45.064Z",
-    "1.6.1": "2017-11-15T23:59:01.980Z",
-  },
-}
-`;
-
-exports[`transforms correctly: @atomic-package/tab 1`] = `
-Object {
-  "_searchInternal": Object {
-    "alternativeNames": Array [
-      "atomicpackagetab",
-      " atomic package tab",
-      "@atomic-package/tab.js",
-      "@atomic-package/tabjs",
-      "@atomic-package/tab",
-    ],
-    "expiresAt": Any<Number>,
-  },
-  "bin": Object {},
-  "computedKeywords": Array [],
-  "computedMetadata": Object {},
-  "created": 1498148375102,
-  "dependencies": Object {
-    "@atomic-package/common": "0.0.1",
-    "@atomic-package/utility": "0.0.2",
-  },
-  "deprecated": false,
-  "deprecatedReason": null,
-  "description": "atomic-package - tab",
-  "devDependencies": Object {
-    "@types/node": "^7.0.14",
-    "browser-sync": "^2.18.8",
-    "chai": "^3.5.0",
-    "concurrently": "^3.4.0",
-    "cssmin": "^0.4.3",
-    "del": "^2.2.2",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^3.1.1",
-    "gulp-concat": "^2.6.1",
-    "gulp-cssmin": "^0.1.7",
-    "gulp-mocha": "^4.3.1",
-    "gulp-plumber": "^1.1.0",
-    "gulp-sass": "^3.1.0",
-    "gulp-uglify": "^2.1.2",
-    "gulp-watch": "^4.3.11",
-    "jsdom": "^10.0.0",
-    "path": "^0.12.7",
-    "power-assert": "^1.4.2",
-    "run-sequence": "^1.2.2",
-    "ts-loader": "^2.0.3",
-    "typescript": "^2.3.1",
-    "typings": "^2.1.1",
-    "webpack": "^2.4.1",
-  },
-  "downloadsLast30Days": 0,
-  "downloadsRatio": 0,
-  "gitHead": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
-  "githubRepo": Object {
-    "head": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
-    "path": "",
-    "project": "tab",
-    "user": "atomic-package",
-  },
-  "homepage": null,
-  "humanDownloadsLast30Days": "0",
-  "isDeprecated": false,
-  "keywords": Array [],
-  "lastCrawl": Any<String>,
-  "lastPublisher": Object {
-    "avatar": "https://gravatar.com/avatar/7daea8c42c6c43368b212ff96d0cb147",
-    "email": "d.takayama.web@gmail.com",
-    "link": "https://www.npmjs.com/~daisuke.takayama",
-    "name": "daisuke.takayama",
-  },
-  "license": "MIT",
-  "modified": 1498153976616,
-  "moduleTypes": Array [
-    "unknown",
-  ],
-  "name": "@atomic-package/tab",
-  "objectID": "@atomic-package/tab",
-  "originalAuthor": Object {
-    "name": "daisuke.takayama",
-  },
-  "owner": Object {
-    "avatar": "https://github.com/atomic-package.png",
-    "link": "https://github.com/atomic-package",
-    "name": "atomic-package",
-  },
-  "owners": Array [
-    Object {
-      "avatar": "https://gravatar.com/avatar/7daea8c42c6c43368b212ff96d0cb147",
-      "email": "d.takayama.web@gmail.com",
-      "link": "https://www.npmjs.com/~daisuke.takayama",
-      "name": "daisuke.takayama",
-    },
-  ],
-  "popular": false,
-  "readme": "# Atomic Package - tab
-",
-  "repository": Object {
-    "branch": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
-    "head": "96fb8a20e1e7c283e3a00607c0e7e14f31dd4e37",
-    "host": "github.com",
-    "path": "",
-    "project": "tab",
-    "type": "git",
-    "url": "https://github.com/atomic-package/tab",
-    "user": "atomic-package",
-  },
-  "tags": Object {
-    "latest": "0.0.4",
-  },
-  "types": Object {
-    "ts": Object {
-      "possible": true,
-    },
-  },
-  "version": "0.0.4",
-  "versions": Object {
-    "0.0.1": "2017-06-22T16:19:35.102Z",
-    "0.0.2": "2017-06-22T17:49:18.317Z",
-    "0.0.3": "2017-06-22T17:51:16.866Z",
-    "0.0.4": "2017-06-22T17:52:56.616Z",
-  },
-}
-`;
-
-exports[`transforms correctly: create-instantsearch-app 1`] = `
-Object {
-  "_searchInternal": Object {
-    "alternativeNames": Array [
-      "createinstantsearchapp",
-      "create instantsearch app",
-      "create-instantsearch-app.js",
-      "create-instantsearch-appjs",
-      "create-instantsearch-app",
-    ],
-    "expiresAt": Any<Number>,
-  },
-  "bin": Object {
-    "create-instantsearch-app": "src/cli/index.js",
-  },
-  "computedKeywords": Array [],
-  "computedMetadata": Object {},
-  "created": 1500453698313,
-  "dependencies": Object {
-    "algoliasearch": "3.32.1",
-    "chalk": "2.4.2",
-    "commander": "2.20.0",
-    "inquirer": "6.2.2",
-    "jstransformer-handlebars": "1.1.0",
-    "latest-semver": "1.0.0",
-    "load-json-file": "5.2.0",
-    "lodash.camelcase": "4.3.0",
-    "metalsmith": "2.3.0",
-    "metalsmith-ignore": "1.0.0",
-    "metalsmith-in-place": "4.2.0",
-    "metalsmith-rename": "1.0.0",
-    "semver": "6.0.0",
-    "validate-npm-package-name": "3.0.0",
-  },
-  "deprecated": false,
-  "deprecatedReason": null,
-  "description": "⚡️ Build InstantSearch apps at the speed of thought",
-  "devDependencies": Object {
-    "babel-eslint": "10.0.1",
-    "conventional-changelog-cli": "2.0.12",
-    "doctoc": "1.4.0",
-    "eslint": "5.16.0",
-    "eslint-config-algolia": "13.2.3",
-    "eslint-config-prettier": "4.1.0",
-    "eslint-plugin-html": "5.0.3",
-    "eslint-plugin-import": "2.16.0",
-    "eslint-plugin-jest": "22.4.1",
-    "eslint-plugin-prettier": "3.0.1",
-    "jest": "24.7.1",
-    "jest-image-snapshot": "2.8.1",
-    "prettier": "1.16.4",
-    "release-it": "7.6.3",
-    "walk-sync": "1.1.3",
-  },
-  "downloadsLast30Days": 0,
-  "downloadsRatio": 0,
-  "gitHead": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
-  "githubRepo": Object {
-    "head": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
-    "path": "",
-    "project": "create-instantsearch-app",
-    "user": "algolia",
-  },
-  "homepage": null,
-  "humanDownloadsLast30Days": "0",
-  "isDeprecated": false,
-  "keywords": Array [
-    "algolia",
-    "instantsearch",
-  ],
-  "lastCrawl": Any<String>,
-  "lastPublisher": Object {
-    "avatar": "https://gravatar.com/avatar/9cc6ca4fa944d31b00fa880fcc08cc5b",
-    "email": "francois.chalifour@gmail.com",
-    "link": "https://www.npmjs.com/~francoischalifour",
-    "name": "francoischalifour",
-  },
-  "license": "MIT",
-  "modified": 1554896045753,
-  "moduleTypes": Array [
-    "unknown",
-  ],
-  "name": "create-instantsearch-app",
-  "objectID": "create-instantsearch-app",
-  "originalAuthor": Object {
-    "email": "support@algolia.com",
-    "name": "Algolia",
-  },
-  "owner": Object {
-    "avatar": "https://github.com/algolia.png",
-    "link": "https://github.com/algolia",
-    "name": "algolia",
-  },
-  "owners": Array [
-    Object {
-      "avatar": "https://gravatar.com/avatar/5bd4a014c260f733feecc1f3f146f7d7",
-      "email": "bobylito@gmail.com",
-      "link": "https://www.npmjs.com/~bobylito",
-      "name": "bobylito",
-    },
-  ],
-  "popular": false,
-  "readme": "# Create InstantSearch App",
-  "repository": Object {
-    "branch": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
-    "head": "2ecdd2d3d0b1194a91d05eb1a1e532ec988e4539",
-    "host": "github.com",
-    "path": "",
-    "project": "create-instantsearch-app",
-    "type": "git",
-    "url": "https://github.com/algolia/create-instantsearch-app",
-    "user": "algolia",
-  },
-  "tags": Object {
-    "latest": "4.4.2",
-  },
-  "types": Object {
-    "ts": Object {
-      "possible": true,
-    },
-  },
-  "version": "4.4.2",
-  "versions": Object {
-    "4.4.2": "2019-04-10T11:34:01.895Z",
-  },
-}
-`;
-
-exports[`transforms correctly: indexof 1`] = `
-Object {
-  "_searchInternal": Object {
-    "alternativeNames": Array [
-      "indexof",
-      "indexof.js",
-      "indexofjs",
-    ],
-    "expiresAt": Any<Number>,
-  },
-  "bin": Object {},
-  "computedKeywords": Array [],
-  "computedMetadata": Object {},
-  "created": 1346430013243,
-  "dependencies": Object {},
-  "deprecated": false,
-  "deprecatedReason": null,
-  "description": "Microsoft sucks",
-  "devDependencies": Object {},
-  "downloadsLast30Days": 0,
-  "downloadsRatio": 0,
-  "gitHead": null,
-  "githubRepo": null,
-  "homepage": null,
-  "humanDownloadsLast30Days": "0",
-  "isDeprecated": false,
-  "keywords": Array [
-    "index",
-    "array",
-    "indexOf",
-  ],
-  "lastCrawl": Any<String>,
-  "lastPublisher": null,
-  "license": null,
-  "modified": 1424001480609,
-  "moduleTypes": Array [
-    "unknown",
-  ],
-  "name": "indexof",
-  "objectID": "indexof",
-  "originalAuthor": undefined,
-  "owner": Object {
-    "avatar": "https://gravatar.com/avatar/f1e3ab214a976a39cfd713bc93deb10f",
-    "email": "tj@vision-media.ca",
-    "link": "https://www.npmjs.com/~tjholowaychuk",
-    "name": "tjholowaychuk",
-  },
-  "owners": Array [
-    Object {
-      "avatar": "https://gravatar.com/avatar/f1e3ab214a976a39cfd713bc93deb10f",
-      "email": "tj@vision-media.ca",
-      "link": "https://www.npmjs.com/~tjholowaychuk",
-      "name": "tjholowaychuk",
-    },
-  ],
-  "popular": false,
-  "readme": "
-# indexOf
-
-  Lame indexOf thing, thanks microsoft
-
-## Example
-
-\`\`\`js
-var index = require('indexof');
-index(arr, obj);
-\`\`\`
-
-## License
-
-  MIT",
-  "repository": null,
-  "tags": Object {
-    "latest": "0.0.1",
-  },
-  "types": Object {
-    "ts": Object {
-      "possible": true,
-    },
-  },
-  "version": "0.0.1",
-  "versions": Object {
-    "0.0.1": "2012-08-31T16:20:14.894Z",
-  },
-}
-`;
-
-exports[`transforms correctly: prismjs 1`] = `
-Object {
-  "_searchInternal": Object {
-    "alternativeNames": Array [
-      "prismjs",
-      "prism",
-    ],
-    "expiresAt": Any<Number>,
-  },
-  "bin": Object {},
-  "computedKeywords": Array [],
-  "computedMetadata": Object {},
-  "created": 1431474880643,
-  "dependencies": Object {
-    "clipboard": "^2.0.0",
-  },
-  "deprecated": false,
-  "deprecatedReason": null,
-  "description": "Lightweight, robust, elegant syntax highlighting. A spin-off project from Dabblet.",
-  "devDependencies": Object {
-    "chai": "^4.2.0",
-    "gulp": "^4.0.2",
-    "gulp-concat": "^2.3.4",
-    "gulp-header": "^2.0.7",
-    "gulp-rename": "^1.2.0",
-    "gulp-replace": "^1.0.0",
-    "gulp-uglify": "^3.0.1",
-    "htmlparser2": "^4.0.0",
-    "jsdom": "^13.0.0",
-    "mocha": "^6.2.0",
-    "pump": "^3.0.0",
-    "regexpp": "^2.0.1",
-    "simple-git": "^1.107.0",
-    "yargs": "^13.2.2",
-  },
-  "downloadsLast30Days": 0,
-  "downloadsRatio": 0,
-  "gitHead": "81670053da263b0fe814d58de66213a43f439b98",
-  "githubRepo": Object {
-    "head": "81670053da263b0fe814d58de66213a43f439b98",
-    "path": "",
-    "project": "prism",
-    "user": "LeaVerou",
-  },
-  "homepage": null,
-  "humanDownloadsLast30Days": "0",
-  "isDeprecated": false,
-  "keywords": Array [
-    "prism",
-    "highlight",
-  ],
-  "lastCrawl": Any<String>,
-  "lastPublisher": Object {
-    "avatar": "https://gravatar.com/avatar/9a2965a86b7596abaca73ba46716c2a1",
-    "email": "jamesorodig@gmail.com",
-    "link": "https://www.npmjs.com/~jamesdigioia",
-    "name": "jamesdigioia",
-  },
-  "license": "MIT",
-  "modified": 1585962297069,
-  "moduleTypes": Array [
-    "unknown",
-  ],
-  "name": "prismjs",
-  "objectID": "prismjs",
-  "originalAuthor": Object {
-    "name": "Lea Verou",
-  },
-  "owner": Object {
-    "avatar": "https://github.com/LeaVerou.png",
-    "link": "https://github.com/LeaVerou",
-    "name": "LeaVerou",
-  },
-  "owners": Array [
-    Object {
-      "avatar": "https://gravatar.com/avatar/db1b1b2f3e2c48fa9ba7fae82a08dfb2",
-      "email": "golmote@gmail.com",
-      "link": "https://www.npmjs.com/~golmote",
-      "name": "golmote",
-    },
-    Object {
-      "avatar": "https://gravatar.com/avatar/24e5dceb090d80f5e21c9430820d5373",
-      "email": "gpleiss@gmail.com",
-      "link": "https://www.npmjs.com/~gpleiss",
-      "name": "gpleiss",
-    },
-    Object {
-      "avatar": "https://gravatar.com/avatar/9a2965a86b7596abaca73ba46716c2a1",
-      "email": "jamesorodig@gmail.com",
-      "link": "https://www.npmjs.com/~jamesdigioia",
-      "name": "jamesdigioia",
-    },
-    Object {
-      "avatar": "https://gravatar.com/avatar/3869e93ce6b2a22e37cf13281d9e6f75",
-      "email": "lea@verou.me",
-      "link": "https://www.npmjs.com/~leaverou",
-      "name": "leaverou",
-    },
-    Object {
-      "avatar": "https://gravatar.com/avatar/0fbf1502ee778cc11715219b412c38d5",
-      "email": "ryan.dy@gmail.com",
-      "link": "https://www.npmjs.com/~rdy",
-      "name": "rdy",
-    },
-    Object {
-      "avatar": "https://gravatar.com/avatar/1d153775485e41e8474b115e2b30413d",
-      "email": "nicole@stubbornella.org",
-      "link": "https://www.npmjs.com/~stubbornella",
-      "name": "stubbornella",
-    },
-    Object {
-      "avatar": "https://gravatar.com/avatar/1394eef0c510132173c0e7392cac54b6",
-      "email": "vinsonchuong@gmail.com",
-      "link": "https://www.npmjs.com/~vinsonchuong",
-      "name": "vinsonchuong",
-    },
-  ],
-  "popular": false,
-  "readme": "# [Prism](https://prismjs.com/)
-
-[![Build Status](https://travis-ci.org/PrismJS/prism.svg?branch=master)](https://travis-ci.org/PrismJS/prism)
-[![npm](https://img.shields.io/npm/dw/prismjs.svg)](https://www.npmjs.com/package/prismjs)
-
-Prism is a lightweight, robust, elegant syntax highlighting library. It's a spin-off project from [Dabblet](https://dabblet.com/).
-
-You can learn more on [prismjs.com](https://prismjs.com/).
-
-[Why another syntax highlighter?](https://lea.verou.me/2012/07/introducing-prism-an-awesome-new-syntax-highlighter/#more-1841)
-
-[More themes for Prism!](https://github.com/PrismJS/prism-themes)
-
-## Contribute to Prism!
-
-Prism depends on community contributions to expand and cover a wider array of use cases. If you like it, considering giving back by sending a pull request. Here are a few tips:
-
-- Read the [documentation](https://prismjs.com/extending.html). Prism was designed to be extensible.
-- Do not edit \`prism.js\`, itâ€™s just the version of Prism used by the Prism website and is built automatically. Limit your changes to the unminified files in the \`components/\` folder. The minified files are also generated automatically.
-- The build system uses [gulp](https://github.com/gulpjs/gulp) to minify the files and build \`prism.js\`. Having gulp installed, you just need to run the command \`gulp\`.
-- Please follow the code conventions used in the files already. For example, I use [tabs for indentation and spaces for alignment](http://lea.verou.me/2012/01/why-tabs-are-clearly-superior/). Opening braces are on the same line, closing braces on their own line regardless of construct. There is a space before the opening brace. etc etc.
-- Please try to err towards more smaller PRs rather than few huge PRs. If a PR includes changes I want to merge and changes I don't, handling it becomes difficult.
-- My time is very limited these days, so it might take a long time to review longer PRs (short ones are usually merged very quickly), especially those modifying the Prism Core. This doesn't mean your PR is rejected.
-- If you contribute a new language definition, you will be responsible for handling bug reports about that language definition.
-- If you add a new language definition, theme or plugin, you need to add it to \`components.json\` as well and rebuild Prism by running \`gulp\`, so that it becomes available to the download build page. For new languages, please also add a few [tests](https://prismjs.com/test-suite.html) and an example in the \`examples/\` folder.
-
-Thank you so much for contributing!!
-
-## Translations
-
-* [![ä¸­æ–‡è¯´æ˜Ž](http://awesomes.oss-cn-beijing.aliyuncs.com/readme.png)](https://www.awesomes.cn/repo/PrismJS/prism)
-",
-  "repository": Object {
-    "branch": "81670053da263b0fe814d58de66213a43f439b98",
-    "head": "81670053da263b0fe814d58de66213a43f439b98",
-    "host": "github.com",
-    "path": "",
-    "project": "prism",
-    "type": "git",
-    "url": "https://github.com/LeaVerou/prism",
-    "user": "LeaVerou",
-  },
-  "tags": Object {
-    "latest": "1.20.0",
-  },
-  "types": Object {
-    "ts": Object {
-      "possible": true,
-    },
-  },
-  "version": "1.20.0",
-  "versions": Object {
-    "0.0.1": "2015-05-13T00:37:38.541Z",
-    "1.1.0": "2015-10-06T00:03:04.995Z",
-    "1.10.0": "2018-01-17T22:58:11.306Z",
-    "1.11.0": "2018-02-05T08:03:40.974Z",
-    "1.12.0": "2018-03-07T20:47:42.924Z",
-    "1.12.2": "2018-03-08T22:48:14.877Z",
-    "1.13.0": "2018-03-21T07:33:19.843Z",
-    "1.14.0": "2018-04-11T07:07:37.342Z",
-    "1.15.0": "2018-06-17T01:52:23.178Z",
-    "1.16.0": "2019-03-25T11:37:08.871Z",
-    "1.17.0": "2019-07-22T02:05:58.666Z",
-    "1.17.1": "2019-07-22T02:08:37.262Z",
-    "1.18.0": "2020-01-04T21:36:41.973Z",
-    "1.19.0": "2020-01-13T13:39:48.212Z",
-    "1.2.0": "2015-10-07T17:35:20.776Z",
-    "1.20.0": "2020-04-04T01:04:54.672Z",
-    "1.3.0": "2015-10-27T02:35:27.738Z",
-    "1.4.1": "2016-02-05T03:02:10.903Z",
-    "1.5.0": "2016-05-16T19:27:36.144Z",
-    "1.5.1": "2016-06-07T01:45:09.291Z",
-    "1.6.0": "2016-12-05T15:15:07.039Z",
-    "1.7.0": "2017-09-09T13:17:53.558Z",
-    "1.8.0": "2017-09-16T11:26:30.833Z",
-    "1.8.1": "2017-09-16T11:35:42.623Z",
-    "1.8.3": "2017-10-19T19:59:49.084Z",
-    "1.8.4": "2017-11-05T16:39:11.337Z",
-    "1.9.0": "2017-12-05T23:52:53.059Z",
-  },
-}
-`;
-
-exports[`truncates long readmes 1`] = `
-Object {
-  "_searchInternal": Object {
-    "alternativeNames": Array [
-      "longboy",
-      "long boy",
-      "long-boy.js",
-      "long-boyjs",
-      "long-boy",
-    ],
-    "expiresAt": Any<Number>,
-  },
-  "bin": Object {},
-  "computedKeywords": Array [],
-  "computedMetadata": Object {},
-  "created": NaN,
-  "dependencies": Object {},
-  "deprecated": false,
-  "deprecatedReason": null,
-  "description": null,
-  "devDependencies": Object {},
-  "downloadsLast30Days": 0,
-  "downloadsRatio": 0,
-  "gitHead": "master",
-  "githubRepo": Object {
-    "head": "master",
-    "path": "",
-    "project": "npm-search",
-    "user": "algolia",
-  },
-  "homepage": null,
-  "humanDownloadsLast30Days": "0",
-  "isDeprecated": false,
-  "keywords": Array [],
-  "lastCrawl": Any<String>,
-  "lastPublisher": null,
-  "license": null,
-  "modified": NaN,
-  "moduleTypes": Array [
-    "unknown",
-  ],
-  "name": "long-boy",
-  "objectID": "long-boy",
-  "originalAuthor": undefined,
-  "owner": Object {
-    "avatar": "https://github.com/algolia.png",
-    "link": "https://github.com/algolia",
-    "name": "algolia",
-  },
-  "owners": Array [],
-  "popular": false,
-  "readme": Any<String>,
-  "repository": Object {
-    "branch": "master",
-    "head": undefined,
-    "host": "github.com",
-    "path": "",
-    "project": "npm-search",
-    "type": "git",
-    "url": "https://github.com/algolia/npm-search",
-    "user": "algolia",
-  },
-  "tags": undefined,
-  "types": Object {
-    "ts": Object {
-      "possible": true,
-    },
-  },
-  "version": "0.0.0",
-  "versions": Object {},
 }
 `;

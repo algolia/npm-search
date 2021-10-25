@@ -31,18 +31,31 @@ export interface GetVersion {
     tarball: string;
   };
   license?: string;
+
+  type?: 'commonjs' | 'module';
+  module?: string;
   main?: string;
+  exports?: PackageExports;
+
   maintainers: GetUser[];
   name: string;
   scripts?: Record<string, string>;
   version: string;
-  deprecated?: string | boolean;
+  deprecated?: boolean | string;
+  schematics?: string;
+  types?: string;
+  typings?: string;
+  style?: string;
 }
 
 export interface PackageRepo {
   type: string;
   url: string;
   directory?: string;
+}
+
+export interface PackageExports {
+  [key: string]: PackageExports | string;
 }
 
 export interface GetPackage {
@@ -65,13 +78,12 @@ export interface GetPackage {
   keywords?: string[] | string;
   contributors?: Array<{ name: string }>;
   repository?: PackageRepo;
-  schematics?: string;
 }
 
 export interface GetPackageLight {
   name: string;
   'dist-tags': Record<string, string>;
-  versions: Record<string, Pick<GetVersion, 'name' | 'version' | 'dist'>>;
+  versions: Record<string, Pick<GetVersion, 'dist' | 'name' | 'version'>>;
   modified: string;
 }
 

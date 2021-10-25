@@ -25,14 +25,16 @@ export interface GithubRepo {
 
 export type TsType =
   | {
-      ts: 'included' | false | { possible: true };
-    }
-  | {
       ts: 'definitely-typed';
       definitelyTyped: string;
+    }
+  | {
+      ts: 'included' | false | { possible: true };
     };
 
-export type ModuleType = 'esm' | 'cjs' | 'unknown';
+export type ModuleType = 'cjs' | 'esm' | 'none' | 'unknown';
+
+export type StyleType = string | 'none';
 
 export type ComputedMeta = {
   computedKeywords: string[];
@@ -58,7 +60,7 @@ export interface RawPkg {
   gitHead: string | null;
   readme: string;
   owner: Owner | null;
-  deprecated: string | boolean;
+  deprecated: boolean | string;
   isDeprecated: boolean;
   deprecatedReason: string | null;
   homepage: string | null;
@@ -73,6 +75,7 @@ export interface RawPkg {
   bin: Record<string, string>;
   types: TsType;
   moduleTypes: ModuleType[];
+  styleTypes: StyleType[];
   lastCrawl: string;
   _searchInternal: {
     expiresAt: number;

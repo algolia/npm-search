@@ -9,7 +9,7 @@ import { request } from './utils/request';
 
 export const baseUrlMap = new Map<
   string,
-  (opts: Pick<Repo, 'user' | 'project' | 'path' | 'branch'>) => string
+  (opts: Pick<Repo, 'branch' | 'path' | 'project' | 'user'>) => string
 >();
 baseUrlMap.set(
   'github.com',
@@ -94,7 +94,7 @@ async function raceFromPaths(files: string[]): Promise<{
 }
 
 export async function getChangelog(
-  pkg: Pick<RawPkg, 'repository' | 'name' | 'version'>,
+  pkg: Pick<RawPkg, 'name' | 'repository' | 'version'>,
   filelist: jsDelivr.File[]
 ): Promise<{
   changelogFilename: string | null;
@@ -141,7 +141,7 @@ export async function getChangelog(
 }
 
 export async function getChangelogs(
-  pkgs: Array<Pick<RawPkg, 'repository' | 'name' | 'version'>>,
+  pkgs: Array<Pick<RawPkg, 'name' | 'repository' | 'version'>>,
   filelists: jsDelivr.File[][]
 ): Promise<
   Array<{

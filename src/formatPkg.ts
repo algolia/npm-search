@@ -13,6 +13,7 @@ import type {
   ComputedMeta,
   GithubRepo,
   ModuleType,
+  StyleType,
   Owner,
   RawPkg,
   Repo,
@@ -135,6 +136,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
   const devDependencies = cleaned.devDependencies || {};
   const alternativeNames = getAlternativeNames(cleaned.name);
   const moduleTypes = getModuleTypes(cleaned);
+  const styleTypes = getStyleTypes(cleaned);
 
   const tags = pkg['dist-tags'];
   const isDeprecated =
@@ -174,6 +176,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     bin: cleaned.bin || {},
     types,
     moduleTypes,
+    styleTypes,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       alternativeNames,
@@ -465,7 +468,7 @@ function getRepositoryInfoFromHttpUrl(repository: string): Repo | null {
 }
 
 export function getRepositoryInfo(
-  repository: string | GetPackage['repository']
+  repository: GetPackage['repository'] | string
 ): Repo | null {
   if (!repository) {
     return null;
@@ -575,26 +578,73 @@ export function getMains(pkg: Pick<NicePackageType, 'main'>): string[] {
   return [];
 }
 
-function getModuleTypes(pkg: NicePackageType): ModuleType[] {
-  const mains = getMains(pkg);
-  const moduleTypes: ModuleType[] = [];
+export function getExportKeys(
+  exp: NicePackageType['exports'] | string
+): string[] {
+  if (typeof exp !== 'object') {
+    return [];
+  }
+  const keys = Object.keys(exp);
+  const nestedKeys = keys.flatMap((key) => getExportKeys(exp[key]));
+  return [...keys, ...nestedKeys];
+}
 
-  mains.forEach((main) => {
-    if (
-      typeof pkg.module === 'string' ||
-      pkg.type === 'module' ||
-      main.endsWith('.mjs')
-    ) {
-      moduleTypes.push('esm');
+const typeToModuleTypeMapping: Record<
+  Required<NicePackageType>['type'],
+  ModuleType
+> = {
+  commonjs: 'cjs',
+  module: 'esm',
+};
+
+function getModuleTypes(pkg: NicePackageType): ModuleType[] {
+  const moduleTypes: Set<ModuleType> = new Set();
+
+  // type is declared
+  if (pkg.type) {
+    moduleTypes.add(typeToModuleTypeMapping[pkg.type]);
+  }
+
+  // get all explicit exports (supporting cjs in esm or other way round)
+  // reference: https://nodejs.org/api/packages.html
+  const exportKeys = getExportKeys(pkg.exports);
+  if (exportKeys.includes('import')) {
+    moduleTypes.add('esm');
+  }
+  if (exportKeys.includes('require')) {
+    moduleTypes.add('cjs');
+  }
+
+  // module (non-standard) is declared
+  if (typeof pkg.module === 'string') {
+    moduleTypes.add('esm');
+  }
+
+  // check the extension of each of the "main" values
+  getMains(pkg).forEach((main) => {
+    if (main.endsWith('.mjs')) {
+      moduleTypes.add('esm');
     }
-    if (pkg.type === 'commonjs' || main.endsWith('.cjs')) {
-      moduleTypes.push('cjs');
+    if (main.endsWith('.cjs')) {
+      moduleTypes.add('cjs');
     }
   });
 
-  if (moduleTypes.length === 0) {
-    moduleTypes.push('unknown');
+  // add a default value to make filtering possible
+  if (moduleTypes.size === 0) {
+    moduleTypes.add('unknown');
   }
 
-  return moduleTypes;
+  return [...moduleTypes];
+}
+
+function getStyleTypes(pkg: NicePackageType): StyleType[] {
+  // style not declared - we will detect it later based on file list
+  if (!pkg.style) {
+    return [];
+  }
+
+  const ext = pkg.style.split('.').pop();
+
+  return ext ? [ext.toLowerCase()] : [];
 }

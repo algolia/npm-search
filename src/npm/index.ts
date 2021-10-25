@@ -23,7 +23,7 @@ type GetDownload = {
   popular: boolean;
   _searchInternal: Pick<
     FinalPkg['_searchInternal'],
-    'expiresAt' | 'popularName' | 'downloadsMagnitude'
+    'downloadsMagnitude' | 'expiresAt' | 'popularName'
   >;
 };
 let cacheTotalDownloads: { total: number; date: number } | undefined;

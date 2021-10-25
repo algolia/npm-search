@@ -1,19 +1,19 @@
 import * as api from './index';
 
-jest.setTimeout(10000);
+jest.setTimeout(15000);
 
 describe('loadTypesIndex()', () => {
   it('should download and cache all @types', async () => {
     expect(api.typesCache).not.toHaveProperty('algoliasearch');
-    expect(api.isDefinitelyTyped({ name: 'algoliasearch' })).toBe(undefined);
+    expect(api.isDefinitelyTyped({ name: 'algoliasearch' })).toBeUndefined();
 
     await api.loadTypesIndex();
     expect(api.typesCache).toHaveProperty('algoliasearch');
     expect(api.typesCache).not.toHaveProperty('algoliasearch/lite');
 
     expect(api.typesCache.algoliasearch).toBe('algoliasearch');
-    expect(api.typesCache['algoliasearch/lite']).toBe(undefined);
-    expect(api.typesCache.doesnotexist).toBe(undefined);
+    expect(api.typesCache['algoliasearch/lite']).toBeUndefined();
+    expect(api.typesCache.doesnotexist).toBeUndefined();
 
     expect(api.isDefinitelyTyped({ name: 'algoliasearch' })).toBe(
       'algoliasearch'
