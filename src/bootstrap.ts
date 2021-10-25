@@ -41,10 +41,17 @@ export async function run(
   log.info('⛷   Bootstrap: starting');
   const state = await stateManager.check();
 
-  if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
+  if (state.seq && state.seq > 0 && state.bootstrapDone === false) {
     await algolia.putDefaultSettings(mainIndex, config);
     log.info('⛷   Bootstrap: done');
     log.info('-----');
+
+    // for dev
+    // await stateManager.save({
+    //   seq: 4214127,
+    //   bootstrapDone: true,
+    // });
+
     return;
   }
 

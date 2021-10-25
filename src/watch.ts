@@ -81,10 +81,22 @@ async function watch(stateManager: StateManager): Promise<true> {
     })
     .on('change', (change) => {
       changesConsumer.push(change);
+
+      // on:change will not wait for us to process to trigger again
+      // So we need to control the fetch manually otherwise it will fetch thousand/millions of update in advance
+      if (changesConsumer.length() > 10) {
+        npm.db.changesReader.pause();
+      }
     })
     .on('error', (err) => {
       sentry.report(err);
     });
+
+  changesConsumer.saturated(() => {
+    if (changesConsumer.length() < 5) {
+      npm.db.changesReader.resume();
+    }
+  });
 
   return new Promise((resolve) => {
     listener.on('end', () => {
@@ -142,11 +154,12 @@ function logProgress(seq: number): void {
   datadog.gauge('watch.sequence.current', seq);
   log.info(
     chalk.dim.italic
-      .white`[progress] Synced %d/%d changes (%s%) (%s remaining)`,
+      .white`[progress] Synced %d/%d changes (%s%) (%s remaining) (%s in memory)`,
     seq,
     totalSequence,
     ((Math.max(seq, 1) / totalSequence) * 100).toFixed(2),
-    totalSequence - seq
+    totalSequence - seq,
+    changesConsumer.length()
   );
 }
 
@@ -176,7 +189,7 @@ function createChangeConsumer(
       await stateManager.save({
         seq,
       });
-      totalSequence = (await npm.getInfo()).nbDocs;
+      totalSequence = (await npm.db.info()).update_seq;
     } catch (err) {
       sentry.report(err);
     } finally {

@@ -15,12 +15,11 @@ describe('findAll()', () => {
 
     expect(all.rows).toHaveLength(2);
 
-    expect(all.rows[0].doc).toEqual(
+    expect(all.rows[0]).toEqual(
       expect.objectContaining({
-        _id: '0',
-        _rev: '9-2f99061d7a24f3ac9730d35566e66db9',
-        name: '0',
-        license: 'BSD-2-Clause',
+        id: '0',
+        key: '0',
+        value: { rev: '9-2f99061d7a24f3ac9730d35566e66db9' },
       })
     );
   });
