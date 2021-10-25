@@ -53,7 +53,7 @@ export async function run(
   changesConsumer = createChangeConsumer(stateManager, mainIndex);
 
   setInterval(async () => {
-    totalSequence = (await npm.getInfo()).nbDocs;
+    totalSequence = (await npm.db.info()).update_seq;
   }, 5000);
 
   await watch(stateManager);
@@ -189,7 +189,6 @@ function createChangeConsumer(
       await stateManager.save({
         seq,
       });
-      totalSequence = (await npm.db.info()).update_seq;
     } catch (err) {
       sentry.report(err);
     } finally {
