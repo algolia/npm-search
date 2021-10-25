@@ -93,13 +93,6 @@
     "node": "14.17.6",
     "yarn": "^1.22.0"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "testPathIgnorePatterns": [
-      "node_modules",
-      "lib"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/algolia/npm-search.git"
