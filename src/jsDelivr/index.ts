@@ -29,8 +29,8 @@ export async function loadHits(): Promise<void> {
     res.body.forEach((pkg) => {
       hits.set(pkg.name, pkg.hits);
     });
-  } catch (e) {
-    log.error('Failed to fetch', e);
+  } catch (err) {
+    log.error('Failed to fetch', err);
   }
 
   datadog.timing('jsdelivr.loadHits', Date.now() - start);
@@ -94,8 +94,8 @@ export async function getFilesList(
       responseType: 'json',
     });
     files = response.body.files;
-  } catch (e) {
-    log.error(`Failed to fetch ${url}`, e.message);
+  } catch (err) {
+    log.error(`Failed to fetch ${url}`, err);
   }
 
   datadog.timing('jsdelivr.getFilesList', Date.now() - start);
