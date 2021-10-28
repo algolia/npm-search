@@ -1,3 +1,10 @@
+## [1.4.6](https://github.com/algolia/npm-search/compare/v1.4.5...v1.4.6) (2021-10-28)
+
+
+### Bug Fixes
+
+* mini fixes ([#771](https://github.com/algolia/npm-search/issues/771)) ([1fe5f95](https://github.com/algolia/npm-search/commit/1fe5f956d246fc945931421f0dc91935d260320d))
+
 ## [1.4.5](https://github.com/algolia/npm-search/compare/v1.4.4...v1.4.5) (2021-10-25)
 
 
