@@ -2,6 +2,7 @@ import type { DocumentListParams, DocumentResponseRow } from 'nano';
 
 import { config } from '../config';
 import { log } from '../utils/log';
+import * as sentry from '../utils/sentry';
 import { wait } from '../utils/wait';
 
 import type { GetPackage } from './types';
@@ -68,18 +69,22 @@ export class Prefetcher {
       options.startkey = this.#nextKey;
       options.skip = 1;
     }
-    const { rows: packages, offset } = await npm.findAll(options);
+    try {
+      const { rows: packages, offset } = await npm.findAll(options);
 
-    if (packages.length <= 0) {
-      this.#finished = true;
-      this.#running = false;
+      if (packages.length <= 0) {
+        this.#finished = true;
+        this.#running = false;
+        this.#offset = offset;
+        log.info('[pf] done');
+        return;
+      }
+
+      this.#ready.push(...packages);
       this.#offset = offset;
-      log.info('[pf] done');
-      return;
+      this.#nextKey = packages[packages.length - 1].id;
+    } catch (err) {
+      sentry.report(err);
     }
-
-    this.#ready.push(...packages);
-    this.#offset = offset;
-    this.#nextKey = packages[packages.length - 1].id;
   }
 }

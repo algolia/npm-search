@@ -1,3 +1,6 @@
+/* eslint-disable no-process-exit */
+import { nextTick } from 'async';
+
 import { StateManager } from './StateManager';
 import * as algolia from './algolia/index';
 import { createAPI } from './api';
@@ -12,7 +15,7 @@ import * as watch from './watch';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
-const KILL_PROCESS_EVERY_MS = 12 * 60 * 60 * 1000; // every 12 hours
+const KILL_PROCESS_EVERY_MS = 1 * 60 * 60 * 1000; // every 1 hours
 
 /**
  * Main process
@@ -27,7 +30,6 @@ async function main(): Promise<void> {
   //  - maybe retrigger bootstrap
   setTimeout(() => {
     log.info('👋  Scheduled process cleaning');
-    // eslint-disable-next-line no-process-exit
     process.exit(0);
   }, KILL_PROCESS_EVERY_MS);
 
@@ -65,5 +67,32 @@ async function main(): Promise<void> {
 main().catch(async (err) => {
   sentry.report(err);
   await sentry.drain();
-  process.exit(1); // eslint-disable-line no-process-exit
+  process.exit(1);
+});
+
+async function close(): Promise<void> {
+  log.info('Close was requested');
+  await sentry.drain();
+
+  nextTick(() => {
+    process.exit(1);
+  });
+}
+
+process.once('SIGINT', async () => {
+  await close();
+});
+
+process.once('SIGTERM', async () => {
+  await close();
+});
+
+process.on('unhandledRejection', async (reason) => {
+  sentry.report(reason);
+  await close();
+});
+
+// Report any uncaught exception, without letting the process crash
+process.on('uncaughtException', (err) => {
+  sentry.report(err, { context: 'uncaughtException' });
 });
