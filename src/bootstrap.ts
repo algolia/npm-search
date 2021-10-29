@@ -96,8 +96,11 @@ export async function run(
 
   consumer.pause();
 
-  // While we no longer are in "processing" mode, it's possible that there's a last iteration in the queue
-  await consumer.drain();
+  if (consumer.length() > 0) {
+    // While we no longer are in "processing" mode
+    //  it can be possible that there's a last iteration in the queue
+    await consumer.drain();
+  }
 
   await stateManager.save({
     bootstrapDone: true,
@@ -140,7 +143,7 @@ async function logProgress(nbDocs: number): Promise<void> {
       .white`[progress] %d/%d docs (%s%) (%s prefetched) (%s processing)`,
     offset + nbDocs,
     totalDocs,
-    Math.floor((Math.max(offset + nbDocs, 1) / totalDocs) * 100).toFixed(2),
+    ((Math.max(offset + nbDocs, 1) / totalDocs) * 100).toFixed(2),
     prefetcher.idleCount,
     consumer.running()
   );
