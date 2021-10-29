@@ -94,13 +94,13 @@ export async function run(
     consumer.push(null as any);
   }
 
-  consumer.pause();
-
   if (consumer.length() > 0) {
     // While we no longer are in "processing" mode
     //  it can be possible that there's a last iteration in the queue
     await consumer.drain();
   }
+
+  consumer.kill();
 
   await stateManager.save({
     bootstrapDone: true,
