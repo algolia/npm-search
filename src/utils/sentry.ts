@@ -7,6 +7,11 @@ Sentry.init({
   release: `1.0.0`,
   environment: 'prod',
   serverName: 'npm-search',
+  ignoreErrors: [
+    /error happened in your connection/,
+    /503 Service Unavailable/,
+    /<!DOCTYPE html>/,
+  ],
 });
 
 export function report(err, extra = {}): void {
