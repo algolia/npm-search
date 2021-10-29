@@ -99,7 +99,7 @@ export async function run(
     //  it can be possible that there's a last iteration in the queue
     await consumer.drain();
   }
-  
+
   consumer.kill();
 
   await stateManager.save({
