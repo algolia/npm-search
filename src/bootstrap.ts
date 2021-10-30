@@ -16,137 +16,154 @@ import { log } from './utils/log';
 import * as sentry from './utils/sentry';
 import { wait } from './utils/wait';
 
-let prefetcher: Prefetcher;
-let consumer: QueueObject<PrefetchedPkg>;
+export class Bootstrap {
+  stateManager;
+  algoliaClient;
+  mainIndex;
+  bootstrapIndex;
+  prefetcher: Prefetcher | undefined;
+  consumer: QueueObject<PrefetchedPkg> | undefined;
 
-/**
- * Bootstrap is the mode that goes from 0 to all the packages in NPM
- * In other word it is reindexing everything from scratch.
- *
- * It is useful if:
- *  - you are starting this project for the first time
- *  - you messed up with your Algolia index
- *  - you lagged too much behind.
- *
- * Watch mode should/can be reliably left running for weeks/months as CouchDB is made for that.
- * BUT for the moment it's mandatory to relaunch it because it's the only way to update: typescript, downloads stats.
- */
-export async function run(
-  stateManager: StateManager,
-  algoliaClient: SearchClient,
-  mainIndex: SearchIndex,
-  bootstrapIndex: SearchIndex
-): Promise<void> {
-  log.info('-----');
-  log.info('⛷   Bootstrap: starting');
-  const state = await stateManager.check();
+  constructor(
+    stateManager: StateManager,
+    algoliaClient: SearchClient,
+    mainIndex: SearchIndex,
+    bootstrapIndex: SearchIndex
+  ) {
+    this.stateManager = stateManager;
+    this.algoliaClient = algoliaClient;
+    this.mainIndex = mainIndex;
+    this.bootstrapIndex = bootstrapIndex;
+  }
 
-  if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
-    await algolia.putDefaultSettings(mainIndex, config);
+  /**
+   * Bootstrap is the mode that goes from 0 to all the packages in NPM
+   * In other word it is reindexing everything from scratch.
+   *
+   * It is useful if:
+   *  - you are starting this project for the first time
+   *  - you messed up with your Algolia index
+   *  - you lagged too much behind.
+   *
+   * Watch mode should/can be reliably left running for weeks/months as CouchDB is made for that.
+   * BUT for the moment it's mandatory to relaunch it because it's the only way to update: typescript, downloads stats.
+   */
+  async run(): Promise<void> {
+    log.info('-----');
+    log.info('⛷   Bootstrap: starting');
+    const state = await this.stateManager.check();
+
+    if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
+      await algolia.putDefaultSettings(this.mainIndex, config);
+      log.info('⛷   Bootstrap: done');
+      log.info('-----');
+      return;
+    }
+
+    await this.stateManager.save({
+      stage: 'bootstrap',
+    });
+
+    const { seq, nbDocs: totalDocs } = await npm.getInfo();
+    if (!state.bootstrapLastId) {
+      // Start from 0
+      log.info('⛷   Bootstrap: starting from the first doc');
+      // first time this launches, we need to remember the last seq our bootstrap can trust
+      await this.stateManager.save({ seq });
+      await algolia.putDefaultSettings(this.bootstrapIndex, config);
+    } else {
+      log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
+    }
+
+    log.info('-----');
+    log.info(chalk.yellowBright`Total packages: ${totalDocs}`);
+    log.info('-----');
+
+    const prefetcher = new Prefetcher({
+      nextKey: state.bootstrapLastId,
+    });
+    prefetcher.launch();
+
+    let done = 0;
+    const consumer = createPkgConsumer(this.stateManager, this.bootstrapIndex);
+    consumer.unsaturated(async () => {
+      const next = await prefetcher.getNext();
+      consumer.push(next);
+      done += 1;
+    });
+    consumer.buffer = 0;
+
+    this.prefetcher = prefetcher;
+    this.consumer = consumer;
+
+    let processing = true;
+    while (processing) {
+      this.logProgress(done);
+
+      await wait(config.prefetchWaitBetweenPage);
+
+      processing = !prefetcher.isFinished;
+      done = 0;
+
+      // Push nothing to trigger event
+      this.consumer.push(null as any);
+    }
+
+    if (this.consumer.length() > 0) {
+      // While we no longer are in "processing" mode
+      //  it can be possible that there's a last iteration in the queue
+      await this.consumer.drain();
+    }
+
+    this.consumer.kill();
+
+    this.onDone();
+  }
+
+  async onDone(): Promise<void> {
+    await this.stateManager.save({
+      bootstrapDone: true,
+      bootstrapLastDone: Date.now(),
+    });
+
+    await this.moveToProduction();
+
+    log.info('-----');
     log.info('⛷   Bootstrap: done');
     log.info('-----');
-    return;
   }
 
-  await stateManager.save({
-    stage: 'bootstrap',
-  });
+  /**
+   * Move algolia index to prod.
+   */
+  async moveToProduction(): Promise<void> {
+    log.info('🚚  starting move to production');
 
-  const { seq, nbDocs: totalDocs } = await npm.getInfo();
-  if (!state.bootstrapLastId) {
-    // Start from 0
-    log.info('⛷   Bootstrap: starting from the first doc');
-    // first time this launches, we need to remember the last seq our bootstrap can trust
-    await stateManager.save({ seq });
-    await algolia.putDefaultSettings(bootstrapIndex, config);
-  } else {
-    log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
+    const currentState = await this.stateManager.get();
+    await this.algoliaClient
+      .copyIndex(config.bootstrapIndexName, config.indexName)
+      .wait();
+
+    await this.stateManager.save(currentState);
   }
 
-  log.info('-----');
-  log.info(chalk.yellowBright`Total packages: ${totalDocs}`);
-  log.info('-----');
+  /**
+   * Log approximate progress.
+   */
+  async logProgress(nbDocs: number): Promise<void> {
+    const { nbDocs: totalDocs } = await npm.getInfo();
+    const offset = this.prefetcher!.offset;
 
-  prefetcher = new Prefetcher({
-    nextKey: state.bootstrapLastId,
-  });
-  prefetcher.launch();
-
-  let done = 0;
-  consumer = createPkgConsumer(stateManager, bootstrapIndex);
-  consumer.unsaturated(async () => {
-    const next = await prefetcher.getNext();
-    consumer.push(next);
-    done += 1;
-  });
-  consumer.buffer = 0;
-
-  let processing = true;
-  while (processing) {
-    logProgress(done);
-
-    await wait(config.prefetchWaitBetweenPage);
-
-    processing = !prefetcher.isFinished;
-    done = 0;
-
-    // Push nothing to trigger event
-    consumer.push(null as any);
+    log.info(
+      chalk.dim.italic
+        .white`[progress] %d/%d docs (%s%) (%s prefetched) (%s processing)`,
+      offset + nbDocs,
+      totalDocs,
+      ((Math.max(offset + nbDocs, 1) / totalDocs) * 100).toFixed(2),
+      this.prefetcher!.idleCount,
+      this.consumer!.running()
+    );
   }
-
-  if (consumer.length() > 0) {
-    // While we no longer are in "processing" mode
-    //  it can be possible that there's a last iteration in the queue
-    await consumer.drain();
-  }
-
-  consumer.kill();
-
-  await stateManager.save({
-    bootstrapDone: true,
-    bootstrapLastDone: Date.now(),
-  });
-
-  await moveToProduction(stateManager, algoliaClient);
-
-  log.info('-----');
-  log.info('⛷   Bootstrap: done');
-  log.info('-----');
-}
-
-/**
- * Move algolia index to prod.
- */
-async function moveToProduction(
-  stateManager: StateManager,
-  algoliaClient: SearchClient
-): Promise<void> {
-  log.info('🚚  starting move to production');
-
-  const currentState = await stateManager.get();
-  await algoliaClient
-    .copyIndex(config.bootstrapIndexName, config.indexName)
-    .wait();
-
-  await stateManager.save(currentState);
-}
-
-/**
- * Log approximate progress.
- */
-async function logProgress(nbDocs: number): Promise<void> {
-  const { nbDocs: totalDocs } = await npm.getInfo();
-  const offset = prefetcher.offset;
-
-  log.info(
-    chalk.dim.italic
-      .white`[progress] %d/%d docs (%s%) (%s prefetched) (%s processing)`,
-    offset + nbDocs,
-    totalDocs,
-    ((Math.max(offset + nbDocs, 1) / totalDocs) * 100).toFixed(2),
-    prefetcher.idleCount,
-    consumer.running()
-  );
 }
 
 /**
