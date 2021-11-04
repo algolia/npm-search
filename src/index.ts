@@ -4,14 +4,14 @@ import { nextTick } from 'async';
 import { StateManager } from './StateManager';
 import * as algolia from './algolia/index';
 import { createAPI } from './api';
-import * as bootstrap from './bootstrap';
+import { Bootstrap } from './bootstrap';
 import { config } from './config';
 import * as jsDelivr from './jsDelivr/index';
 import * as typescript from './typescript/index';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
-import * as watch from './watch';
+import { Watch } from './watch';
 
 log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
 
@@ -36,7 +36,7 @@ async function main(): Promise<void> {
   createAPI();
 
   // first we make sure the bootstrap index has the correct settings
-  log.info('💪  Setting up Algolia', [
+  log.info('💪  Setting up Algolia', config.appId, [
     config.bootstrapIndexName,
     config.indexName,
   ]);
@@ -54,14 +54,22 @@ async function main(): Promise<void> {
   await jsDelivr.loadHits();
   await typescript.loadTypesIndex();
 
+  const bootstrap = new Bootstrap(
+    stateManager,
+    algoliaClient,
+    mainIndex,
+    bootstrapIndex
+  );
+  const watch = new Watch(stateManager, mainIndex);
+
   // then we run the bootstrap
   // after a bootstrap is done, it's moved to main (with settings)
   // if it was already finished, we will set the settings on the main index
-  await bootstrap.run(stateManager, algoliaClient, mainIndex, bootstrapIndex);
+  await bootstrap.run();
 
   // then we figure out which updates we missed since
   // the last time main index was updated
-  await watch.run(stateManager, mainIndex);
+  await watch.run();
 }
 
 main().catch(async (err) => {
