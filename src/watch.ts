@@ -6,19 +6,24 @@ import chalk from 'chalk';
 import type { DatabaseChangesResultItem } from 'nano';
 
 import type { StateManager } from './StateManager';
+import { config } from './config';
 import * as npm from './npm';
 import { isFailure } from './npm/types';
 import { saveDoc } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
+import { wait } from './utils/wait';
+
+type ChangeJob = { change: DatabaseChangesResultItem; retry: number };
 
 export class Watch {
   stateManager: StateManager;
   mainIndex: SearchIndex;
+  skipped: ChangeJob[] = [];
   // Cached npmInfo.seq
   totalSequence: number = 0;
-  changesConsumer: QueueObject<DatabaseChangesResultItem> | undefined;
+  changesConsumer: QueueObject<ChangeJob> | undefined;
 
   constructor(stateManager: StateManager, mainIndex: SearchIndex) {
     this.stateManager = stateManager;
@@ -63,6 +68,7 @@ export class Watch {
       this.totalSequence = (await npm.db.info()).update_seq;
     }, 5000);
 
+    this.checkSkipped();
     await this.watch();
 
     log.info('-----');
@@ -103,6 +109,7 @@ export class Watch {
       .on('error', (err) => {
         sentry.report(err);
       });
+    log.info(`listening from ${seq}...`);
 
     changesConsumer.saturated(() => {
       if (changesConsumer.length() < 5) {
@@ -118,9 +125,28 @@ export class Watch {
   }
 
   /**
+   * Regurarly try to reprocess skipped packages.
+   */
+  checkSkipped(): void {
+    log.info('Checking skipped jobs (', this.skipped.length, ')');
+    datadog.increment('packages.skipped', this.skipped.length);
+    if (this.skipped.length > 0) {
+      const clone = [...this.skipped];
+      for (const job of clone) {
+        this.changesConsumer?.unshift({ ...job, retry: 0 });
+      }
+    }
+
+    setTimeout(() => {
+      this.checkSkipped();
+    }, 60000);
+  }
+
+  /**
    * Process changes in order.
    */
-  async loop(change: DatabaseChangesResultItem): Promise<void> {
+  async loop(job: ChangeJob): Promise<void> {
+    const { change } = job;
     datadog.increment('packages');
 
     if (!change.id) {
@@ -129,29 +155,25 @@ export class Watch {
       return;
     }
 
-    try {
-      if (change.deleted) {
-        // Delete package directly in index
-        // Filter does not support async/await but there is no concurrency issue with this
-        throw new Error('deleted');
-      }
-      const res = await npm.getDoc(change.id, change.changes[0].rev);
-
-      if (isFailure(res)) {
-        log.error('Got an error', res.error);
-        return;
-      }
-
-      await saveDoc({ row: res, index: this.mainIndex });
-    } catch (err) {
-      // this error can be thrown by us or by nano if:
-      // - we received a change that is not marked as "deleted"
-      // - and the package has since been deleted
-      if (err instanceof Error && err.message === 'deleted') {
-        this.mainIndex.deleteObject(change.id);
-        log.info(`deleted`, change.id);
-      }
+    if (job.retry > 0) {
+      // retry backoff
+      const backoff = Math.pow(job.retry + 1, 3) * 1000;
+      log.info('Retrying (', job.retry, '), waiting for', backoff);
+      await wait(backoff);
     }
+
+    if (change.deleted) {
+      // Delete package directly in index
+      throw new Error('deleted');
+    }
+    const res = await npm.getDoc(change.id, change.changes[0].rev);
+
+    if (isFailure(res)) {
+      log.error('Got an error', res.error);
+      throw new Error(res.error);
+    }
+
+    await saveDoc({ row: res, index: this.mainIndex });
   }
 
   /**
@@ -184,22 +206,41 @@ export class Watch {
    *
    *     If the events are not processed in the same order, you can have a broken state.
    */
-  createChangeConsumer(): QueueObject<DatabaseChangesResultItem> {
-    return queue<DatabaseChangesResultItem>(async (change) => {
+  createChangeConsumer(): QueueObject<ChangeJob> {
+    return queue<ChangeJob>(async (job) => {
       const start = Date.now();
 
-      const seq = change.seq;
-      log.info(`Start:`, change.id);
+      const seq = job.change.seq;
+      log.info(`Start:`, job.change.id);
 
       try {
-        await this.loop(change);
+        await this.loop(job);
         await this.stateManager.save({
           seq,
         });
+        log.info(`Done:`, job.change.id);
       } catch (err) {
+        // this error can be thrown by us or by nano if:
+        // - we received a change that is not marked as "deleted"
+        // - and the package has since been deleted
+        if (err instanceof Error && err.message === 'deleted') {
+          this.mainIndex.deleteObject(job.change.id);
+          log.info(`deleted`, job.change.id);
+          return;
+        }
+
+        // eslint-disable-next-line no-param-reassign
+        job.retry += 1;
         sentry.report(err);
+
+        if (job.retry <= config.retryMax) {
+          this.changesConsumer!.unshift(job);
+        } else {
+          log.error('Job has been retried too many times, skipping');
+          datadog.increment('packages.failed');
+          this.skipped.push(job);
+        }
       } finally {
-        log.info(`Done:`, change.id);
         this.logProgress(seq);
         datadog.timing('watch.loop', Date.now() - start);
       }

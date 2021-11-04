@@ -57,6 +57,7 @@ export class Bootstrap {
       await algolia.putDefaultSettings(this.mainIndex, config);
       log.info('⛷   Bootstrap: done');
       log.info('-----');
+
       return;
     }
 
