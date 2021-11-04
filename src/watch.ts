@@ -20,7 +20,7 @@ type ChangeJob = { change: DatabaseChangesResultItem; retry: number };
 export class Watch {
   stateManager: StateManager;
   mainIndex: SearchIndex;
-  skipped: ChangeJob[] = [];
+  skipped = new Map<string, ChangeJob>();
   // Cached npmInfo.seq
   totalSequence: number = 0;
   changesConsumer: QueueObject<ChangeJob> | undefined;
@@ -52,6 +52,14 @@ export class Watch {
    *      until an other package is updated.
    *      It will never be up to date because he receive event at the same pace
    *      as they arrive in listener A, even if it's not the same package.
+   *
+   * --- Retry strategy.
+   *  Each packages update needs to be processed in order so there is a first naive strategy that will block the queue.
+   *  It will retry the same package after an exponential backoff, N times.
+   *
+   *  After N times, this update will be discarded in the this.skipped
+   *  This Map will be regularly reprocessed to avoid loosing jobs.
+   *  This is an in-memory only retry, if the process is stopped, skipped job are lost.
    */
   async run(): Promise<void> {
     log.info('-----');
@@ -125,13 +133,16 @@ export class Watch {
   }
 
   /**
-   * Regurarly try to reprocess skipped packages.
+   * Regularly try to reprocess skipped packages.
    */
   checkSkipped(): void {
-    log.info('Checking skipped jobs (', this.skipped.length, ')');
-    datadog.increment('packages.skipped', this.skipped.length);
-    if (this.skipped.length > 0) {
-      const clone = [...this.skipped];
+    log.info('Checking skipped jobs (', this.skipped.size, ')');
+    datadog.increment('packages.skipped', this.skipped.size);
+
+    if (this.skipped.size > 0) {
+      const clone = this.skipped.values();
+      this.skipped.clear();
+
       for (const job of clone) {
         this.changesConsumer?.unshift({ ...job, retry: 0 });
       }
@@ -139,7 +150,7 @@ export class Watch {
 
     setTimeout(() => {
       this.checkSkipped();
-    }, 60000);
+    }, config.retrySkipped);
   }
 
   /**
@@ -157,7 +168,7 @@ export class Watch {
 
     if (job.retry > 0) {
       // retry backoff
-      const backoff = Math.pow(job.retry + 1, 3) * 1000;
+      const backoff = Math.pow(job.retry + 1, config.retryBackoffPow) * 1000;
       log.info('Retrying (', job.retry, '), waiting for', backoff);
       await wait(backoff);
     }
@@ -205,27 +216,34 @@ export class Watch {
    *     Event B delete package C.
    *
    *     If the events are not processed in the same order, you can have a broken state.
+   *
    */
   createChangeConsumer(): QueueObject<ChangeJob> {
     return queue<ChangeJob>(async (job) => {
       const start = Date.now();
 
-      const seq = job.change.seq;
-      log.info(`Start:`, job.change.id);
+      const { seq, id } = job.change;
+      log.info(`Start:`, id);
+
+      if (this.skipped.has(id)) {
+        // We received a new update for a package that failed before
+        // That means the previous update is no longer relevant
+        this.skipped.delete(id);
+      }
 
       try {
         await this.loop(job);
         await this.stateManager.save({
           seq,
         });
-        log.info(`Done:`, job.change.id);
+        log.info(`Done:`, id);
       } catch (err) {
         // this error can be thrown by us or by nano if:
         // - we received a change that is not marked as "deleted"
         // - and the package has since been deleted
         if (err instanceof Error && err.message === 'deleted') {
-          this.mainIndex.deleteObject(job.change.id);
-          log.info(`deleted`, job.change.id);
+          this.mainIndex.deleteObject(id);
+          log.info(`deleted`, id);
           return;
         }
 
@@ -238,7 +256,7 @@ export class Watch {
         } else {
           log.error('Job has been retried too many times, skipping');
           datadog.increment('packages.failed');
-          this.skipped.push(job);
+          this.skipped.set(id, job);
         }
       } finally {
         this.logProgress(seq);

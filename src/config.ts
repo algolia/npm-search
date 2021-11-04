@@ -175,6 +175,7 @@ export const config = {
   prefetchMaxIdle: 100,
   retryMax: 2,
   retrySkipped: ms('1 minute'),
+  retryBackoffPow: 3,
 };
 
 export type Config = typeof config;
