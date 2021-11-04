@@ -1,3 +1,10 @@
+## [1.4.10](https://github.com/algolia/npm-search/compare/v1.4.9...v1.4.10) (2021-11-04)
+
+
+### Bug Fixes
+
+* put processes in class for state sake ([#781](https://github.com/algolia/npm-search/issues/781)) ([275231c](https://github.com/algolia/npm-search/commit/275231c38ca9f7daddadd96caa42b5d5a84dc01e))
+
 ## [1.4.9](https://github.com/algolia/npm-search/compare/v1.4.8...v1.4.9) (2021-10-31)
 
 
