@@ -58,7 +58,7 @@ export class Watch {
    *  It will retry the same package after an exponential backoff, N times.
    *
    *  After N times, this update will be discarded in the this.skipped
-   *  This Map will be regularly reprocessed to avoid loosing jobs.
+   *  This Map will be regularly reprocessed to avoid losing jobs.
    *  This is an in-memory only retry, if the process is stopped, skipped job are lost.
    */
   async run(): Promise<void> {
