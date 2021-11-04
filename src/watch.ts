@@ -98,7 +98,7 @@ export class Watch {
         since: String(seq),
       })
       .on('change', (change) => {
-        changesConsumer.push(change);
+        changesConsumer.push({ change, retry: 0 });
 
         // on:change will not wait for us to process to trigger again
         // So we need to control the fetch manually otherwise it will fetch thousand/millions of update in advance
