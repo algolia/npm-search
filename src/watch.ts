@@ -174,7 +174,7 @@ export class Watch {
     }
 
     if (change.deleted) {
-      // Delete package directly in index
+      // changesConsumer deletes the package directly in the index
       throw new Error('deleted');
     }
     const res = await npm.getDoc(change.id, change.changes[0].rev);
