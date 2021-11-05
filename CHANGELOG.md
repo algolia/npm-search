@@ -1,3 +1,10 @@
+## [1.4.11](https://github.com/algolia/npm-search/compare/v1.4.10...v1.4.11) (2021-11-05)
+
+
+### Bug Fixes
+
+* naive retry strategy ([#782](https://github.com/algolia/npm-search/issues/782)) ([778ac32](https://github.com/algolia/npm-search/commit/778ac329fc23771c7b026e621f45fc73d74f76ec))
+
 ## [1.4.10](https://github.com/algolia/npm-search/compare/v1.4.9...v1.4.10) (2021-11-04)
 
 
