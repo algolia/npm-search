@@ -52,9 +52,9 @@
     "truncate-utf8-bytes": "1.0.2"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "6.0.0",
-    "@semantic-release/git": "10.0.0",
-    "@semantic-release/npm": "8.0.2",
+    "@semantic-release/changelog": "6.0.1",
+    "@semantic-release/git": "10.0.1",
+    "@semantic-release/npm": "8.0.3",
     "@types/async": "3.2.9",
     "@types/escape-html": "1.0.1",
     "@types/hosted-git-info": "3.0.2",
