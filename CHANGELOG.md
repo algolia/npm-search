@@ -1,3 +1,10 @@
+## [1.4.12](https://github.com/algolia/npm-search/compare/v1.4.11...v1.4.12) (2021-11-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency hot-shots to v9 ([#784](https://github.com/algolia/npm-search/issues/784)) ([55e6f9c](https://github.com/algolia/npm-search/commit/55e6f9cc08ef2deed3e197c7311870bb853b5a10))
+
 ## [1.4.11](https://github.com/algolia/npm-search/compare/v1.4.10...v1.4.11) (2021-11-05)
 
 
