@@ -37,7 +37,7 @@
     "chalk": "4.1.2",
     "dtrace-provider": "0.8.8",
     "escape-html": "1.0.3",
-    "got": "11.8.2",
+    "got": "11.8.3",
     "gravatar-url": "3.1.0",
     "hosted-git-info": "2.7.1",
     "hot-shots": "9.0.0",
