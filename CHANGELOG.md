@@ -1,3 +1,10 @@
+## [1.4.15](https://github.com/algolia/npm-search/compare/v1.4.14...v1.4.15) (2021-11-21)
+
+
+### Bug Fixes
+
+* **deps:** update dependency got to v11.8.3 ([9f453fe](https://github.com/algolia/npm-search/commit/9f453feaa051073a15cc9b43a736b610045453e0))
+
 ## [1.4.14](https://github.com/algolia/npm-search/compare/v1.4.13...v1.4.14) (2021-11-20)
 
 
