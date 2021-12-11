@@ -59,7 +59,7 @@
     "@types/escape-html": "1.0.1",
     "@types/hosted-git-info": "3.0.2",
     "@types/jest": "27.0.3",
-    "@types/lodash": "4.14.177",
+    "@types/lodash": "4.14.178",
     "@types/ms": "0.7.31",
     "@types/numeral": "2.0.2",
     "@types/traverse": "0.6.32",
