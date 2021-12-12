@@ -153,7 +153,7 @@ export class Watch {
       this.skipped.clear();
 
       for (const job of clone) {
-        this.changesConsumer?.unshift({ ...job, retry: 0 });
+        this.changesConsumer?.unshift({ ...job, retry: 0, ignoreSeq: true });
       }
     }
 
