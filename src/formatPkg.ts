@@ -20,6 +20,7 @@ import type {
 } from './@types/pkg';
 import { config } from './config';
 import type { GetPackage, GetUser, PackageRepo } from './npm/types';
+import { getExpiresAt } from './utils/getExpiresAt';
 
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 
@@ -60,10 +61,12 @@ const registrySubsetRules: Array<(pkg: NicePackageType) => Subset> = [
 ];
 
 export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
+  // Be careful NicePackage modify the Object ref
   const cleaned: NicePackageType | undefined = new NicePackage(pkg);
   if (!cleaned || !cleaned.name) {
     return undefined;
   }
+
   if (Array.isArray(cleaned.main)) {
     // https://github.com/angular-ui/bootstrap-bower/issues/52
     cleaned.main = cleaned.main[0];
@@ -144,6 +147,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
 
   const rawPkg: RawPkg = {
     objectID: cleaned.name,
+    rev: cleaned.other._rev,
     name: cleaned.name,
     downloadsLast30Days: 0,
     downloadsRatio: 0,
@@ -180,7 +184,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       alternativeNames,
-      expiresAt: new Date(Date.now() + config.expiresAt).getTime(),
+      expiresAt: getExpiresAt(),
     },
   };
 

@@ -56,6 +56,7 @@
     "@semantic-release/git": "10.0.1",
     "@semantic-release/npm": "8.0.3",
     "@types/async": "3.2.10",
+    "@types/bunyan": "1.8.8",
     "@types/escape-html": "1.0.1",
     "@types/hosted-git-info": "3.0.2",
     "@types/jest": "27.0.3",

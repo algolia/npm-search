@@ -55,7 +55,7 @@ export class Bootstrap {
 
     if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
       await algolia.putDefaultSettings(this.mainIndex, config);
-      log.info('⛷   Bootstrap: done');
+      log.info('⛷   Bootstrap: already done');
       log.info('-----');
 
       return;
@@ -118,7 +118,7 @@ export class Bootstrap {
 
     this.consumer.kill();
 
-    this.onDone();
+    await this.onDone();
   }
 
   async onDone(): Promise<void> {

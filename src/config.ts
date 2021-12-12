@@ -15,6 +15,7 @@ const indexSettings: Settings = {
     'searchable(keywords)',
     'searchable(computedKeywords)',
     'searchable(owner.name)',
+    '_searchInternal.expiresAt',
     'deprecated',
     'isDeprecated',
     'types.ts',
@@ -47,6 +48,7 @@ const indexSettings: Settings = {
   optionalWords: ['js', 'javascript'],
   separatorsToIndex: '_',
   replaceSynonymsInHighlight: false,
+  maxValuesPerFacet: 1000,
 };
 
 const indexSynonyms: Synonym[] = [
@@ -176,6 +178,7 @@ export const config = {
   retryMax: 2,
   retrySkipped: ms('1 minute'),
   retryBackoffPow: 3,
+  refreshPeriod: ms('2 minutes'),
 };
 
 export type Config = typeof config;

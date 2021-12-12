@@ -5,6 +5,7 @@ import { queue } from 'async';
 import chalk from 'chalk';
 import type { DatabaseChangesResultItem } from 'nano';
 
+import type { FinalPkg } from './@types/pkg';
 import type { StateManager } from './StateManager';
 import { config } from './config';
 import * as npm from './npm';
@@ -15,7 +16,11 @@ import { log } from './utils/log';
 import * as sentry from './utils/sentry';
 import { wait } from './utils/wait';
 
-type ChangeJob = { change: DatabaseChangesResultItem; retry: number };
+type ChangeJob = {
+  change: DatabaseChangesResultItem;
+  retry: number;
+  ignoreSeq: boolean;
+};
 
 export class Watch {
   stateManager: StateManager;
@@ -77,6 +82,10 @@ export class Watch {
     }, 5000);
 
     this.checkSkipped();
+
+    // Most packages don't have enough info to enable refresh for the moment
+    // this.checkToRefresh();
+
     await this.watch();
 
     log.info('-----');
@@ -106,7 +115,7 @@ export class Watch {
         since: String(seq),
       })
       .on('change', (change) => {
-        changesConsumer.push({ change, retry: 0 });
+        changesConsumer.push({ change, retry: 0, ignoreSeq: false });
 
         // on:change will not wait for us to process to trigger again
         // So we need to control the fetch manually otherwise it will fetch thousand/millions of update in advance
@@ -151,6 +160,70 @@ export class Watch {
     setTimeout(() => {
       this.checkSkipped();
     }, config.retrySkipped);
+  }
+
+  /**
+   * Regularly try to refresh packages informations.
+   * Mostly here for time based data: download stats, popularity, etc...&.
+   */
+  async checkToRefresh(): Promise<void> {
+    log.info('Checking refresh jobs');
+
+    // schedule next iteration
+    setTimeout(() => {
+      this.checkToRefresh();
+    }, config.refreshPeriod);
+
+    // We list all values in facet and pick the oldest (hopefully the oldest is in the list)
+    const res = await this.mainIndex.search('', {
+      facets: ['_searchInternal.expiresAt'],
+      hitsPerPage: 0,
+      sortFacetValuesBy: 'alpha',
+    });
+    const list = Object.keys(res.facets!['_searchInternal.expiresAt']).sort();
+    log.info(' > Found', list.length, 'expiration values');
+    if (list.length <= 0) {
+      return;
+    }
+
+    const pick = list.shift()!;
+    const expiresAt = new Date(parseInt(pick, 10));
+    if (expiresAt.getTime() > Date.now()) {
+      log.info(' > Oldest date is in the futur');
+      return;
+    }
+    log.info(' > Picked the oldest', expiresAt.toISOString());
+
+    // Retrieve some packages to update, not too much to avoid flooding the queue
+    const pkgs = await this.mainIndex.search<FinalPkg>('', {
+      facetFilters: [`_searchInternal.expiresAt:${pick}`],
+      facets: ['_searchInternal.expiresAt'],
+      hitsPerPage: 20,
+    });
+    log.info(' > Found', pkgs.hits.length, 'expired packages');
+
+    const pushed: string[] = [];
+    for (const pkg of pkgs.hits) {
+      if (!pkg.rev) {
+        continue;
+      }
+      pushed.push(pkg.objectID);
+
+      // If an update come at the same time, this could override the update with old rev.
+      // However it's very very unlikely to happen, acceptable risk.
+      this.changesConsumer?.unshift({
+        change: {
+          id: pkg.objectID,
+          changes: [{ rev: pkg.rev }],
+          seq: -1,
+          deleted: false,
+        },
+        retry: 0,
+        ignoreSeq: true,
+      });
+    }
+
+    log.info(' > Pushed', pushed);
   }
 
   /**
@@ -222,6 +295,7 @@ export class Watch {
     return queue<ChangeJob>(async (job) => {
       const start = Date.now();
 
+      const ignoreSeq = job.retry > 0 || job.ignoreSeq;
       const { seq, id } = job.change;
       log.info(`Start:`, id);
 
@@ -233,9 +307,11 @@ export class Watch {
 
       try {
         await this.loop(job);
-        await this.stateManager.save({
-          seq,
-        });
+        if (!ignoreSeq) {
+          await this.stateManager.save({
+            seq,
+          });
+        }
         log.info(`Done:`, id);
       } catch (err) {
         // this error can be thrown by us or by nano if:
@@ -259,7 +335,9 @@ export class Watch {
           this.skipped.set(id, job);
         }
       } finally {
-        this.logProgress(seq);
+        if (!ignoreSeq) {
+          this.logProgress(seq);
+        }
         datadog.timing('watch.loop', Date.now() - start);
       }
     }, 1);
