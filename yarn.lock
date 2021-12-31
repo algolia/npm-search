@@ -1151,10 +1151,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
-"@types/async@3.2.10":
-  version "3.2.10"
-  resolved "https://registry.yarnpkg.com/@types/async/-/async-3.2.10.tgz#0d575eb2988398f754121aa19e3e08f9c5d5f11f"
-  integrity sha512-/bPr8eB1/00J14EGHrZiGqCal/zA0nE/8W1YCM3lGnUcfiWPW6liQwThgGzjt/3uIrYbLtLCPg3ZmpUe6YmFRw==
+"@types/async@3.2.12":
+  version "3.2.12"
+  resolved "https://registry.yarnpkg.com/@types/async/-/async-3.2.12.tgz#0ebbfaf3f249ffa0fdc50179b07705f69c90d70c"
+  integrity sha512-4i4w4tfNDo73BOjk0qHcB2YJ8A2SjITCrU4BTsgdJFTsVr6atPDXa0T9r0QZTrX3axtWwkqpZqF4B3gR0TqBGw==
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.14":
   version "7.1.16"
