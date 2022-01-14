@@ -1,3 +1,10 @@
+## [1.4.17](https://github.com/algolia/npm-search/compare/v1.4.16...v1.4.17) (2022-01-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency async to v3.2.3 ([1620aa9](https://github.com/algolia/npm-search/commit/1620aa961bda65a450ef9e7abb84d1754179c711))
+
 ## [1.4.16](https://github.com/algolia/npm-search/compare/v1.4.15...v1.4.16) (2021-12-19)
 
 
