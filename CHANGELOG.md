@@ -1,3 +1,10 @@
+## [1.4.18](https://github.com/algolia/npm-search/compare/v1.4.17...v1.4.18) (2022-01-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency bunyan-debug-stream to v2.0.1 ([822b276](https://github.com/algolia/npm-search/commit/822b276d9a0d4be7602ab2229dfcb9e3943ec480))
+
 ## [1.4.17](https://github.com/algolia/npm-search/compare/v1.4.16...v1.4.17) (2022-01-14)
 
 
