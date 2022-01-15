@@ -1,3 +1,10 @@
+## [1.4.19](https://github.com/algolia/npm-search/compare/v1.4.18...v1.4.19) (2022-01-15)
+
+
+### Bug Fixes
+
+* **deps:** update algoliasearch-client-javascript monorepo to v4.12.0 ([cb110b3](https://github.com/algolia/npm-search/commit/cb110b32815e46426d99b8f5b9b8f0cc98581cf6))
+
 ## [1.4.18](https://github.com/algolia/npm-search/compare/v1.4.17...v1.4.18) (2022-01-15)
 
 
