@@ -78,7 +78,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "7.28.0",
     "husky": "7.0.4",
-    "jest": "27.4.7",
+    "jest": "27.5.1",
     "jest-junit": "13.0.0",
     "lint-staged": "12.3.3",
     "pre-commit": "1.2.2",
