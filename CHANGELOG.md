@@ -1,3 +1,10 @@
+## [1.4.22](https://github.com/algolia/npm-search/compare/v1.4.21...v1.4.22) (2022-02-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency object-sizeof to v1.6.3 ([e35d771](https://github.com/algolia/npm-search/commit/e35d771e27bb35bb2a95c0ddde579767606b6ba7))
+
 ## [1.4.21](https://github.com/algolia/npm-search/compare/v1.4.20...v1.4.21) (2022-02-05)
 
 
