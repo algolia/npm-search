@@ -1,3 +1,10 @@
+## [1.4.25](https://github.com/algolia/npm-search/compare/v1.4.24...v1.4.25) (2022-03-02)
+
+
+### Bug Fixes
+
+* **style:** resilient when not a string ([#887](https://github.com/algolia/npm-search/issues/887)) ([6cc8ad7](https://github.com/algolia/npm-search/commit/6cc8ad7eed3c2cf995e4c05d5e3417ddf844d824))
+
 ## [1.4.24](https://github.com/algolia/npm-search/compare/v1.4.23...v1.4.24) (2022-02-27)
 
 
