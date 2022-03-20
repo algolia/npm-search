@@ -80,7 +80,7 @@
     "husky": "7.0.4",
     "jest": "27.5.1",
     "jest-junit": "13.0.0",
-    "lint-staged": "12.3.5",
+    "lint-staged": "12.3.7",
     "pre-commit": "1.2.2",
     "prettier": "2.6.0",
     "renovate-config-algolia": "2.1.9",
