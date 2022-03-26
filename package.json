@@ -29,7 +29,7 @@
   "license": "MIT",
   "dependencies": {
     "@algolia/requester-node-http": "4.13.0",
-    "@sentry/node": "6.18.2",
+    "@sentry/node": "6.19.2",
     "algoliasearch": "4.13.0",
     "async": "3.2.3",
     "bunyan": "1.8.15",
