@@ -1,3 +1,10 @@
+## [1.4.30](https://github.com/algolia/npm-search/compare/v1.4.29...v1.4.30) (2022-03-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.19.2 ([71b42a4](https://github.com/algolia/npm-search/commit/71b42a4ab78e46e4d0b645f2f4efaf0628194e78))
+
 ## [1.4.29](https://github.com/algolia/npm-search/compare/v1.4.28...v1.4.29) (2022-03-19)
 
 
