@@ -82,7 +82,7 @@ export class Prefetcher {
 
       this.#ready.push(...packages);
       this.#offset = offset;
-      this.#nextKey = packages[packages.length - 1].id;
+      this.#nextKey = packages[packages.length - 1]!.id;
     } catch (err) {
       sentry.report(err);
     }

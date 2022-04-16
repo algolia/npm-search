@@ -1,7 +1,8 @@
 import NicePackage from 'nice-package';
 import isISO8601 from 'validator/lib/isISO8601.js';
 
-import formatPkg, {
+import {
+  formatPkg,
   getRepositoryInfo,
   getMains,
   getVersions,
@@ -94,7 +95,7 @@ describe('general', () => {
     };
     const formatted = formatPkg(pkg);
     const postfix = ' **TRUNCATED**';
-    const ending = formatted.readme.substr(
+    const ending = formatted.readme.substring(
       formatted.readme.length - postfix.length
     );
 

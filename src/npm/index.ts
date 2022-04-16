@@ -306,7 +306,7 @@ async function getDownloads(
   const all = pkgs.map((pkg) => {
     return computeDownload(
       pkg,
-      downloadsPerPkgName[pkg.name],
+      downloadsPerPkgName[pkg.name]!,
       totalNpmDownloads
     );
   });
@@ -324,7 +324,7 @@ async function getDownload(
     const name = encodeURIComponent(pkg.name);
     const totalNpmDownloads = await getTotalDownloads();
     const downloads = await fetchDownload(name);
-    return computeDownload(pkg, downloads.body[pkg.name], totalNpmDownloads);
+    return computeDownload(pkg, downloads.body[pkg.name]!, totalNpmDownloads);
   } finally {
     datadog.timing('npm.getDownload', Date.now() - start);
   }

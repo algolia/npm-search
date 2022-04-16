@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 import type { SearchIndex } from 'algoliasearch';
 import type { QueueObject } from 'async';
 import { queue } from 'async';
@@ -8,6 +7,8 @@ import type { DatabaseChangesResultItem } from 'nano';
 import type { FinalPkg } from './@types/pkg';
 import type { StateManager } from './StateManager';
 import { config } from './config';
+import { DeletedError } from './errors';
+import { formatPkg } from './formatPkg';
 import * as npm from './npm';
 import { isFailure } from './npm/types';
 import { saveDoc } from './saveDocs';
@@ -29,6 +30,7 @@ export class Watch {
   // Cached npmInfo.seq
   totalSequence: number = 0;
   changesConsumer: QueueObject<ChangeJob> | undefined;
+  pkgsLastUpdate = new Map<string, number>();
 
   constructor(stateManager: StateManager, mainIndex: SearchIndex) {
     this.stateManager = stateManager;
@@ -116,6 +118,9 @@ export class Watch {
       })
       .on('change', (change) => {
         changesConsumer.push({ change, retry: 0, ignoreSeq: false });
+        if (change.id) {
+          this.pkgsLastUpdate.set(change.id, Date.now());
+        }
 
         // on:change will not wait for us to process to trigger again
         // So we need to control the fetch manually otherwise it will fetch thousand/millions of update in advance
@@ -127,7 +132,6 @@ export class Watch {
         sentry.report(err);
       });
     log.info(`listening from ${seq}...`);
-
     changesConsumer.saturated(() => {
       if (changesConsumer.length() < 5) {
         npm.db.changesReader.resume();
@@ -180,7 +184,12 @@ export class Watch {
       hitsPerPage: 0,
       sortFacetValuesBy: 'alpha',
     });
-    const list = Object.keys(res.facets!['_searchInternal.expiresAt']).sort();
+    if (!res.facets) {
+      log.error('Wrong results from Algolia');
+      return;
+    }
+
+    const list = Object.keys(res.facets['_searchInternal.expiresAt']!).sort();
     log.info(' > Found', list.length, 'expiration values');
     if (list.length <= 0) {
       return;
@@ -189,7 +198,7 @@ export class Watch {
     const pick = list.shift()!;
     const expiresAt = new Date(parseInt(pick, 10));
     if (expiresAt.getTime() > Date.now()) {
-      log.info(' > Oldest date is in the futur');
+      log.info(' > Oldest date is in the future');
       return;
     }
     log.info(' > Picked the oldest', expiresAt.toISOString());
@@ -207,10 +216,20 @@ export class Watch {
       if (!pkg.rev) {
         continue;
       }
+      const lastUpdate = this.pkgsLastUpdate.get(pkg.objectID);
+      if (lastUpdate && lastUpdate > pkg.modified) {
+        log.info(
+          'Skipping pkg older than what we have in memory',
+          pkg.objectID,
+          pkg.modified,
+          lastUpdate
+        );
+        continue;
+      }
+
       pushed.push(pkg.objectID);
 
-      // If an update come at the same time, this could override the update with old rev.
-      // However it's very very unlikely to happen, acceptable risk.
+      // Due to the event loop, there is a miniscule chance that an event for the same pkg come at the same time.
       this.changesConsumer?.unshift({
         change: {
           id: pkg.objectID,
@@ -248,16 +267,26 @@ export class Watch {
 
     if (change.deleted) {
       // changesConsumer deletes the package directly in the index
-      throw new Error('deleted');
+      throw new DeletedError();
     }
-    const res = await npm.getDoc(change.id, change.changes[0].rev);
+    if (change.changes.length <= 0) {
+      log.error('Document without change');
+      return;
+    }
+
+    const res = await npm.getDoc(change.id, change.changes[0]!.rev);
 
     if (isFailure(res)) {
       log.error('Got an error', res.error);
       throw new Error(res.error);
     }
 
-    await saveDoc({ row: res, index: this.mainIndex });
+    const formatted = formatPkg(res);
+    if (!formatted) {
+      return;
+    }
+
+    await saveDoc({ formatted, index: this.mainIndex });
   }
 
   /**
@@ -317,7 +346,7 @@ export class Watch {
         // this error can be thrown by us or by nano if:
         // - we received a change that is not marked as "deleted"
         // - and the package has since been deleted
-        if (err instanceof Error && err.message === 'deleted') {
+        if (err instanceof DeletedError) {
           this.mainIndex.deleteObject(id);
           log.info(`deleted`, id);
           return;
