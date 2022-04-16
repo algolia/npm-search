@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/algolia/npm-search/compare/v1.4.32...v1.5.0) (2022-04-16)
+
+
+### Features
+
+* refresh packages ([#819](https://github.com/algolia/npm-search/issues/819)) ([8379ee1](https://github.com/algolia/npm-search/commit/8379ee1312a7837aa97ae8d77b70e54cd27701c8))
+
 ## [1.4.32](https://github.com/algolia/npm-search/compare/v1.4.31...v1.4.32) (2022-04-10)
 
 
