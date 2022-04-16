@@ -1,3 +1,122 @@
+## [1.4.32](https://github.com/algolia/npm-search/compare/v1.4.31...v1.4.32) (2022-04-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.19.6 ([bd49f1d](https://github.com/algolia/npm-search/commit/bd49f1da0c309e6dabc081b1ce86a3c2582cfb51))
+
+## [1.4.31](https://github.com/algolia/npm-search/compare/v1.4.30...v1.4.31) (2022-04-02)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.19.3 ([0d13ab3](https://github.com/algolia/npm-search/commit/0d13ab3b926b825334e84bf7a6f842d7b015ea41))
+
+## [1.4.30](https://github.com/algolia/npm-search/compare/v1.4.29...v1.4.30) (2022-03-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.19.2 ([71b42a4](https://github.com/algolia/npm-search/commit/71b42a4ab78e46e4d0b645f2f4efaf0628194e78))
+
+## [1.4.29](https://github.com/algolia/npm-search/compare/v1.4.28...v1.4.29) (2022-03-19)
+
+
+### Bug Fixes
+
+* **deps:** update algoliasearch-client-javascript monorepo to v4.13.0 ([475cb2d](https://github.com/algolia/npm-search/commit/475cb2d3f899be2e86c07dceb318c24a8f7f45a2))
+
+## [1.4.28](https://github.com/algolia/npm-search/compare/v1.4.27...v1.4.28) (2022-03-12)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.18.2 ([6e5f952](https://github.com/algolia/npm-search/commit/6e5f95200aa8916633b213b6f0e0418cc7ca70d9))
+
+## [1.4.27](https://github.com/algolia/npm-search/compare/v1.4.26...v1.4.27) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** update algoliasearch-client-javascript monorepo to v4.12.2 ([7787251](https://github.com/algolia/npm-search/commit/778725129bd7b84f4143785cf425c37cdfb1c69e))
+
+## [1.4.26](https://github.com/algolia/npm-search/compare/v1.4.25...v1.4.26) (2022-03-04)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.18.1 ([4b2a6f3](https://github.com/algolia/npm-search/commit/4b2a6f3357da80e4f2d62247cff6559a2a178aa6))
+
+## [1.4.25](https://github.com/algolia/npm-search/compare/v1.4.24...v1.4.25) (2022-03-02)
+
+
+### Bug Fixes
+
+* **style:** resilient when not a string ([#887](https://github.com/algolia/npm-search/issues/887)) ([6cc8ad7](https://github.com/algolia/npm-search/commit/6cc8ad7eed3c2cf995e4c05d5e3417ddf844d824))
+
+## [1.4.24](https://github.com/algolia/npm-search/compare/v1.4.23...v1.4.24) (2022-02-27)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.18.0 ([5771ca0](https://github.com/algolia/npm-search/commit/5771ca0ab15fe84c86aed7e2853451f490dd37ab))
+
+## [1.4.23](https://github.com/algolia/npm-search/compare/v1.4.22...v1.4.23) (2022-02-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.17.9 ([7c452e4](https://github.com/algolia/npm-search/commit/7c452e4c07ecd743f252c822053522797f0068b2))
+
+## [1.4.22](https://github.com/algolia/npm-search/compare/v1.4.21...v1.4.22) (2022-02-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency object-sizeof to v1.6.3 ([e35d771](https://github.com/algolia/npm-search/commit/e35d771e27bb35bb2a95c0ddde579767606b6ba7))
+
+## [1.4.21](https://github.com/algolia/npm-search/compare/v1.4.20...v1.4.21) (2022-02-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.17.4 ([7d78c77](https://github.com/algolia/npm-search/commit/7d78c77c90a51529ff4b24a064f43bb111e17a12))
+
+## [1.4.20](https://github.com/algolia/npm-search/compare/v1.4.19...v1.4.20) (2022-02-04)
+
+
+### Bug Fixes
+
+* **deps:** update algoliasearch-client-javascript monorepo to v4.12.1 ([db342ed](https://github.com/algolia/npm-search/commit/db342eda0de762f89f57ca008083e92c6b500f11))
+
+## [1.4.19](https://github.com/algolia/npm-search/compare/v1.4.18...v1.4.19) (2022-01-15)
+
+
+### Bug Fixes
+
+* **deps:** update algoliasearch-client-javascript monorepo to v4.12.0 ([cb110b3](https://github.com/algolia/npm-search/commit/cb110b32815e46426d99b8f5b9b8f0cc98581cf6))
+
+## [1.4.18](https://github.com/algolia/npm-search/compare/v1.4.17...v1.4.18) (2022-01-15)
+
+
+### Bug Fixes
+
+* **deps:** update dependency bunyan-debug-stream to v2.0.1 ([822b276](https://github.com/algolia/npm-search/commit/822b276d9a0d4be7602ab2229dfcb9e3943ec480))
+
+## [1.4.17](https://github.com/algolia/npm-search/compare/v1.4.16...v1.4.17) (2022-01-14)
+
+
+### Bug Fixes
+
+* **deps:** update dependency async to v3.2.3 ([1620aa9](https://github.com/algolia/npm-search/commit/1620aa961bda65a450ef9e7abb84d1754179c711))
+
+## [1.4.16](https://github.com/algolia/npm-search/compare/v1.4.15...v1.4.16) (2021-12-19)
+
+
+### Bug Fixes
+
+* **deps:** update dependency @sentry/node to v6.16.1 ([1ef071f](https://github.com/algolia/npm-search/commit/1ef071f7be69ce574c8e2c41e85ad29539acff95))
+
 ## [1.4.15](https://github.com/algolia/npm-search/compare/v1.4.14...v1.4.15) (2021-11-21)
 
 

@@ -649,7 +649,7 @@ function getModuleTypes(pkg: NicePackageType): ModuleType[] {
 
 function getStyleTypes(pkg: NicePackageType): StyleType[] {
   // style not declared - we will detect it later based on file list
-  if (!pkg.style) {
+  if (typeof pkg.style !== 'string') {
     return [];
   }
 
