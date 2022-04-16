@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import type { StateManager } from './StateManager';
 import * as algolia from './algolia';
 import { config } from './config';
+import { formatPkg } from './formatPkg';
 import * as npm from './npm';
 import type { PrefetchedPkg } from './npm/Prefetcher';
 import { Prefetcher } from './npm/Prefetcher';
@@ -55,7 +56,7 @@ export class Bootstrap {
 
     if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
       await algolia.putDefaultSettings(this.mainIndex, config);
-      log.info('⛷   Bootstrap: done');
+      log.info('⛷   Bootstrap: already done');
       log.info('-----');
 
       return;
@@ -118,7 +119,7 @@ export class Bootstrap {
 
     this.consumer.kill();
 
-    this.onDone();
+    await this.onDone();
   }
 
   async onDone(): Promise<void> {
@@ -192,7 +193,11 @@ function createPkgConsumer(
         return;
       }
 
-      await saveDoc({ row: res, index });
+      const formatted = formatPkg(res);
+      if (!formatted) {
+        return;
+      }
+      await saveDoc({ formatted, index });
 
       const lastId = (await stateManager.get()).bootstrapLastId;
 

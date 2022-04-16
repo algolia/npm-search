@@ -1,12 +1,14 @@
-/* eslint-disable consistent-return */
 import type { SearchIndex } from 'algoliasearch';
 import type { QueueObject } from 'async';
 import { queue } from 'async';
 import chalk from 'chalk';
 import type { DatabaseChangesResultItem } from 'nano';
 
+import type { FinalPkg } from './@types/pkg';
 import type { StateManager } from './StateManager';
 import { config } from './config';
+import { DeletedError } from './errors';
+import { formatPkg } from './formatPkg';
 import * as npm from './npm';
 import { isFailure } from './npm/types';
 import { saveDoc } from './saveDocs';
@@ -15,7 +17,11 @@ import { log } from './utils/log';
 import * as sentry from './utils/sentry';
 import { wait } from './utils/wait';
 
-type ChangeJob = { change: DatabaseChangesResultItem; retry: number };
+type ChangeJob = {
+  change: DatabaseChangesResultItem;
+  retry: number;
+  ignoreSeq: boolean;
+};
 
 export class Watch {
   stateManager: StateManager;
@@ -24,6 +30,7 @@ export class Watch {
   // Cached npmInfo.seq
   totalSequence: number = 0;
   changesConsumer: QueueObject<ChangeJob> | undefined;
+  pkgsLastUpdate = new Map<string, number>();
 
   constructor(stateManager: StateManager, mainIndex: SearchIndex) {
     this.stateManager = stateManager;
@@ -77,6 +84,10 @@ export class Watch {
     }, 5000);
 
     this.checkSkipped();
+
+    // Most packages don't have enough info to enable refresh for the moment
+    // this.checkToRefresh();
+
     await this.watch();
 
     log.info('-----');
@@ -106,7 +117,10 @@ export class Watch {
         since: String(seq),
       })
       .on('change', (change) => {
-        changesConsumer.push({ change, retry: 0 });
+        changesConsumer.push({ change, retry: 0, ignoreSeq: false });
+        if (change.id) {
+          this.pkgsLastUpdate.set(change.id, Date.now());
+        }
 
         // on:change will not wait for us to process to trigger again
         // So we need to control the fetch manually otherwise it will fetch thousand/millions of update in advance
@@ -118,7 +132,6 @@ export class Watch {
         sentry.report(err);
       });
     log.info(`listening from ${seq}...`);
-
     changesConsumer.saturated(() => {
       if (changesConsumer.length() < 5) {
         npm.db.changesReader.resume();
@@ -144,13 +157,92 @@ export class Watch {
       this.skipped.clear();
 
       for (const job of clone) {
-        this.changesConsumer?.unshift({ ...job, retry: 0 });
+        this.changesConsumer?.unshift({ ...job, retry: 0, ignoreSeq: true });
       }
     }
 
     setTimeout(() => {
       this.checkSkipped();
     }, config.retrySkipped);
+  }
+
+  /**
+   * Regularly try to refresh packages informations.
+   * Mostly here for time based data: download stats, popularity, etc...&.
+   */
+  async checkToRefresh(): Promise<void> {
+    log.info('Checking refresh jobs');
+
+    // schedule next iteration
+    setTimeout(() => {
+      this.checkToRefresh();
+    }, config.refreshPeriod);
+
+    // We list all values in facet and pick the oldest (hopefully the oldest is in the list)
+    const res = await this.mainIndex.search('', {
+      facets: ['_searchInternal.expiresAt'],
+      hitsPerPage: 0,
+      sortFacetValuesBy: 'alpha',
+    });
+    if (!res.facets) {
+      log.error('Wrong results from Algolia');
+      return;
+    }
+
+    const list = Object.keys(res.facets['_searchInternal.expiresAt']!).sort();
+    log.info(' > Found', list.length, 'expiration values');
+    if (list.length <= 0) {
+      return;
+    }
+
+    const pick = list.shift()!;
+    const expiresAt = new Date(parseInt(pick, 10));
+    if (expiresAt.getTime() > Date.now()) {
+      log.info(' > Oldest date is in the future');
+      return;
+    }
+    log.info(' > Picked the oldest', expiresAt.toISOString());
+
+    // Retrieve some packages to update, not too much to avoid flooding the queue
+    const pkgs = await this.mainIndex.search<FinalPkg>('', {
+      facetFilters: [`_searchInternal.expiresAt:${pick}`],
+      facets: ['_searchInternal.expiresAt'],
+      hitsPerPage: 20,
+    });
+    log.info(' > Found', pkgs.hits.length, 'expired packages');
+
+    const pushed: string[] = [];
+    for (const pkg of pkgs.hits) {
+      if (!pkg.rev) {
+        continue;
+      }
+      const lastUpdate = this.pkgsLastUpdate.get(pkg.objectID);
+      if (lastUpdate && lastUpdate > pkg.modified) {
+        log.info(
+          'Skipping pkg older than what we have in memory',
+          pkg.objectID,
+          pkg.modified,
+          lastUpdate
+        );
+        continue;
+      }
+
+      pushed.push(pkg.objectID);
+
+      // Due to the event loop, there is a miniscule chance that an event for the same pkg come at the same time.
+      this.changesConsumer?.unshift({
+        change: {
+          id: pkg.objectID,
+          changes: [{ rev: pkg.rev }],
+          seq: -1,
+          deleted: false,
+        },
+        retry: 0,
+        ignoreSeq: true,
+      });
+    }
+
+    log.info(' > Pushed', pushed);
   }
 
   /**
@@ -175,16 +267,26 @@ export class Watch {
 
     if (change.deleted) {
       // changesConsumer deletes the package directly in the index
-      throw new Error('deleted');
+      throw new DeletedError();
     }
-    const res = await npm.getDoc(change.id, change.changes[0].rev);
+    if (change.changes.length <= 0) {
+      log.error('Document without change');
+      return;
+    }
+
+    const res = await npm.getDoc(change.id, change.changes[0]!.rev);
 
     if (isFailure(res)) {
       log.error('Got an error', res.error);
       throw new Error(res.error);
     }
 
-    await saveDoc({ row: res, index: this.mainIndex });
+    const formatted = formatPkg(res);
+    if (!formatted) {
+      return;
+    }
+
+    await saveDoc({ formatted, index: this.mainIndex });
   }
 
   /**
@@ -222,6 +324,7 @@ export class Watch {
     return queue<ChangeJob>(async (job) => {
       const start = Date.now();
 
+      const ignoreSeq = job.retry > 0 || job.ignoreSeq;
       const { seq, id } = job.change;
       log.info(`Start:`, id);
 
@@ -233,15 +336,17 @@ export class Watch {
 
       try {
         await this.loop(job);
-        await this.stateManager.save({
-          seq,
-        });
+        if (!ignoreSeq) {
+          await this.stateManager.save({
+            seq,
+          });
+        }
         log.info(`Done:`, id);
       } catch (err) {
         // this error can be thrown by us or by nano if:
         // - we received a change that is not marked as "deleted"
         // - and the package has since been deleted
-        if (err instanceof Error && err.message === 'deleted') {
+        if (err instanceof DeletedError) {
           this.mainIndex.deleteObject(id);
           log.info(`deleted`, id);
           return;
@@ -259,7 +364,9 @@ export class Watch {
           this.skipped.set(id, job);
         }
       } finally {
-        this.logProgress(seq);
+        if (!ignoreSeq) {
+          this.logProgress(seq);
+        }
         datadog.timing('watch.loop', Date.now() - start);
       }
     }, 1);

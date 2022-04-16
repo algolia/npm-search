@@ -43,6 +43,7 @@ export type ComputedMeta = {
 
 export interface RawPkg {
   objectID: string;
+  rev: string;
   name: string;
   downloadsLast30Days: number;
   downloadsRatio: number;

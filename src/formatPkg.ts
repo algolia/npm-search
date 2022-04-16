@@ -20,6 +20,8 @@ import type {
 } from './@types/pkg';
 import { config } from './config';
 import type { GetPackage, GetUser, PackageRepo } from './npm/types';
+import { datadog } from './utils/datadog';
+import { getExpiresAt } from './utils/getExpiresAt';
 
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 
@@ -59,11 +61,14 @@ const registrySubsetRules: Array<(pkg: NicePackageType) => Subset> = [
   }),
 ];
 
-export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
+export function formatPkg(pkg: GetPackage): RawPkg | undefined {
+  const start = Date.now();
+  // Be careful NicePackage modify the Object ref
   const cleaned: NicePackageType | undefined = new NicePackage(pkg);
   if (!cleaned || !cleaned.name) {
-    return undefined;
+    return;
   }
+
   if (Array.isArray(cleaned.main)) {
     // https://github.com/angular-ui/bootstrap-bower/issues/52
     cleaned.main = cleaned.main[0];
@@ -110,7 +115,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
   }
 
   if (!githubRepo && !lastPublisher && !author) {
-    return undefined; // ignore this package, we cannot link it to anyone
+    return; // ignore this package, we cannot link it to anyone
   }
 
   const repoInfo = getRepositoryInfo(defaultRepository);
@@ -144,6 +149,7 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
 
   const rawPkg: RawPkg = {
     objectID: cleaned.name,
+    rev: cleaned.other._rev,
     name: cleaned.name,
     downloadsLast30Days: 0,
     downloadsRatio: 0,
@@ -180,13 +186,16 @@ export default function formatPkg(pkg: GetPackage): RawPkg | undefined {
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       alternativeNames,
-      expiresAt: new Date(Date.now() + config.expiresAt).getTime(),
+      expiresAt: getExpiresAt(),
     },
   };
 
   const truncated = truncatePackage(rawPkg);
 
-  return traverse(truncated).forEach(maybeEscape);
+  const escaped = traverse(truncated).forEach(maybeEscape);
+
+  datadog.timing('formatPkg', Date.now() - start);
+  return escaped;
 }
 
 function checkSize(pkg: RawPkg): {
@@ -204,7 +213,7 @@ function checkSize(pkg: RawPkg): {
   };
 }
 
-function truncatePackage(pkg: RawPkg): RawPkg | null {
+function truncatePackage(pkg: RawPkg): RawPkg | undefined {
   const smallerPkg = { ...pkg };
 
   {
@@ -225,7 +234,7 @@ function truncatePackage(pkg: RawPkg): RawPkg | null {
         '** TRUNCATED ** this package was too big, so non-essential information was removed';
       smallerPkg.versions = pkg.versions[pkg.version]
         ? {
-            [pkg.version]: pkg.versions[pkg.version],
+            [pkg.version]: pkg.versions[pkg.version]!,
           }
         : {};
       smallerPkg.tags = pkg?.tags?.latest
@@ -251,7 +260,7 @@ function truncatePackage(pkg: RawPkg): RawPkg | null {
   {
     const { isTooBig } = checkSize(smallerPkg);
     if (isTooBig) {
-      return null;
+      return;
     }
   }
 
@@ -418,8 +427,8 @@ function getGitHubRepoInfo({
   const [, user, project, path = ''] = result;
 
   return {
-    user,
-    project,
+    user: user!,
+    project: project!,
     path,
     head,
   };
@@ -461,8 +470,8 @@ function getRepositoryInfoFromHttpUrl(repository: string): Repo | null {
   return {
     url: repository,
     host: `${domain}.${domainTld}`,
-    user,
-    project,
+    user: user!,
+    project: project!,
     path,
   };
 }

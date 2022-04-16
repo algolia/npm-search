@@ -10,6 +10,7 @@ import numeral from 'numeral';
 import type { FinalPkg, RawPkg } from '../@types/pkg';
 import { config } from '../config';
 import { datadog } from '../utils/datadog';
+import { getExpiresAt } from '../utils/getExpiresAt';
 import { log } from '../utils/log';
 import { httpsAgent, request, USER_AGENT } from '../utils/request';
 
@@ -243,21 +244,13 @@ function computeDownload(
     ? downloadsLast30Days.toString().length
     : 0;
 
-  // Rand -48h to +48h, to spread refresh
-  const randHours = Math.floor(Math.random() * (-48 - 48 + 1)) + 48;
-  const expiresAt =
-    new Date(
-      Date.now() + (popular ? config.popularExpiresAt : config.expiresAt)
-    ).getTime() +
-    randHours * 3600 * 1000;
-
   return {
     downloadsLast30Days,
     humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
     downloadsRatio,
     popular,
     _searchInternal: {
-      expiresAt,
+      expiresAt: getExpiresAt(popular),
       downloadsMagnitude,
       // if the package is popular, we copy its name to a dedicated attribute
       // which will make popular records' `name` matches to be ranked higher than other matches
@@ -313,7 +306,7 @@ async function getDownloads(
   const all = pkgs.map((pkg) => {
     return computeDownload(
       pkg,
-      downloadsPerPkgName[pkg.name],
+      downloadsPerPkgName[pkg.name]!,
       totalNpmDownloads
     );
   });
@@ -331,7 +324,7 @@ async function getDownload(
     const name = encodeURIComponent(pkg.name);
     const totalNpmDownloads = await getTotalDownloads();
     const downloads = await fetchDownload(name);
-    return computeDownload(pkg, downloads.body[pkg.name], totalNpmDownloads);
+    return computeDownload(pkg, downloads.body[pkg.name]!, totalNpmDownloads);
   } finally {
     datadog.timing('npm.getDownload', Date.now() - start);
   }

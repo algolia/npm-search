@@ -1,7 +1,8 @@
 import NicePackage from 'nice-package';
 import isISO8601 from 'validator/lib/isISO8601.js';
 
-import formatPkg, {
+import {
+  formatPkg,
   getRepositoryInfo,
   getMains,
   getVersions,
@@ -15,7 +16,7 @@ import rawPackages from './rawPackages.json';
 const BASE: GetPackage = {
   _id: '0',
   'dist-tags': {},
-  _rev: '',
+  _rev: 'rev-1',
   name: '0',
   maintainers: [],
   readme: '',
@@ -63,6 +64,7 @@ describe('general', () => {
       .map((formattedPackage) =>
         expect(formattedPackage).toMatchSnapshot(
           {
+            rev: expect.any(String),
             lastCrawl: expect.any(String),
             _searchInternal: {
               expiresAt: expect.any(Number),
@@ -93,7 +95,7 @@ describe('general', () => {
     };
     const formatted = formatPkg(pkg);
     const postfix = ' **TRUNCATED**';
-    const ending = formatted.readme.substr(
+    const ending = formatted.readme.substring(
       formatted.readme.length - postfix.length
     );
 
@@ -103,6 +105,7 @@ describe('general', () => {
     expect(ending).toBe(postfix);
 
     expect(formatted).toMatchSnapshot({
+      rev: expect.any(String),
       readme: expect.any(String),
       lastCrawl: expect.any(String),
       _searchInternal: {
@@ -845,6 +848,7 @@ describe('deprecated', () => {
     const formatted = formatPkg(pkg);
 
     expect(formatted).toMatchSnapshot({
+      rev: expect.any(String),
       lastCrawl: expect.any(String),
       deprecated: 'Yes this is deprecated',
       isDeprecated: true,

@@ -16,6 +16,18 @@
           "ts": "never"
         }
       }
-    ],
-  }
+    ]
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.ts"
+      ],
+      "rules": {
+        "consistent-return": [
+          "off"
+        ]
+      }
+    }
+  ]
 }

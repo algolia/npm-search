@@ -1,25 +1,20 @@
 import algoliasearch from 'algoliasearch';
 
-import { saveDocs, saveDoc } from '../saveDocs';
+import { formatPkg } from '../formatPkg';
+import { saveDoc } from '../saveDocs';
 
 import preact from './preact-simplified.json';
 
 jest.setTimeout(15000);
 
-describe('batch', () => {
-  it('should be similar batch vs one', async () => {
+describe('saveDoc', () => {
+  it('should always produce the same records', async () => {
     const client = algoliasearch('e', '');
     const index = client.initIndex('a');
-    let batch;
-    let single;
-    jest.spyOn(index, 'saveObjects').mockImplementationOnce((val) => {
-      batch = val[0];
+    jest.spyOn(index, 'saveObject').mockImplementationOnce(() => {
       return true as any;
     });
-    jest.spyOn(index, 'saveObject').mockImplementationOnce((val) => {
-      single = val;
-      return true as any;
-    });
+
     const final = {
       _searchInternal: {
         alternativeNames: ['preact', 'preact.js', 'preactjs'],
@@ -221,18 +216,8 @@ describe('batch', () => {
       }),
     });
 
-    const row = { id: '', key: 'preact', value: { rev: 'a' }, doc: preact };
-    await saveDocs({ docs: [row], index });
-    await saveDoc({ row: preact, index });
+    await saveDoc({ formatted: formatPkg(preact), index });
 
-    expect(index.saveObjects).toHaveBeenCalledWith([clean]);
     expect(index.saveObject).toHaveBeenCalledWith(clean);
-    expect(single).toMatchObject({
-      ...batch,
-      lastCrawl: expect.any(String),
-      _searchInternal: {
-        expiresAt: expect.any(Number),
-      },
-    });
   });
 });
