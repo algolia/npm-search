@@ -3,7 +3,7 @@ import type { SearchIndex } from 'algoliasearch';
 import { config } from './config';
 import { datadog } from './utils/datadog';
 
-type State = {
+export type State = {
   seq: number | undefined;
   bootstrapDone: boolean;
   bootstrapLastDone: number | null;
