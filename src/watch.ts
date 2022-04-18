@@ -271,7 +271,6 @@ export class Watch {
     const res = await npm.getDoc(change.id, change.changes[0]!.rev);
 
     if (isFailure(res)) {
-      log.error('Got an error', res.error);
       throw new Error(res.error);
     }
 

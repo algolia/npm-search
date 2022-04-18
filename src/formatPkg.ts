@@ -590,7 +590,7 @@ export function getMains(pkg: Pick<NicePackageType, 'main'>): string[] {
 export function getExportKeys(
   exp: NicePackageType['exports'] | string
 ): string[] {
-  if (typeof exp !== 'object') {
+  if (typeof exp !== 'object' || exp === null) {
     return [];
   }
   const keys = Object.keys(exp);
