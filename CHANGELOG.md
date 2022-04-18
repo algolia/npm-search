@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/algolia/npm-search/compare/v1.6.0...v1.6.1) (2022-04-18)
+
+
+### Bug Fixes
+
+* docker build ([#937](https://github.com/algolia/npm-search/issues/937)) ([41ce69b](https://github.com/algolia/npm-search/commit/41ce69bd977dac9039c7994048094c21e51a2599))
+
 # [1.6.0](https://github.com/algolia/npm-search/compare/v1.5.1...v1.6.0) (2022-04-18)
 
 
