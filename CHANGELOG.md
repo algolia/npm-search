@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/algolia/npm-search/compare/v1.6.1...v1.6.2) (2022-04-18)
+
+
+### Bug Fixes
+
+* report jsDelivr error and skip bootstrap ([#938](https://github.com/algolia/npm-search/issues/938)) ([5eb1991](https://github.com/algolia/npm-search/commit/5eb1991292724da27332b2ea773f8f4e7d316022))
+
 ## [1.6.1](https://github.com/algolia/npm-search/compare/v1.6.0...v1.6.1) (2022-04-18)
 
 
