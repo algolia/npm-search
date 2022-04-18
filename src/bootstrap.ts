@@ -6,7 +6,7 @@ import { queue } from 'async';
 import chalk from 'chalk';
 
 import type { StateManager } from './StateManager';
-import * as algolia from './algolia';
+import { putDefaultSettings } from './algolia';
 import { config } from './config';
 import { formatPkg } from './formatPkg';
 import * as npm from './npm';
@@ -19,10 +19,10 @@ import { log } from './utils/log';
 import * as sentry from './utils/sentry';
 
 export class Bootstrap extends EventEmitter {
-  stateManager;
-  algoliaClient;
-  mainIndex;
-  bootstrapIndex;
+  stateManager: StateManager;
+  algoliaClient: SearchClient;
+  mainIndex: SearchIndex;
+  bootstrapIndex: SearchIndex;
   prefetcher: Prefetcher | undefined;
   consumer: QueueObject<PrefetchedPkg> | undefined;
   interval: NodeJS.Timer | undefined;
@@ -91,7 +91,7 @@ export class Bootstrap extends EventEmitter {
       log.info('⛷   Bootstrap: starting from the first doc');
       // first time this launches, we need to remember the last seq our bootstrap can trust
       await this.stateManager.save({ seq });
-      await algolia.putDefaultSettings(this.bootstrapIndex, config);
+      await putDefaultSettings(this.bootstrapIndex, config);
     } else {
       log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
     }
@@ -139,10 +139,10 @@ export class Bootstrap extends EventEmitter {
     const state = await this.stateManager.check();
 
     if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
-      await algolia.putDefaultSettings(this.mainIndex, config);
+      await putDefaultSettings(this.mainIndex, config);
       log.info('⛷   Bootstrap: already done, skipping');
 
-      return false;
+      return true;
     }
 
     return false;

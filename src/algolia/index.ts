@@ -33,7 +33,7 @@ function createClient({
 /**
  * Prepare algolia for indexing.
  */
-async function prepare(config: Config): Promise<{
+export async function prepare(config: Config): Promise<{
   mainIndex: SearchIndex;
   bootstrapIndex: SearchIndex;
   client: SearchClient;
@@ -63,7 +63,7 @@ async function prepare(config: Config): Promise<{
   };
 }
 
-async function putDefaultSettings(
+export async function putDefaultSettings(
   index: SearchIndex,
   config: Config
 ): Promise<void> {
@@ -78,5 +78,3 @@ async function putDefaultSettings(
 
   await index.waitTask(taskID);
 }
-
-export { prepare, putDefaultSettings };

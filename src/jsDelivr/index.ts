@@ -3,6 +3,7 @@ import { config } from '../config';
 import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
 import { request } from '../utils/request';
+import * as sentry from '../utils/sentry';
 
 type Hit = { type: 'npm'; name: string; hits: number };
 export type File = { name: string; hash: string; time: string; size: number };
@@ -30,7 +31,7 @@ export async function loadHits(): Promise<void> {
       hits.set(pkg.name, pkg.hits);
     });
   } catch (err) {
-    log.error('Failed to fetch', err);
+    sentry.report(err);
   }
 
   datadog.timing('jsdelivr.loadHits', Date.now() - start);
