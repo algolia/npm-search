@@ -97,12 +97,12 @@ class Main {
 
 const main = new Main();
 
-process.on('unhandledRejection', async (reason) => {
-  sentry.report(reason);
+process.on('unhandledRejection', async (err) => {
+  sentry.report(new Error('unhandledRejection'), { err });
   await close();
 });
 process.on('uncaughtException', (err) => {
-  sentry.report(err, { context: 'uncaughtException' });
+  sentry.report(new Error('uncauthexception'), { err });
 });
 
 (async (): Promise<void> => {

@@ -17,6 +17,12 @@ import { saveDoc } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
+import { backoff } from './utils/wait';
+
+type PkgJob = {
+  pkg: PrefetchedPkg;
+  retry: number;
+};
 
 export class Bootstrap extends EventEmitter {
   stateManager: StateManager;
@@ -24,7 +30,7 @@ export class Bootstrap extends EventEmitter {
   mainIndex: SearchIndex;
   bootstrapIndex: SearchIndex;
   prefetcher: Prefetcher | undefined;
-  consumer: QueueObject<PrefetchedPkg> | undefined;
+  consumer: QueueObject<PkgJob> | undefined;
   interval: NodeJS.Timer | undefined;
 
   constructor(
@@ -51,17 +57,18 @@ export class Bootstrap extends EventEmitter {
     }
 
     if (this.consumer) {
-      if (this.consumer.length() > 0) {
-        await this.consumer.drain();
-      }
       this.consumer.kill();
+      await this.consumer.drain();
     }
 
     if (this.prefetcher) {
       this.prefetcher.stop();
     }
 
-    log.info('Stopped Bootstrap gracefully');
+    log.info('Stopped Bootstrap gracefully', {
+      queued: this.consumer?.length(),
+      processing: this.consumer?.running(),
+    });
   }
 
   /**
@@ -109,7 +116,7 @@ export class Bootstrap extends EventEmitter {
     const consumer = createPkgConsumer(this.stateManager, this.bootstrapIndex);
     consumer.unsaturated(async () => {
       const next = await prefetcher.getNext();
-      consumer.push(next);
+      consumer.push({ pkg: next, retry: 0 });
       done += 1;
     });
     consumer.buffer = 0;
@@ -152,12 +159,9 @@ export class Bootstrap extends EventEmitter {
    * Last step after everything has been processed.
    */
   private async afterProcessing(): Promise<void> {
-    if (this.consumer!.length() > 0) {
-      // While we no longer are in "processing" mode
-      //  it can be possible that there's a last iteration in the queue
-      await this.consumer!.drain();
-    }
-
+    // While we no longer are in "processing" mode
+    //  it can be possible that there's a last iteration in the queue
+    await this.consumer!.drain();
     this.consumer!.kill();
 
     await this.stateManager.save({
@@ -203,12 +207,13 @@ export class Bootstrap extends EventEmitter {
 
     log.info(
       chalk.dim.italic
-        .white`[progress] %d/%d docs (%s%) (%s prefetched) (%s processing)`,
+        .white`[progress] %d/%d docs (%s%) (%s prefetched) (%s processing; %s buffer)`,
       offset + nbDocs,
       totalDocs,
       ((Math.max(offset + nbDocs, 1) / totalDocs) * 100).toFixed(2),
       this.prefetcher!.idleCount,
-      this.consumer!.running()
+      this.consumer!.running(),
+      this.consumer!.length()
     );
   }
 }
@@ -219,8 +224,8 @@ export class Bootstrap extends EventEmitter {
 function createPkgConsumer(
   stateManager: StateManager,
   index: SearchIndex
-): QueueObject<PrefetchedPkg> {
-  return queue<PrefetchedPkg>(async (pkg) => {
+): QueueObject<PkgJob> {
+  const consumer = queue<PkgJob>(async ({ pkg, retry }) => {
     if (!pkg) {
       return;
     }
@@ -252,11 +257,22 @@ function createPkgConsumer(
           bootstrapLastId: pkg.id,
         });
       }
-    } catch (err) {
-      sentry.report(err);
-    } finally {
       log.info(`Done:`, pkg.id);
+    } catch (err) {
+      log.info(`Failed:`, pkg.id);
+
+      if (err instanceof Error && err.message.includes('Access denied')) {
+        await backoff(retry + 1, config.retryBackoffPow);
+        consumer.push({ pkg, retry: retry + 1 });
+        sentry.report(new Error('Throttling job'), { err });
+        return;
+      }
+
+      sentry.report(new Error('Error during job'), { err });
+    } finally {
       datadog.timing('loop', Date.now() - start);
     }
   }, config.bootstrapConcurrency);
+
+  return consumer;
 }

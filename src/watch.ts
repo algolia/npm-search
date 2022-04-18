@@ -16,7 +16,7 @@ import { saveDoc } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
-import { wait } from './utils/wait';
+import { backoff } from './utils/wait';
 
 type ChangeJob = {
   change: DatabaseChangesResultItem;
@@ -102,6 +102,7 @@ export class Watch {
 
     log.info('Stopped Watch gracefully', {
       queued: this.changesConsumer?.length(),
+      processing: this.changesConsumer?.running(),
     });
   }
 
@@ -255,10 +256,7 @@ export class Watch {
     }
 
     if (job.retry > 0) {
-      // retry backoff
-      const backoff = Math.pow(job.retry + 1, config.retryBackoffPow) * 1000;
-      log.info('Retrying (', job.retry, '), waiting for', backoff);
-      await wait(backoff);
+      await backoff(job.retry, config.retryBackoffPow);
     }
 
     if (change.deleted) {
@@ -273,7 +271,6 @@ export class Watch {
     const res = await npm.getDoc(change.id, change.changes[0]!.rev);
 
     if (isFailure(res)) {
-      log.error('Got an error', res.error);
       throw new Error(res.error);
     }
 
