@@ -1,3 +1,10 @@
+## [1.6.4](https://github.com/algolia/npm-search/compare/v1.6.3...v1.6.4) (2022-04-18)
+
+
+### Bug Fixes
+
+* **bootstrap:** handle HTTP 429 ([#940](https://github.com/algolia/npm-search/issues/940)) ([968046b](https://github.com/algolia/npm-search/commit/968046ba039b81c50ccf4e33065a6b03a74d5db2))
+
 ## [1.6.3](https://github.com/algolia/npm-search/compare/v1.6.2...v1.6.3) (2022-04-18)
 
 
