@@ -1,31 +1,51 @@
 # ---- Base ----
 FROM node:16.13.1-alpine AS base
 
-ENV NODE_ENV production
+# ------------------
+# package.json cache
+# ------------------
+FROM apteno/alpine-jq:2022-03-27 AS deps
+
+# To prevent cache invalidation from changes in fields other than dependencies
+COPY package.json /tmp
+RUN jq 'walk(if type == "object" then with_entries(select(.key | test("^jest|prettier|eslint|semantic|dotenv|nodemon|renovate") | not)) else . end) | { name, dependencies, devDependencies, packageManager }' < /tmp/package.json > /tmp/deps.json
+
+# ------------------
+# New base image
+# ------------------
+FROM base as tmp
+
+ENV IN_DOCKER true
+ENV PLAYWRIGHT_BROWSERS_PATH="/ms-playwright"
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="true"
+
+# Setup the app WORKDIR
+WORKDIR /app/tmp
+
+# Copy and install dependencies separately from the app's code
+# To leverage Docker's cache when no dependency has change
+COPY --from=deps /tmp/deps.json ./package.json
+COPY yarn.lock .yarnrc.yml ./
+COPY .yarn .yarn
 
 # Install dependencies for native deps
 RUN apk add --no-cache bash python3
 
-# Setup the app WORKDIR
-WORKDIR /app
-
-# Copy and install dependencies separately from the app's code
-# To leverage Docker's cache when no dependency has change
-COPY package.json yarn.lock ./
-
 # Install dev dependencies
 RUN true \
-  # && yarn set version berry \
-  && yarn install --production=false
+  # Use local version instead of letting yarn auto upgrade itself
+  && yarn set version $(ls -d $PWD/.yarn/releases/*) \
+  && yarn install
 
 # This step will invalidates cache
-COPY . /app
-RUN ls -lah /app
+COPY . ./
+RUN ls -lah /app/tmp
 
 # Builds the code and reinstall node_modules in prod mode
 RUN true \
   && yarn build \
-  && yarn install --production=true \
+  # Finally remove all dev packages
+  && yarn workspaces focus --all --production \
   && rm -rf src/ \
   && rm -rf .yarn/
 
@@ -41,8 +61,8 @@ USER node
 
 WORKDIR /app
 
-COPY --from=base --chown=node:node /app /app
+COPY --from=tmp --chown=node:node /app/tmp /app
 
 EXPOSE 8000
 
-CMD [ "npm", "start" ]
+CMD [ "node", "dist/src/index.js" ]

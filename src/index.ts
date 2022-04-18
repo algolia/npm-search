@@ -2,6 +2,8 @@ import type http from 'http';
 
 import { nextTick } from 'async';
 
+import { version } from '../package.json';
+
 import { StateManager } from './StateManager';
 import * as algolia from './algolia/index';
 import { createAPI } from './api';
@@ -22,7 +24,7 @@ class Main {
   healthApi: http.Server | undefined;
 
   async run(): Promise<void> {
-    log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
+    log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰', { version });
     let start = Date.now();
 
     // We schedule to kill the process:
@@ -107,6 +109,7 @@ process.on('uncaughtException', (err) => {
   try {
     await main.run();
   } catch (err) {
+    sentry.report(new Error('Error during run'), { err });
     close();
   }
 })();
