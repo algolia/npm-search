@@ -3,3 +3,10 @@ lib/
 .env
 junit/
 dist/
+
+*.log
+
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+.yarn/*
+!.yarn/releases
+!.yarn/plugins

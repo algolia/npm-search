@@ -27,6 +27,10 @@ export class Prefetcher {
     this.#nextKey = opts.nextKey;
   }
 
+  stop(): void {
+    this.#running = false;
+  }
+
   get offset(): number {
     return this.#offset + this.#limit - this.#ready.length;
   }

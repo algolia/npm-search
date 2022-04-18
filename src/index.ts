@@ -1,4 +1,5 @@
-/* eslint-disable no-process-exit */
+import type http from 'http';
+
 import { nextTick } from 'async';
 
 import { StateManager } from './StateManager';
@@ -13,76 +14,111 @@ import { log } from './utils/log';
 import * as sentry from './utils/sentry';
 import { Watch } from './watch';
 
-log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
-
 const KILL_PROCESS_EVERY_MS = 1 * 60 * 60 * 1000; // every 1 hours
 
-/**
- * Main process
- *   - Bootstrap: will index the whole list of packages (if needed)
- *   - Watch    : will process update in real time.
- */
-async function main(): Promise<void> {
-  const start = Date.now();
+class Main {
+  bootstrap: Bootstrap | undefined;
+  watch: Watch | undefined;
+  healthApi: http.Server | undefined;
 
-  // We schedule to kill the process:
-  //  - reset cache
-  //  - maybe retrigger bootstrap
-  setTimeout(() => {
-    log.info('👋  Scheduled process cleaning');
-    process.exit(0);
-  }, KILL_PROCESS_EVERY_MS);
+  async run(): Promise<void> {
+    log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰');
+    let start = Date.now();
 
-  createAPI();
+    // We schedule to kill the process:
+    //  - reset cache
+    //  - maybe retrigger bootstrap
+    setTimeout(() => {
+      log.info('👋  Scheduled process cleaning');
+      close();
+    }, KILL_PROCESS_EVERY_MS);
 
-  // first we make sure the bootstrap index has the correct settings
-  log.info('💪  Setting up Algolia', config.appId, [
-    config.bootstrapIndexName,
-    config.indexName,
-  ]);
-  const {
-    client: algoliaClient,
-    mainIndex,
-    bootstrapIndex,
-  } = await algolia.prepare(config);
-  datadog.timing('main.init_algolia', Date.now() - start);
+    this.healthApi = createAPI();
 
-  // Create State Manager that holds progression of indexing
-  const stateManager = new StateManager(mainIndex);
+    // first we make sure the bootstrap index has the correct settings
+    start = Date.now();
 
-  // Preload some useful data
-  await jsDelivr.loadHits();
-  await typescript.loadTypesIndex();
+    log.info('💪  Setting up Algolia', config.appId, [
+      config.bootstrapIndexName,
+      config.indexName,
+    ]);
+    const {
+      client: algoliaClient,
+      mainIndex,
+      bootstrapIndex,
+    } = await algolia.prepare(config);
+    datadog.timing('main.init_algolia', Date.now() - start);
 
-  const bootstrap = new Bootstrap(
-    stateManager,
-    algoliaClient,
-    mainIndex,
-    bootstrapIndex
-  );
-  const watch = new Watch(stateManager, mainIndex);
+    // Create State Manager that holds progression of indexing
+    const stateManager = new StateManager(mainIndex);
 
-  // then we run the bootstrap
-  // after a bootstrap is done, it's moved to main (with settings)
-  // if it was already finished, we will set the settings on the main index
-  await bootstrap.run();
+    // Preload some useful data
+    await jsDelivr.loadHits();
+    await typescript.loadTypesIndex();
+    this.bootstrap = new Bootstrap(
+      stateManager,
+      algoliaClient,
+      mainIndex,
+      bootstrapIndex
+    );
+    this.watch = new Watch(stateManager, mainIndex);
 
-  // then we figure out which updates we missed since
-  // the last time main index was updated
-  await watch.run();
+    if (!(await this.bootstrap.isDone())) {
+      this.bootstrap.on('finished', async () => {
+        await this.watch!.run();
+      });
+
+      // then we run the bootstrap
+      // after a bootstrap is done, it's moved to main (with settings)
+      // if it was already finished, we will set the settings on the main index
+      await this.bootstrap.run();
+    } else {
+      await this.watch.run();
+    }
+  }
+
+  async stop(): Promise<void> {
+    if (this.bootstrap) {
+      await this.bootstrap.stop();
+    }
+    if (this.watch) {
+      await this.watch.stop();
+    }
+    if (this.healthApi) {
+      await new Promise((resolve) => {
+        this.healthApi!.close(resolve);
+      });
+    }
+    log.info('Stopped Main gracefully');
+  }
 }
 
-main().catch(async (err) => {
-  sentry.report(err);
-  await sentry.drain();
-  process.exit(1);
+const main = new Main();
+
+process.on('unhandledRejection', async (reason) => {
+  sentry.report(reason);
+  await close();
 });
+process.on('uncaughtException', (err) => {
+  sentry.report(err, { context: 'uncaughtException' });
+});
+
+(async (): Promise<void> => {
+  try {
+    await main.run();
+  } catch (err) {
+    close();
+  }
+})();
 
 async function close(): Promise<void> {
   log.info('Close was requested');
+  // datadog.close();
   await sentry.drain();
+  await main.stop();
 
   nextTick(() => {
+    // eslint-disable-next-line no-process-exit
     process.exit(1);
   });
 }
@@ -93,14 +129,4 @@ process.once('SIGINT', async () => {
 
 process.once('SIGTERM', async () => {
   await close();
-});
-
-process.on('unhandledRejection', async (reason) => {
-  sentry.report(reason);
-  await close();
-});
-
-// Report any uncaught exception, without letting the process crash
-process.on('uncaughtException', (err) => {
-  sentry.report(err, { context: 'uncaughtException' });
 });
