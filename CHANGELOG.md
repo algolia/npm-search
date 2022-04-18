@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/algolia/npm-search/compare/v1.5.0...v1.5.1) (2022-04-18)
+
+
+### Bug Fixes
+
+* **deps:** update dependency nano to v10 ([#920](https://github.com/algolia/npm-search/issues/920)) ([5e3a29d](https://github.com/algolia/npm-search/commit/5e3a29d24a4a1defb9a0345adfdbfd8dee1af11a))
+
 # [1.5.0](https://github.com/algolia/npm-search/compare/v1.4.32...v1.5.0) (2022-04-16)
 
 
