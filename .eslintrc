@@ -26,7 +26,10 @@
       "rules": {
         "consistent-return": [
           "off"
-        ]
+        ],
+        "no-dupe-class-members": [
+          "off"
+        ],
       }
     }
   ]

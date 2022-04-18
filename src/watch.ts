@@ -1,6 +1,7 @@
 import type { SearchIndex } from 'algoliasearch';
 import type { QueueObject } from 'async';
 import { queue } from 'async';
+import type { EventEmitter } from 'bunyan';
 import chalk from 'chalk';
 import type { DatabaseChangesResultItem } from 'nano';
 
@@ -31,6 +32,8 @@ export class Watch {
   totalSequence: number = 0;
   changesConsumer: QueueObject<ChangeJob> | undefined;
   pkgsLastUpdate = new Map<string, number>();
+
+  changesReader: EventEmitter | undefined;
 
   constructor(stateManager: StateManager, mainIndex: SearchIndex) {
     this.stateManager = stateManager;
@@ -85,64 +88,57 @@ export class Watch {
 
     this.checkSkipped();
 
+    // TO DO: uncomment this
     // Most packages don't have enough info to enable refresh for the moment
     // this.checkToRefresh();
 
-    await this.watch();
-
-    log.info('-----');
-    log.info('🚀  Watch: done');
-    log.info('-----');
+    await this.launchChangeReader();
   }
 
-  /**
-   * Active synchronous mode with Registry.
-   * Changes are polled with a keep-alived connection.
-   *
-   * @param stateManager - The state manager.
-   * @param mainIndex - Algolia index manager.
-   */
-  async watch(): Promise<boolean | undefined> {
-    const { seq } = await this.stateManager.get();
-    const changesConsumer = this.changesConsumer;
-    if (!changesConsumer) {
-      log.warn('Can not watch without a consumer');
-      return;
-    }
+  async stop(): Promise<void> {
+    npm.db.changesReader.stop();
+    await this.changesConsumer?.drain();
+    this.changesReader?.removeAllListeners();
 
-    const listener = npm.db.changesReader
+    log.info('Stopped Watch gracefully', {
+      queued: this.changesConsumer?.length(),
+    });
+  }
+
+  async launchChangeReader(): Promise<void> {
+    const { seq } = await this.stateManager.get();
+
+    log.info(`listening from ${seq}...`);
+
+    const reader = npm.db.changesReader
       .start({
         includeDocs: false,
         batchSize: 1,
         since: String(seq),
       })
       .on('change', (change) => {
-        changesConsumer.push({ change, retry: 0, ignoreSeq: false });
+        this.changesConsumer!.push({ change, retry: 0, ignoreSeq: false });
         if (change.id) {
           this.pkgsLastUpdate.set(change.id, Date.now());
         }
 
         // on:change will not wait for us to process to trigger again
         // So we need to control the fetch manually otherwise it will fetch thousand/millions of update in advance
-        if (changesConsumer.length() > 10) {
+        if (this.changesConsumer!.length() > config.watchMaxPrefetch) {
           npm.db.changesReader.pause();
         }
       })
       .on('error', (err) => {
         sentry.report(err);
       });
-    log.info(`listening from ${seq}...`);
-    changesConsumer.saturated(() => {
-      if (changesConsumer.length() < 5) {
+
+    this.changesConsumer!.saturated(() => {
+      if (this.changesConsumer!.length() < config.watchMinUnpause) {
         npm.db.changesReader.resume();
       }
     });
 
-    return new Promise((resolve) => {
-      listener.on('end', () => {
-        resolve(true);
-      });
-    });
+    this.changesReader = reader;
   }
 
   /**

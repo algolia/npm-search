@@ -97,5 +97,6 @@
     "type": "git",
     "url": "https://github.com/algolia/npm-search.git"
   },
-  "homepage": "https://github.com/algolia/npm-search"
+  "homepage": "https://github.com/algolia/npm-search",
+  "packageManager": "yarn@3.2.0"
 }

@@ -1,3 +1,5 @@
+import { EventEmitter } from 'events';
+
 import type { SearchClient, SearchIndex } from 'algoliasearch';
 import type { QueueObject } from 'async';
 import { queue } from 'async';
@@ -15,15 +17,15 @@ import { saveDoc } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
-import { wait } from './utils/wait';
 
-export class Bootstrap {
+export class Bootstrap extends EventEmitter {
   stateManager;
   algoliaClient;
   mainIndex;
   bootstrapIndex;
   prefetcher: Prefetcher | undefined;
   consumer: QueueObject<PrefetchedPkg> | undefined;
+  interval: NodeJS.Timer | undefined;
 
   constructor(
     stateManager: StateManager,
@@ -31,10 +33,35 @@ export class Bootstrap {
     mainIndex: SearchIndex,
     bootstrapIndex: SearchIndex
   ) {
+    super();
     this.stateManager = stateManager;
     this.algoliaClient = algoliaClient;
     this.mainIndex = mainIndex;
     this.bootstrapIndex = bootstrapIndex;
+  }
+
+  override on(param: 'finished', cb: () => any): this;
+  override on(param: string, cb: () => void): this {
+    return super.on(param, cb);
+  }
+
+  async stop(): Promise<void> {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+
+    if (this.consumer) {
+      if (this.consumer.length() > 0) {
+        await this.consumer.drain();
+      }
+      this.consumer.kill();
+    }
+
+    if (this.prefetcher) {
+      this.prefetcher.stop();
+    }
+
+    log.info('Stopped Bootstrap gracefully');
   }
 
   /**
@@ -53,14 +80,6 @@ export class Bootstrap {
     log.info('-----');
     log.info('⛷   Bootstrap: starting');
     const state = await this.stateManager.check();
-
-    if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
-      await algolia.putDefaultSettings(this.mainIndex, config);
-      log.info('⛷   Bootstrap: already done');
-      log.info('-----');
-
-      return;
-    }
 
     await this.stateManager.save({
       stage: 'bootstrap',
@@ -98,31 +117,49 @@ export class Bootstrap {
     this.prefetcher = prefetcher;
     this.consumer = consumer;
 
-    let processing = true;
-    while (processing) {
+    this.interval = setInterval(async () => {
       this.logProgress(done);
 
-      await wait(config.prefetchWaitBetweenPage);
-
-      processing = !prefetcher.isFinished;
+      if (prefetcher.isFinished) {
+        clearInterval(this.interval!);
+        await this.afterProcessing();
+        return;
+      }
       done = 0;
 
       // Push nothing to trigger event
-      this.consumer.push(null as any);
-    }
-
-    if (this.consumer.length() > 0) {
-      // While we no longer are in "processing" mode
-      //  it can be possible that there's a last iteration in the queue
-      await this.consumer.drain();
-    }
-
-    this.consumer.kill();
-
-    await this.onDone();
+      this.consumer!.push(null as any);
+    }, config.prefetchWaitBetweenPage);
   }
 
-  async onDone(): Promise<void> {
+  /**
+   * Tell if we need to execute bootstrap or not.
+   */
+  async isDone(): Promise<boolean> {
+    const state = await this.stateManager.check();
+
+    if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
+      await algolia.putDefaultSettings(this.mainIndex, config);
+      log.info('⛷   Bootstrap: already done, skipping');
+
+      return false;
+    }
+
+    return false;
+  }
+
+  /**
+   * Last step after everything has been processed.
+   */
+  private async afterProcessing(): Promise<void> {
+    if (this.consumer!.length() > 0) {
+      // While we no longer are in "processing" mode
+      //  it can be possible that there's a last iteration in the queue
+      await this.consumer!.drain();
+    }
+
+    this.consumer!.kill();
+
     await this.stateManager.save({
       bootstrapDone: true,
       bootstrapLastDone: Date.now(),
@@ -138,7 +175,7 @@ export class Bootstrap {
   /**
    * Move algolia index to prod.
    */
-  async moveToProduction(): Promise<void> {
+  private async moveToProduction(): Promise<void> {
     log.info('🚚  starting move to production');
 
     const currentState = await this.stateManager.get();
@@ -152,7 +189,7 @@ export class Bootstrap {
   /**
    * Log approximate progress.
    */
-  async logProgress(nbDocs: number): Promise<void> {
+  private async logProgress(nbDocs: number): Promise<void> {
     const { nbDocs: totalDocs } = await npm.getInfo();
     const offset = this.prefetcher!.offset;
 

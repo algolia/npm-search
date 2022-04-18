@@ -179,6 +179,10 @@ export const config = {
   retrySkipped: ms('1 minute'),
   retryBackoffPow: 3,
   refreshPeriod: ms('2 minutes'),
+
+  // Watch
+  watchMaxPrefetch: 10,
+  watchMinUnpause: 5,
 };
 
 export type Config = typeof config;
