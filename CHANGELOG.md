@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/algolia/npm-search/compare/v1.5.1...v1.6.0) (2022-04-18)
+
+
+### Features
+
+* handle SIGINT gracefully ([#936](https://github.com/algolia/npm-search/issues/936)) ([202ddec](https://github.com/algolia/npm-search/commit/202ddec5363dd319f37208df707a75e25b253ebb))
+
 ## [1.5.1](https://github.com/algolia/npm-search/compare/v1.5.0...v1.5.1) (2022-04-18)
 
 
