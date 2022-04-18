@@ -10,7 +10,7 @@
     "build:hot": "tsc -w --preserveWatchOutput",
     "build": "tsc -b",
     "clean": "rm -rf dist/",
-    "dev": "node -r dotenv/config --async-stack-traces --max-old-space-size=920 dist/index.js",
+    "dev": "node -r dotenv/config --async-stack-traces --max-old-space-size=920 dist/src/index.js",
     "lint": "eslint --ext=jsx,ts,tsx,js .",
     "prepare": "husky install",
     "start": "UV_THREADPOOL_SIZE=64 node --async-stack-traces --max-old-space-size=920 dist/index.js",

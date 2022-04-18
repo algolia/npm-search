@@ -1,10 +1,12 @@
 import * as Sentry from '@sentry/node';
 
+import { version } from '../../package.json';
+
 import { log } from './log';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
-  release: `1.0.0`,
+  release: version,
   environment: 'prod',
   serverName: 'npm-search',
   ignoreErrors: [
@@ -14,13 +16,13 @@ Sentry.init({
   ],
 });
 
-export function report(err, extra = {}): void {
-  log.error(err.message);
+export function report(err: any, extra = {}): void {
   if (!process.env.SENTRY_DSN) {
-    log.error(err);
+    log.error(err, extra);
     return;
   }
 
+  log.error(err.message);
   Sentry.withScope((scope) => {
     scope.setExtras(extra);
     Sentry.captureException(err);
