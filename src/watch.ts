@@ -102,6 +102,7 @@ export class Watch {
 
     log.info('Stopped Watch gracefully', {
       queued: this.changesConsumer?.length(),
+      processing: this.changesConsumer?.running(),
     });
   }
 

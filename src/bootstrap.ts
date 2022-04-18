@@ -57,17 +57,18 @@ export class Bootstrap extends EventEmitter {
     }
 
     if (this.consumer) {
-      if (this.consumer.length() > 0) {
-        await this.consumer.drain();
-      }
       this.consumer.kill();
+      await this.consumer.drain();
     }
 
     if (this.prefetcher) {
       this.prefetcher.stop();
     }
 
-    log.info('Stopped Bootstrap gracefully');
+    log.info('Stopped Bootstrap gracefully', {
+      queued: this.consumer?.length(),
+      processing: this.consumer?.running(),
+    });
   }
 
   /**
@@ -158,12 +159,9 @@ export class Bootstrap extends EventEmitter {
    * Last step after everything has been processed.
    */
   private async afterProcessing(): Promise<void> {
-    if (this.consumer!.length() > 0) {
-      // While we no longer are in "processing" mode
-      //  it can be possible that there's a last iteration in the queue
-      await this.consumer!.drain();
-    }
-
+    // While we no longer are in "processing" mode
+    //  it can be possible that there's a last iteration in the queue
+    await this.consumer!.drain();
     this.consumer!.kill();
 
     await this.stateManager.save({
@@ -209,12 +207,13 @@ export class Bootstrap extends EventEmitter {
 
     log.info(
       chalk.dim.italic
-        .white`[progress] %d/%d docs (%s%) (%s prefetched) (%s processing)`,
+        .white`[progress] %d/%d docs (%s%) (%s prefetched) (%s processing; %s buffer)`,
       offset + nbDocs,
       totalDocs,
       ((Math.max(offset + nbDocs, 1) / totalDocs) * 100).toFixed(2),
       this.prefetcher!.idleCount,
-      this.consumer!.running()
+      this.consumer!.running(),
+      this.consumer!.length()
     );
   }
 }
@@ -258,8 +257,11 @@ function createPkgConsumer(
           bootstrapLastId: pkg.id,
         });
       }
+      log.info(`Done:`, pkg.id);
     } catch (err) {
-      if (err instanceof Error && err.message.includes('429')) {
+      log.info(`Failed:`, pkg.id);
+
+      if (err instanceof Error && err.message.includes('Access denied')) {
         await backoff(retry + 1, config.retryBackoffPow);
         consumer.push({ pkg, retry: retry + 1 });
         sentry.report(new Error('Throttling job'), { err });
@@ -268,7 +270,6 @@ function createPkgConsumer(
 
       sentry.report(new Error('Error during job'), { err });
     } finally {
-      log.info(`Done:`, pkg.id);
       datadog.timing('loop', Date.now() - start);
     }
   }, config.bootstrapConcurrency);
