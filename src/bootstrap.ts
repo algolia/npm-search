@@ -260,9 +260,7 @@ function createPkgConsumer(
       }
     } catch (err) {
       if (err instanceof Error && err.message.includes('429')) {
-        if (retry > 0) {
-          await backoff(retry, config.retryBackoffPow);
-        }
+        await backoff(retry + 1, config.retryBackoffPow);
         consumer.push({ pkg, retry: retry + 1 });
         sentry.report(new Error('Throttling job'), { err });
         return;
