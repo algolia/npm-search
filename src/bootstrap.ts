@@ -142,7 +142,7 @@ export class Bootstrap extends EventEmitter {
       await algolia.putDefaultSettings(this.mainIndex, config);
       log.info('⛷   Bootstrap: already done, skipping');
 
-      return false;
+      return true;
     }
 
     return false;
