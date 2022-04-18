@@ -17,6 +17,12 @@ import { saveDoc } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
+import { backoff } from './utils/wait';
+
+type PkgJob = {
+  pkg: PrefetchedPkg;
+  retry: number;
+};
 
 export class Bootstrap extends EventEmitter {
   stateManager: StateManager;
@@ -24,7 +30,7 @@ export class Bootstrap extends EventEmitter {
   mainIndex: SearchIndex;
   bootstrapIndex: SearchIndex;
   prefetcher: Prefetcher | undefined;
-  consumer: QueueObject<PrefetchedPkg> | undefined;
+  consumer: QueueObject<PkgJob> | undefined;
   interval: NodeJS.Timer | undefined;
 
   constructor(
@@ -109,7 +115,7 @@ export class Bootstrap extends EventEmitter {
     const consumer = createPkgConsumer(this.stateManager, this.bootstrapIndex);
     consumer.unsaturated(async () => {
       const next = await prefetcher.getNext();
-      consumer.push(next);
+      consumer.push({ pkg: next, retry: 0 });
       done += 1;
     });
     consumer.buffer = 0;
@@ -219,8 +225,8 @@ export class Bootstrap extends EventEmitter {
 function createPkgConsumer(
   stateManager: StateManager,
   index: SearchIndex
-): QueueObject<PrefetchedPkg> {
-  return queue<PrefetchedPkg>(async (pkg) => {
+): QueueObject<PkgJob> {
+  const consumer = queue<PkgJob>(async ({ pkg, retry }) => {
     if (!pkg) {
       return;
     }
@@ -253,10 +259,21 @@ function createPkgConsumer(
         });
       }
     } catch (err) {
-      sentry.report(err);
+      if (err instanceof Error && err.message.includes('429')) {
+        if (retry > 0) {
+          await backoff(retry, config.retryBackoffPow);
+        }
+        consumer.push({ pkg, retry: retry + 1 });
+        sentry.report(new Error('Throttling job'), { err });
+        return;
+      }
+
+      sentry.report(new Error('Error during job'), { err });
     } finally {
       log.info(`Done:`, pkg.id);
       datadog.timing('loop', Date.now() - start);
     }
   }, config.bootstrapConcurrency);
+
+  return consumer;
 }
