@@ -180,6 +180,14 @@ export class Bootstrap extends EventEmitter {
 
     const currentState = await this.stateManager.get();
     await this.algoliaClient
+      .copyIndex(
+        config.indexName,
+        `${config.indexName}.bak-${new Date()
+          .toLocaleDateString()
+          .replaceAll('/', '_')}`
+      )
+      .wait();
+    await this.algoliaClient
       .copyIndex(config.bootstrapIndexName, config.indexName)
       .wait();
 
