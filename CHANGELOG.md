@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/algolia/npm-search/compare/v1.6.2...v1.6.3) (2022-04-18)
+
+
+### Bug Fixes
+
+* **bootstrap:** create backup before moving to prod ([#939](https://github.com/algolia/npm-search/issues/939)) ([ccdbec0](https://github.com/algolia/npm-search/commit/ccdbec0891300bd7de772cb2ff2cc29962cc09ef))
+
 ## [1.6.2](https://github.com/algolia/npm-search/compare/v1.6.1...v1.6.2) (2022-04-18)
 
 
