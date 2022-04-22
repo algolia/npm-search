@@ -1,3 +1,10 @@
+## [1.6.5](https://github.com/algolia/npm-search/compare/v1.6.4...v1.6.5) (2022-04-22)
+
+
+### Bug Fixes
+
+* bootstrap  ([#942](https://github.com/algolia/npm-search/issues/942)) ([33bb876](https://github.com/algolia/npm-search/commit/33bb876cacd363877397baeae19a6cb1c3fd7268))
+
 ## [1.6.4](https://github.com/algolia/npm-search/compare/v1.6.3...v1.6.4) (2022-04-18)
 
 
