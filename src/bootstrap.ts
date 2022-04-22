@@ -1,11 +1,11 @@
 import { EventEmitter } from 'events';
 
-import type { SearchClient, SearchIndex } from 'algoliasearch';
 import type { QueueObject } from 'async';
 import { queue } from 'async';
 import chalk from 'chalk';
 
 import type { StateManager } from './StateManager';
+import type { AlgoliaStore } from './algolia';
 import { putDefaultSettings } from './algolia';
 import { config } from './config';
 import { formatPkg } from './formatPkg';
@@ -26,24 +26,15 @@ type PkgJob = {
 
 export class Bootstrap extends EventEmitter {
   stateManager: StateManager;
-  algoliaClient: SearchClient;
-  mainIndex: SearchIndex;
-  bootstrapIndex: SearchIndex;
+  algoliaStore: AlgoliaStore;
   prefetcher: Prefetcher | undefined;
   consumer: QueueObject<PkgJob> | undefined;
   interval: NodeJS.Timer | undefined;
 
-  constructor(
-    stateManager: StateManager,
-    algoliaClient: SearchClient,
-    mainIndex: SearchIndex,
-    bootstrapIndex: SearchIndex
-  ) {
+  constructor(stateManager: StateManager, algoliaStore: AlgoliaStore) {
     super();
     this.stateManager = stateManager;
-    this.algoliaClient = algoliaClient;
-    this.mainIndex = mainIndex;
-    this.bootstrapIndex = bootstrapIndex;
+    this.algoliaStore = algoliaStore;
   }
 
   override on(param: 'finished', cb: () => any): this;
@@ -66,8 +57,8 @@ export class Bootstrap extends EventEmitter {
     }
 
     log.info('Stopped Bootstrap gracefully', {
-      queued: this.consumer?.length(),
-      processing: this.consumer?.running(),
+      queued: this.consumer?.length() || 0,
+      processing: this.consumer?.running() || 0,
     });
   }
 
@@ -98,7 +89,7 @@ export class Bootstrap extends EventEmitter {
       log.info('⛷   Bootstrap: starting from the first doc');
       // first time this launches, we need to remember the last seq our bootstrap can trust
       await this.stateManager.save({ seq });
-      await putDefaultSettings(this.bootstrapIndex, config);
+      await putDefaultSettings(this.algoliaStore.bootstrapIndex, config);
     } else {
       log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
     }
@@ -113,7 +104,7 @@ export class Bootstrap extends EventEmitter {
     prefetcher.launch();
 
     let done = 0;
-    const consumer = createPkgConsumer(this.stateManager, this.bootstrapIndex);
+    const consumer = createPkgConsumer(this.stateManager, this.algoliaStore);
     consumer.unsaturated(async () => {
       const next = await prefetcher.getNext();
       consumer.push({ pkg: next, retry: 0 });
@@ -146,7 +137,7 @@ export class Bootstrap extends EventEmitter {
     const state = await this.stateManager.check();
 
     if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
-      await putDefaultSettings(this.mainIndex, config);
+      await putDefaultSettings(this.algoliaStore.mainIndex, config);
       log.info('⛷   Bootstrap: already done, skipping');
 
       return true;
@@ -174,6 +165,8 @@ export class Bootstrap extends EventEmitter {
     log.info('-----');
     log.info('⛷   Bootstrap: done');
     log.info('-----');
+
+    this.emit('finished');
   }
 
   /**
@@ -183,17 +176,21 @@ export class Bootstrap extends EventEmitter {
     log.info('🚚  starting move to production');
 
     const currentState = await this.stateManager.get();
-    await this.algoliaClient
+    // Backup current prod index
+    await this.algoliaStore.client
       .copyIndex(
         config.indexName,
-        `${config.indexName}.bak-${new Date()
-          .toLocaleDateString()
-          .replaceAll('/', '_')}`
+        `${config.indexName}.bak-${new Date().toISOString()}`
       )
       .wait();
-    await this.algoliaClient
+
+    // Replace prod with bootstrap
+    await this.algoliaStore.client
       .copyIndex(config.bootstrapIndexName, config.indexName)
       .wait();
+
+    // Remove bootstrap so we don't end up reusing a partial index
+    await this.algoliaStore.bootstrapIndex.delete();
 
     await this.stateManager.save(currentState);
   }
@@ -223,7 +220,7 @@ export class Bootstrap extends EventEmitter {
  */
 function createPkgConsumer(
   stateManager: StateManager,
-  index: SearchIndex
+  algoliaStore: AlgoliaStore
 ): QueueObject<PkgJob> {
   const consumer = queue<PkgJob>(async ({ pkg, retry }) => {
     if (!pkg) {
@@ -247,7 +244,7 @@ function createPkgConsumer(
       if (!formatted) {
         return;
       }
-      await saveDoc({ formatted, index });
+      await saveDoc({ formatted, index: algoliaStore.bootstrapIndex });
 
       const lastId = (await stateManager.get()).bootstrapLastId;
 
@@ -269,6 +266,17 @@ function createPkgConsumer(
       }
 
       sentry.report(new Error('Error during job'), { err });
+
+      // Store in lost index
+      try {
+        await algoliaStore.bootstrapLostIndex.saveObject({
+          objectID: pkg.id,
+          err: err instanceof Error ? err.toString() : err,
+          date: start,
+        });
+      } catch (err2) {
+        log.error(new Error('Error during lost'), err2);
+      }
     } finally {
       datadog.timing('loop', Date.now() - start);
     }

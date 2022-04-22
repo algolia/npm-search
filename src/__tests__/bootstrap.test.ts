@@ -1,5 +1,6 @@
 import type { State } from '../StateManager';
 import { StateManager } from '../StateManager';
+import type { AlgoliaStore } from '../algolia';
 import { Bootstrap } from '../bootstrap';
 
 function getAlgoliaMock(): any {
@@ -37,7 +38,9 @@ describe('isDone', () => {
       }),
     } as any;
     const stateManager = new StateManager(mock);
-    const bootstrap = new Bootstrap(stateManager, {} as any, mock, {} as any);
+    const bootstrap = new Bootstrap(stateManager, {
+      mainIndex: mock,
+    } as AlgoliaStore);
 
     expect(await bootstrap.isDone()).toBe(true);
   });
@@ -59,7 +62,9 @@ describe('isDone', () => {
       }),
     } as any;
     const stateManager = new StateManager(mock);
-    const bootstrap = new Bootstrap(stateManager, {} as any, mock, {} as any);
+    const bootstrap = new Bootstrap(stateManager, {
+      mainIndex: mock,
+    } as AlgoliaStore);
 
     expect(await bootstrap.isDone()).toBe(false);
   });

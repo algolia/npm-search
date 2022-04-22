@@ -44,26 +44,17 @@ class Main {
       config.bootstrapIndexName,
       config.indexName,
     ]);
-    const {
-      client: algoliaClient,
-      mainIndex,
-      bootstrapIndex,
-    } = await algolia.prepare(config);
+    const algoliaStore = await algolia.prepare(config);
     datadog.timing('main.init_algolia', Date.now() - start);
 
     // Create State Manager that holds progression of indexing
-    const stateManager = new StateManager(mainIndex);
+    const stateManager = new StateManager(algoliaStore.mainIndex);
 
     // Preload some useful data
     await jsDelivr.loadHits();
     await typescript.loadTypesIndex();
-    this.bootstrap = new Bootstrap(
-      stateManager,
-      algoliaClient,
-      mainIndex,
-      bootstrapIndex
-    );
-    this.watch = new Watch(stateManager, mainIndex);
+    this.bootstrap = new Bootstrap(stateManager, algoliaStore);
+    this.watch = new Watch(stateManager, algoliaStore);
 
     if (!(await this.bootstrap.isDone())) {
       this.bootstrap.on('finished', async () => {
