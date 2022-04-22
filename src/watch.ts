@@ -1,4 +1,3 @@
-import type { SearchIndex } from 'algoliasearch';
 import type { QueueObject } from 'async';
 import { queue } from 'async';
 import type { EventEmitter } from 'bunyan';
@@ -7,6 +6,7 @@ import type { DatabaseChangesResultItem } from 'nano';
 
 import type { FinalPkg } from './@types/pkg';
 import type { StateManager } from './StateManager';
+import type { AlgoliaStore } from './algolia';
 import { config } from './config';
 import { DeletedError } from './errors';
 import { formatPkg } from './formatPkg';
@@ -26,7 +26,7 @@ type ChangeJob = {
 
 export class Watch {
   stateManager: StateManager;
-  mainIndex: SearchIndex;
+  algoliaStore: AlgoliaStore;
   skipped = new Map<string, ChangeJob>();
   // Cached npmInfo.seq
   totalSequence: number = 0;
@@ -35,9 +35,9 @@ export class Watch {
 
   changesReader: EventEmitter | undefined;
 
-  constructor(stateManager: StateManager, mainIndex: SearchIndex) {
+  constructor(stateManager: StateManager, algoliaStore: AlgoliaStore) {
     this.stateManager = stateManager;
-    this.mainIndex = mainIndex;
+    this.algoliaStore = algoliaStore;
   }
 
   /**
@@ -101,8 +101,8 @@ export class Watch {
     this.changesReader?.removeAllListeners();
 
     log.info('Stopped Watch gracefully', {
-      queued: this.changesConsumer?.length(),
-      processing: this.changesConsumer?.running(),
+      queued: this.changesConsumer?.length() || 0,
+      processing: this.changesConsumer?.running() || 0,
     });
   }
 
@@ -176,7 +176,7 @@ export class Watch {
     }, config.refreshPeriod);
 
     // We list all values in facet and pick the oldest (hopefully the oldest is in the list)
-    const res = await this.mainIndex.search('', {
+    const res = await this.algoliaStore.mainIndex.search('', {
       facets: ['_searchInternal.expiresAt'],
       hitsPerPage: 0,
       sortFacetValuesBy: 'alpha',
@@ -201,7 +201,7 @@ export class Watch {
     log.info(' > Picked the oldest', expiresAt.toISOString());
 
     // Retrieve some packages to update, not too much to avoid flooding the queue
-    const pkgs = await this.mainIndex.search<FinalPkg>('', {
+    const pkgs = await this.algoliaStore.mainIndex.search<FinalPkg>('', {
       facetFilters: [`_searchInternal.expiresAt:${pick}`],
       facets: ['_searchInternal.expiresAt'],
       hitsPerPage: 20,
@@ -279,7 +279,7 @@ export class Watch {
       return;
     }
 
-    await saveDoc({ formatted, index: this.mainIndex });
+    await saveDoc({ formatted, index: this.algoliaStore.mainIndex });
   }
 
   /**
@@ -340,7 +340,7 @@ export class Watch {
         // - we received a change that is not marked as "deleted"
         // - and the package has since been deleted
         if (err instanceof DeletedError) {
-          this.mainIndex.deleteObject(id);
+          this.algoliaStore.mainIndex.deleteObject(id);
           log.info(`deleted`, id);
           return;
         }
@@ -355,6 +355,18 @@ export class Watch {
           log.error('Job has been retried too many times, skipping');
           datadog.increment('packages.failed');
           this.skipped.set(id, job);
+
+          // Store in lost index
+          try {
+            await this.algoliaStore.mainLostIndex.saveObject({
+              objectID: job.change.id,
+              err: err instanceof Error ? err.toString() : err,
+              date: start,
+              job,
+            });
+          } catch (err2) {
+            log.error(new Error('Error during lost'), err2);
+          }
         }
       } finally {
         if (!ignoreSeq) {

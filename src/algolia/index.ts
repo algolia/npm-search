@@ -5,6 +5,14 @@ import algoliasearch from 'algoliasearch';
 import type { Config } from '../config';
 import { httpAgent, httpsAgent, USER_AGENT } from '../utils/request';
 
+export interface AlgoliaStore {
+  mainIndex: SearchIndex;
+  mainLostIndex: SearchIndex;
+  bootstrapIndex: SearchIndex;
+  bootstrapLostIndex: SearchIndex;
+  client: SearchClient;
+}
+
 const requester = createNodeHttpRequester({
   agent: httpsAgent,
   httpAgent,
@@ -33,11 +41,7 @@ function createClient({
 /**
  * Prepare algolia for indexing.
  */
-export async function prepare(config: Config): Promise<{
-  mainIndex: SearchIndex;
-  bootstrapIndex: SearchIndex;
-  client: SearchClient;
-}> {
+export async function prepare(config: Config): Promise<AlgoliaStore> {
   if (!config.apiKey) {
     throw new Error(
       'npm-search: Please provide the `apiKey` env variable and restart'
@@ -46,20 +50,34 @@ export async function prepare(config: Config): Promise<{
 
   // Get main index and boostrap algolia client
   const { index: mainIndex, client } = createClient(config);
+  const { index: mainLostIndex } = createClient({
+    appId: config.appId,
+    apiKey: config.apiKey,
+    indexName: `${config.indexName}.lost`,
+  });
   const { index: bootstrapIndex } = createClient({
     appId: config.appId,
     apiKey: config.apiKey,
     indexName: config.bootstrapIndexName,
   });
+  const { index: bootstrapLostIndex } = createClient({
+    appId: config.appId,
+    apiKey: config.apiKey,
+    indexName: `${config.bootstrapIndexName}.lost`,
+  });
 
   // Ensure indices exists by calling an empty setSettings()
-  await mainIndex.setSettings({});
-  await bootstrapIndex.setSettings({});
+  await mainIndex.setSettings({}).wait();
+  await bootstrapIndex.setSettings({}).wait();
+  await mainLostIndex.setSettings({}).wait();
+  await bootstrapLostIndex.setSettings({}).wait();
 
   return {
     client,
     mainIndex,
+    mainLostIndex,
     bootstrapIndex,
+    bootstrapLostIndex,
   };
 }
 
