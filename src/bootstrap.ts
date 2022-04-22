@@ -174,6 +174,8 @@ export class Bootstrap extends EventEmitter {
     log.info('-----');
     log.info('⛷   Bootstrap: done');
     log.info('-----');
+
+    this.emit('finished');
   }
 
   /**
