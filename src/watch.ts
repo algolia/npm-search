@@ -96,8 +96,14 @@ export class Watch {
   }
 
   async stop(): Promise<void> {
-    npm.db.changesReader.stop();
-    await this.changesConsumer?.drain();
+    log.info('Stopping Watch...');
+
+    try {
+      npm.db.changesReader.stop();
+      await this.changesConsumer?.drain();
+    } catch (err) {
+      sentry.report(err);
+    }
     this.changesReader?.removeAllListeners();
 
     log.info('Stopped Watch gracefully', {
@@ -111,12 +117,12 @@ export class Watch {
 
     log.info(`listening from ${seq}...`);
 
-    const reader = npm.db.changesReader
-      .start({
-        includeDocs: false,
-        batchSize: 1,
-        since: String(seq),
-      })
+    const reader = npm.db.changesReader.start({
+      includeDocs: false,
+      batchSize: 1,
+      since: String(seq),
+    });
+    reader
       .on('change', (change) => {
         this.changesConsumer!.push({ change, retry: 0, ignoreSeq: false });
         if (change.id) {
