@@ -10,7 +10,8 @@ const indexSettings: Settings = {
     'owners.name',
   ],
   attributesForFaceting: [
-    'filterOnly(_searchInternal.alternativeNames)' /* optionalFacetFilters to boost the name */,
+    'name' /* optional filter for exact matching */,
+    'filterOnly(_searchInternal.alternativeNames)',
     'filterOnly(bin)',
     'searchable(keywords)',
     'searchable(computedKeywords)',
@@ -85,14 +86,14 @@ const indexRules: Rule[] = [
     objectID: 'promote-exact',
     description: 'promote exact matches',
     condition: {
-      pattern: '{facet:_searchInternal.alternativeNames}',
+      pattern: '{facet:name}',
       anchoring: 'is',
     },
     consequence: {
       params: {
         automaticOptionalFacetFilters: [
           {
-            facet: '_searchInternal.alternativeNames',
+            facet: 'name',
           },
         ],
       },
