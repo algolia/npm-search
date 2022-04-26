@@ -529,14 +529,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@es-joy/jsdoccomment@npm:~0.20.1":
-  version: 0.20.1
-  resolution: "@es-joy/jsdoccomment@npm:0.20.1"
+"@es-joy/jsdoccomment@npm:~0.29.0":
+  version: 0.29.0
+  resolution: "@es-joy/jsdoccomment@npm:0.29.0"
   dependencies:
-    comment-parser: 1.3.0
+    comment-parser: 1.3.1
     esquery: ^1.4.0
-    jsdoc-type-pratt-parser: ~2.2.3
-  checksum: b64afeaddccbc8da185c640e608496f6d6f8ee564c6255cdb44b16e00fe441e1f0552b5748033df2baf42187cfbfa9f31c46716982945d4343f8eaf44e253087
+    jsdoc-type-pratt-parser: ~3.0.1
+  checksum: 75c61b802b9d6b21906b303677d33d26ecb57a9a8bc8f2753cb5e00a3a123032614e4014f9f66aa563c84f3bfe32c01c27714a77e19d5b76df55ff13cd6dd366
   languageName: node
   linkType: hard
 
@@ -2845,10 +2845,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"comment-parser@npm:1.3.0":
-  version: 1.3.0
-  resolution: "comment-parser@npm:1.3.0"
-  checksum: e7b41b8a5f3d8b974e5b4bd8796acd41ec6635989f2a402bbf13098ad459c0598275a7b75b98d29c48d8f0b340a828d1a5d6948c8cf65ab41ae7e00040fb082a
+"comment-parser@npm:1.3.1":
+  version: 1.3.1
+  resolution: "comment-parser@npm:1.3.1"
+  checksum: 421e6a113a3afd548500e7174ab46a2049dccf92e82bbaa3b209031b1bdf97552aabfa1ae2a120c0b62df17e1ba70e0d8b05d68504fee78e1ef974c59bcfe718
   languageName: node
   linkType: hard
 
@@ -3066,7 +3066,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.2, debug@npm:^4.3.3":
+"debug@npm:4, debug@npm:^4.0.0, debug@npm:^4.1.0, debug@npm:^4.1.1, debug@npm:^4.3.2, debug@npm:^4.3.3, debug@npm:^4.3.4":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
   dependencies:
@@ -3625,21 +3625,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jsdoc@npm:37.9.7":
-  version: 37.9.7
-  resolution: "eslint-plugin-jsdoc@npm:37.9.7"
+"eslint-plugin-jsdoc@npm:39.2.9":
+  version: 39.2.9
+  resolution: "eslint-plugin-jsdoc@npm:39.2.9"
   dependencies:
-    "@es-joy/jsdoccomment": ~0.20.1
-    comment-parser: 1.3.0
-    debug: ^4.3.3
+    "@es-joy/jsdoccomment": ~0.29.0
+    comment-parser: 1.3.1
+    debug: ^4.3.4
     escape-string-regexp: ^4.0.0
     esquery: ^1.4.0
-    regextras: ^0.8.0
-    semver: ^7.3.5
+    semver: ^7.3.7
     spdx-expression-parse: ^3.0.1
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0
-  checksum: 1bf96fa60a99473ce1dac89f33d60779c20f03c748e22d62c31800b6d53f1d96ff8ea115452c272b0f493e87208c069d8738d7dc3f0b3e280a5388d69a2645c5
+  checksum: b78dd3076d1b5b16e2018ce5cde32e78b042efca28addbc91b30d4d7615db7f7335817d285aff0c948ba5fc63725b35a96099a3488a745a885553e32a7c3d2c9
   languageName: node
   linkType: hard
 
@@ -5625,10 +5624,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsdoc-type-pratt-parser@npm:~2.2.3":
-  version: 2.2.5
-  resolution: "jsdoc-type-pratt-parser@npm:2.2.5"
-  checksum: 47d68147fae7fe4343e0c1d47cbf55d2d963696e0583a1d398846be06df2df8e149e34a6304e04b6c148839600234e99a860bc712af829fac557fe7e5cd82141
+"jsdoc-type-pratt-parser@npm:~3.0.1":
+  version: 3.0.1
+  resolution: "jsdoc-type-pratt-parser@npm:3.0.1"
+  checksum: 452b3cb843cc31296a608f6bfebf19c7d52e2b872debfaa63ffda3d288915e06a4a1bd0212a0c0a8d6d3f70633c72bc3abfc8ef4755c8453063650f8c0f56694
   languageName: node
   linkType: hard
 
@@ -6926,7 +6925,7 @@ __metadata:
     eslint-plugin-import: 2.26.0
     eslint-plugin-jasmine: 4.1.3
     eslint-plugin-jest: 25.7.0
-    eslint-plugin-jsdoc: 37.9.7
+    eslint-plugin-jsdoc: 39.2.9
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-react: 7.29.4
     got: 11.8.3
@@ -7892,13 +7891,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regextras@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "regextras@npm:0.8.0"
-  checksum: b7ec5b32a2b98b4b27048d44f8ab90009873c1307f2cf89321aa8c4cbb8147f1bee07863f4dadf585546ca0b91a234ad9804954dea5fc029421f6c25a4523798
-  languageName: node
-  linkType: hard
-
 "registry-auth-token@npm:^4.0.0":
   version: 4.2.1
   resolution: "registry-auth-token@npm:4.2.1"
@@ -8199,7 +8191,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:7.x, semver@npm:^7.0.0, semver@npm:^7.1.1, semver@npm:^7.1.2, semver@npm:^7.1.3, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.6":
+"semver@npm:7.x, semver@npm:^7.0.0, semver@npm:^7.1.1, semver@npm:^7.1.2, semver@npm:^7.1.3, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.6, semver@npm:^7.3.7":
   version: 7.3.7
   resolution: "semver@npm:7.3.7"
   dependencies:
