@@ -1,3 +1,5 @@
+import { HTTPError } from 'got/dist/source';
+
 import type { RawPkg } from '../@types/pkg';
 import { config } from '../config';
 import { datadog } from '../utils/datadog';
@@ -96,7 +98,9 @@ export async function getFilesList(
     });
     files = response.body.files;
   } catch (err) {
-    log.error(`Failed to fetch ${url}`, err);
+    if (!(err instanceof HTTPError && err.message.includes('403'))) {
+      sentry.report(new Error('JsDelivr network error'), { err, url });
+    }
   }
 
   datadog.timing('jsdelivr.getFilesList', Date.now() - start);

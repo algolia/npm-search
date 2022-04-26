@@ -43,6 +43,8 @@ export class Bootstrap extends EventEmitter {
   }
 
   async stop(): Promise<void> {
+    log.info('Stopping Bootstrap...');
+
     if (this.interval) {
       clearInterval(this.interval);
     }
