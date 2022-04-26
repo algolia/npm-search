@@ -1,3 +1,4 @@
+/* eslint-disable no-process-exit */
 import type http from 'http';
 
 import { nextTick } from 'async';
@@ -88,9 +89,9 @@ class Main {
 
 const main = new Main();
 
-process.on('unhandledRejection', async (err) => {
+process.on('unhandledRejection', (err) => {
   sentry.report(new Error('unhandledRejection'), { err });
-  await close();
+  close();
 });
 process.on('uncaughtException', (err) => {
   sentry.report(new Error('uncauthexception'), { err });
@@ -107,13 +108,17 @@ process.on('uncaughtException', (err) => {
 
 async function close(): Promise<void> {
   log.info('Close was requested');
+  setTimeout(() => {
+    // grace period in case a lot of jobs are pending
+    process.exit(1);
+  }, 90000);
+
   // datadog.close();
   await sentry.drain();
   await main.stop();
 
   nextTick(() => {
-    // eslint-disable-next-line no-process-exit
-    process.exit(1);
+    process.exit(0);
   });
 }
 
