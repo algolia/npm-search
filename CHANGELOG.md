@@ -1,3 +1,10 @@
+## [1.6.6](https://github.com/algolia/npm-search/compare/v1.6.5...v1.6.6) (2022-04-26)
+
+
+### Bug Fixes
+
+* try to catch unhandledRejection ([#952](https://github.com/algolia/npm-search/issues/952)) ([82c1f30](https://github.com/algolia/npm-search/commit/82c1f30e832af46a1fee64f34f9bec44722e16ad))
+
 ## [1.6.5](https://github.com/algolia/npm-search/compare/v1.6.4...v1.6.5) (2022-04-22)
 
 
