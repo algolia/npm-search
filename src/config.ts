@@ -181,6 +181,8 @@ export const config = {
   retrySkipped: ms('1 minute'),
   retryBackoffPow: 3,
   refreshPeriod: ms('2 minutes'),
+  alternativeNamesNpmDownloadsThreshold: 5000,
+  alternativeNamesJsDelivrHitsThreshold: 10000,
 
   // Watch
   watchMaxPrefetch: 10,

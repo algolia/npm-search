@@ -2,6 +2,7 @@ import type { SearchIndex } from 'algoliasearch';
 
 import type { FinalPkg, RawPkg } from './@types/pkg';
 import { getChangelog } from './changelog';
+import { config } from './config';
 import * as jsDelivr from './jsDelivr';
 import { getModuleTypes, getStyleTypes } from './jsDelivr/pkgTypes';
 import * as npm from './npm';
@@ -57,6 +58,18 @@ async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
       ...hit._searchInternal,
     },
   };
+
+  const keepAlternativeNames =
+    final.popular ||
+    (!final.isDeprecated &&
+      !final.isSecurityHeld &&
+      (final.downloadsLast30Days >=
+        config.alternativeNamesNpmDownloadsThreshold ||
+        final.jsDelivrHits >= config.alternativeNamesJsDelivrHitsThreshold));
+
+  if (!keepAlternativeNames) {
+    final._searchInternal.alternativeNames = [];
+  }
 
   datadog.timing('saveDocs.addMetaData.one', Date.now() - start);
   return final;
