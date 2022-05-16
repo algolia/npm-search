@@ -8,7 +8,7 @@ import {
   getVersions,
   getExportKeys,
 } from '../formatPkg';
-import type { GetPackage } from '../npm/types';
+import type { GetPackage, PackageRepo } from '../npm/types';
 
 import preact from './preact-simplified.json';
 import rawPackages from './rawPackages.json';
@@ -853,6 +853,34 @@ describe('deprecated', () => {
       deprecated: 'Yes this is deprecated',
       isDeprecated: true,
       deprecatedReason: 'Yes this is deprecated',
+      _searchInternal: {
+        expiresAt: expect.any(Number),
+      },
+    });
+  });
+});
+
+describe('security held', () => {
+  it('log security held flag', () => {
+    const pkg: GetPackage = {
+      ...BASE,
+      'dist-tags': {
+        latest: '1.2.3',
+      },
+      versions: {
+        '1.2.3': {
+          ...BASE_VERSION,
+        },
+      },
+      repository: 'npm/security-holder' as unknown as PackageRepo,
+      author: { name: 'npm' },
+    };
+    const formatted = formatPkg(pkg);
+
+    expect(formatted).toMatchSnapshot({
+      rev: expect.any(String),
+      lastCrawl: expect.any(String),
+      isSecurityHeld: true,
       _searchInternal: {
         expiresAt: expect.any(Number),
       },

@@ -64,6 +64,7 @@ export interface RawPkg {
   deprecated: boolean | string;
   isDeprecated: boolean;
   deprecatedReason: string | null;
+  isSecurityHeld: boolean;
   homepage: string | null;
   license: string | null;
   keywords: string[];

@@ -105,6 +105,7 @@ For every single NPM package, we create a record in the Algolia index. The resul
   deprecated: 'Deprecated', // This field will be removed, please use `isDeprecated` instead
   isDeprecated: true,
   deprecatedReason: 'Deprecated',
+  isSecurityHeld: false, // See https://github.com/npm/security-holder
   badPackage: false,
   homepage: 'https://babeljs.io/',
   license: 'MIT',

@@ -31,6 +31,7 @@ Object {
   "homepage": null,
   "humanDownloadsLast30Days": "0",
   "isDeprecated": true,
+  "isSecurityHeld": false,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": null,
@@ -111,6 +112,7 @@ Object {
   "homepage": "https://bitbucket.org/atlassian/atlaskit#readme",
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
+  "isSecurityHeld": false,
   "keywords": Array [
     "atlaskit",
     "ui",
@@ -337,6 +339,7 @@ Object {
   "homepage": null,
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
+  "isSecurityHeld": false,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": Object {
@@ -467,6 +470,7 @@ Object {
   "homepage": null,
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
+  "isSecurityHeld": false,
   "keywords": Array [
     "algolia",
     "instantsearch",
@@ -557,6 +561,7 @@ Object {
   "homepage": null,
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
+  "isSecurityHeld": false,
   "keywords": Array [
     "index",
     "array",
@@ -667,6 +672,7 @@ Object {
   "homepage": null,
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
+  "isSecurityHeld": false,
   "keywords": Array [
     "prism",
     "highlight",
@@ -858,6 +864,7 @@ Object {
   "homepage": null,
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
+  "isSecurityHeld": false,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": null,
@@ -1535,5 +1542,78 @@ QE+S
       "number": "10.0.0-rc.1",
     },
   ],
+}
+`;
+
+exports[`security held log security held flag 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "0",
+      "0.js",
+      "0js",
+    ],
+    "expiresAt": Any<Number>,
+  },
+  "bin": Object {},
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": NaN,
+  "dependencies": Object {},
+  "deprecated": false,
+  "deprecatedReason": null,
+  "description": null,
+  "devDependencies": Object {},
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": null,
+  "githubRepo": null,
+  "homepage": null,
+  "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
+  "isSecurityHeld": true,
+  "keywords": Array [],
+  "lastCrawl": Any<String>,
+  "lastPublisher": null,
+  "license": null,
+  "modified": NaN,
+  "moduleTypes": Array [
+    "unknown",
+  ],
+  "name": "0",
+  "objectID": "0",
+  "originalAuthor": Object {
+    "name": "npm",
+  },
+  "owner": Object {
+    "avatar": "https://github.com/npm.png",
+    "link": "https://github.com/npm",
+    "name": "npm",
+  },
+  "owners": Array [],
+  "popular": false,
+  "readme": "",
+  "repository": Object {
+    "branch": "master",
+    "head": undefined,
+    "host": "github.com",
+    "path": "",
+    "project": "security-holder",
+    "type": "git",
+    "url": "npm/security-holder",
+    "user": "npm",
+  },
+  "rev": Any<String>,
+  "styleTypes": Array [],
+  "tags": Object {
+    "latest": "1.2.3",
+  },
+  "types": Object {
+    "ts": Object {
+      "possible": true,
+    },
+  },
+  "version": "0.0.0",
+  "versions": Object {},
 }
 `;

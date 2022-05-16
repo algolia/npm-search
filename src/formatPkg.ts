@@ -146,6 +146,8 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
   const tags = pkg['dist-tags'];
   const isDeprecated =
     cleaned.deprecated !== undefined && cleaned.deprecated !== false;
+  const isSecurityHeld =
+    repository?.user === 'npm' && repository?.project === 'security-holder';
 
   const rawPkg: RawPkg = {
     objectID: cleaned.name,
@@ -170,6 +172,7 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
     deprecated: isDeprecated ? cleaned.deprecated! : false,
     isDeprecated,
     deprecatedReason: isDeprecated ? String(cleaned.deprecated) : null,
+    isSecurityHeld,
     homepage: getHomePage(cleaned),
     license,
     keywords,
