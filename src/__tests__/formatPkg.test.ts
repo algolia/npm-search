@@ -886,4 +886,30 @@ describe('security held', () => {
       },
     });
   });
+
+  it('only log security held flag for the correct repo', () => {
+    const pkg: GetPackage = {
+      ...BASE,
+      'dist-tags': {
+        latest: '1.2.3',
+      },
+      versions: {
+        '1.2.3': {
+          ...BASE_VERSION,
+        },
+      },
+      repository: 'gitlab:npm/security-holder' as unknown as PackageRepo,
+      author: { name: 'npm' },
+    };
+    const formatted = formatPkg(pkg);
+
+    expect(formatted).toMatchSnapshot({
+      rev: expect.any(String),
+      lastCrawl: expect.any(String),
+      isSecurityHeld: false,
+      _searchInternal: {
+        expiresAt: expect.any(Number),
+      },
+    });
+  });
 });

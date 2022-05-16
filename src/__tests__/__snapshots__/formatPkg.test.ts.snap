@@ -1617,3 +1617,76 @@ Object {
   "versions": Object {},
 }
 `;
+
+exports[`security held only log security held flag for the correct repo 1`] = `
+Object {
+  "_searchInternal": Object {
+    "alternativeNames": Array [
+      "0",
+      "0.js",
+      "0js",
+    ],
+    "expiresAt": Any<Number>,
+  },
+  "bin": Object {},
+  "computedKeywords": Array [],
+  "computedMetadata": Object {},
+  "created": NaN,
+  "dependencies": Object {},
+  "deprecated": false,
+  "deprecatedReason": null,
+  "description": null,
+  "devDependencies": Object {},
+  "downloadsLast30Days": 0,
+  "downloadsRatio": 0,
+  "gitHead": null,
+  "githubRepo": null,
+  "homepage": null,
+  "humanDownloadsLast30Days": "0",
+  "isDeprecated": false,
+  "isSecurityHeld": false,
+  "keywords": Array [],
+  "lastCrawl": Any<String>,
+  "lastPublisher": null,
+  "license": null,
+  "modified": NaN,
+  "moduleTypes": Array [
+    "unknown",
+  ],
+  "name": "0",
+  "objectID": "0",
+  "originalAuthor": Object {
+    "name": "npm",
+  },
+  "owner": Object {
+    "avatar": undefined,
+    "link": "https://gitlab.com/npm",
+    "name": "npm",
+  },
+  "owners": Array [],
+  "popular": false,
+  "readme": "",
+  "repository": Object {
+    "branch": "master",
+    "head": undefined,
+    "host": "gitlab.com",
+    "path": "",
+    "project": "security-holder",
+    "type": "git",
+    "url": "gitlab:npm/security-holder",
+    "user": "npm",
+  },
+  "rev": Any<String>,
+  "styleTypes": Array [],
+  "tags": Object {
+    "latest": "1.2.3",
+  },
+  "types": Object {
+    "ts": Object {
+      "possible": true,
+    },
+  },
+  "version": "0.0.0",
+  "versions": Object {},
+}
+`;

@@ -147,7 +147,9 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
   const isDeprecated =
     cleaned.deprecated !== undefined && cleaned.deprecated !== false;
   const isSecurityHeld =
-    repository?.user === 'npm' && repository?.project === 'security-holder';
+    repository?.host === 'github.com' &&
+    repository?.user === 'npm' &&
+    repository?.project === 'security-holder';
 
   const rawPkg: RawPkg = {
     objectID: cleaned.name,
