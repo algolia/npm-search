@@ -32,6 +32,7 @@ Object {
   "humanDownloadsLast30Days": "0",
   "isDeprecated": true,
   "isSecurityHeld": false,
+  "jsDelivrHits": 0,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": null,
@@ -113,6 +114,7 @@ Object {
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
   "isSecurityHeld": false,
+  "jsDelivrHits": 0,
   "keywords": Array [
     "atlaskit",
     "ui",
@@ -340,6 +342,7 @@ Object {
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
   "isSecurityHeld": false,
+  "jsDelivrHits": 0,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": Object {
@@ -471,6 +474,7 @@ Object {
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
   "isSecurityHeld": false,
+  "jsDelivrHits": 0,
   "keywords": Array [
     "algolia",
     "instantsearch",
@@ -562,6 +566,7 @@ Object {
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
   "isSecurityHeld": false,
+  "jsDelivrHits": 0,
   "keywords": Array [
     "index",
     "array",
@@ -673,6 +678,7 @@ Object {
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
   "isSecurityHeld": false,
+  "jsDelivrHits": 0,
   "keywords": Array [
     "prism",
     "highlight",
@@ -865,6 +871,7 @@ Object {
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
   "isSecurityHeld": false,
+  "jsDelivrHits": 0,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": null,
@@ -1572,6 +1579,7 @@ Object {
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
   "isSecurityHeld": true,
+  "jsDelivrHits": 0,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": null,
@@ -1645,6 +1653,7 @@ Object {
   "humanDownloadsLast30Days": "0",
   "isDeprecated": false,
   "isSecurityHeld": false,
+  "jsDelivrHits": 0,
   "keywords": Array [],
   "lastCrawl": Any<String>,
   "lastPublisher": null,

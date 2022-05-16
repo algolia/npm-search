@@ -158,6 +158,7 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
     downloadsLast30Days: 0,
     downloadsRatio: 0,
     humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
+    jsDelivrHits: 0,
     popular: false,
     version,
     versions,

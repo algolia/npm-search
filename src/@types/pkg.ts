@@ -16,6 +16,7 @@ export interface Repo {
   head?: string;
   branch?: string;
 }
+
 export interface GithubRepo {
   user: string;
   project: string;
@@ -48,6 +49,7 @@ export interface RawPkg {
   downloadsLast30Days: number;
   downloadsRatio: number;
   humanDownloadsLast30Days: string;
+  jsDelivrHits: number;
   popular: boolean;
   version: string;
   versions: Record<string, string>;
