@@ -59,15 +59,15 @@ async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
     },
   };
 
-  const keepAlternativeNames =
-    final.popular ||
-    (!final.isDeprecated &&
-      !final.isSecurityHeld &&
-      (final.downloadsLast30Days >=
-        config.alternativeNamesNpmDownloadsThreshold ||
-        final.jsDelivrHits >= config.alternativeNamesJsDelivrHitsThreshold));
+  const hasFewDownloads =
+    final.downloadsLast30Days <= config.alternativeNamesNpmDownloadsThreshold &&
+    final.jsDelivrHits <= config.alternativeNamesJsDelivrHitsThreshold;
 
-  if (!keepAlternativeNames) {
+  const dropAlternativeNames =
+    !final.popular &&
+    (final.isDeprecated || final.isSecurityHeld || hasFewDownloads);
+
+  if (dropAlternativeNames) {
     final._searchInternal.alternativeNames = [];
   }
 
