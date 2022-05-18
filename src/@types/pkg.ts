@@ -84,6 +84,7 @@ export interface RawPkg {
   _searchInternal: {
     expiresAt: number;
     alternativeNames: string[];
+    popularAlternativeNames: string[];
   };
 }
 

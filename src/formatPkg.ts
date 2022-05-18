@@ -192,6 +192,7 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       alternativeNames,
+      popularAlternativeNames: [],
       expiresAt: getExpiresAt(),
     },
   };

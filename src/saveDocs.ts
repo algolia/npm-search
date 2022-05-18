@@ -63,12 +63,12 @@ async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
     final.downloadsLast30Days <= config.alternativeNamesNpmDownloadsThreshold &&
     final.jsDelivrHits <= config.alternativeNamesJsDelivrHitsThreshold;
 
-  const dropAlternativeNames =
-    !final.popular &&
-    (final.isDeprecated || final.isSecurityHeld || hasFewDownloads);
+  const addPopularAlternativeNames =
+    final.popular ||
+    (!final.isDeprecated && !final.isSecurityHeld && !hasFewDownloads);
 
-  if (dropAlternativeNames) {
-    final._searchInternal.alternativeNames = [];
+  if (addPopularAlternativeNames) {
+    final._searchInternal.popularAlternativeNames = [];
   }
 
   datadog.timing('saveDocs.addMetaData.one', Date.now() - start);

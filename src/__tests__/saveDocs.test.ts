@@ -245,7 +245,7 @@ describe('saveDoc', () => {
       humanDownloadsLast30Days: expect.any(String),
       modified: expect.any(Number),
       _searchInternal: expect.objectContaining({
-        alternativeNames: [],
+        popularAlternativeNames: [],
         downloadsMagnitude: expect.any(Number),
         expiresAt: expect.any(Number),
       }),
