@@ -273,4 +273,82 @@ describe('saveDoc', () => {
 
     expect(index.saveObject).toHaveBeenCalledWith(clean);
   });
+
+  it('should skip getting extra data for security held packages', async () => {
+    const client = algoliasearch('e', '');
+    const index = client.initIndex('a');
+    jest.spyOn(index, 'saveObject').mockImplementationOnce(() => {
+      return true as any;
+    });
+
+    const final = {
+      ...FINAL_BASE,
+      name: 'trello-enterprises',
+      objectID: 'trello-enterprises',
+      tags: {
+        latest: '1000.1000.1000',
+      },
+      version: '1000.1000.1000',
+      versions: {
+        '1000.1000.1000': '2019-08-02T18:34:23.572Z',
+      },
+      repository: {
+        branch: 'master',
+        head: undefined,
+        host: 'github.com',
+        path: '',
+        project: 'security-holder',
+        type: 'git',
+        url: 'https://github.com/npm/security-holder',
+        user: 'npm',
+      },
+      githubRepo: {
+        head: 'master',
+        path: '',
+        project: 'security-holder',
+        user: 'npm',
+      },
+      downloadsLast30Days: 0,
+      humanDownloadsLast30Days: '0',
+      isSecurityHeld: true,
+    };
+    const clean = expect.objectContaining({
+      ...final,
+      owner: expect.any(Object),
+      homepage: expect.any(String),
+      lastCrawl: expect.any(String),
+      downloadsRatio: expect.any(Number),
+      modified: expect.any(Number),
+      _searchInternal: expect.objectContaining({
+        popularAlternativeNames: [],
+        expiresAt: expect.any(Number),
+      }),
+    });
+
+    await saveDoc({
+      formatted: formatPkg({
+        ...preact,
+        name: 'trello-enterprises',
+        'dist-tags': { latest: '1000.1000.1000' },
+        versions: {
+          '1000.1000.1000': {
+            ...preact.versions['8.5.0'],
+            name: 'trello-enterprises',
+            version: '1000.1000.1000',
+          },
+        },
+        time: {
+          ...preact.time,
+          '1000.1000.1000': '2019-08-02T18:34:23.572Z',
+        },
+        repository: {
+          type: 'git',
+          url: 'https://github.com/npm/security-holder',
+        },
+      }),
+      index,
+    });
+
+    expect(index.saveObject).toHaveBeenCalledWith(clean);
+  });
 });

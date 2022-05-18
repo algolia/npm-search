@@ -28,6 +28,10 @@ export async function saveDoc({
 }
 
 async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
+  if (pkg.isSecurityHeld) {
+    return pkg;
+  }
+
   const [download, dependent, hit, filelist] = await Promise.all([
     npm.getDownload(pkg),
     npm.getDependent(pkg),
