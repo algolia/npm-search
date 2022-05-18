@@ -186,9 +186,12 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
     bin: cleaned.bin || {},
+    humanDependents: '0',
+    dependents: 0,
     types,
     moduleTypes,
     styleTypes,
+    changelogFilename: null,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       alternativeNames,

@@ -77,9 +77,12 @@ export interface RawPkg {
   lastPublisher: Owner | null;
   owners: Owner[];
   bin: Record<string, string>;
+  dependents: number;
   types: TsType;
   moduleTypes: ModuleType[];
   styleTypes: StyleType[];
+  humanDependents: string;
+  changelogFilename: string | null;
   lastCrawl: string;
   _searchInternal: {
     expiresAt: number;
