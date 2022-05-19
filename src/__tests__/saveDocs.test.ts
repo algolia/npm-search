@@ -10,6 +10,7 @@ jest.setTimeout(15000);
 const FINAL_BASE = {
   _searchInternal: {
     alternativeNames: ['preact', 'preact.js', 'preactjs'],
+    popularAlternativeNames: ['preact', 'preact.js', 'preactjs'],
     downloadsMagnitude: 7,
     expiresAt: '2021-08-10',
     jsDelivrPopularity: 0,
@@ -208,6 +209,7 @@ describe('saveDoc', () => {
       humanDownloadsLast30Days: expect.any(String),
       modified: expect.any(Number),
       _searchInternal: expect.objectContaining({
+        ...final._searchInternal,
         downloadsMagnitude: expect.any(Number),
         expiresAt: expect.any(Number),
       }),
@@ -218,7 +220,7 @@ describe('saveDoc', () => {
     expect(index.saveObject).toHaveBeenCalledWith(clean);
   });
 
-  it('should drop alternative names for non-popular packages', async () => {
+  it('should not add popular alternative names for non-popular packages', async () => {
     const client = algoliasearch('e', '');
     const index = client.initIndex('a');
     jest.spyOn(index, 'saveObject').mockImplementationOnce(() => {
