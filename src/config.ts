@@ -5,12 +5,12 @@ const indexSettings: Settings = {
   searchableAttributes: [
     'unordered(_searchInternal.popularName)',
     'name, description, keywords',
-    '_searchInternal.popularAlternativeNames',
+    '_searchInternal.alternativeNames',
     'owner.name',
     'owners.name',
   ],
   attributesForFaceting: [
-    'filterOnly(_searchInternal.popularAlternativeNames)' /* optionalFacetFilters to boost the name */,
+    'filterOnly(_searchInternal.alternativeNames)' /* optionalFacetFilters to boost the name */,
     'filterOnly(bin)',
     'searchable(keywords)',
     'searchable(computedKeywords)',
@@ -87,14 +87,14 @@ const indexRules: Rule[] = [
     objectID: 'promote-exact',
     description: 'promote exact matches',
     condition: {
-      pattern: '{facet:_searchInternal.popularAlternativeNames}',
+      pattern: '{facet:_searchInternal.alternativeNames}',
       anchoring: 'is',
     },
     consequence: {
       params: {
         automaticOptionalFacetFilters: [
           {
-            facet: '_searchInternal.popularAlternativeNames',
+            facet: '_searchInternal.alternativeNames',
           },
         ],
       },
