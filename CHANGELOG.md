@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/algolia/npm-search/compare/v1.6.7...v1.7.0) (2022-05-30)
+
+
+### Features
+
+* **ranking:** add popularAlternativeNames, detect security packages ([#975](https://github.com/algolia/npm-search/issues/975)) ([62f82e4](https://github.com/algolia/npm-search/commit/62f82e4fc1aed15ae25c1d2683e126354c4c3e1d))
+
 ## [1.6.7](https://github.com/algolia/npm-search/compare/v1.6.6...v1.6.7) (2022-05-06)
 
 
