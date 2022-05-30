@@ -72,7 +72,8 @@ async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
     (!final.isDeprecated && !final.isSecurityHeld && !hasFewDownloads);
 
   if (addPopularAlternativeNames) {
-    final._searchInternal.popularAlternativeNames = final._searchInternal.alternativeNames;
+    final._searchInternal.popularAlternativeNames =
+      final._searchInternal.alternativeNames;
   }
 
   datadog.timing('saveDocs.addMetaData.one', Date.now() - start);
