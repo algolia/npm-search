@@ -18,6 +18,7 @@ const indexSettings: Settings = {
     '_searchInternal.expiresAt',
     'deprecated',
     'isDeprecated',
+    'isSecurityHeld',
     'types.ts',
     'moduleTypes',
     'styleTypes',
@@ -38,6 +39,7 @@ const indexSettings: Settings = {
     'words',
     'proximity',
     'attribute',
+    'asc(isSecurityHeld)',
     'asc(deprecated)',
     'asc(isDeprecated)',
     'asc(badPackage)',
@@ -179,6 +181,8 @@ export const config = {
   retrySkipped: ms('1 minute'),
   retryBackoffPow: 3,
   refreshPeriod: ms('2 minutes'),
+  alternativeNamesNpmDownloadsThreshold: 5000,
+  alternativeNamesJsDelivrHitsThreshold: 10000,
 
   // Watch
   watchMaxPrefetch: 10,

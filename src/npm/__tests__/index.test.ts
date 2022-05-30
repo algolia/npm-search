@@ -19,7 +19,7 @@ describe('findAll()', () => {
       expect.objectContaining({
         id: '0',
         key: '0',
-        value: { rev: '9-2f99061d7a24f3ac9730d35566e66db9' },
+        value: { rev: '10-b34ca87de9ad5692f1d0093f7752f331' },
       })
     );
   });

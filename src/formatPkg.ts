@@ -146,6 +146,10 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
   const tags = pkg['dist-tags'];
   const isDeprecated =
     cleaned.deprecated !== undefined && cleaned.deprecated !== false;
+  const isSecurityHeld =
+    repository?.host === 'github.com' &&
+    repository?.user === 'npm' &&
+    repository?.project === 'security-holder';
 
   const rawPkg: RawPkg = {
     objectID: cleaned.name,
@@ -154,6 +158,7 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
     downloadsLast30Days: 0,
     downloadsRatio: 0,
     humanDownloadsLast30Days: numeral(0).format('0.[0]a'),
+    jsDelivrHits: 0,
     popular: false,
     version,
     versions,
@@ -170,6 +175,7 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
     deprecated: isDeprecated ? cleaned.deprecated! : false,
     isDeprecated,
     deprecatedReason: isDeprecated ? String(cleaned.deprecated) : null,
+    isSecurityHeld,
     homepage: getHomePage(cleaned),
     license,
     keywords,
@@ -180,12 +186,16 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
     lastPublisher,
     owners: (cleaned.owners || []).map(formatUser),
     bin: cleaned.bin || {},
+    humanDependents: '0',
+    dependents: 0,
     types,
     moduleTypes,
     styleTypes,
+    changelogFilename: null,
     lastCrawl: new Date().toISOString(),
     _searchInternal: {
       alternativeNames,
+      popularAlternativeNames: [],
       expiresAt: getExpiresAt(),
     },
   };

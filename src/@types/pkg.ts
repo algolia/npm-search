@@ -16,6 +16,7 @@ export interface Repo {
   head?: string;
   branch?: string;
 }
+
 export interface GithubRepo {
   user: string;
   project: string;
@@ -48,6 +49,7 @@ export interface RawPkg {
   downloadsLast30Days: number;
   downloadsRatio: number;
   humanDownloadsLast30Days: string;
+  jsDelivrHits: number;
   popular: boolean;
   version: string;
   versions: Record<string, string>;
@@ -64,6 +66,7 @@ export interface RawPkg {
   deprecated: boolean | string;
   isDeprecated: boolean;
   deprecatedReason: string | null;
+  isSecurityHeld: boolean;
   homepage: string | null;
   license: string | null;
   keywords: string[];
@@ -74,13 +77,17 @@ export interface RawPkg {
   lastPublisher: Owner | null;
   owners: Owner[];
   bin: Record<string, string>;
+  dependents: number;
   types: TsType;
   moduleTypes: ModuleType[];
   styleTypes: StyleType[];
+  humanDependents: string;
+  changelogFilename: string | null;
   lastCrawl: string;
   _searchInternal: {
     expiresAt: number;
     alternativeNames: string[];
+    popularAlternativeNames: string[];
   };
 }
 

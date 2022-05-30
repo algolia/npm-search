@@ -2,6 +2,7 @@ import type { SearchIndex } from 'algoliasearch';
 
 import type { FinalPkg, RawPkg } from './@types/pkg';
 import { getChangelog } from './changelog';
+import { config } from './config';
 import * as jsDelivr from './jsDelivr';
 import { getModuleTypes, getStyleTypes } from './jsDelivr/pkgTypes';
 import * as npm from './npm';
@@ -27,6 +28,10 @@ export async function saveDoc({
 }
 
 async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
+  if (pkg.isSecurityHeld) {
+    return pkg;
+  }
+
   const [download, dependent, hit, filelist] = await Promise.all([
     npm.getDownload(pkg),
     npm.getDependent(pkg),
@@ -57,6 +62,19 @@ async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
       ...hit._searchInternal,
     },
   };
+
+  const hasFewDownloads =
+    final.downloadsLast30Days <= config.alternativeNamesNpmDownloadsThreshold &&
+    final.jsDelivrHits <= config.alternativeNamesJsDelivrHitsThreshold;
+
+  const addPopularAlternativeNames =
+    final.popular ||
+    (!final.isDeprecated && !final.isSecurityHeld && !hasFewDownloads);
+
+  if (addPopularAlternativeNames) {
+    final._searchInternal.popularAlternativeNames =
+      final._searchInternal.alternativeNames;
+  }
 
   datadog.timing('saveDocs.addMetaData.one', Date.now() - start);
   return final;
