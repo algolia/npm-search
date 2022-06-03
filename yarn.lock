@@ -1548,13 +1548,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:27.5.0":
-  version: 27.5.0
-  resolution: "@types/jest@npm:27.5.0"
+"@types/jest@npm:27.5.2":
+  version: 27.5.2
+  resolution: "@types/jest@npm:27.5.2"
   dependencies:
     jest-matcher-utils: ^27.0.0
     pretty-format: ^27.0.0
-  checksum: ca09ac3a17972e18683c57b681a6866c7a56c67f429810ece00425d948da62f207d271becb5cc759da3630f120596ec3c8e0ceb0eecefbe26daffba168b82879
+  checksum: 7e11c6826aa429ad990dc262e4e4b54aa36573287fddf15773e4137f07d11d3105f0dd9f1baff73252160a057df23f5529bb83b1bf83cd3f45f9460a5ca5c22e
   languageName: node
   linkType: hard
 
@@ -6972,7 +6972,7 @@ __metadata:
     "@types/async": 3.2.13
     "@types/escape-html": 1.0.2
     "@types/hosted-git-info": 3.0.2
-    "@types/jest": 27.5.0
+    "@types/jest": 27.5.2
     "@types/lodash": 4.14.182
     "@types/ms": 0.7.31
     "@types/numeral": 2.0.2
