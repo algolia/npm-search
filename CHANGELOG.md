@@ -1,3 +1,10 @@
+## [1.7.2](https://github.com/algolia/npm-search/compare/v1.7.1...v1.7.2) (2022-06-03)
+
+
+### Bug Fixes
+
+* **deps:** update dependency got to v11.8.5 ([86d5b9c](https://github.com/algolia/npm-search/commit/86d5b9c71ef06554a86fc2530dc08d5590782c5b))
+
 ## [1.7.1](https://github.com/algolia/npm-search/compare/v1.7.0...v1.7.1) (2022-06-03)
 
 
