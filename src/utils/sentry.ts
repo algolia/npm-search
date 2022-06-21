@@ -9,6 +9,7 @@ Sentry.init({
   release: version,
   environment: 'prod',
   serverName: 'npm-search',
+  maxBreadcrumbs: 20,
   ignoreErrors: [
     /error happened in your connection/,
     /503 Service Unavailable/,

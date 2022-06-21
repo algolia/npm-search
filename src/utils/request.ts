@@ -4,6 +4,8 @@ import https from 'https';
 import type { OptionsOfJSONResponseBody } from 'got';
 import got from 'got';
 
+import { config } from '../config';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires, import/no-commonjs
 const { version } = require('../../package.json');
 
@@ -26,12 +28,12 @@ export async function request<TRes>(
   opts: OptionsOfJSONResponseBody
 ) {
   return await got<TRes>(url, {
+    timeout: config.defaultRequestTimeout,
     ...opts,
     headers: {
       ...(opts.headers || {}),
       'user-agent': USER_AGENT,
     },
-    timeout: 15000,
     dnsCache: true,
     dnsLookupIpVersion: 'ipv4',
     agent: {

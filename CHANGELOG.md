@@ -1,3 +1,10 @@
+## [1.7.3](https://github.com/algolia/npm-search/compare/v1.7.2...v1.7.3) (2022-06-21)
+
+
+### Bug Fixes
+
+* **config:** increase requests timeout ([#992](https://github.com/algolia/npm-search/issues/992)) ([cd6ecd0](https://github.com/algolia/npm-search/commit/cd6ecd08704725010dfcece1662548e2bc4025df))
+
 ## [1.7.2](https://github.com/algolia/npm-search/compare/v1.7.1...v1.7.2) (2022-06-03)
 
 

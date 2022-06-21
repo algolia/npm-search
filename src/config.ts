@@ -184,6 +184,9 @@ export const config = {
   alternativeNamesNpmDownloadsThreshold: 5000,
   alternativeNamesJsDelivrHitsThreshold: 10000,
 
+  // http
+  defaultRequestTimeout: ms('30 seconds'),
+
   // Watch
   watchMaxPrefetch: 10,
   watchMinUnpause: 5,
