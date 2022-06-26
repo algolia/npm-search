@@ -4689,15 +4689,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hot-shots@npm:9.0.0":
-  version: 9.0.0
-  resolution: "hot-shots@npm:9.0.0"
+"hot-shots@npm:9.1.0":
+  version: 9.1.0
+  resolution: "hot-shots@npm:9.1.0"
   dependencies:
     unix-dgram: 2.0.x
   dependenciesMeta:
     unix-dgram:
       optional: true
-  checksum: bafc26a2a89154d6f0777d89f506f7aa03a0cb14f0bb6e9bc147bbca5ca549085b634db69bc7f754607360bd58e520b94fa398621cef30aaf8081bb2f08ea48b
+  checksum: d41391c2da1c14e57cb6458fe4b89ffe450d979db12bce69df234db8b57cb308216002e2dd3ba77758f6ace43129c10f7bc3fe82273fa9433bf6973af4119f09
   languageName: node
   linkType: hard
 
@@ -7001,7 +7001,7 @@ __metadata:
     got: 11.8.5
     gravatar-url: 3.1.0
     hosted-git-info: 2.7.1
-    hot-shots: 9.0.0
+    hot-shots: 9.1.0
     husky: 7.0.4
     jest: 28.1.1
     jest-junit: 13.2.0
