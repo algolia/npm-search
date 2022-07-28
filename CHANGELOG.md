@@ -1,3 +1,10 @@
+## [1.7.7](https://github.com/algolia/npm-search/compare/v1.7.6...v1.7.7) (2022-07-28)
+
+
+### Bug Fixes
+
+* **config:** use popularAlternativeNames ([#994](https://github.com/algolia/npm-search/issues/994)) ([76ab998](https://github.com/algolia/npm-search/commit/76ab9986a9acffae8f1120387232fb847b7ef6b7))
+
 ## [1.7.6](https://github.com/algolia/npm-search/compare/v1.7.5...v1.7.6) (2022-07-23)
 
 
