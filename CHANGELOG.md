@@ -1,3 +1,17 @@
+## [1.7.6](https://github.com/algolia/npm-search/compare/v1.7.5...v1.7.6) (2022-07-23)
+
+
+### Bug Fixes
+
+* **deps:** update algoliasearch-client-javascript monorepo to v4.14.1 ([f617be4](https://github.com/algolia/npm-search/commit/f617be4157b26f49eb42c6a63c09314ae8b4402c))
+
+## [1.7.5](https://github.com/algolia/npm-search/compare/v1.7.4...v1.7.5) (2022-06-26)
+
+
+### Bug Fixes
+
+* **deps:** update dependency hot-shots to v9.1.0 ([973a27f](https://github.com/algolia/npm-search/commit/973a27ff256421ae1a2d783f2d082a9408b1640b))
+
 ## [1.7.4](https://github.com/algolia/npm-search/compare/v1.7.3...v1.7.4) (2022-06-24)
 
 
