@@ -20,12 +20,6 @@
     "docker:build": "./scripts/build.sh",
     "docker:release": "VERSION=$(node -e \"console.log(require('./package.json').version)\") && echo \"Releasing $VERSION\" && docker push algolia/npm-search && docker push algolia/npm-search:$VERSION"
   },
-  "renovate": {
-    "extends": [
-      "config:js-app",
-      "algolia"
-    ]
-  },
   "license": "MIT",
   "dependencies": {
     "@algolia/requester-node-http": "4.14.2",
