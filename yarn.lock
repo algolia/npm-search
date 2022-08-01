@@ -2711,15 +2711,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bunyan-debug-stream@npm:2.0.1":
-  version: 2.0.1
-  resolution: "bunyan-debug-stream@npm:2.0.1"
+"bunyan-debug-stream@npm:3.0.2":
+  version: 3.0.2
+  resolution: "bunyan-debug-stream@npm:3.0.2"
   dependencies:
-    colors: 1.4.0
-    exception-formatter: ^1.0.4
+    chalk: ^4.1.2
   peerDependencies:
     bunyan: "*"
-  checksum: a43f6c2946cfb7c63fc7926d90328be5f45fd42be7ef7390efc403156a071cd1f971ad91a7fd037fab593d7a989796223c697cba6455da55fa67a1f482d495ad
+  checksum: 6ccc08e1f44d3bd8443fb20d721b7bff0bb4f87f0bdbdf74300b601b219b1b9c568c7c51ff4cc5b522218610990568ff71d84ba5bd80ee4cd213f7ab9cdbe07b
   languageName: node
   linkType: hard
 
@@ -3081,13 +3080,6 @@ __metadata:
   version: 2.0.16
   resolution: "colorette@npm:2.0.16"
   checksum: cd55596a3a2d1071c1a28eee7fd8a5387593ff1bd10a3e8d0a6221499311fe34a9f2b9272d77c391e0e003dcdc8934fb2f8d106e7ef1f7516f8060c901d41a27
-  languageName: node
-  linkType: hard
-
-"colors@npm:1.4.0, colors@npm:^1.0.3":
-  version: 1.4.0
-  resolution: "colors@npm:1.4.0"
-  checksum: 98aa2c2418ad87dedf25d781be69dc5fc5908e279d9d30c34d8b702e586a0474605b3a189511482b9d5ed0d20c867515d22749537f7bc546256c6014f3ebdcec
   languageName: node
   linkType: hard
 
@@ -4053,15 +4045,6 @@ __metadata:
   version: 2.0.3
   resolution: "esutils@npm:2.0.3"
   checksum: 22b5b08f74737379a840b8ed2036a5fb35826c709ab000683b092d9054e5c2a82c27818f12604bfc2a9a76b90b6834ef081edbc1c7ae30d1627012e067c6ec87
-  languageName: node
-  linkType: hard
-
-"exception-formatter@npm:^1.0.4":
-  version: 1.0.7
-  resolution: "exception-formatter@npm:1.0.7"
-  dependencies:
-    colors: ^1.0.3
-  checksum: 31c197e7990660447392a1021ef44ddc119f0a0f4711a94bfa01c27fe784c77938249ace6acf7755a0283226b9e68fd58a10f51918b3c9914ce89c644c57378e
   languageName: node
   linkType: hard
 
@@ -7033,7 +7016,7 @@ __metadata:
     algoliasearch: 4.14.2
     async: 3.2.4
     bunyan: 1.8.15
-    bunyan-debug-stream: 2.0.1
+    bunyan-debug-stream: 3.0.2
     chalk: 4.1.2
     dotenv: 16.0.1
     dtrace-provider: 0.8.8

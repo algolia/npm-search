@@ -33,7 +33,7 @@
     "algoliasearch": "4.14.2",
     "async": "3.2.4",
     "bunyan": "1.8.15",
-    "bunyan-debug-stream": "2.0.1",
+    "bunyan-debug-stream": "3.0.2",
     "chalk": "4.1.2",
     "dtrace-provider": "0.8.8",
     "escape-html": "1.0.3",
