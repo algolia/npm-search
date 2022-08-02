@@ -18,3 +18,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           repo-owner: algolia
           repo-name: npm-search
+          branch-base: master
