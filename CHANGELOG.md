@@ -1,3 +1,10 @@
+## [1.7.10](https://github.com/algolia/npm-search/compare/v1.7.9...v1.7.10) (2022-08-02)
+
+
+### Bug Fixes
+
+* **renovate:** main -> master ([#1017](https://github.com/algolia/npm-search/issues/1017)) ([671e934](https://github.com/algolia/npm-search/commit/671e93457fe5060bbe26f95e15b8602bd8ca08fc))
+
 ## [1.7.9](https://github.com/algolia/npm-search/compare/v1.7.8...v1.7.9) (2022-08-01)
 
 
