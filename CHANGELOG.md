@@ -1,3 +1,11 @@
+## [1.7.11](https://github.com/algolia/npm-search/compare/v1.7.10...v1.7.11) (2022-08-08)
+
+
+### Bug Fixes
+
+* dependencies 2022-08-05 ([#1018](https://github.com/algolia/npm-search/issues/1018)) ([24d40dd](https://github.com/algolia/npm-search/commit/24d40ddbb86de162c0e3d4778054dc3e246fc0e7)), closes [#997](https://github.com/algolia/npm-search/issues/997) [#977](https://github.com/algolia/npm-search/issues/977) [#964](https://github.com/algolia/npm-search/issues/964) [#861](https://github.com/algolia/npm-search/issues/861) [#976](https://github.com/algolia/npm-search/issues/976) [#971](https://github.com/algolia/npm-search/issues/971)
+* dependencies 2022-08-07 ([#1019](https://github.com/algolia/npm-search/issues/1019)) ([5fb867a](https://github.com/algolia/npm-search/commit/5fb867a6c0a24fac2e8ce6c67987a866d3ce8157))
+
 ## [1.7.10](https://github.com/algolia/npm-search/compare/v1.7.9...v1.7.10) (2022-08-02)
 
 
