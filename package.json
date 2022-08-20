@@ -53,7 +53,7 @@
     "@types/escape-html": "1.0.2",
     "@types/hosted-git-info": "3.0.2",
     "@types/jest": "28.1.7",
-    "@types/lodash": "4.14.182",
+    "@types/lodash": "4.14.184",
     "@types/ms": "0.7.31",
     "@types/numeral": "2.0.2",
     "@types/traverse": "0.6.32",
