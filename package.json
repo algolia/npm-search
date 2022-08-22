@@ -23,7 +23,7 @@
   "license": "MIT",
   "dependencies": {
     "@algolia/requester-node-http": "4.14.2",
-    "@sentry/node": "7.10.0",
+    "@sentry/node": "7.11.1",
     "algoliasearch": "4.14.2",
     "async": "3.2.4",
     "bunyan": "1.8.15",
@@ -52,14 +52,14 @@
     "@types/async": "3.2.15",
     "@types/escape-html": "1.0.2",
     "@types/hosted-git-info": "3.0.2",
-    "@types/jest": "28.1.6",
-    "@types/lodash": "4.14.182",
+    "@types/jest": "28.1.7",
+    "@types/lodash": "4.14.184",
     "@types/ms": "0.7.31",
     "@types/numeral": "2.0.2",
     "@types/traverse": "0.6.32",
     "@types/truncate-utf8-bytes": "1.0.0",
-    "@typescript-eslint/eslint-plugin": "5.33.0",
-    "@typescript-eslint/parser": "5.33.0",
+    "@typescript-eslint/eslint-plugin": "5.33.1",
+    "@typescript-eslint/parser": "5.33.1",
     "dotenv": "16.0.1",
     "eslint": "8.22.0",
     "eslint-config-algolia": "20.0.0",
@@ -79,12 +79,12 @@
     "prettier": "2.7.1",
     "renovate-config-algolia": "2.1.10",
     "semantic-release": "19.0.3",
-    "ts-jest": "28.0.7",
+    "ts-jest": "28.0.8",
     "typescript": "4.7.4",
     "validator": "13.7.0"
   },
   "engines": {
-    "node": "16.16.0",
+    "node": "16.17.0",
     "yarn": "^1.22.0"
   },
   "repository": {
