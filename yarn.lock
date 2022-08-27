@@ -5277,15 +5277,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-junit@npm:14.0.0":
-  version: 14.0.0
-  resolution: "jest-junit@npm:14.0.0"
+"jest-junit@npm:14.0.1":
+  version: 14.0.1
+  resolution: "jest-junit@npm:14.0.1"
   dependencies:
     mkdirp: ^1.0.4
     strip-ansi: ^6.0.1
     uuid: ^8.3.2
     xml: ^1.0.1
-  checksum: 89d6755f895360be9440d0feacc1a7da9adf23fa9a58746f6f80946cd55d91ba3d32314698615090682684d8315518a166fe46a60cdbd16b38e0c5c8d6418e55
+  checksum: 2a9ccfecbe4c0df1be24e64b3e12a260356db999b3d821578c325bd34367d2f54b27e9560a8d5abe6c19412400268bf55dd41473565903cb8f616d998f7eb9ac
   languageName: node
   linkType: hard
 
@@ -6847,7 +6847,7 @@ __metadata:
     hot-shots: 9.2.0
     husky: 8.0.1
     jest: 28.1.3
-    jest-junit: 14.0.0
+    jest-junit: 14.0.1
     lint-staged: 13.0.3
     lodash: 4.17.21
     ms: 2.1.3
