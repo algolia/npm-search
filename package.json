@@ -42,7 +42,7 @@
     "numeral": "2.0.6",
     "object-sizeof": "1.6.3",
     "promise-rat-race": "1.5.1",
-    "traverse": "0.6.6",
+    "traverse": "0.6.7",
     "truncate-utf8-bytes": "1.0.2"
   },
   "devDependencies": {
