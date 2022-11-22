@@ -156,7 +156,7 @@ export const config = {
   npmDownloadsEndpoint: 'https://api.npmjs.org/downloads',
   npmRootEndpoint: 'https://registry.npmjs.org',
   jsDelivrHitsEndpoint:
-    'https://data.jsdelivr.com/v1/stats/packages/npm/month/all',
+    'https://data-jsdelivr-com-preview.onrender.com/v1/stats/packages/all?period=month&type=npm',
   jsDelivrPackageEndpoint: 'https://data.jsdelivr.com/v1/package/npm',
   typescriptTypesIndex:
     'https://typespublisher.blob.core.windows.net/typespublisher/data/search-index-min.json',
