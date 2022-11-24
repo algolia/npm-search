@@ -62,7 +62,7 @@ describe('hits', () => {
       await api.loadHits();
     });
     it('should download all packages hits', () => {
-      expect(api.hits.size).toBeGreaterThan(60000); // 66790 (2019-08)
+      expect(api.hits.size).toBeGreaterThan(30000); // 32509 (2022-11)
     });
 
     it('should get one hit', () => {
