@@ -66,6 +66,16 @@ export function getTypeScriptSupport(
       return { types: pkg.types };
     }
 
+    for (const file of filelist) {
+      if (!file.name.endsWith('.d.ts')) {
+        continue;
+      }
+
+      datadog.increment('jsdelivr.getTSSupport.hit');
+
+      return { types: { ts: 'included' } };
+    }
+
     // The 2nd most likely is definitely typed
     const defTyped = isDefinitelyTyped({ name: pkg.name });
     if (defTyped) {
@@ -77,15 +87,6 @@ export function getTypeScriptSupport(
       };
     }
 
-    for (const file of filelist) {
-      if (!file.name.endsWith('.d.ts')) {
-        continue;
-      }
-
-      datadog.increment('jsdelivr.getTSSupport.hit');
-
-      return { types: { ts: 'included' } };
-    }
     datadog.increment('jsdelivr.getTSSupport.miss');
 
     return { types: { ts: false } };
