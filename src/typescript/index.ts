@@ -86,7 +86,6 @@ export function getTypeScriptSupport(
         },
       };
     }
-
     datadog.increment('jsdelivr.getTSSupport.miss');
 
     return { types: { ts: false } };
