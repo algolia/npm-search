@@ -46,7 +46,9 @@ If the process fails, restart it and the replication process will continue at th
 
 The Algolia index is currently used, for free, by a few selected projects (e.g: [yarnpkg.com](https://yarnpkg.com), [codesandbox.io](https://codesandbox.io), [jsdelivr.com](https://www.jsdelivr.com/), etc...).
 
-If you want to include this index to your project please reach out to: [support@algolia.com](mailto:support@algolia.com).
+If you want to include this index to your project please create a support request here: [Algolia Support](https://support.algolia.com/hc/en-us/requests/new).
+
+This product is an open source product for the community and not supported by Algolia.
 
 To be eligible your project must meet these requirements:
 
