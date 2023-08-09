@@ -1,3 +1,10 @@
+## [1.7.15](https://github.com/algolia/npm-search/compare/v1.7.14...v1.7.15) (2023-02-13)
+
+
+### Bug Fixes
+
+* **config:** update jsDelivrHitsEndpoint url ([#1107](https://github.com/algolia/npm-search/issues/1107)) ([38b43d7](https://github.com/algolia/npm-search/commit/38b43d705bce0449d76ccf49f82718959c6b6382))
+
 ## [1.7.14](https://github.com/algolia/npm-search/compare/v1.7.13...v1.7.14) (2022-12-07)
 
 
