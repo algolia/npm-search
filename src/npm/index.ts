@@ -315,16 +315,17 @@ async function getDownloads(
   return all;
 }
 
+// eslint-disable-next-line require-await
 async function getDownload(
   pkg: Pick<RawPkg, 'name'>
 ): Promise<GetDownload | null> {
   const start = Date.now();
 
   try {
-    const name = encodeURIComponent(pkg.name);
-    const totalNpmDownloads = await getTotalDownloads();
-    const downloads = await fetchDownload(name);
-    return computeDownload(pkg, downloads.body[pkg.name]!, totalNpmDownloads);
+    // const name = encodeURIComponent(pkg.name);
+    // const totalNpmDownloads = await getTotalDownloads();
+    // const downloads = await fetchDownload(name);
+    return computeDownload(pkg, { downloads: 0 }, 0);
   } finally {
     datadog.timing('npm.getDownload', Date.now() - start);
   }
