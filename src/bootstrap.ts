@@ -269,7 +269,23 @@ function createPkgConsumer(
         datadog.increment('job.retries');
         await backoff(retry + 1, config.retryBackoffPow);
         consumer.push({ pkg, retry: retry + 1 });
-        sentry.report(new Error('Throttling job'), { err });
+        return;
+      }
+
+      if (err.statusCode === 404 || err?.response?.statusCode === 404) {
+        // Store in not-found index
+        try {
+          datadog.increment('job.notFound');
+
+          await algoliaStore.bootstrapNotFoundIndex.saveObject({
+            objectID: pkg.id,
+            err: err instanceof Error ? err.toString() : err,
+            date: start,
+          });
+        } catch (err2) {
+          log.error(new Error('Error during not found'), err2);
+        }
+
         return;
       }
 

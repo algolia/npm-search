@@ -98,6 +98,10 @@ export async function getFilesList(
     });
     files = response.body.files;
   } catch (err) {
+    if (err instanceof HTTPError && err.response.statusCode === 404) {
+      throw err;
+    }
+
     if (!(err instanceof HTTPError && err.message.includes('403'))) {
       sentry.report(new Error('JsDelivr network error'), { err, url });
     }

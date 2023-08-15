@@ -10,6 +10,7 @@ export interface AlgoliaStore {
   mainLostIndex: SearchIndex;
   bootstrapIndex: SearchIndex;
   bootstrapLostIndex: SearchIndex;
+  bootstrapNotFoundIndex: SearchIndex;
   client: SearchClient;
 }
 
@@ -65,12 +66,18 @@ export async function prepare(config: Config): Promise<AlgoliaStore> {
     apiKey: config.apiKey,
     indexName: `${config.bootstrapIndexName}.lost`,
   });
+  const { index: bootstrapNotFoundIndex } = createClient({
+    appId: config.appId,
+    apiKey: config.apiKey,
+    indexName: `${config.bootstrapIndexName}.not-found`,
+  });
 
   // Ensure indices exists by calling an empty setSettings()
   await mainIndex.setSettings({}).wait();
   await bootstrapIndex.setSettings({}).wait();
   await mainLostIndex.setSettings({}).wait();
   await bootstrapLostIndex.setSettings({}).wait();
+  await bootstrapNotFoundIndex.setSettings({}).wait();
 
   return {
     client,
@@ -78,6 +85,7 @@ export async function prepare(config: Config): Promise<AlgoliaStore> {
     mainLostIndex,
     bootstrapIndex,
     bootstrapLostIndex,
+    bootstrapNotFoundIndex,
   };
 }
 
