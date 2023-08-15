@@ -159,7 +159,7 @@ export const config = {
     'https://data.jsdelivr.com/v1/stats/packages/all?period=month&type=npm',
   jsDelivrPackageEndpoint: 'https://data.jsdelivr.com/v1/package/npm',
   typescriptTypesIndex:
-    'https://typespublisher.blob.core.windows.net/typespublisher/data/search-index-min.json',
+    'https://raw.githubusercontent.com/nice-registry/all-the-package-names/master/names.json',
   maxObjSize: 450000,
   popularDownloadsRatio: 0.005,
   appId: 'OFCNCOG2CU',

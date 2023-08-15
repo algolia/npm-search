@@ -5,16 +5,6 @@ import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
 import { request } from '../utils/request';
 
-interface TypeList {
-  p: string; // url
-  l: string; // display name
-  t: string; // package name
-  // don't known
-  d: number;
-  g: string[];
-  m: string[];
-}
-
 export const typesCache: Record<string, string> = {};
 
 /**
@@ -22,10 +12,12 @@ export const typesCache: Record<string, string> = {};
  * - https://github.com/microsoft/types-publisher/blob/master/src/create-search-index.ts.
  */
 export async function loadTypesIndex(): Promise<void> {
-  const start = Date.now();
-  const { body } = await request<TypeList[]>(config.typescriptTypesIndex, {
+  const start = Date.now();return;
+  const body = await request<string[]>(config.typescriptTypesIndex, {
     decompress: true,
     responseType: 'json',
+  }).then(({ body }) => {
+    return body.filter(name => name.startsWith('@types/')).map(name => name.substring(7));
   });
 
   log.info(`📦  Typescript preload, found ${body.length} @types`);
@@ -33,7 +25,7 @@ export async function loadTypesIndex(): Promise<void> {
   // m = modules associated
   // t = @types/<name>
   body.forEach((type) => {
-    typesCache[unmangle(type.t)] = type.t;
+    typesCache[unmangle(type)] = type;
   });
 
   datadog.timing('typescript.loadTypesIndex', Date.now() - start);
