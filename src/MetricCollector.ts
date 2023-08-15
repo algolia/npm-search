@@ -14,21 +14,21 @@ class MetricCollector {
     this.timingsToClear = new Set();
   }
 
-  increment (event: string, count: number = 1) {
+  increment(event: string, count: number = 1): this {
     this.logEvent(event, count);
     return this;
   }
 
-  gauge (name: string, value: number) {
+  gauge(name: string, value: number): this {
     if (this.timings[name] === undefined) {
       this.registerTiming(name);
     }
 
-    this.timings[name] = [ value ];
+    this.timings[name] = [value];
     return this;
   }
 
-  logEvent(event: string, count: number = 1) {
+  logEvent(event: string, count: number = 1): this {
     if (this.events[event] === undefined) {
       this.registerEvent(event);
     }
@@ -37,7 +37,7 @@ class MetricCollector {
     return this;
   }
 
-  timing (timing: string, duration: number) {
+  timing(timing: string, duration: number): this {
     if (this.timings[timing] === undefined) {
       this.registerTiming(timing);
     }
@@ -51,20 +51,20 @@ class MetricCollector {
     return this;
   }
 
-  private registerEvent(event: string) {
+  private registerEvent(event: string): void {
     this.events[event] = 0;
 
     // istanbul ignore if
     if (this.client.isStarted()) {
       this.client.registerMetric(`npmSearch.${event}`, () => {
-        let value = this.events[event];
+        const value = this.events[event];
         this.events[event] = 0;
         return value;
       });
     }
   }
 
-  private registerTiming(timing: string) {
+  private registerTiming(timing: string): void {
     this.timings[timing] = [];
 
     // istanbul ignore if
