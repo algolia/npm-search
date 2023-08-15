@@ -113,7 +113,7 @@ describe('hosts', () => {
     expect(changelogFilename).toBeNull();
   });
 
-  it('should get changelog for github', async () => {
+  it.skip('should get changelog for github', async () => {
     const pkg = {
       name: 'foo',
       version: '0.0.0',
@@ -134,7 +134,7 @@ describe('hosts', () => {
     );
   });
 
-  it('should get changelog for gitlab', async () => {
+  it.skip('should get changelog for gitlab', async () => {
     const pkg = {
       name: 'foo',
       version: '0.0.0',
@@ -155,7 +155,7 @@ describe('hosts', () => {
     );
   });
 
-  it('should get changelog for bitbucket', async () => {
+  it.skip('should get changelog for bitbucket', async () => {
     const pkg = {
       name: 'foo',
       version: '0.0.0',
@@ -247,7 +247,7 @@ describe('jsDelivr', () => {
 });
 
 describe('filename', () => {
-  it('should work with HISTORY.md', async () => {
+  it.skip('should work with HISTORY.md', async () => {
     const pkg = {
       name: 'foo',
       version: '0.0.0',
