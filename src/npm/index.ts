@@ -68,7 +68,17 @@ async function getDoc(
 ): Promise<DocumentGetResponse & GetPackage> {
   const start = Date.now();
 
-  const doc = await db.get(name, { rev });
+  let { body: doc } = await request<DocumentGetResponse & GetPackage>(
+    `${config.npmRootEndpoint}/${name}`,
+    {
+      responseType: 'json',
+    }
+  );
+
+  if (doc._rev !== rev) {
+    datadog.increment('npm.getDoc.revMismatch');
+    doc = await db.get(name, { rev });
+  }
 
   datadog.timing('npm.getDoc', Date.now() - start);
 
