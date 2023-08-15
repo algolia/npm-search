@@ -36,6 +36,7 @@ baseUrlMap.set(
   }
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const fileOptions = [
   'CHANGELOG.md',
   'ChangeLog.md',
@@ -82,6 +83,7 @@ async function handledGot(file: string): Promise<string> {
   return result.url;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function raceFromPaths(files: string[]): Promise<{
   changelogFilename: string | null;
 }> {
@@ -93,6 +95,7 @@ async function raceFromPaths(files: string[]): Promise<{
   }
 }
 
+// eslint-disable-next-line require-await
 export async function getChangelog(
   pkg: Pick<RawPkg, 'name' | 'repository' | 'version'>,
   filelist: jsDelivr.File[]
@@ -114,27 +117,7 @@ export async function getChangelog(
 
     datadog.increment('jsdelivr.getChangelog.miss');
 
-    const { repository } = pkg;
-
-    if (repository === null || !repository.host) {
-      return { changelogFilename: null };
-    }
-
-    const host = repository.host || '';
-    const knownHost = baseUrlMap.get(host);
-
-    // No known git hosts
-    if (!knownHost) {
-      return { changelogFilename: null };
-    }
-
-    const baseUrl = knownHost(repository);
-    const files = fileOptions.map((file) =>
-      [baseUrl.replace(/\/$/, ''), file].join('/')
-    );
-
-    // Brute-force from git host
-    return await raceFromPaths([...files]);
+    return { changelogFilename: null };
   } finally {
     datadog.timing('changelogs.getChangelog', Date.now() - start);
   }
