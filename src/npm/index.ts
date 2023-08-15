@@ -33,7 +33,7 @@ const registry = nano({
   url: config.npmRegistryEndpoint,
   requestDefaults: {
     agent: httpsAgent,
-    timeout: 15000,
+    timeout: 30000,
     headers: {
       'user-agent': USER_AGENT,
       'Accept-Encoding': 'deflate, gzip',
@@ -68,19 +68,9 @@ async function getDoc(
 ): Promise<DocumentGetResponse & GetPackage> {
   const start = Date.now();
 
-  let { body: doc } = await request<DocumentGetResponse & GetPackage>(
-    `${config.npmRootEndpoint}/${name}`,
-    {
-      responseType: 'json',
-    }
-  );
+  const doc = await db.get(name, { rev });
 
-  if (doc._rev !== rev) {
-    datadog.increment('npm.getDoc.revMismatch');
-    doc = await db.get(name, { rev });
-  }
-
-  datadog.timing('npm.getDoc', Date.now() - start);
+  datadog.timing('npm.getDoc.one', Date.now() - start);
 
   return doc;
 }

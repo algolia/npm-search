@@ -1,3 +1,4 @@
+import ms from 'ms';
 import type { DocumentListParams, DocumentResponseRow } from 'nano';
 
 import { config } from '../config';
@@ -54,8 +55,9 @@ export class Prefetcher {
   async launch(): Promise<void> {
     this.#running = true;
     while (this.#running) {
+      await wait(ms('2 seconds'));
+
       if (this.#ready.length >= this.#maxIdle) {
-        await wait(config.prefetchWaitBetweenPage);
         continue;
       }
 
@@ -87,8 +89,13 @@ export class Prefetcher {
       this.#ready.push(...packages);
       this.#offset = offset;
       this.#nextKey = packages[packages.length - 1]!.id;
-    } catch (err) {
+    } catch (err: any) {
       sentry.report(err);
+
+      if (err.statusCode === 429) {
+        log.info('[pf] waiting');
+        await wait(ms('2 minutes'));
+      }
     }
   }
 }

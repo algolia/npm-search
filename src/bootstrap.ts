@@ -108,9 +108,11 @@ export class Bootstrap extends EventEmitter {
     let done = 0;
     const consumer = createPkgConsumer(this.stateManager, this.algoliaStore);
     consumer.unsaturated(async () => {
-      const next = await prefetcher.getNext();
-      consumer.push({ pkg: next, retry: 0 });
-      done += 1;
+      while (consumer.running() + consumer.length() < consumer.concurrency) {
+        const next = await prefetcher.getNext();
+        consumer.push({ pkg: next, retry: 0 });
+        done += 1;
+      }
     });
     consumer.buffer = 0;
 
@@ -257,10 +259,14 @@ function createPkgConsumer(
         });
       }
       log.info(`Done:`, pkg.id);
-    } catch (err) {
+    } catch (err: any) {
       log.info(`Failed:`, pkg.id);
 
-      if (err instanceof Error && err.message.includes('Access denied')) {
+      if (
+        (err instanceof Error && err.message.includes('Access denied')) ||
+        (err.statusCode >= 500 && retry < config.retryMax)
+      ) {
+        datadog.increment('job.retries');
         await backoff(retry + 1, config.retryBackoffPow);
         consumer.push({ pkg, retry: retry + 1 });
         sentry.report(new Error('Throttling job'), { err });
@@ -271,6 +277,8 @@ function createPkgConsumer(
 
       // Store in lost index
       try {
+        datadog.increment('job.lost');
+
         await algoliaStore.bootstrapLostIndex.saveObject({
           objectID: pkg.id,
           err: err instanceof Error ? err.toString() : err,
