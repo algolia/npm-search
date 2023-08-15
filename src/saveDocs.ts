@@ -16,18 +16,19 @@ export async function saveDoc({
   formatted: RawPkg;
   index: SearchIndex;
 }): Promise<void> {
-  let start = Date.now();
+  const start = Date.now();
   const pkg = await addMetaData(formatted);
-  datadog.timing('saveDocs.addMetaData.one', Date.now() - start);
 
-  start = Date.now();
+  const start2 = Date.now();
   await index.saveObject(pkg);
   datadog.timing('saveDocs.saveObject.one', Date.now() - start);
 
-  datadog.timing('saveDocs.one', Date.now() - start);
+  datadog.timing('saveDocs.one', Date.now() - start2);
 }
 
 async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
+  const start = Date.now();
+
   if (pkg.isSecurityHeld) {
     return pkg;
   }
@@ -46,7 +47,6 @@ async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
     getStyleTypes(pkg, filelist),
   ]);
 
-  const start = Date.now();
   const final = {
     ...pkg,
     ...download,
