@@ -1,3 +1,5 @@
+import 'elastic-apm-node/start';
+
 /* eslint-disable no-process-exit */
 import type http from 'http';
 
