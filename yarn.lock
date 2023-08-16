@@ -7694,6 +7694,7 @@ __metadata:
     promise-rat-race: 1.5.1
     renovate-config-algolia: 2.1.10
     semantic-release: 19.0.3
+    throttled-queue: ^2.1.4
     traverse: 0.6.6
     truncate-utf8-bytes: 1.0.2
     ts-jest: 28.0.8
@@ -9807,6 +9808,13 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: b6937a38c80c7f84d9c11dd75e49d5c44f71d95e810a3250bd1f1797fc7117c57698204adf676b71497acc205d769d65c16ae8fa10afad832ae1322630aef10a
+  languageName: node
+  linkType: hard
+
+"throttled-queue@npm:^2.1.4":
+  version: 2.1.4
+  resolution: "throttled-queue@npm:2.1.4"
+  checksum: 99571cb816e1c2d3df678d6fdb0a73eca9ba1f8aa9026daf89855d4c9444491d70e3aecaaad6c77b1202ab773f78e03b9a91b1e89c4983f17835b783137266c7
   languageName: node
   linkType: hard
 

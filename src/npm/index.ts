@@ -6,6 +6,7 @@ import type {
 } from 'nano';
 import nano from 'nano';
 import numeral from 'numeral';
+import throttledQueue from 'throttled-queue';
 
 import type { FinalPkg, RawPkg } from '../@types/pkg';
 import { config } from '../config';
@@ -44,6 +45,7 @@ const registry = nano({
 });
 
 export const db = registry.use<GetPackage>(config.npmRegistryDBName);
+const throttle = throttledQueue(6, 1000);
 
 /**
  * Find all packages in registry.
@@ -68,7 +70,7 @@ async function getDoc(
 ): Promise<DocumentGetResponse & GetPackage> {
   const start = Date.now();
 
-  const doc = await db.get(name, { rev });
+  const doc = await throttle(() => db.get(name, { rev }));
 
   datadog.timing('npm.getDoc.one', Date.now() - start);
 

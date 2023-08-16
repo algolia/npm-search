@@ -55,9 +55,8 @@ export class Prefetcher {
   async launch(): Promise<void> {
     this.#running = true;
     while (this.#running) {
-      await wait(ms('2 seconds'));
-
       if (this.#ready.length >= this.#maxIdle) {
+        await wait(ms('2 seconds'));
         continue;
       }
 
