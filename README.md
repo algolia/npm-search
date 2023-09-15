@@ -8,8 +8,10 @@
 
 ---
 
-This is a failure resilient npm registry to Algolia index replication process.
-It will replicate all npm packages to an Algolia index and keep it up to date.
+This project is a failure. It's not a resilient npm registry.
+It can not replicate all npm packages to an Algolia index.
+
+It has NOT been updated in 5+ months, since April 2023.
 
 The state of the replication is saved in Algolia index settings.
 
