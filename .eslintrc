@@ -7,6 +7,7 @@
   "rules": {
     "no-continue": "off",
     "valid-jsdoc": "off",
+    "require-await": "off",
     "import/extensions": [
       "error",
       {

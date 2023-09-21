@@ -66,9 +66,8 @@ describe('general', () => {
           {
             rev: expect.any(String),
             lastCrawl: expect.any(String),
-            _searchInternal: {
-              expiresAt: expect.any(Number),
-            },
+            _revision: expect.any(Number),
+            _searchInternal: {},
           },
           formattedPackage.objectID
         )
@@ -108,9 +107,8 @@ describe('general', () => {
       rev: expect.any(String),
       readme: expect.any(String),
       lastCrawl: expect.any(String),
-      _searchInternal: {
-        expiresAt: expect.any(Number),
-      },
+      _revision: expect.any(Number),
+      _searchInternal: {},
     });
   });
 
@@ -853,9 +851,8 @@ describe('deprecated', () => {
       deprecated: 'Yes this is deprecated',
       isDeprecated: true,
       deprecatedReason: 'Yes this is deprecated',
-      _searchInternal: {
-        expiresAt: expect.any(Number),
-      },
+      _revision: expect.any(Number),
+      _searchInternal: {},
     });
   });
 });
@@ -881,9 +878,8 @@ describe('security held', () => {
       rev: expect.any(String),
       lastCrawl: expect.any(String),
       isSecurityHeld: true,
-      _searchInternal: {
-        expiresAt: expect.any(Number),
-      },
+      _revision: expect.any(Number),
+      _searchInternal: {},
     });
   });
 
@@ -907,9 +903,8 @@ describe('security held', () => {
       rev: expect.any(String),
       lastCrawl: expect.any(String),
       isSecurityHeld: false,
-      _searchInternal: {
-        expiresAt: expect.any(Number),
-      },
+      _revision: expect.any(Number),
+      _searchInternal: {},
     });
   });
 });

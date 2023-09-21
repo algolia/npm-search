@@ -2,7 +2,7 @@ import type { DocumentLookupFailure } from 'nano';
 
 export interface PackageDownload {
   downloads: number;
-  // package: string;
+  package: string;
   // start: string;
   // end: string;
 }

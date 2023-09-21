@@ -7,10 +7,15 @@ import { httpAgent, httpsAgent, USER_AGENT } from '../utils/request';
 
 export interface AlgoliaStore {
   mainIndex: SearchIndex;
+  mainQueueIndex: SearchIndex;
   mainLostIndex: SearchIndex;
+  mainNotFoundIndex: SearchIndex;
   bootstrapIndex: SearchIndex;
+  bootstrapQueueIndex: SearchIndex;
   bootstrapLostIndex: SearchIndex;
   bootstrapNotFoundIndex: SearchIndex;
+  oneTimeDataIndex: SearchIndex;
+  periodicDataIndex: SearchIndex;
   client: SearchClient;
 }
 
@@ -51,15 +56,30 @@ export async function prepare(config: Config): Promise<AlgoliaStore> {
 
   // Get main index and boostrap algolia client
   const { index: mainIndex, client } = createClient(config);
+  const { index: mainQueueIndex } = createClient({
+    appId: config.appId,
+    apiKey: config.apiKey,
+    indexName: `${config.indexName}.queue`,
+  });
   const { index: mainLostIndex } = createClient({
     appId: config.appId,
     apiKey: config.apiKey,
     indexName: `${config.indexName}.lost`,
   });
+  const { index: mainNotFoundIndex } = createClient({
+    appId: config.appId,
+    apiKey: config.apiKey,
+    indexName: `${config.indexName}.not-found`,
+  });
   const { index: bootstrapIndex } = createClient({
     appId: config.appId,
     apiKey: config.apiKey,
     indexName: config.bootstrapIndexName,
+  });
+  const { index: bootstrapQueueIndex } = createClient({
+    appId: config.appId,
+    apiKey: config.apiKey,
+    indexName: `${config.bootstrapIndexName}.queue`,
   });
   const { index: bootstrapLostIndex } = createClient({
     appId: config.appId,
@@ -71,21 +91,44 @@ export async function prepare(config: Config): Promise<AlgoliaStore> {
     apiKey: config.apiKey,
     indexName: `${config.bootstrapIndexName}.not-found`,
   });
+  const { index: oneTimeDataIndex } = createClient({
+    appId: config.appId,
+    apiKey: config.apiKey,
+    indexName: `${config.indexName}.one-time-data`,
+  });
+  const { index: periodicDataIndex } = createClient({
+    appId: config.appId,
+    apiKey: config.apiKey,
+    indexName: `${config.indexName}.periodic-data`,
+  });
 
   // Ensure indices exists by calling an empty setSettings()
   await mainIndex.setSettings({}).wait();
   await bootstrapIndex.setSettings({}).wait();
+  await bootstrapQueueIndex
+    .setSettings({
+      attributesForFaceting: ['retries'],
+    })
+    .wait();
   await mainLostIndex.setSettings({}).wait();
+  await mainNotFoundIndex.setSettings({}).wait();
   await bootstrapLostIndex.setSettings({}).wait();
   await bootstrapNotFoundIndex.setSettings({}).wait();
+  await oneTimeDataIndex.setSettings({}).wait();
+  await periodicDataIndex.setSettings({}).wait();
 
   return {
     client,
     mainIndex,
+    mainQueueIndex,
     mainLostIndex,
+    mainNotFoundIndex,
     bootstrapIndex,
+    bootstrapQueueIndex,
     bootstrapLostIndex,
     bootstrapNotFoundIndex,
+    oneTimeDataIndex,
+    periodicDataIndex,
   };
 }
 

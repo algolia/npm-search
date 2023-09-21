@@ -10,7 +10,7 @@
     "build:hot": "tsc -w --preserveWatchOutput",
     "build": "tsc -b",
     "clean": "rm -rf dist/",
-    "dev": "tsx -r dotenv/config --async-stack-traces --max-old-space-size=920 src/index.ts",
+    "dev": "node -r ts-node/register/transpile-only -r dotenv/config --max-old-space-size=920 src/index.ts",
     "lint": "eslint --ext=jsx,ts,tsx,js .",
     "prepare": "husky install",
     "start": "UV_THREADPOOL_SIZE=64 node --async-stack-traces --max-old-space-size=920 dist/index.js",
@@ -23,7 +23,6 @@
   "license": "MIT",
   "dependencies": {
     "@algolia/requester-node-http": "4.14.2",
-    "@sentry/node": "7.11.1",
     "algoliasearch": "4.14.2",
     "async": "3.2.4",
     "bunyan": "1.8.15",
@@ -41,6 +40,7 @@
     "nice-package": "3.1.2",
     "numeral": "2.0.6",
     "object-sizeof": "1.6.3",
+    "p-queue": "6.6.2",
     "promise-rat-race": "1.5.1",
     "throttled-queue": "^2.1.4",
     "traverse": "0.6.6",
@@ -81,12 +81,12 @@
     "renovate-config-algolia": "2.1.10",
     "semantic-release": "19.0.3",
     "ts-jest": "28.0.8",
-    "tsx": "^3.12.7",
+    "ts-node": "10.9.1",
     "typescript": "4.7.4",
     "validator": "13.7.0"
   },
   "engines": {
-    "node": "16.17.0",
+    "node": "^18.0.0",
     "yarn": "^1.22.0"
   },
   "repository": {

@@ -1,6 +1,7 @@
 import algoliasearch from 'algoliasearch';
 
 import { formatPkg } from '../formatPkg';
+import { cacheTotalDownloads } from '../npm';
 import { saveDoc } from '../saveDocs';
 
 import preact from './preact-simplified.json';
@@ -8,12 +9,12 @@ import preact from './preact-simplified.json';
 jest.setTimeout(15000);
 
 const FINAL_BASE = {
+  // _revision: 0,
+  // _downloadsMagnitude: 7,
+  // _jsDelivrPopularity: 0,
   _searchInternal: {
     alternativeNames: ['preact', 'preact.js', 'preactjs'],
-    popularAlternativeNames: ['preact', 'preact.js', 'preactjs'],
-    downloadsMagnitude: 7,
-    expiresAt: '2021-08-10',
-    jsDelivrPopularity: 0,
+    // popularAlternativeNames: ['preact', 'preact.js', 'preactjs'],
   },
   bin: {},
   changelogFilename: null,
@@ -191,7 +192,11 @@ const FINAL_BASE = {
 };
 
 describe('saveDoc', () => {
-  it.skip('should always produce the same records', async () => {
+  beforeAll(async () => {
+    cacheTotalDownloads.total = 1e15;
+  });
+
+  it('should always produce the same records', async () => {
     const client = algoliasearch('e', '');
     const index = client.initIndex('a');
     jest.spyOn(index, 'saveObject').mockImplementationOnce(() => {
@@ -210,8 +215,6 @@ describe('saveDoc', () => {
       modified: expect.any(Number),
       _searchInternal: expect.objectContaining({
         ...final._searchInternal,
-        downloadsMagnitude: expect.any(Number),
-        expiresAt: expect.any(Number),
       }),
     });
 
@@ -248,8 +251,6 @@ describe('saveDoc', () => {
       modified: expect.any(Number),
       _searchInternal: expect.objectContaining({
         popularAlternativeNames: [],
-        downloadsMagnitude: expect.any(Number),
-        expiresAt: expect.any(Number),
       }),
     });
 
@@ -323,7 +324,6 @@ describe('saveDoc', () => {
       modified: expect.any(Number),
       _searchInternal: expect.objectContaining({
         popularAlternativeNames: [],
-        expiresAt: expect.any(Number),
       }),
     });
 

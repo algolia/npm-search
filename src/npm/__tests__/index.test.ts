@@ -1,4 +1,6 @@
+import type { DownloadsData } from '../index';
 import * as api from '../index';
+import { cacheTotalDownloads, computeDownload } from '../index';
 
 jest.setTimeout(10000);
 
@@ -77,83 +79,63 @@ describe('getDependents()', () => {
 describe('fetchDownload()', () => {
   it('should download one package and return correct response', async () => {
     const dl = await api.fetchDownload('jest');
-    expect(dl.body).toHaveProperty('jest');
-    expect(dl.body.jest).toEqual({
-      downloads: expect.any(Number),
-      start: expect.any(String),
-      end: expect.any(String),
-      package: 'jest',
+    expect(dl).toHaveProperty('jest');
+    expect(dl.jest).toEqual({
+      packageNpmDownloads: expect.any(Number),
     });
   });
 
   it('should download one scoped package and return correct response', async () => {
     const dl = await api.fetchDownload('@angular/core');
-    expect(dl.body).toHaveProperty('@angular/core');
-    expect(dl.body['@angular/core']).toEqual({
-      downloads: expect.any(Number),
-      start: expect.any(String),
-      end: expect.any(String),
-      package: '@angular/core',
+    expect(dl).toHaveProperty('@angular/core');
+    expect(dl['@angular/core']).toEqual({
+      packageNpmDownloads: expect.any(Number),
     });
   });
 
   it('should download 2 packages and return correct response', async () => {
     const dl = await api.fetchDownload('jest,holmes.js');
-    expect(dl.body).toHaveProperty('jest');
-    expect(dl.body).toHaveProperty(['holmes.js']);
+    expect(dl).toHaveProperty('jest');
+    expect(dl).toHaveProperty(['holmes.js']);
   });
 });
 
 describe('getDownloads()', () => {
   let downloads;
   beforeAll(async () => {
+    cacheTotalDownloads.total = 1e15;
+
     downloads = await api.getDownloads([
       { name: 'jest' },
-      { name: '@angular/core' },
       { name: 'holmes.js' },
     ]);
+
+    downloads = {
+      ...downloads,
+      ...(await api.getDownloads([{ name: '@angular/core' }])),
+    };
   });
 
   it('contains the correct keys', () => {
-    expect(downloads).toEqual([
-      expect.objectContaining({
-        downloadsLast30Days: expect.any(Number),
-        downloadsRatio: expect.any(Number),
-        humanDownloadsLast30Days: expect.any(String),
-        popular: true,
-        _searchInternal: {
-          popularName: 'jest',
-          downloadsMagnitude: expect.any(Number),
-          expiresAt: expect.any(Number),
-        },
+    expect(downloads).toEqual({
+      jest: expect.objectContaining({
+        packageNpmDownloads: expect.any(Number),
+        totalNpmDownloads: expect.any(Number),
       }),
-      expect.objectContaining({
-        downloadsLast30Days: expect.any(Number),
-        downloadsRatio: expect.any(Number),
-        humanDownloadsLast30Days: expect.any(String),
-        popular: true,
-        _searchInternal: {
-          popularName: '@angular/core',
-          downloadsMagnitude: expect.any(Number),
-          expiresAt: expect.any(Number),
-        },
+      'holmes.js': expect.objectContaining({
+        packageNpmDownloads: expect.any(Number),
+        totalNpmDownloads: expect.any(Number),
       }),
-      expect.objectContaining({
-        downloadsLast30Days: expect.any(Number),
-        downloadsRatio: expect.any(Number),
-        humanDownloadsLast30Days: expect.any(String),
-        popular: false,
-        _searchInternal: {
-          downloadsMagnitude: expect.any(Number),
-          expiresAt: expect.any(Number),
-        },
+      '@angular/core': expect.objectContaining({
+        packageNpmDownloads: expect.any(Number),
+        totalNpmDownloads: expect.any(Number),
       }),
-    ]);
+    });
   });
 
   it('has the right approximate value for downloadsLast30Days', () => {
-    const [jest, angular, holmes] = downloads.map((pkg) =>
-      pkg.downloadsLast30Days.toString()
+    const [jest, holmes, angular] = Object.values(downloads).map((pkg) =>
+      pkg.packageNpmDownloads.toString()
     );
 
     expect(jest.length).toBeGreaterThanOrEqual(6);
@@ -167,8 +149,15 @@ describe('getDownloads()', () => {
   });
 
   it('has the right approximate value for downloadsMagnitude', () => {
-    const [jest, angular, holmes] = downloads.map(
-      (pkg) => pkg._searchInternal.downloadsMagnitude
+    const [jest, holmes, angular] = Object.entries<DownloadsData>(
+      downloads
+    ).map(
+      ([name, pkg]) =>
+        computeDownload(
+          { name },
+          pkg.packageNpmDownloads,
+          pkg.totalNpmDownloads
+        )?._downloadsMagnitude
     );
 
     expect(jest).toBeGreaterThanOrEqual(6);

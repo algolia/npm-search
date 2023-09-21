@@ -1,4 +1,6 @@
-import chunk from 'lodash/chunk';
+import { HTTPError } from 'got';
+import _ from 'lodash';
+import ms from 'ms';
 import type {
   DocumentGetResponse,
   DocumentListParams,
@@ -6,12 +8,12 @@ import type {
 } from 'nano';
 import nano from 'nano';
 import numeral from 'numeral';
-import throttledQueue from 'throttled-queue';
+import PQueue from 'p-queue';
 
-import type { FinalPkg, RawPkg } from '../@types/pkg';
+import type { RawPkg } from '../@types/pkg';
 import { config } from '../config';
+import { PackageNotFoundError } from '../errors';
 import { datadog } from '../utils/datadog';
-import { getExpiresAt } from '../utils/getExpiresAt';
 import { log } from '../utils/log';
 import { httpsAgent, request, USER_AGENT } from '../utils/request';
 
@@ -23,12 +25,17 @@ type GetDownload = {
   humanDownloadsLast30Days: string;
   downloadsRatio: number;
   popular: boolean;
-  _searchInternal: Pick<
-    FinalPkg['_searchInternal'],
-    'downloadsMagnitude' | 'expiresAt' | 'popularName'
-  >;
+  _downloadsMagnitude: number;
+  _popularName?: string;
 };
-let cacheTotalDownloads: { total: number; date: number } | undefined;
+export type DownloadsData = {
+  totalNpmDownloads?: number;
+  packageNpmDownloads?: number;
+};
+export const cacheTotalDownloads: { total?: number; date?: number } = {
+  total: undefined,
+  date: undefined,
+};
 
 const registry = nano({
   url: config.npmRegistryEndpoint,
@@ -45,7 +52,8 @@ const registry = nano({
 });
 
 export const db = registry.use<GetPackage>(config.npmRegistryDBName);
-const throttle = throttledQueue(6, 1000);
+const registryQueue = new PQueue({ intervalCap: 6, interval: 1000 });
+const downloadsQueue = new PQueue({ intervalCap: 6, interval: 1000 });
 
 /**
  * Find all packages in registry.
@@ -70,11 +78,40 @@ async function getDoc(
 ): Promise<DocumentGetResponse & GetPackage> {
   const start = Date.now();
 
-  const doc = await throttle(() => db.get(name, { rev }));
+  const doc = await registryQueue.add(() => db.get(name, { rev }));
 
   datadog.timing('npm.getDoc.one', Date.now() - start);
 
   return doc;
+}
+
+async function getDocFromRegistry(
+  name: string
+): Promise<DocumentGetResponse & GetPackage> {
+  const start = Date.now();
+
+  try {
+    const doc = await request<DocumentGetResponse & GetPackage>(
+      `${config.npmRootEndpoint}/${name}`,
+      {}
+    );
+
+    // Package without versions means it was unpublished.
+    // Treat it the same as if it was not found at all.
+    if (_.isEmpty(doc.body.versions)) {
+      throw new PackageNotFoundError();
+    }
+
+    return doc.body;
+  } catch (e) {
+    if (e instanceof HTTPError && e.response.statusCode === 404) {
+      throw new PackageNotFoundError();
+    }
+
+    throw e;
+  } finally {
+    datadog.timing('npm.getDocRegistry.one', Date.now() - start);
+  }
 }
 
 /**
@@ -97,50 +134,6 @@ async function getInfo(): Promise<{ nbDocs: number; seq: number }> {
   };
 }
 
-// /**
-//  * Get a package version.
-//  *
-//  * Doc: https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md.
-//  */
-// async function getPackageLight(pkgName: string): Promise<GetPackageLight> {
-//   const start = Date.now();
-
-//   const { body } = await request<GetPackageLight>(
-//     `${config.npmRootEndpoint}/${pkgName}`,
-//     {
-//       method: 'GET',
-//       headers: {
-//         Accept: 'application/vnd.npm.install-v1+json',
-//       },
-//       responseType: 'json',
-//     }
-//   );
-
-//   datadog.timing('npm.getPackageLight', Date.now() - start);
-//   return body;
-// }
-
-// /**
-//  * Get a package version.
-//  */
-// async function getPackageAtVersion(
-//   pkgName: string,
-//   version: string
-// ): Promise<GetVersion> {
-//   const start = Date.now();
-
-//   const { body } = await request<GetVersion>(
-//     `${config.npmRootEndpoint}/${pkgName}/${version}`,
-//     {
-//       method: 'GET',
-//       responseType: 'json',
-//     }
-//   );
-
-//   datadog.timing('npm.getPackageLight', Date.now() - start);
-//   return body;
-// }
-
 /**
  * Get list of packages that depends of them.
  *
@@ -157,18 +150,8 @@ function getDependent(_pkg: Pick<RawPkg, 'name'>): GetDependent {
   return { dependents: 0, humanDependents: '0' };
 }
 
-/**
- * Get total npm downloads.
- */
-async function getTotalDownloads(): Promise<number> {
+async function loadTotalDownloads(): Promise<void> {
   const start = Date.now();
-
-  if (
-    cacheTotalDownloads &&
-    Date.now() - cacheTotalDownloads.date < config.cacheTotalDownloads
-  ) {
-    return cacheTotalDownloads.total;
-  }
 
   const {
     body: { downloads: totalNpmDownloadsPerDay },
@@ -183,61 +166,98 @@ async function getTotalDownloads(): Promise<number> {
     (agg, { downloads: dayDownloads }) => agg + dayDownloads,
     0
   );
-  cacheTotalDownloads = {
-    date: start,
-    total,
-  };
 
-  datadog.timing('npm.getTotalDownloads', Date.now() - start);
+  cacheTotalDownloads.date = start;
+  cacheTotalDownloads.total = total;
 
-  return total;
+  datadog.timing('npm.loadTotalDownloads', Date.now() - start);
+}
+
+/**
+ * Get total npm downloads.
+ */
+async function getTotalDownloads(): Promise<number | undefined> {
+  return cacheTotalDownloads.total;
 }
 
 /**
  * Get download stats for a list of packages.
  */
 async function fetchDownload(
-  pkgNames: string
-): Promise<{ body: Record<string, PackageDownload | null> }> {
+  pkgNames: string,
+  retry: number = 0
+): Promise<Record<string, { packageNpmDownloads?: number }>> {
   const start = Date.now();
 
   try {
-    const response = await request<
-      Record<string, PackageDownload | null> | (PackageDownload | null)
-    >(`${config.npmDownloadsEndpoint}/point/last-month/${pkgNames}`, {
-      responseType: 'json',
+    const response = await downloadsQueue.add(() => {
+      datadog.increment('npm.downloads.requests');
+
+      return request<PackageDownload | Record<string, PackageDownload | null>>(
+        `${config.npmDownloadsEndpoint}/point/last-month/${pkgNames}`,
+        {
+          responseType: 'json',
+        }
+      );
     });
+
     if (response.statusCode !== 200 || !response.body) {
-      return { body: {} };
+      return {};
     }
 
     // Single package
     if (response.body.downloads) {
       return {
-        body: {
-          [response.body.package as string]: response.body as PackageDownload,
+        [response.body.package as string]: {
+          packageNpmDownloads: response.body?.downloads as number,
         },
       };
     }
-    return response as { body: Record<string, PackageDownload | null> };
+
+    return _.mapValues(response.body, (record) => {
+      return {
+        packageNpmDownloads:
+          (typeof record === 'object' && record?.downloads) || undefined,
+      };
+    });
   } catch (error) {
+    if (
+      error instanceof HTTPError &&
+      (error.response.statusCode === 429 || error.response.statusCode >= 500)
+    ) {
+      datadog.increment(`npm.downloads.throttle`);
+
+      if (!downloadsQueue.isPaused) {
+        downloadsQueue.pause();
+        setTimeout(() => downloadsQueue.start(), ms('1 minute')).unref();
+      }
+
+      if (retry < config.retryMax) {
+        return fetchDownload(pkgNames, retry + 1);
+      }
+    }
+
+    if (error instanceof HTTPError && error.response.statusCode === 404) {
+      return {};
+    }
+
+    datadog.increment(`npm.downloads.failure`);
     log.warn(`An error ocurred when getting download of ${pkgNames} ${error}`);
-    return { body: {} };
+    throw error;
   } finally {
     datadog.timing('npm.fetchDownload', Date.now() - start);
   }
 }
 
-function computeDownload(
+export function computeDownload(
   pkg: Pick<RawPkg, 'name'>,
-  downloads: PackageDownload | null,
-  totalNpmDownloads: number
+  downloadsLast30Days: number | undefined,
+  totalNpmDownloads: number | undefined
 ): GetDownload | null {
-  if (!downloads) {
+  if (!downloadsLast30Days || !totalNpmDownloads) {
     return null;
   }
 
-  const downloadsLast30Days = downloads.downloads;
   const downloadsRatio = Number(
     ((downloadsLast30Days / totalNpmDownloads) * 100).toFixed(4)
   );
@@ -251,16 +271,13 @@ function computeDownload(
     humanDownloadsLast30Days: numeral(downloadsLast30Days).format('0.[0]a'),
     downloadsRatio,
     popular,
-    _searchInternal: {
-      expiresAt: getExpiresAt(popular),
-      downloadsMagnitude,
-      // if the package is popular, we copy its name to a dedicated attribute
-      // which will make popular records' `name` matches to be ranked higher than other matches
-      // see the `searchableAttributes` index setting
-      ...(popular && {
-        popularName: pkg.name,
-      }),
-    },
+    _downloadsMagnitude: downloadsMagnitude,
+    // if the package is popular, we copy its name to a dedicated attribute
+    // which will make popular records' `name` matches to be ranked higher than other matches
+    // see the `searchableAttributes` index setting
+    ...(popular && {
+      _popularName: pkg.name,
+    }),
   };
 }
 
@@ -269,55 +286,39 @@ function computeDownload(
  */
 async function getDownloads(
   pkgs: Array<Pick<RawPkg, 'name'>>
-): Promise<Array<GetDownload | null>> {
+): Promise<Record<string, DownloadsData>> {
   const start = Date.now();
 
-  // npm has a weird API to get downloads via GET params, so we split pkgs into chunks
-  // and do multiple requests to avoid weird cases when concurrency is high
+  if (pkgs.length > 1 && pkgs.some((pkg) => pkg.name.startsWith('@'))) {
+    throw new Error(
+      `Scoped packages can only be requested separately, one at a time.`
+    );
+  }
+
   const encodedPackageNames = pkgs
     .map((pkg) => pkg.name)
-    .filter((name) => name[0] !== '@' /* downloads for scoped packages fails */)
-    .map((name) => encodeURIComponent(name));
-  const encodedScopedPackageNames = pkgs
-    .map((pkg) => pkg.name)
-    .filter((name) => name[0] === '@')
     .map((name) => encodeURIComponent(name));
 
-  // why do we do this? see https://github.com/npm/registry/issues/104
-  encodedPackageNames.unshift('');
-  const pkgsNamesChunks = chunk(encodedPackageNames, 100).map((names) =>
-    names.join(',')
-  );
+  if (encodedPackageNames.length > 1) {
+    // why do we do this? see https://github.com/npm/registry/issues/104
+    encodedPackageNames.unshift('');
+  }
 
   const totalNpmDownloads = await getTotalDownloads();
-
-  const downloadsPerPkgNameChunks = await Promise.all([
-    ...pkgsNamesChunks.map(fetchDownload),
-    ...encodedScopedPackageNames.map(fetchDownload),
-  ]);
-
-  const downloadsPerPkgName: Record<string, PackageDownload> =
-    downloadsPerPkgNameChunks.reduce(
-      (res, { body: downloadsPerPkgNameChunk }) => ({
-        ...res,
-        ...downloadsPerPkgNameChunk,
-      }),
-      {}
-    );
-
-  const all = pkgs.map((pkg) => {
-    return computeDownload(
-      pkg,
-      downloadsPerPkgName[pkg.name]!,
-      totalNpmDownloads
-    );
-  });
+  const packageNpmDownloads = await fetchDownload(
+    encodedPackageNames.join(',')
+  );
 
   datadog.timing('npm.getDownloads', Date.now() - start);
-  return all;
+
+  return _.mapValues(
+    _.pickBy(packageNpmDownloads, (value, key) => key),
+    (pkg) => {
+      return { ...pkg, totalNpmDownloads };
+    }
+  );
 }
 
-// eslint-disable-next-line require-await
 async function getDownload(
   pkg: Pick<RawPkg, 'name'>
 ): Promise<GetDownload | null> {
@@ -327,7 +328,7 @@ async function getDownload(
     // const name = encodeURIComponent(pkg.name);
     // const totalNpmDownloads = await getTotalDownloads();
     // const downloads = await fetchDownload(name);
-    return computeDownload(pkg, { downloads: 0 }, 0);
+    return computeDownload(pkg, 0, 0);
   } finally {
     datadog.timing('npm.getDownload', Date.now() - start);
   }
@@ -335,8 +336,10 @@ async function getDownload(
 
 export {
   findAll,
+  loadTotalDownloads,
   getInfo,
   getDoc,
+  getDocFromRegistry,
   getDependents,
   getDependent,
   getDownload,

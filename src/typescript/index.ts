@@ -5,7 +5,13 @@ import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
 import { request } from '../utils/request';
 
-export const typesCache: Record<string, string> = {};
+export const typesCache: Record<string, string> = Object.create(null);
+
+type TypesEntry = {
+  p: string | null; // package repo
+  l: string | null; // package name
+  t: string; // @types package name
+};
 
 /**
  * Microsoft build a index.json with all @types/* on each publication.
@@ -14,33 +20,27 @@ export const typesCache: Record<string, string> = {};
 export async function loadTypesIndex(): Promise<void> {
   const start = Date.now();
 
-  const data = await request<string[]>(config.typescriptTypesIndex, {
-    decompress: true,
-    responseType: 'json',
-  }).then(({ body }) => {
-    return body
-      .filter((name) => name.startsWith('@types/'))
-      .map((name) => name.substring(7));
-  });
+  const { body: data } = await request<TypesEntry[]>(
+    config.typescriptTypesIndex,
+    {
+      decompress: true,
+      responseType: 'json',
+    }
+  );
 
   log.info(`📦  Typescript preload, found ${data.length} @types`);
 
-  // m = modules associated
-  // t = @types/<name>
-  data.forEach((type) => {
-    typesCache[unmangle(type)] = type;
+  data.forEach((entry) => {
+    if (entry.l) {
+      typesCache[entry.l] = entry.t;
+    }
   });
 
   datadog.timing('typescript.loadTypesIndex', Date.now() - start);
 }
 
 export function isDefinitelyTyped({ name }): string | undefined {
-  return typesCache[unmangle(name)];
-}
-
-export function unmangle(name: string): string {
-  // https://github.com/algolia/npm-search/pull/407/files#r316562095
-  return name.replace('__', '/').replace('@', '');
+  return typesCache[name];
 }
 
 /**

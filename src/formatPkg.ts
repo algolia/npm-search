@@ -21,7 +21,6 @@ import type {
 import { config } from './config';
 import type { GetPackage, GetUser, PackageRepo } from './npm/types';
 import { datadog } from './utils/datadog';
-import { getExpiresAt } from './utils/getExpiresAt';
 
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 
@@ -193,10 +192,10 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
     styleTypes,
     changelogFilename: null,
     lastCrawl: new Date().toISOString(),
+    _revision: Date.now(),
     _searchInternal: {
       alternativeNames,
       popularAlternativeNames: [],
-      expiresAt: getExpiresAt(),
     },
   };
 

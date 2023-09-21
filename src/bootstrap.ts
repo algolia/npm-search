@@ -1,35 +1,28 @@
 import { EventEmitter } from 'events';
 
-import type { QueueObject } from 'async';
-import { queue } from 'async';
 import chalk from 'chalk';
 
 import type { StateManager } from './StateManager';
 import type { AlgoliaStore } from './algolia';
 import { putDefaultSettings } from './algolia';
 import { config } from './config';
-import { formatPkg } from './formatPkg';
+import { MainBootstrapIndexer } from './indexers/MainBootstrapIndexer';
+import { OneTimeBackgroundIndexer } from './indexers/OneTimeBackgroundIndexer';
+import { PeriodicBackgroundIndexer } from './indexers/PeriodicBackgroundIndexer';
 import * as npm from './npm';
-import type { PrefetchedPkg } from './npm/Prefetcher';
 import { Prefetcher } from './npm/Prefetcher';
-import { isFailure } from './npm/types';
-import { saveDoc } from './saveDocs';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
-import { backoff } from './utils/wait';
-
-type PkgJob = {
-  pkg: PrefetchedPkg;
-  retry: number;
-};
 
 export class Bootstrap extends EventEmitter {
   stateManager: StateManager;
   algoliaStore: AlgoliaStore;
   prefetcher: Prefetcher | undefined;
-  consumer: QueueObject<PkgJob> | undefined;
   interval: NodeJS.Timer | undefined;
+  oneTimeIndexer: OneTimeBackgroundIndexer | undefined;
+  periodicDataIndexer: PeriodicBackgroundIndexer | undefined;
+  mainBootstrapIndexer: MainBootstrapIndexer | undefined;
 
   constructor(stateManager: StateManager, algoliaStore: AlgoliaStore) {
     super();
@@ -49,19 +42,15 @@ export class Bootstrap extends EventEmitter {
       clearInterval(this.interval);
     }
 
-    if (this.consumer) {
-      this.consumer.kill();
-      await this.consumer.drain();
-    }
-
     if (this.prefetcher) {
       this.prefetcher.stop();
     }
 
-    log.info('Stopped Bootstrap gracefully', {
-      queued: this.consumer?.length() || 0,
-      processing: this.consumer?.running() || 0,
-    });
+    await this.oneTimeIndexer!.stop();
+    await this.periodicDataIndexer!.stop();
+    await this.mainBootstrapIndexer!.stop();
+
+    log.info('Stopped Bootstrap gracefully');
   }
 
   /**
@@ -100,37 +89,53 @@ export class Bootstrap extends EventEmitter {
     log.info(chalk.yellowBright`Total packages: ${totalDocs}`);
     log.info('-----');
 
-    const prefetcher = new Prefetcher({
-      nextKey: state.bootstrapLastId,
-    });
-    prefetcher.launch();
+    this.prefetcher = new Prefetcher(
+      this.stateManager,
+      this.algoliaStore.bootstrapQueueIndex,
+      {
+        nextKey: state.bootstrapLastId,
+      }
+    );
+
+    this.oneTimeIndexer = new OneTimeBackgroundIndexer(
+      this.algoliaStore,
+      this.algoliaStore.bootstrapIndex,
+      this.algoliaStore.oneTimeDataIndex
+    );
+
+    this.periodicDataIndexer = new PeriodicBackgroundIndexer(
+      this.algoliaStore,
+      this.algoliaStore.bootstrapIndex,
+      this.algoliaStore.periodicDataIndex,
+      this.algoliaStore.bootstrapNotFoundIndex
+    );
+
+    this.mainBootstrapIndexer = new MainBootstrapIndexer(this.algoliaStore);
+
+    this.prefetcher.run();
+    this.oneTimeIndexer.run();
+    this.periodicDataIndexer.run();
+    this.mainBootstrapIndexer.run();
 
     let done = 0;
-    const consumer = createPkgConsumer(this.stateManager, this.algoliaStore);
-    consumer.unsaturated(async () => {
-      while (consumer.running() + consumer.length() < consumer.concurrency) {
-        const next = await prefetcher.getNext();
-        consumer.push({ pkg: next, retry: 0 });
-        done += 1;
-      }
-    });
-    consumer.buffer = 0;
-
-    this.prefetcher = prefetcher;
-    this.consumer = consumer;
 
     this.interval = setInterval(async () => {
-      this.logProgress(done);
+      this.logProgress(done).catch(() => {});
 
-      if (prefetcher.isFinished) {
-        clearInterval(this.interval!);
-        await this.afterProcessing();
-        return;
+      try {
+        if (
+          this.prefetcher!.isFinished &&
+          (await this.mainBootstrapIndexer!.isFinished())
+        ) {
+          clearInterval(this.interval!);
+          await this.afterProcessing();
+          return;
+        }
+      } catch (e) {
+        sentry.report(e);
       }
-      done = 0;
 
-      // Push nothing to trigger event
-      this.consumer!.push(null as any);
+      done = 0;
     }, config.prefetchWaitBetweenPage);
   }
 
@@ -154,10 +159,9 @@ export class Bootstrap extends EventEmitter {
    * Last step after everything has been processed.
    */
   private async afterProcessing(): Promise<void> {
-    // While we no longer are in "processing" mode
-    //  it can be possible that there's a last iteration in the queue
-    await this.consumer!.drain();
-    this.consumer!.kill();
+    await this.oneTimeIndexer!.stop();
+    await this.periodicDataIndexer!.stop();
+    await this.mainBootstrapIndexer!.stop();
 
     await this.stateManager.save({
       bootstrapDone: true,
@@ -204,109 +208,23 @@ export class Bootstrap extends EventEmitter {
    */
   private async logProgress(nbDocs: number): Promise<void> {
     const { nbDocs: totalDocs } = await npm.getInfo();
+    const queueLength = await this.mainBootstrapIndexer!.fetchQueueLength();
     const offset = this.prefetcher!.offset;
+
+    datadog.gauge('sequence.total', totalDocs);
+    datadog.gauge('sequence.current', offset + nbDocs);
 
     log.info(
       chalk.dim.italic
-        .white`[progress] %d/%d docs (%s%) (%s prefetched) (%s processing; %s buffer)`,
+        .white`[progress] %d/%d docs queued (%s%) (%s in queue) (%s processing; %s buffer)`,
       offset + nbDocs,
       totalDocs,
       ((Math.max(offset + nbDocs, 1) / totalDocs) * 100).toFixed(2),
-      this.prefetcher!.idleCount,
-      this.consumer!.running(),
-      this.consumer!.length()
+      queueLength,
+      this.mainBootstrapIndexer!.running,
+      this.mainBootstrapIndexer!.queued
     );
+
+    datadog.gauge('job.idleCount', queueLength);
   }
-}
-
-/**
- * Consume packages.
- */
-function createPkgConsumer(
-  stateManager: StateManager,
-  algoliaStore: AlgoliaStore
-): QueueObject<PkgJob> {
-  const consumer = queue<PkgJob>(async ({ pkg, retry }) => {
-    if (!pkg) {
-      return;
-    }
-
-    log.info(`Start:`, pkg.id);
-    const start = Date.now();
-
-    try {
-      datadog.increment('packages');
-
-      const res = await npm.getDoc(pkg.id, pkg.value.rev);
-
-      if (isFailure(res)) {
-        log.error('Got an error', res.error);
-        return;
-      }
-
-      const formatted = formatPkg(res);
-      if (!formatted) {
-        return;
-      }
-      await saveDoc({ formatted, index: algoliaStore.bootstrapIndex });
-
-      const lastId = (await stateManager.get()).bootstrapLastId;
-
-      // Because of concurrency we can have processed a package after in the list but sooner in the process.
-      if (!lastId || lastId < pkg.id) {
-        await stateManager.save({
-          bootstrapLastId: pkg.id,
-        });
-      }
-      log.info(`Done:`, pkg.id);
-    } catch (err: any) {
-      log.info(`Failed:`, pkg.id);
-
-      if (
-        (err instanceof Error && err.message.includes('Access denied')) ||
-        (err.statusCode >= 500 && retry < config.retryMax)
-      ) {
-        datadog.increment('job.retries');
-        await backoff(retry + 1, config.retryBackoffPow);
-        consumer.push({ pkg, retry: retry + 1 });
-        return;
-      }
-
-      if (err.statusCode === 404 || err?.response?.statusCode === 404) {
-        // Store in not-found index
-        try {
-          datadog.increment('job.notFound');
-
-          await algoliaStore.bootstrapNotFoundIndex.saveObject({
-            objectID: pkg.id,
-            err: err instanceof Error ? err.toString() : err,
-            date: start,
-          });
-        } catch (err2) {
-          log.error(new Error('Error during not found'), err2);
-        }
-
-        return;
-      }
-
-      sentry.report(new Error('Error during job'), { err });
-
-      // Store in lost index
-      try {
-        datadog.increment('job.lost');
-
-        await algoliaStore.bootstrapLostIndex.saveObject({
-          objectID: pkg.id,
-          err: err instanceof Error ? err.toString() : err,
-          date: start,
-        });
-      } catch (err2) {
-        log.error(new Error('Error during lost'), err2);
-      }
-    } finally {
-      datadog.timing('loop', Date.now() - start);
-    }
-  }, config.bootstrapConcurrency);
-
-  return consumer;
 }

@@ -3,7 +3,7 @@ import ms from 'ms';
 
 const indexSettings: Settings = {
   searchableAttributes: [
-    'unordered(_searchInternal.popularName)',
+    'unordered(_popularName)',
     'name, description, keywords',
     '_searchInternal.popularAlternativeNames',
     'owner.name',
@@ -15,7 +15,8 @@ const indexSettings: Settings = {
     'searchable(keywords)',
     'searchable(computedKeywords)',
     'searchable(owner.name)',
-    '_searchInternal.expiresAt',
+    '_oneTimeDataToUpdateAt',
+    '_periodicDataUpdatedAt',
     'deprecated',
     'isDeprecated',
     'isSecurityHeld',
@@ -25,8 +26,8 @@ const indexSettings: Settings = {
     'popular',
   ],
   customRanking: [
-    'desc(_searchInternal.downloadsMagnitude)',
-    'desc(_searchInternal.jsDelivrPopularity)',
+    'desc(_downloadsMagnitude)',
+    'desc(_jsDelivrPopularity)',
     'desc(dependents)',
     'desc(downloadsLast30Days)',
   ],
@@ -51,6 +52,7 @@ const indexSettings: Settings = {
   separatorsToIndex: '_',
   replaceSynonymsInHighlight: false,
   maxValuesPerFacet: 1000,
+  unretrievableAttributes: ['_oneTimeDataToUpdateAt', '_periodicDataUpdatedAt'],
 };
 
 const indexSynonyms: Synonym[] = [
@@ -158,8 +160,7 @@ export const config = {
   jsDelivrHitsEndpoint:
     'https://data.jsdelivr.com/v1/stats/packages/all?period=month&type=npm',
   jsDelivrPackageEndpoint: 'https://data.jsdelivr.com/v1/package/npm',
-  typescriptTypesIndex:
-    'https://raw.githubusercontent.com/nice-registry/all-the-package-names/master/names.json',
+  typescriptTypesIndex: 'https://cdn.jsdelivr.net/npm/all-the-package-types',
   maxObjSize: 450000,
   popularDownloadsRatio: 0.005,
   appId: 'OFCNCOG2CU',
@@ -167,19 +168,16 @@ export const config = {
   indexName: 'npm-search',
   bootstrapIndexName: 'npm-search-bootstrap',
   bootstrapConcurrency: 25,
-  timeToRedoBootstrap: ms('1 month'),
+  timeToRedoBootstrap: ms('30 days'),
   seq: undefined,
   indexSettings,
   indexSynonyms,
   indexRules,
-  expiresAt: ms('30 days'),
-  popularExpiresAt: ms('7 days'),
-  cacheTotalDownloads: ms('1 minute'),
   prefetchWaitBetweenPage: 5000,
-  prefetchMaxIdle: 100,
-  retryMax: 2,
+  retryMax: 4,
   retrySkipped: ms('1 minute'),
   retryBackoffPow: 3,
+  retryBackoffMax: ms('1 minute'),
   refreshPeriod: ms('2 minutes'),
   alternativeNamesNpmDownloadsThreshold: 5000,
   alternativeNamesJsDelivrHitsThreshold: 10000,
