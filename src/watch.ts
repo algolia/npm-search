@@ -64,7 +64,7 @@ export class Watch {
 
     setInterval(async () => {
       this.totalSequence = Number((await npm.db.info()).update_seq);
-    }, 5000);
+    }, 5000).unref();
 
     this.oneTimeIndexer = new OneTimeBackgroundIndexer(
       this.algoliaStore,

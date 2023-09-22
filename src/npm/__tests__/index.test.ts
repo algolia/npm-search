@@ -1,8 +1,9 @@
+import { PackageNotFoundError } from '../../errors';
 import type { DownloadsData } from '../index';
 import * as api from '../index';
-import { cacheTotalDownloads, computeDownload } from '../index';
+import { computeDownload } from '../index';
 
-jest.setTimeout(10000);
+jest.setTimeout(15000);
 
 describe('findAll()', () => {
   it('contains the correct keys', async () => {
@@ -24,6 +25,39 @@ describe('findAll()', () => {
         value: { rev: '11-61bb2c49ce3202a3e0ab9a65646b4b4d' },
       })
     );
+  });
+});
+
+describe('getDoc()', () => {
+  it('retrieves a single doc', async () => {
+    const doc = await api.getDoc(
+      'jsdelivr',
+      '8-734f30eea3baad0a62452a3bff1dd116'
+    );
+
+    expect(doc.name).toBe('jsdelivr');
+    expect(Object.keys(doc.versions)).toHaveLength(2);
+  });
+});
+
+describe('getDocFromRegistry()', () => {
+  it('retrieves a single doc', async () => {
+    const doc = await api.getDocFromRegistry('jsdelivr');
+
+    expect(doc.name).toBe('jsdelivr');
+    expect(Object.keys(doc.versions).length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('throws PackageNotFoundError for non-existent packages', async () => {
+    await expect(api.getDocFromRegistry('jsdelivrxxxx')).rejects.toBeInstanceOf(
+      PackageNotFoundError
+    );
+  });
+
+  it('throws PackageNotFoundError for packages without versions', async () => {
+    await expect(
+      api.getDocFromRegistry('ebay-app-meta')
+    ).rejects.toBeInstanceOf(PackageNotFoundError);
   });
 });
 
@@ -101,9 +135,10 @@ describe('fetchDownload()', () => {
 });
 
 describe('getDownloads()', () => {
-  let downloads;
+  let downloads: Awaited<ReturnType<typeof api.getDownloads>>;
+
   beforeAll(async () => {
-    cacheTotalDownloads.total = 1e15;
+    await api.loadTotalDownloads();
 
     downloads = await api.getDownloads([
       { name: 'jest' },
@@ -135,17 +170,17 @@ describe('getDownloads()', () => {
 
   it('has the right approximate value for downloadsLast30Days', () => {
     const [jest, holmes, angular] = Object.values(downloads).map((pkg) =>
-      pkg.packageNpmDownloads.toString()
+      pkg.packageNpmDownloads!.toString()
     );
 
-    expect(jest.length).toBeGreaterThanOrEqual(6);
-    expect(jest.length).toBeLessThanOrEqual(8);
+    expect(jest!.length).toBeGreaterThanOrEqual(6);
+    expect(jest!.length).toBeLessThanOrEqual(8);
 
-    expect(angular.length).toBeGreaterThanOrEqual(6);
-    expect(angular.length).toBeLessThanOrEqual(8);
+    expect(angular!.length).toBeGreaterThanOrEqual(6);
+    expect(angular!.length).toBeLessThanOrEqual(8);
 
-    expect(holmes.length).toBeGreaterThanOrEqual(2);
-    expect(holmes.length).toBeLessThanOrEqual(4);
+    expect(holmes!.length).toBeGreaterThanOrEqual(2);
+    expect(holmes!.length).toBeLessThanOrEqual(4);
   });
 
   it('has the right approximate value for downloadsMagnitude', () => {
@@ -168,5 +203,21 @@ describe('getDownloads()', () => {
 
     expect(holmes).toBeGreaterThanOrEqual(2);
     expect(holmes).toBeLessThanOrEqual(4);
+  });
+
+  it('validates package batching', async () => {
+    await expect(
+      api.getDownloads([{ name: '@scope/p-1' }, { name: '@scope/p-2' }])
+    ).rejects.toThrow('one at a time');
+  });
+
+  it('returns undefined for non-existent packages without failing the valid ones', async () => {
+    const result = await api.getDownloads([
+      { name: 'jsdelivr' },
+      { name: 'jsdelivrxxxx' },
+    ]);
+
+    expect(result.jsdelivr!.packageNpmDownloads).toBeGreaterThan(0);
+    expect(result.jsdelivrxxxx!.packageNpmDownloads).toBeUndefined();
   });
 });

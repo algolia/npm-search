@@ -45,7 +45,7 @@ class Main {
     setTimeout(() => {
       log.info('👋  Scheduled process cleaning');
       close();
-    }, KILL_PROCESS_EVERY_MS);
+    }, KILL_PROCESS_EVERY_MS).unref();
 
     this.healthApi = createAPI();
 
@@ -71,7 +71,7 @@ class Main {
           .catch(() => {
             scheduleRefresh(ms('1 minute'));
           });
-      }, delay);
+      }, delay).unref();
     };
 
     // Preload some useful data
@@ -135,7 +135,7 @@ async function close(): Promise<void> {
   setTimeout(() => {
     // grace period in case a lot of jobs are pending
     process.exit(1);
-  }, 90000);
+  }, 90000).unref();
 
   // datadog.close();
   await sentry.drain();

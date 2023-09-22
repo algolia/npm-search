@@ -93,7 +93,7 @@ async function getDocFromRegistry(
   try {
     const doc = await request<DocumentGetResponse & GetPackage>(
       `${config.npmRootEndpoint}/${name}`,
-      {}
+      { responseType: 'json' }
     );
 
     // Package without versions means it was unpublished.
@@ -242,7 +242,7 @@ async function fetchDownload(
     }
 
     datadog.increment(`npm.downloads.failure`);
-    log.warn(`An error ocurred when getting download of ${pkgNames} ${error}`);
+    log.warn(`An error occurred when getting download of ${pkgNames} ${error}`);
     throw error;
   } finally {
     datadog.timing('npm.fetchDownload', Date.now() - start);
@@ -319,21 +319,6 @@ async function getDownloads(
   );
 }
 
-async function getDownload(
-  pkg: Pick<RawPkg, 'name'>
-): Promise<GetDownload | null> {
-  const start = Date.now();
-
-  try {
-    // const name = encodeURIComponent(pkg.name);
-    // const totalNpmDownloads = await getTotalDownloads();
-    // const downloads = await fetchDownload(name);
-    return computeDownload(pkg, 0, 0);
-  } finally {
-    datadog.timing('npm.getDownload', Date.now() - start);
-  }
-}
-
 export {
   findAll,
   loadTotalDownloads,
@@ -342,7 +327,6 @@ export {
   getDocFromRegistry,
   getDependents,
   getDependent,
-  getDownload,
   fetchDownload,
   getDownloads,
 };
