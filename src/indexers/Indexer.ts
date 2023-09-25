@@ -34,7 +34,7 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
     return this.taskQueue.running();
   }
 
-  protected constructor(algoliaStore: AlgoliaStore, mainIndex: SearchIndex) {
+  constructor(algoliaStore: AlgoliaStore, mainIndex: SearchIndex) {
     this.mainIndex = mainIndex;
     this.algoliaStore = algoliaStore;
 
@@ -149,14 +149,20 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
   }
 
   async stop(): Promise<void> {
+  async stop(force: boolean = false): Promise<void> {
     this.isRunning = false;
 
+    if (force) {
+      this.recordQueue.remove(() => true);
+      this.taskQueue.remove(() => true);
+    }
+
     if (!this.recordQueue.idle()) {
-      await this.recordQueue.empty();
+      await this.recordQueue.drain();
     }
 
     if (!this.taskQueue.idle()) {
-      await this.taskQueue.empty();
+      await this.taskQueue.drain();
     }
   }
 

@@ -44,11 +44,10 @@ export class Bootstrap extends EventEmitter {
 
     if (this.prefetcher) {
       this.prefetcher.stop();
+      await this.oneTimeIndexer!.stop();
+      await this.periodicDataIndexer!.stop();
+      await this.mainBootstrapIndexer!.stop();
     }
-
-    await this.oneTimeIndexer!.stop();
-    await this.periodicDataIndexer!.stop();
-    await this.mainBootstrapIndexer!.stop();
 
     log.info('Stopped Bootstrap gracefully');
   }
@@ -63,7 +62,6 @@ export class Bootstrap extends EventEmitter {
    *  - you lagged too much behind.
    *
    * Watch mode should/can be reliably left running for weeks/months as CouchDB is made for that.
-   * BUT for the moment it's mandatory to relaunch it because it's the only way to update: typescript, downloads stats.
    */
   async run(): Promise<void> {
     log.info('-----');
@@ -99,14 +97,12 @@ export class Bootstrap extends EventEmitter {
 
     this.oneTimeIndexer = new OneTimeBackgroundIndexer(
       this.algoliaStore,
-      this.algoliaStore.bootstrapIndex,
-      this.algoliaStore.oneTimeDataIndex
+      this.algoliaStore.bootstrapIndex
     );
 
     this.periodicDataIndexer = new PeriodicBackgroundIndexer(
       this.algoliaStore,
       this.algoliaStore.bootstrapIndex,
-      this.algoliaStore.periodicDataIndex,
       this.algoliaStore.bootstrapNotFoundIndex
     );
 
@@ -145,7 +141,7 @@ export class Bootstrap extends EventEmitter {
   async isDone(): Promise<boolean> {
     const state = await this.stateManager.check();
 
-    if (state.seq && state.seq > 0 && state.bootstrapDone === true) {
+    if (state.seq && state.seq > 0 && state.bootstrapDone) {
       await putDefaultSettings(this.algoliaStore.mainIndex, config);
       log.info('⛷   Bootstrap: already done, skipping');
 
@@ -211,8 +207,8 @@ export class Bootstrap extends EventEmitter {
     const queueLength = await this.mainBootstrapIndexer!.fetchQueueLength();
     const offset = this.prefetcher!.offset;
 
-    datadog.gauge('sequence.total', totalDocs);
-    datadog.gauge('sequence.current', offset + nbDocs);
+    datadog.gauge('bootstrap.total', totalDocs);
+    datadog.gauge('bootstrap.current', offset + nbDocs);
 
     log.info(
       chalk.dim.italic

@@ -40,7 +40,7 @@ export class MainWatchIndexer extends MainIndexer<TaskType> {
       datadog.increment('packages');
 
       if (change.deleted) {
-        await this.mainIndex.deleteObject(change.id);
+        await this.algoliaStore.mainIndex.deleteObject(change.id).wait();
       } else {
         if (change.changes.length <= 0) {
           log.error('Document without change');

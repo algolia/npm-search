@@ -8,7 +8,7 @@ import { log } from '../utils/log';
 import * as sentry from '../utils/sentry';
 import { offsetToTimestamp } from '../utils/time';
 
-import { BackgroundIndexer } from './BackgroundIndexer';
+import { Indexer } from './Indexer';
 
 export type OneTimeDataObject = {
   objectID: string;
@@ -16,7 +16,7 @@ export type OneTimeDataObject = {
   changelogFilename: string | null;
 };
 
-export class OneTimeBackgroundIndexer extends BackgroundIndexer<FinalPkg> {
+export class OneTimeBackgroundIndexer extends Indexer<FinalPkg> {
   protected readonly facetField: string = '_oneTimeDataToUpdateAt';
 
   async fetchFacets(): Promise<string[]> {
@@ -60,6 +60,10 @@ export class OneTimeBackgroundIndexer extends BackgroundIndexer<FinalPkg> {
     await this.queueTask(pkg);
   }
 
+  override async stop(): Promise<void> {
+    return super.stop(true);
+  }
+
   async taskExecutor(pkg: FinalPkg): Promise<void> {
     try {
       const { metadata } = await getFileListMetadata(pkg);
@@ -74,7 +78,7 @@ export class OneTimeBackgroundIndexer extends BackgroundIndexer<FinalPkg> {
       };
 
       await Promise.all([
-        this.dataIndex.saveObject(data),
+        this.algoliaStore.oneTimeDataIndex.saveObject(data),
         this.patchObject(
           pkg,
           {

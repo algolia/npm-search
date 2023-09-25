@@ -68,14 +68,12 @@ export class Watch {
 
     this.oneTimeIndexer = new OneTimeBackgroundIndexer(
       this.algoliaStore,
-      this.algoliaStore.mainIndex,
-      this.algoliaStore.oneTimeDataIndex
+      this.algoliaStore.mainIndex
     );
 
     this.periodicDataIndexer = new PeriodicBackgroundIndexer(
       this.algoliaStore,
       this.algoliaStore.mainIndex,
-      this.algoliaStore.periodicDataIndex,
       this.algoliaStore.mainNotFoundIndex
     );
 

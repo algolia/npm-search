@@ -14,7 +14,7 @@ import { log } from '../utils/log';
 import * as sentry from '../utils/sentry';
 import { offsetToTimestamp, round } from '../utils/time';
 
-import { BackgroundIndexer } from './BackgroundIndexer';
+import { Indexer } from './Indexer';
 
 export type PeriodicDataObject = DownloadsData & {
   objectID: string;
@@ -23,10 +23,7 @@ export type PeriodicDataObject = DownloadsData & {
 
 type Task = { pkg: FinalPkg[] };
 
-export class PeriodicBackgroundIndexer extends BackgroundIndexer<
-  FinalPkg,
-  Task
-> {
+export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
   protected readonly facetField: string = '_periodicDataUpdatedAt';
   private unscopedPackages: FinalPkg[];
   private notFoundIndex: SearchIndex;
@@ -34,10 +31,9 @@ export class PeriodicBackgroundIndexer extends BackgroundIndexer<
   constructor(
     algoliaStore: AlgoliaStore,
     mainIndex: SearchIndex,
-    dataIndex: SearchIndex,
     notFoundIndex: SearchIndex
   ) {
-    super(algoliaStore, mainIndex, dataIndex);
+    super(algoliaStore, mainIndex);
 
     this.notFoundIndex = notFoundIndex;
     this.unscopedPackages = [];
@@ -79,6 +75,10 @@ export class PeriodicBackgroundIndexer extends BackgroundIndexer<
         pkg: this.unscopedPackages.splice(0, packagesPerBatch),
       });
     }
+  }
+
+  override async stop(): Promise<void> {
+    return super.stop(true);
   }
 
   async taskExecutor(task: Task): Promise<void> {
@@ -137,7 +137,7 @@ export class PeriodicBackgroundIndexer extends BackgroundIndexer<
         };
 
         await Promise.all([
-          this.dataIndex.saveObject(data),
+          this.algoliaStore.periodicDataIndex.saveObject(data),
           this.mainIndex.partialUpdateObject(
             {
               ...pkgPatch,
