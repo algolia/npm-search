@@ -87,7 +87,7 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
 
   if (cleaned.repository) {
     let tmp = cleaned.repository;
-    if (Array.isArray(tmp)) {
+    if (Array.isArray(tmp) && tmp.length) {
       tmp = tmp[0] as PackageRepo;
     }
 
