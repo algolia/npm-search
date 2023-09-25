@@ -4912,13 +4912,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hosted-git-info@npm:2.7.1":
-  version: 2.7.1
-  resolution: "hosted-git-info@npm:2.7.1"
-  checksum: 9213d70131437c942e1424a5ff06cae4698ec662bb89cc06a2837d57fd5389a8d3fe586b141986c2a1d2b2026a1dcd4a2c33a2db42a18f7cbd1327ed265c493c
-  languageName: node
-  linkType: hard
-
 "hosted-git-info@npm:^2.1.4":
   version: 2.8.9
   resolution: "hosted-git-info@npm:2.8.9"
@@ -4941,6 +4934,15 @@ __metadata:
   dependencies:
     lru-cache: ^7.5.1
   checksum: 515e69463d123635f70d70656c5ec648951ffc1987f92a87cb4a038e1794bfed833cf87569b358b137ebbc75d992c073ed0408d420c9e5b717c2b4f0a291490c
+  languageName: node
+  linkType: hard
+
+"hosted-git-info@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "hosted-git-info@npm:7.0.1"
+  dependencies:
+    lru-cache: ^10.0.1
+  checksum: be5280f0a20d6153b47e1ab578e09f5ae8ad734301b3ed7e547dc88a6814d7347a4888db1b4f9635cc738e3c0ef1fbff02272aba7d07c75d4c5a50ff8d618db6
   languageName: node
   linkType: hard
 
@@ -6605,6 +6607,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lru-cache@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "lru-cache@npm:10.0.1"
+  checksum: 06f8d0e1ceabd76bb6f644a26dbb0b4c471b79c7b514c13c6856113879b3bf369eb7b497dad4ff2b7e2636db202412394865b33c332100876d838ad1372f0181
+  languageName: node
+  linkType: hard
+
 "lru-cache@npm:^4.0.0, lru-cache@npm:^4.0.1":
   version: 4.1.5
   resolution: "lru-cache@npm:4.1.5"
@@ -7419,7 +7428,7 @@ __metadata:
     eslint-plugin-react: 7.30.1
     got: 11.8.5
     gravatar-url: 3.1.0
-    hosted-git-info: 2.7.1
+    hosted-git-info: ^7.0.1
     husky: 8.0.1
     jest: 28.1.3
     jest-junit: 14.0.0
