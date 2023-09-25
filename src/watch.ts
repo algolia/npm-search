@@ -141,12 +141,16 @@ export class Watch {
           }
         };
 
+        // We need to move one at a time here, so pause until the change is safely stored.
         npm.db.changesReader.pause();
-        storeChange().then(() => npm.db.changesReader.resume());
-        this.logProgress(change.seq).catch(() => {});
 
-        this.stateManager.save({ seq: change.seq }).catch((err) => {
-          report(new Error('Error storing watch progress'), { err });
+        storeChange().then(() => {
+          npm.db.changesReader.resume();
+          this.logProgress(change.seq).catch(() => {});
+
+          this.stateManager.save({ seq: change.seq }).catch((err) => {
+            report(new Error('Error storing watch progress'), { err });
+          });
         });
       })
       .on('error', (err) => {
