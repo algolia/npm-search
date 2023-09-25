@@ -115,8 +115,11 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
                 movedBy: 'periodicIndexer',
               });
 
-              await this.dataIndex.deleteObject(pkg.name);
-              await this.mainIndex.deleteObject(pkg.name);
+              await this.algoliaStore.periodicDataIndex
+                .deleteObject(pkg.name)
+                .wait();
+
+              await this.mainIndex.deleteObject(pkg.name).wait();
               return;
             }
           }

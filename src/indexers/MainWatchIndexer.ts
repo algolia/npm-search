@@ -25,7 +25,7 @@ export class MainWatchIndexer extends MainIndexer<TaskType> {
   }
 
   async delete(objectID): Promise<void> {
-    await this.mainIndex.deleteObject(objectID);
+    await this.mainIndex.deleteObject(objectID).wait();
   }
 
   async recordExecutor(record: TaskType): Promise<void> {
@@ -51,14 +51,14 @@ export class MainWatchIndexer extends MainIndexer<TaskType> {
 
         if (isFailure(res)) {
           log.error('Got an error', res.error);
-          this.delete(objectID).catch(() => {});
+          await this.delete(objectID).catch(() => {});
           return;
         }
 
         const formatted = formatPkg(res);
 
         if (!formatted) {
-          this.delete(objectID).catch(() => {});
+          await this.delete(objectID).catch(() => {});
           return;
         }
 

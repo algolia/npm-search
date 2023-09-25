@@ -20,7 +20,7 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
   }
 
   async delete(objectID): Promise<void> {
-    await this.mainIndex.deleteObject(objectID);
+    await this.mainIndex.deleteObject(objectID).wait();
   }
 
   override async isFinished(): Promise<boolean> {
