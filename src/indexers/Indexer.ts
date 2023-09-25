@@ -148,7 +148,6 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
     return this.runInternal();
   }
 
-  async stop(): Promise<void> {
   async stop(force: boolean = false): Promise<void> {
     this.isRunning = false;
 

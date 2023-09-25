@@ -104,6 +104,11 @@ export async function prepare(config: Config): Promise<AlgoliaStore> {
 
   // Ensure indices exists by calling an empty setSettings()
   await mainIndex.setSettings({}).wait();
+  await mainQueueIndex
+    .setSettings({
+      attributesForFaceting: ['retries'],
+    })
+    .wait();
   await bootstrapIndex.setSettings({}).wait();
   await bootstrapQueueIndex
     .setSettings({
