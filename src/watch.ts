@@ -128,6 +128,7 @@ export class Watch {
         const storeChange = async (retry = 0): Promise<void> => {
           try {
             await this.algoliaStore.mainQueueIndex.saveObject({
+              seq: change.seq,
               objectID: change.id,
               retries: 0,
               change,
