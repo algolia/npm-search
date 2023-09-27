@@ -4,7 +4,6 @@ import type { FinalPkg } from '../@types/pkg';
 import { getChangelogBackground } from '../changelog';
 import { getFileListMetadata } from '../saveDocs';
 import { datadog } from '../utils/datadog';
-import { log } from '../utils/log';
 import * as sentry from '../utils/sentry';
 import { offsetToTimestamp } from '../utils/time';
 
@@ -19,25 +18,12 @@ export type OneTimeDataObject = {
 export class OneTimeBackgroundIndexer extends Indexer<FinalPkg> {
   protected readonly facetField: string = '_oneTimeDataToUpdateAt';
 
-  async fetchFacets(): Promise<string[]> {
+  override get facetFilter(): string {
     const expired = offsetToTimestamp(0);
 
     // 0 === already processed
     // value in the future === errored and scheduled to retry later
-    const result = await this.mainIndex.search('', {
-      filters: `NOT ${this.facetField}:0 AND ${this.facetField} <= ${expired}`,
-      facets: [this.facetField],
-      hitsPerPage: 0,
-      maxValuesPerFacet: 1000,
-      sortFacetValuesBy: 'alpha',
-    });
-
-    if (!result.facets) {
-      log.error('Wrong results from Algolia');
-      return [];
-    }
-
-    return Object.keys(result.facets[this.facetField] || {}).sort();
+    return `NOT ${this.facetField}:0 AND ${this.facetField} <= ${expired}`;
   }
 
   async patchObject(

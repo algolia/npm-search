@@ -10,7 +10,6 @@ import type { DownloadsData } from '../npm';
 import { computeDownload, getDocFromRegistry, getDownloads } from '../npm';
 import { getPopularAlternativeNames } from '../saveDocs';
 import { datadog } from '../utils/datadog';
-import { log } from '../utils/log';
 import * as sentry from '../utils/sentry';
 import { offsetToTimestamp, round } from '../utils/time';
 
@@ -28,6 +27,11 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
   private unscopedPackages: FinalPkg[];
   private notFoundIndex: SearchIndex;
 
+  override get facetFilter(): string {
+    const expired = offsetToTimestamp(-ms('30 days'));
+    return `${this.facetField} < ${expired}`;
+  }
+
   constructor(
     algoliaStore: AlgoliaStore,
     mainIndex: SearchIndex,
@@ -37,25 +41,6 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
 
     this.notFoundIndex = notFoundIndex;
     this.unscopedPackages = [];
-  }
-
-  async fetchFacets(): Promise<string[]> {
-    const expired = offsetToTimestamp(-ms('30 days'));
-
-    const result = await this.mainIndex.search('', {
-      filters: `${this.facetField} < ${expired}`,
-      facets: [this.facetField],
-      hitsPerPage: 0,
-      maxValuesPerFacet: 1000,
-      sortFacetValuesBy: 'alpha',
-    });
-
-    if (!result.facets) {
-      log.error('Wrong results from Algolia');
-      return [];
-    }
-
-    return Object.keys(result.facets[this.facetField] || {}).sort();
   }
 
   async recordExecutor(pkg: FinalPkg): Promise<void> {

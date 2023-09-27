@@ -1,11 +1,11 @@
 import algoliasearch from 'algoliasearch';
 
 import { formatPkg } from '../formatPkg';
+import { hits } from '../jsDelivr';
 import { cacheTotalDownloads } from '../npm';
 import { saveDoc } from '../saveDocs';
 
 import preact from './preact-simplified.json';
-import { hits } from '../jsDelivr';
 
 jest.setTimeout(15000);
 

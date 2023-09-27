@@ -26,6 +26,10 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
 
   protected abstract readonly facetField: string;
 
+  get facetFilter(): string | undefined {
+    return undefined;
+  }
+
   get queued(): number {
     return this.taskQueue.length();
   }
@@ -52,6 +56,23 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
       this.taskExecutor.bind(this),
       this.taskQueueConcurrency
     );
+  }
+
+  async fetchFacets(): Promise<string[]> {
+    const result = await this.mainIndex.search('', {
+      filters: this.facetFilter,
+      facets: [this.facetField],
+      hitsPerPage: 0,
+      maxValuesPerFacet: 1000,
+      sortFacetValuesBy: 'alpha',
+    });
+
+    if (!result.facets) {
+      log.error('Wrong results from Algolia');
+      return [];
+    }
+
+    return Object.keys(result.facets[this.facetField] || {}).sort();
   }
 
   async *fetchRecords(): AsyncGenerator<TMainRecord[]> {
@@ -164,8 +185,6 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
       await this.taskQueue.drain();
     }
   }
-
-  abstract fetchFacets(): Promise<string[]>;
 
   abstract recordExecutor(record: TMainRecord): Promise<void>;
 
