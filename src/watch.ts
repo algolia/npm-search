@@ -62,8 +62,13 @@ export class Watch {
       stage: 'watch',
     });
 
-    setInterval(async () => {
-      this.totalSequence = Number((await npm.db.info()).update_seq);
+    setInterval(() => {
+      npm.db
+        .info()
+        .then((info) => {
+          this.totalSequence = Number(info.update_seq);
+        })
+        .catch(() => {});
     }, 5000).unref();
 
     this.oneTimeIndexer = new OneTimeBackgroundIndexer(
