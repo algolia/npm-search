@@ -1,10 +1,9 @@
 import type { SearchIndex } from 'algoliasearch';
-import type { QueueObject } from 'async';
-import { queue } from 'async';
 import chalk from 'chalk';
 import type { DebouncedFunc } from 'lodash';
 import _ from 'lodash';
 import ms from 'ms';
+import PQueue from 'p-queue';
 
 import type { AlgoliaStore } from '../algolia';
 import { log } from '../utils/log';
@@ -15,10 +14,10 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
   protected mainIndex: SearchIndex;
   protected algoliaStore: AlgoliaStore;
 
-  private recordQueue: QueueObject<TMainRecord>;
+  private recordQueue: PQueue;
   private recordsQueueConcurrency: number = 60;
 
-  private taskQueue: QueueObject<TTask>;
+  private taskQueue: PQueue;
   private taskQueueConcurrency: number = 30;
 
   private isRunning: boolean = false;
@@ -31,11 +30,11 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
   }
 
   get queued(): number {
-    return this.taskQueue.length();
+    return this.taskQueue.size;
   }
 
   get running(): number {
-    return this.taskQueue.running();
+    return this.taskQueue.pending;
   }
 
   constructor(algoliaStore: AlgoliaStore, mainIndex: SearchIndex) {
@@ -43,19 +42,17 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
     this.algoliaStore = algoliaStore;
 
     this.throttledFetchFacets = _.throttle(
-      this.fetchFacets.bind(this),
+      () => this.fetchFacets().catch(() => []),
       ms('1 minute')
     );
 
-    this.recordQueue = queue<TMainRecord>(
-      this.recordExecutor.bind(this),
-      this.recordsQueueConcurrency
-    );
+    this.recordQueue = new PQueue({
+      concurrency: this.recordsQueueConcurrency,
+    });
 
-    this.taskQueue = queue<TTask>(
-      this.taskExecutor.bind(this),
-      this.taskQueueConcurrency
-    );
+    this.taskQueue = new PQueue({
+      concurrency: this.taskQueueConcurrency,
+    });
   }
 
   async fetchFacets(): Promise<string[]> {
@@ -110,15 +107,20 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
   }
 
   async isFinished(): Promise<boolean> {
-    return this.recordQueue.idle() && this.taskQueue.idle();
+    return (
+      !this.recordQueue.size &&
+      !this.recordQueue.pending &&
+      !this.taskQueue.size &&
+      !this.taskQueue.pending
+    );
   }
 
   async queueTask(task: TTask): Promise<void> {
-    while (this.taskQueue.length() > this.taskQueueConcurrency) {
+    while (this.taskQueue.size > this.taskQueueConcurrency) {
       await wait(ms('1 second'));
     }
 
-    this.taskQueue.push(task);
+    this.taskQueue.add(() => this.taskExecutor(task));
   }
 
   run(): void {
@@ -140,17 +142,19 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
           chalk.dim.italic
             .white`[${this.constructor.name}] %d new, %d in record queue, %d in task queue`,
           records.length,
-          this.recordQueue.length(),
-          this.taskQueue.length()
+          this.recordQueue.size,
+          this.taskQueue.size
         );
 
         if (!records.length) {
           continue;
         }
 
-        this.recordQueue.push(records);
+        for (const record of records) {
+          this.recordQueue.add(() => this.recordExecutor(record));
+        }
 
-        while (this.recordQueue.length() > this.recordsQueueConcurrency) {
+        while (this.recordQueue.size > this.recordsQueueConcurrency) {
           await wait(ms('1 second'));
         }
       }
@@ -162,7 +166,7 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
     await wait(ms('5 seconds'));
 
     // Finish processing all records before the next batch starts.
-    while (!this.recordQueue.idle() || !this.taskQueue.idle()) {
+    while (!(await this.isFinished())) {
       await wait(ms('1 second'));
     }
 
@@ -173,16 +177,16 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
     this.isRunning = false;
 
     if (force) {
-      this.recordQueue.remove(() => true);
-      this.taskQueue.remove(() => true);
+      this.recordQueue.clear();
+      this.taskQueue.clear();
     }
 
-    if (!this.recordQueue.idle()) {
-      await this.recordQueue.drain();
+    if (this.recordQueue.size || this.recordQueue.pending) {
+      await this.recordQueue.onIdle();
     }
 
-    if (!this.taskQueue.idle()) {
-      await this.taskQueue.drain();
+    if (this.recordQueue.size || this.taskQueue.pending) {
+      await this.taskQueue.onIdle();
     }
   }
 

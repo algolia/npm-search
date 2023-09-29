@@ -4,7 +4,6 @@ import 'elastic-apm-node/start';
 
 import type http from 'http';
 
-import { nextTick } from 'async';
 import ms from 'ms';
 
 import { version } from '../package.json';
@@ -141,7 +140,7 @@ async function close(): Promise<void> {
   await sentry.drain();
   await main.stop();
 
-  nextTick(() => {
+  process.nextTick(() => {
     process.exit(0);
   });
 }
