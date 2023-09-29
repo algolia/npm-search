@@ -207,8 +207,8 @@ export class Bootstrap extends EventEmitter {
     const queueLength = await this.mainBootstrapIndexer!.fetchQueueLength();
     const offset = this.prefetcher!.offset;
 
-    datadog.gauge('bootstrap.total', totalDocs);
-    datadog.gauge('bootstrap.current', offset + nbDocs);
+    datadog.gauge('sequence.total', totalDocs);
+    datadog.gauge('sequence.current', offset + nbDocs);
 
     log.info(
       chalk.dim.italic
