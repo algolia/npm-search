@@ -89,7 +89,9 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
           method: 'GET',
           path: `/1/indexes/${this.mainIndex.indexName}/browse`,
           data: {
-            facetFilters: `${this.facetField}:${facet}`,
+            filters: `${this.facetFilter ? `${this.facetFilter} AND ` : ''}${
+              this.facetField
+            }:${facet}`,
             ...(cursor ? { cursor } : {}),
           },
           cacheable: false,
