@@ -172,7 +172,12 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
     await wait(ms('5 seconds'));
 
     // Finish processing all records before the next batch starts.
-    while (!(await this.isFinished())) {
+    while (
+      this.recordQueue.size ||
+      this.recordQueue.pending ||
+      this.taskQueue.size ||
+      this.taskQueue.pending
+    ) {
       await wait(ms('1 second'));
     }
 
