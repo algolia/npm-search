@@ -108,6 +108,8 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
     }
   }
 
+  async flush(): Promise<void> {}
+
   async isFinished(): Promise<boolean> {
     return (
       !this.recordQueue.size &&
@@ -163,6 +165,8 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
     } catch (err) {
       sentry.report(new Error(`Error in ${this.constructor.name}`), { err });
     }
+
+    await this.flush();
 
     // Minimum wait between loops.
     await wait(ms('5 seconds'));

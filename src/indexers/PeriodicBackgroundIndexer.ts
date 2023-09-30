@@ -24,6 +24,7 @@ type Task = { pkg: FinalPkg[] };
 
 export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
   protected readonly facetField: string = '_periodicDataUpdatedAt';
+  private packagesPerBatch: number = 127;
   private unscopedPackages: FinalPkg[];
   private notFoundIndex: SearchIndex;
 
@@ -43,9 +44,17 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
     this.unscopedPackages = [];
   }
 
-  async recordExecutor(pkg: FinalPkg): Promise<void> {
-    const packagesPerBatch = 127;
+  override async flush(): Promise<void> {
+    while (this.unscopedPackages.length) {
+      await this.queueTask({
+        pkg: this.unscopedPackages.splice(0, this.packagesPerBatch),
+      });
+    }
 
+    return super.flush();
+  }
+
+  async recordExecutor(pkg: FinalPkg): Promise<void> {
     if (pkg.objectID.startsWith('@')) {
       await this.queueTask({ pkg: [pkg] });
       return;
@@ -55,9 +64,9 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
       this.unscopedPackages.push(pkg);
     }
 
-    if (this.unscopedPackages.length >= packagesPerBatch) {
+    if (this.unscopedPackages.length >= this.packagesPerBatch) {
       await this.queueTask({
-        pkg: this.unscopedPackages.splice(0, packagesPerBatch),
+        pkg: this.unscopedPackages.splice(0, this.packagesPerBatch),
       });
     }
   }
