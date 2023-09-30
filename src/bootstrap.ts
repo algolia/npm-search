@@ -209,10 +209,11 @@ export class Bootstrap extends EventEmitter {
 
     datadog.gauge('sequence.total', totalDocs);
     datadog.gauge('sequence.current', offset + nbDocs);
+    datadog.gauge('job.idleCount', queueLength);
 
     log.info(
       chalk.dim.italic
-        .white`[progress] %d/%d docs queued (%s%) (%s in queue) (%s processing; %s buffer)`,
+        .white`[progress] %d/%d docs queued (%s%) (~%s in queue) (%s processing; %s buffer)`,
       offset + nbDocs,
       totalDocs,
       ((Math.max(offset + nbDocs, 1) / totalDocs) * 100).toFixed(2),
@@ -220,7 +221,5 @@ export class Bootstrap extends EventEmitter {
       this.mainBootstrapIndexer!.running,
       this.mainBootstrapIndexer!.queued
     );
-
-    datadog.gauge('job.idleCount', queueLength);
   }
 }

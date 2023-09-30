@@ -175,10 +175,11 @@ export class Watch {
 
     datadog.gauge('sequence.total', this.totalSequence);
     datadog.gauge('sequence.current', seq);
+    datadog.gauge('job.idleCount', queueLength);
 
     log.info(
       chalk.dim.italic
-        .white`[progress] Synced %d/%d changes (%s%) (%s remaining) (%s in queue)`,
+        .white`[progress] Synced %d/%d changes (%s%) (%s remaining) (~%s in queue)`,
       seq,
       this.totalSequence,
       ((Math.max(seq, 1) / this.totalSequence) * 100).toFixed(2),

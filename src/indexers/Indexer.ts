@@ -140,6 +140,10 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
           return;
         }
 
+        if (!records.length) {
+          continue;
+        }
+
         log.info(
           chalk.dim.italic
             .white`[${this.constructor.name}] %d new, %d in record queue, %d in task queue`,
@@ -147,10 +151,6 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
           this.recordQueue.size,
           this.taskQueue.size
         );
-
-        if (!records.length) {
-          continue;
-        }
 
         for (const record of records) {
           this.recordQueue.add(() => this.recordExecutor(record));
