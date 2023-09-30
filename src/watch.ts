@@ -1,5 +1,5 @@
-import type { EventEmitter } from 'bunyan';
 import chalk from 'chalk';
+import type { DatabaseChangesResultItem } from 'nano';
 
 import type { StateManager } from './StateManager';
 import type { AlgoliaStore } from './algolia';
@@ -8,6 +8,7 @@ import { MainWatchIndexer } from './indexers/MainWatchIndexer';
 import { OneTimeBackgroundIndexer } from './indexers/OneTimeBackgroundIndexer';
 import { PeriodicBackgroundIndexer } from './indexers/PeriodicBackgroundIndexer';
 import * as npm from './npm';
+import { ChangesReader } from './npm/ChangesReader';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
@@ -20,7 +21,7 @@ export class Watch {
   // Cached npmInfo.seq
   totalSequence: number = 0;
 
-  changesReader: EventEmitter | undefined;
+  changesReader: ChangesReader | undefined;
   oneTimeIndexer: OneTimeBackgroundIndexer | undefined;
   periodicDataIndexer: PeriodicBackgroundIndexer | undefined;
   mainWatchIndexer: MainWatchIndexer | undefined;
@@ -95,7 +96,7 @@ export class Watch {
     log.info('Stopping Watch...');
 
     try {
-      npm.db.changesReader.stop();
+      this.changesReader?.stop?.();
       await this.oneTimeIndexer?.stop?.();
       await this.periodicDataIndexer?.stop?.();
       await this.mainWatchIndexer?.stop?.();
@@ -103,39 +104,44 @@ export class Watch {
       sentry.report(err);
     }
 
-    this.changesReader?.removeAllListeners?.();
-
     log.info('Stopped Watch gracefully');
   }
 
   async launchChangeReader(): Promise<void> {
-    const { seq } = await this.stateManager.get();
+    const { seq: since } = await this.stateManager.get();
 
-    log.info(`listening from ${seq}...`);
+    log.info(`listening from ${since}...`);
 
-    const reader = npm.db.changesReader.start({
-      includeDocs: false,
-      batchSize: 1,
-      since: String(seq),
-    });
+    const reader = new ChangesReader({ since: String(since) });
 
     reader
-      .on('change', (change) => {
-        if (!change.id) {
+      .on('batch', (batch: DatabaseChangesResultItem[]) => {
+        const changes = Array.from(
+          batch
+            .filter((change) => change.id)
+            .reduce((acc, change) => {
+              return acc.set(change.id, change);
+            }, new Map())
+            .values()
+        );
+
+        if (!changes.length) {
           return;
         }
 
-        const storeChange = async (retry = 0): Promise<void> => {
+        const storeChanges = async (retry = 0): Promise<void> => {
           try {
-            await this.algoliaStore.mainQueueIndex.saveObject({
-              seq: change.seq,
-              objectID: change.id,
-              retries: 0,
-              change,
-            });
+            await this.algoliaStore.mainQueueIndex.saveObjects(
+              changes.map((change) => ({
+                seq: change.seq,
+                objectID: change.id,
+                retries: 0,
+                change,
+              }))
+            );
           } catch (err) {
             const newRetry = retry + 1;
-            log.err('Error adding a change to the queue.', { err });
+            log.error('Error adding a change to the queue.', { err });
 
             await backoff(
               newRetry,
@@ -143,25 +149,28 @@ export class Watch {
               config.retryBackoffMax
             );
 
-            return storeChange(newRetry);
+            return storeChanges(newRetry);
           }
         };
 
         // We need to move one at a time here, so pause until the change is safely stored.
-        npm.db.changesReader.pause();
+        reader.pause();
 
-        storeChange().then(() => {
-          npm.db.changesReader.resume();
-          this.logProgress(change.seq).catch(() => {});
+        storeChanges().then(() => {
+          const seq = changes.at(-1).seq;
 
-          this.stateManager.save({ seq: change.seq }).catch((err) => {
+          reader.resume();
+          this.logProgress(seq).catch(() => {});
+
+          this.stateManager.save({ seq }).catch((err) => {
             report(new Error('Error storing watch progress'), { err });
           });
         });
       })
       .on('error', (err) => {
         sentry.report(err);
-      });
+      })
+      .run();
 
     this.changesReader = reader;
   }
