@@ -70,6 +70,8 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
     try {
       const downloads = await getDownloads(task.pkg);
       const oneWeekAgo = offsetToTimestamp(-ms('1 week'));
+      const dataIndexObjects: PeriodicDataObject[] = [];
+      const patches: Array<Partial<FinalPkg>> = [];
 
       await Bluebird.map(
         task.pkg,
@@ -80,6 +82,8 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
             totalNpmDownloads: downloads[pkg.name]?.totalNpmDownloads,
             packageNpmDownloads: downloads[pkg.name]?.packageNpmDownloads,
           };
+
+          dataIndexObjects.push(data);
 
           // The npm replicate API often incorrectly reports packages there were
           // actually deleted from the registry. If the downloads API has no
@@ -102,9 +106,9 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
                   movedBy: 'periodicIndexer',
                 });
 
-                await this.algoliaStore.periodicDataIndex
-                  .deleteObject(pkg.name)
-                  .wait();
+                await this.algoliaStore.periodicDataIndex.deleteObject(
+                  pkg.name
+                );
 
                 await this.mainIndex.deleteObject(pkg.name).wait();
                 return;
@@ -126,48 +130,45 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
             popular: npmDownloads?.popular || jsDelivrHits.popular,
           };
 
-          await Promise.all([
-            this.algoliaStore.periodicDataIndex.saveObject(data),
-            this.mainIndex.partialUpdateObject(
-              {
+          patches.push({
+            ...pkgPatch,
+            _searchInternal: {
+              ...pkg._searchInternal,
+              popularAlternativeNames: getPopularAlternativeNames({
+                ...pkg,
                 ...pkgPatch,
-                _searchInternal: {
-                  ...pkg._searchInternal,
-                  popularAlternativeNames: getPopularAlternativeNames({
-                    ...pkg,
-                    ...pkgPatch,
-                  }),
-                },
-                [this.facetField]: round(new Date(data.updatedAt)).valueOf(),
-              },
-              { createIfNotExists: false }
-            ),
-          ]);
+              }),
+            },
+            [this.facetField]: round(new Date(data.updatedAt)).valueOf(),
+          });
         },
         { concurrency: 20 }
       );
+
+      await Promise.all([
+        this.algoliaStore.periodicDataIndex.saveObjects(dataIndexObjects),
+        this.mainIndex.partialUpdateObjects(patches).wait(),
+      ]);
 
       datadog.increment('periodicDataIndex.success', task.pkg.length);
     } catch (err) {
       datadog.increment('periodicDataIndex.failure', task.pkg.length);
       sentry.report(new Error(`Error in ${this.constructor.name}`), { err });
 
-      await Bluebird.map(
-        task.pkg,
-        (pkg) => {
-          return this.mainIndex.partialUpdateObject(
-            {
+      await this.mainIndex
+        .partialUpdateObjects(
+          task.pkg.map((pkg) => {
+            return {
               objectID: pkg.objectID,
               [this.facetField]: offsetToTimestamp(
                 ms('1 day'),
                 new Date(pkg[this.facetField])
               ),
-            },
-            { createIfNotExists: false }
-          );
-        },
-        { concurrency: 20 }
-      ).catch(() => {});
+            };
+          })
+        )
+        .wait()
+        .catch(() => {});
     }
   }
 }

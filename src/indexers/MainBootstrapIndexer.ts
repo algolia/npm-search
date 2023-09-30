@@ -19,16 +19,19 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
     super(algoliaStore, algoliaStore.bootstrapQueueIndex);
   }
 
-  async delete(objectID): Promise<void> {
-    await this.mainIndex.deleteObject(objectID).wait();
-  }
-
   override async isFinished(): Promise<boolean> {
     if (!(await super.isFinished())) {
       return false;
     }
 
     return (await this.fetchQueueLength()) === 0;
+  }
+
+  async markAsProcessed(objectID): Promise<void> {
+    await this.mainIndex
+      .deleteObject(objectID)
+      .wait()
+      .catch(() => {});
   }
 
   async recordExecutor(record: TaskType): Promise<void> {
@@ -46,7 +49,7 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
 
       if (isFailure(res)) {
         log.error('Got an error', res.error);
-        this.delete(objectID).catch(() => {});
+        await this.markAsProcessed(objectID);
         return;
       }
 
@@ -54,7 +57,7 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
 
       if (!formatted) {
         log.error('Empty formatted output', pkg);
-        this.delete(objectID).catch(() => {});
+        await this.markAsProcessed(objectID);
         return;
       }
 
@@ -65,8 +68,7 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
         periodicDataIndex: this.algoliaStore.periodicDataIndex,
       });
 
-      await this.delete(objectID);
-
+      await this.markAsProcessed(objectID);
       log.info(`Done:`, pkg.id, retries);
     } catch (err: any) {
       log.info(`Failed:`, pkg.id, retries, err.statusCode);
@@ -84,7 +86,7 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
           })
           .catch(() => {});
 
-        await this.delete(objectID).catch(() => {});
+        await this.markAsProcessed(objectID);
         return;
       }
 
@@ -100,6 +102,7 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
           objectID,
           retries: retries + 1,
         })
+        .wait()
         .catch(() => {});
     } finally {
       datadog.timing('loop', Date.now() - start);

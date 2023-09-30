@@ -31,15 +31,17 @@ export class OneTimeBackgroundIndexer extends Indexer<FinalPkg> {
     patch: Partial<FinalPkg>,
     facetValue: number
   ): Promise<void> {
-    await this.mainIndex.partialUpdateObject(
-      {
-        objectID: pkg.objectID,
-        ...patch,
-        [this.facetField]: facetValue,
-        _revision: { _operation: 'IncrementFrom', value: pkg._revision },
-      },
-      { createIfNotExists: false }
-    );
+    await this.mainIndex
+      .partialUpdateObject(
+        {
+          objectID: pkg.objectID,
+          ...patch,
+          [this.facetField]: facetValue,
+          _revision: { _operation: 'IncrementFrom', value: pkg._revision },
+        },
+        { createIfNotExists: false }
+      )
+      .wait();
   }
 
   async recordExecutor(pkg: FinalPkg): Promise<void> {

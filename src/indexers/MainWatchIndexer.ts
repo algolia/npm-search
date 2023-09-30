@@ -76,7 +76,7 @@ export class MainWatchIndexer extends MainIndexer<TaskType> {
       datadog.increment('packages');
 
       if (change.deleted) {
-        await this.algoliaStore.mainIndex.deleteObject(change.id).wait();
+        await this.algoliaStore.mainIndex.deleteObject(change.id);
       } else {
         if (change.changes.length <= 0) {
           log.error('Document without change');
@@ -142,6 +142,7 @@ export class MainWatchIndexer extends MainIndexer<TaskType> {
           retries: retries + 1,
           seq: { _operation: 'IncrementFrom', value: seq },
         })
+        .wait()
         .catch(() => {});
     } finally {
       datadog.timing('loop', Date.now() - start);

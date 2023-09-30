@@ -15,10 +15,10 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
   protected algoliaStore: AlgoliaStore;
 
   private recordQueue: PQueue;
-  private recordsQueueConcurrency: number = 60;
+  private recordsQueueConcurrency: number = 240;
 
   private taskQueue: PQueue;
-  private taskQueueConcurrency: number = 30;
+  private taskQueueConcurrency: number = 120;
 
   private isRunning: boolean = false;
   private readonly throttledFetchFacets: DebouncedFunc<() => Promise<string[]>>;
