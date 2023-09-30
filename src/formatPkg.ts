@@ -502,17 +502,21 @@ export function getRepositoryInfo(
   /**
    * Get information using hosted-git-info.
    */
-  const repositoryInfo = hostedGitInfo.fromUrl(url);
+  try {
+    const repositoryInfo = hostedGitInfo.fromUrl(url);
 
-  if (repositoryInfo) {
-    const { project, user, domain } = repositoryInfo;
-    return {
-      url,
-      project,
-      user,
-      host: domain,
-      path: path.replace(/^[./]+/, ''),
-    };
+    if (repositoryInfo) {
+      const { project, user, domain } = repositoryInfo;
+      return {
+        url,
+        project,
+        user,
+        host: domain,
+        path: path.replace(/^[./]+/, ''),
+      };
+    }
+  } catch {
+    // Ignore.
   }
 
   /**
