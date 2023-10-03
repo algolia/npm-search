@@ -140,7 +140,6 @@ export class MainWatchIndexer extends MainIndexer<TaskType> {
         .partialUpdateObject({
           objectID,
           retries: retries + 1,
-          seq: { _operation: 'IncrementFrom', value: seq },
         })
         .wait()
         .catch(() => {});
