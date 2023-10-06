@@ -1,4 +1,5 @@
 import { EventEmitter } from 'events';
+import { setTimeout } from 'node:timers/promises';
 
 import ms from 'ms';
 import type { DatabaseChangesResponse } from 'nano';
@@ -6,7 +7,7 @@ import type { DatabaseChangesResponse } from 'nano';
 import { config } from '../config';
 import { request } from '../utils/request';
 import * as sentry from '../utils/sentry';
-import { backoff, wait } from '../utils/wait';
+import { backoff } from '../utils/wait';
 
 type ChangesReaderOptions = {
   since: string;
@@ -80,7 +81,7 @@ export class ChangesReader extends EventEmitter {
       }
 
       while (this.running && this.paused) {
-        await wait(100);
+        await setTimeout(100);
       }
     }
   }

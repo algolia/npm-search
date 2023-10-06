@@ -1,3 +1,5 @@
+import { setTimeout } from 'node:timers/promises';
+
 import type { SearchIndex } from 'algoliasearch';
 import ms from 'ms';
 import type { DocumentListParams, DocumentResponseRow } from 'nano';
@@ -6,7 +8,6 @@ import type { StateManager } from '../StateManager';
 import { config } from '../config';
 import { log } from '../utils/log';
 import * as sentry from '../utils/sentry';
-import { wait } from '../utils/wait';
 
 import type { GetPackage } from './types';
 
@@ -60,12 +61,12 @@ export class Prefetcher {
 
   async runInternal(): Promise<void> {
     while (this.#running) {
-      await this.fetchOnePage();
-      await wait(ms('1 second'));
+      await this.queueOnePage();
+      await setTimeout(ms('1 second'));
     }
   }
 
-  private async fetchOnePage(): Promise<void> {
+  private async queueOnePage(): Promise<void> {
     const options: Partial<DocumentListParams> = {
       limit: this.#limit,
       include_docs: false,
@@ -111,7 +112,7 @@ export class Prefetcher {
 
       if (err.statusCode === 429) {
         log.info('[pf] waiting');
-        await wait(ms('2 minutes'));
+        await setTimeout(ms('2 minutes'));
       }
     }
   }

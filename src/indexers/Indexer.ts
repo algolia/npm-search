@@ -1,3 +1,5 @@
+import { setTimeout } from 'node:timers/promises';
+
 import type { SearchIndex } from 'algoliasearch';
 import chalk from 'chalk';
 import type { DebouncedFunc } from 'lodash';
@@ -8,7 +10,6 @@ import PQueue from 'p-queue';
 import type { AlgoliaStore } from '../algolia';
 import { log } from '../utils/log';
 import * as sentry from '../utils/sentry';
-import { wait } from '../utils/wait';
 
 export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
   protected mainIndex: SearchIndex;
@@ -121,7 +122,7 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
 
   async queueTask(task: TTask): Promise<void> {
     while (this.taskQueue.size > this.taskQueueConcurrency) {
-      await wait(ms('1 second'));
+      await setTimeout(ms('1 second'));
     }
 
     this.taskQueue.add(() => this.taskExecutor(task));
@@ -159,7 +160,7 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
         }
 
         while (this.recordQueue.size > this.recordsQueueConcurrency) {
-          await wait(ms('1 second'));
+          await setTimeout(ms('1 second'));
         }
       }
     } catch (err) {
@@ -169,7 +170,7 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
     await this.flush();
 
     // Minimum wait between loops.
-    await wait(ms('5 seconds'));
+    await setTimeout(ms('5 seconds'));
 
     // Finish processing all records before the next batch starts.
     while (
@@ -178,7 +179,7 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
       this.taskQueue.size ||
       this.taskQueue.pending
     ) {
-      await wait(ms('1 second'));
+      await setTimeout(ms('1 second'));
     }
 
     return this.runInternal();
