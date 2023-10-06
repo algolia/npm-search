@@ -29,9 +29,11 @@ class Main {
   healthApi: http.Server | undefined;
 
   async preload(): Promise<void> {
-    await jsDelivr.loadHits();
-    await npm.loadTotalDownloads();
-    await typescript.loadTypesIndex();
+    await Promise.all([
+      jsDelivr.loadHits(),
+      npm.loadTotalDownloads(),
+      typescript.loadTypesIndex(),
+    ]);
   }
 
   async run(): Promise<void> {
