@@ -1,6 +1,8 @@
 import algoliasearch from 'algoliasearch';
 
 import { formatPkg } from '../formatPkg';
+import { hits } from '../jsDelivr';
+import { cacheTotalDownloads } from '../npm';
 import { saveDoc } from '../saveDocs';
 
 import preact from './preact-simplified.json';
@@ -8,12 +10,12 @@ import preact from './preact-simplified.json';
 jest.setTimeout(15000);
 
 const FINAL_BASE = {
+  _revision: expect.any(Number),
+  // _downloadsMagnitude: 7,
+  // _jsDelivrPopularity: 0,
   _searchInternal: {
     alternativeNames: ['preact', 'preact.js', 'preactjs'],
-    popularAlternativeNames: ['preact', 'preact.js', 'preactjs'],
-    downloadsMagnitude: 7,
-    expiresAt: '2021-08-10',
-    jsDelivrPopularity: 0,
+    // popularAlternativeNames: ['preact', 'preact.js', 'preactjs'],
   },
   bin: {},
   changelogFilename: null,
@@ -191,6 +193,12 @@ const FINAL_BASE = {
 };
 
 describe('saveDoc', () => {
+  beforeAll(async () => {
+    cacheTotalDownloads.total = 1e15;
+    hits.set('preact', { hits: 12345, popular: true });
+    hits.set('reactjs', { hits: 1234, popular: false });
+  });
+
   it('should always produce the same records', async () => {
     const client = algoliasearch('e', '');
     const index = client.initIndex('a');
@@ -203,19 +211,68 @@ describe('saveDoc', () => {
     };
     const clean = expect.objectContaining({
       ...final,
+      jsDelivrHits: 12345,
       lastCrawl: expect.any(String),
-      downloadsLast30Days: expect.any(Number),
-      downloadsRatio: expect.any(Number),
-      humanDownloadsLast30Days: expect.any(String),
+      downloadsLast30Days: 0,
+      downloadsRatio: 0,
+      humanDownloadsLast30Days: '0',
       modified: expect.any(Number),
       _searchInternal: expect.objectContaining({
         ...final._searchInternal,
-        downloadsMagnitude: expect.any(Number),
-        expiresAt: expect.any(Number),
+        popularAlternativeNames: ['preact', 'preact.js', 'preactjs'],
       }),
+      _jsDelivrPopularity: 2,
+      popular: true,
     });
 
     await saveDoc({ formatted: formatPkg(preact), index });
+
+    expect(index.saveObject).toHaveBeenCalledWith(clean);
+  });
+
+  it('should reuse existing changelog and downloads data', async () => {
+    const client = algoliasearch('e', '');
+    const index = client.initIndex('a');
+    jest.spyOn(index, 'saveObject').mockImplementationOnce(() => {
+      return true as any;
+    });
+
+    const oneTimeDataIndex = client.initIndex('b');
+    jest.spyOn(oneTimeDataIndex, 'getObject').mockImplementationOnce(() => {
+      return { changelogFilename: '/resolved-from-index.md' } as any;
+    });
+
+    const periodicDataIndex = client.initIndex('c');
+    jest.spyOn(periodicDataIndex, 'getObject').mockImplementationOnce(() => {
+      return { packageNpmDownloads: 2233, totalNpmDownloads: 1e10 } as any;
+    });
+
+    const final = {
+      ...FINAL_BASE,
+    };
+    const clean = expect.objectContaining({
+      ...final,
+      jsDelivrHits: 12345,
+      changelogFilename: '/resolved-from-index.md',
+      lastCrawl: expect.any(String),
+      downloadsLast30Days: 2233,
+      downloadsRatio: expect.any(Number),
+      humanDownloadsLast30Days: '2.2k',
+      modified: expect.any(Number),
+      _searchInternal: expect.objectContaining({
+        ...final._searchInternal,
+        popularAlternativeNames: ['preact', 'preact.js', 'preactjs'],
+      }),
+      _jsDelivrPopularity: 2,
+      popular: true,
+    });
+
+    await saveDoc({
+      formatted: formatPkg(preact),
+      index,
+      oneTimeDataIndex,
+      periodicDataIndex,
+    });
 
     expect(index.saveObject).toHaveBeenCalledWith(clean);
   });
@@ -241,15 +298,14 @@ describe('saveDoc', () => {
     };
     const clean = expect.objectContaining({
       ...final,
+      jsDelivrHits: 1234,
       lastCrawl: expect.any(String),
-      downloadsLast30Days: expect.any(Number),
-      downloadsRatio: expect.any(Number),
-      humanDownloadsLast30Days: expect.any(String),
+      downloadsLast30Days: 0,
+      downloadsRatio: 0,
+      humanDownloadsLast30Days: '0',
       modified: expect.any(Number),
       _searchInternal: expect.objectContaining({
         popularAlternativeNames: [],
-        downloadsMagnitude: expect.any(Number),
-        expiresAt: expect.any(Number),
       }),
     });
 
@@ -323,7 +379,6 @@ describe('saveDoc', () => {
       modified: expect.any(Number),
       _searchInternal: expect.objectContaining({
         popularAlternativeNames: [],
-        expiresAt: expect.any(Number),
       }),
     });
 

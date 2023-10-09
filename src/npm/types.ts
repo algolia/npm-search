@@ -3,8 +3,8 @@ import type { DocumentLookupFailure } from 'nano';
 export interface PackageDownload {
   downloads: number;
   package: string;
-  start: string;
-  end: string;
+  // start: string;
+  // end: string;
 }
 
 export interface GetInfo {

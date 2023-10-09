@@ -1,9 +1,13 @@
+import { setTimeout } from 'node:timers/promises';
+
+import type { SearchIndex } from 'algoliasearch';
+import ms from 'ms';
 import type { DocumentListParams, DocumentResponseRow } from 'nano';
 
+import type { StateManager } from '../StateManager';
 import { config } from '../config';
 import { log } from '../utils/log';
 import * as sentry from '../utils/sentry';
-import { wait } from '../utils/wait';
 
 import type { GetPackage } from './types';
 
@@ -12,7 +16,7 @@ import * as npm from './index';
 export type PrefetchedPkg = Pick<
   DocumentResponseRow<GetPackage>,
   'id' | 'value'
->;
+> & { offset: number };
 
 export class Prefetcher {
   #limit: number = config.bootstrapConcurrency;
@@ -21,9 +25,17 @@ export class Prefetcher {
   #running: boolean = false;
   #offset: number = 0;
   #finished: boolean = false;
-  #maxIdle = config.prefetchMaxIdle;
 
-  constructor(opts: { nextKey: string | null }) {
+  private stateManager: StateManager;
+  private queueIndex: SearchIndex;
+
+  constructor(
+    stateManager: StateManager,
+    queueIndex: SearchIndex,
+    opts: { nextKey: string | null }
+  ) {
+    this.stateManager = stateManager;
+    this.queueIndex = queueIndex;
     this.#nextKey = opts.nextKey;
   }
 
@@ -35,35 +47,26 @@ export class Prefetcher {
     return this.#offset + this.#limit - this.#ready.length;
   }
 
-  get idleCount(): number {
-    return this.#ready.length;
-  }
-
   get isFinished(): boolean {
     return this.#finished;
   }
 
-  async getNext(): Promise<PrefetchedPkg> {
-    while (this.#ready.length <= 0) {
-      await wait(100);
-    }
-
-    return this.#ready.shift()!;
-  }
-
-  async launch(): Promise<void> {
+  run(): void {
     this.#running = true;
-    while (this.#running) {
-      if (this.#ready.length >= this.#maxIdle) {
-        await wait(config.prefetchWaitBetweenPage);
-        continue;
-      }
 
-      await this.fetchOnePage();
+    this.runInternal().catch((e) => {
+      sentry.report(e);
+    });
+  }
+
+  async runInternal(): Promise<void> {
+    while (this.#running) {
+      await this.queueOnePage();
+      await setTimeout(ms('1 second'));
     }
   }
 
-  private async fetchOnePage(): Promise<void> {
+  private async queueOnePage(): Promise<void> {
     const options: Partial<DocumentListParams> = {
       limit: this.#limit,
       include_docs: false,
@@ -73,6 +76,7 @@ export class Prefetcher {
       options.startkey = this.#nextKey;
       options.skip = 1;
     }
+
     try {
       const { rows: packages, offset } = await npm.findAll(options);
 
@@ -84,11 +88,32 @@ export class Prefetcher {
         return;
       }
 
-      this.#ready.push(...packages);
+      await this.queueIndex.saveObjects(
+        packages.map((pkg) => ({
+          objectID: pkg.id,
+          retries: 0,
+          pkg,
+        }))
+      );
+
+      const lastId = (await this.stateManager.get()).bootstrapLastId;
+      const pkg = packages.at(-1);
+
+      if (pkg && (!lastId || lastId < pkg.id)) {
+        await this.stateManager.save({
+          bootstrapLastId: pkg.id,
+        });
+      }
+
       this.#offset = offset;
       this.#nextKey = packages[packages.length - 1]!.id;
-    } catch (err) {
+    } catch (err: any) {
       sentry.report(err);
+
+      if (err.statusCode === 429) {
+        log.info('[pf] waiting');
+        await setTimeout(ms('2 minutes'));
+      }
     }
   }
 }

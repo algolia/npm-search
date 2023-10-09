@@ -1,6 +1,3 @@
-import { HTTPError } from 'got/dist/source';
-
-import { log } from '../../utils/log';
 import * as api from '../index';
 
 jest.mock('../../utils/log', () => {
@@ -24,16 +21,16 @@ describe('hits', () => {
   describe('getHits()', () => {
     beforeAll(() => {
       api.hits.clear();
-      api.hits.set('jquery', 1234);
+      api.hits.set('jquery', { hits: 1234, popular: true });
     });
 
     it('should get one formatted hit', () => {
       expect(api.getHits([{ name: 'jquery' }])).toEqual([
         {
           jsDelivrHits: 1234,
-          _searchInternal: {
-            jsDelivrPopularity: 1,
-          },
+          _jsDelivrPopularity: 1,
+          popular: true,
+          _popularName: 'jquery',
         },
       ]);
     });
@@ -43,15 +40,14 @@ describe('hits', () => {
       ).toEqual([
         {
           jsDelivrHits: 1234,
-          _searchInternal: {
-            jsDelivrPopularity: 1,
-          },
+          _jsDelivrPopularity: 1,
+          popular: true,
+          _popularName: 'jquery',
         },
         {
           jsDelivrHits: 0,
-          _searchInternal: {
-            jsDelivrPopularity: 0,
-          },
+          _jsDelivrPopularity: 0,
+          popular: false,
         },
       ]);
     });
@@ -66,11 +62,11 @@ describe('hits', () => {
     });
 
     it('should get one hit', () => {
-      expect(api.hits.get('jquery')).toBeGreaterThan(1000000000); // 1065750968 (2019-08)
+      expect(api.hits.get('jquery')?.hits).toBeGreaterThan(1000000000); // 1065750968 (2019-08)
     });
 
     it('should not get one hit', () => {
-      expect(api.hits.get('thispackagedoesnotexist')).toBeUndefined();
+      expect(api.hits.get('thispackagedoesnotexist')?.hits).toBeUndefined();
     });
   });
 });
@@ -91,50 +87,6 @@ describe('files', () => {
         version: '3.33.0',
       });
       expect(files).toEqual([]);
-      expect(log.error.mock.calls[0][0]).toEqual(
-        new Error('JsDelivr network error')
-      );
-      expect(log.error.mock.calls[0][1]).toEqual({
-        err: new HTTPError({
-          statusCode: 404,
-          statusMessage: 'Not Found',
-        } as any),
-        url: 'https://data.jsdelivr.com/v1/package/npm/thispackagedoesnotexist@3.33.0/flat',
-      });
-    });
-  });
-
-  describe('getAllFilesList()', () => {
-    it('should get a flat list of files', async () => {
-      const files = await api.getAllFilesList([
-        { name: 'jest', version: '24.8.0' },
-      ]);
-      expect(files).toMatchSnapshot();
-    });
-
-    it('should get multiple flat list of files', async () => {
-      const files = await api.getAllFilesList([
-        {
-          name: 'jest',
-          version: '24.8.0',
-        },
-        {
-          name: 'thispackagedoesnotexist',
-          version: '3.33.0',
-        },
-      ]);
-      expect(files).toMatchSnapshot();
-
-      expect(log.error.mock.calls[0][0]).toEqual(
-        new Error('JsDelivr network error')
-      );
-      expect(log.error.mock.calls[0][1]).toEqual({
-        err: new HTTPError({
-          statusCode: 404,
-          statusMessage: 'Not Found',
-        } as any),
-        url: 'https://data.jsdelivr.com/v1/package/npm/thispackagedoesnotexist@3.33.0/flat',
-      });
     });
   });
 });

@@ -3,41 +3,122 @@ import type { SearchIndex } from 'algoliasearch';
 import type { FinalPkg, RawPkg } from './@types/pkg';
 import { getChangelog } from './changelog';
 import { config } from './config';
+import type { OneTimeDataObject } from './indexers/OneTimeBackgroundIndexer';
+import type { PeriodicDataObject } from './indexers/PeriodicBackgroundIndexer';
 import * as jsDelivr from './jsDelivr';
 import { getModuleTypes, getStyleTypes } from './jsDelivr/pkgTypes';
 import * as npm from './npm';
-import { getTypeScriptSupport } from './typescript/index';
+import { computeDownload } from './npm';
+import { getTypeScriptSupport } from './typescript';
 import { datadog } from './utils/datadog';
+import { offsetToTimestamp, round } from './utils/time';
 
 export async function saveDoc({
   formatted,
   index,
+  oneTimeDataIndex,
+  periodicDataIndex,
 }: {
   formatted: RawPkg;
   index: SearchIndex;
+  oneTimeDataIndex: SearchIndex;
+  periodicDataIndex: SearchIndex;
 }): Promise<void> {
-  let start = Date.now();
-  const pkg = await addMetaData(formatted);
-  datadog.timing('saveDocs.addMetaData.one', Date.now() - start);
+  const start = Date.now();
+  const pkg = await addMetaData(formatted, oneTimeDataIndex, periodicDataIndex);
 
-  start = Date.now();
+  const start2 = Date.now();
   await index.saveObject(pkg);
-  datadog.timing('saveDocs.saveObject.one', Date.now() - start);
+  datadog.timing('saveDocs.saveObject.one', Date.now() - start2);
 
   datadog.timing('saveDocs.one', Date.now() - start);
 }
 
-async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
+async function addMetaData(
+  pkg: RawPkg,
+  oneTimeDataIndex: SearchIndex,
+  periodicDataIndex: SearchIndex
+): Promise<FinalPkg> {
+  const start = Date.now();
+  let periodicDataUpdatedAt = 0;
+  let download;
+
   if (pkg.isSecurityHeld) {
     return pkg;
   }
 
-  const [download, dependent, hit, filelist] = await Promise.all([
-    npm.getDownload(pkg),
-    npm.getDependent(pkg),
-    jsDelivr.getHit(pkg),
-    jsDelivr.getFilesList(pkg),
-  ]);
+  const [dependent, hit] = [npm.getDependent(pkg), jsDelivr.getHit(pkg)];
+  const { filelist, metadata } = await getFileListMetadata(pkg);
+
+  let hasAllOneTimeData = Boolean(metadata.changelogFilename);
+  let needsOneTimeReindex = !hasAllOneTimeData || !filelist.length;
+
+  if (!hasAllOneTimeData) {
+    try {
+      const data = await oneTimeDataIndex.getObject<OneTimeDataObject>(
+        `${pkg.name}@${pkg.version}`
+      );
+
+      datadog.increment('oneTimeDataIndex.hit');
+
+      if (!metadata.changelogFilename) {
+        metadata.changelogFilename = data.changelogFilename;
+      }
+
+      hasAllOneTimeData = true;
+      needsOneTimeReindex = !hasAllOneTimeData || !filelist.length;
+    } catch {
+      datadog.increment('oneTimeDataIndex.miss');
+    }
+  }
+
+  try {
+    const data = await periodicDataIndex.getObject<PeriodicDataObject>(
+      pkg.name
+    );
+
+    datadog.increment('periodicDataIndex.hit');
+
+    download = computeDownload(
+      pkg,
+      data.packageNpmDownloads,
+      data.totalNpmDownloads
+    );
+
+    periodicDataUpdatedAt = round(new Date(data.updatedAt)).valueOf();
+  } catch {
+    datadog.increment('periodicDataIndex.miss');
+  }
+
+  const final = {
+    ...pkg,
+    ...(download || {}),
+    ...dependent,
+    ...metadata,
+    ...hit,
+    popular: download?.popular || hit.popular,
+    _oneTimeDataToUpdateAt: needsOneTimeReindex ? offsetToTimestamp(0) : 0,
+    _periodicDataUpdatedAt: periodicDataUpdatedAt,
+    _searchInternal: {
+      ...pkg._searchInternal,
+    },
+  };
+
+  final._searchInternal.popularAlternativeNames =
+    getPopularAlternativeNames(final);
+
+  datadog.timing('saveDocs.addMetaData.one', Date.now() - start);
+  return final;
+}
+
+export async function getFileListMetadata(pkg: RawPkg): Promise<{
+  filelist: Awaited<ReturnType<typeof jsDelivr.getFilesList>>;
+  metadata: Awaited<ReturnType<typeof getChangelog>> &
+    Awaited<ReturnType<typeof getModuleTypes>> &
+    Awaited<ReturnType<typeof getStyleTypes>> &
+    Awaited<ReturnType<typeof getTypeScriptSupport>>;
+}> {
+  const filelist = await jsDelivr.getFilesList(pkg);
 
   const [changelog, ts, moduleTypes, styleTypes] = await Promise.all([
     getChangelog(pkg, filelist),
@@ -46,36 +127,25 @@ async function addMetaData(pkg: RawPkg): Promise<FinalPkg> {
     getStyleTypes(pkg, filelist),
   ]);
 
-  const start = Date.now();
-  const final = {
-    ...pkg,
-    ...download,
-    ...dependent,
-    ...changelog,
-    ...hit,
-    ...ts,
-    ...moduleTypes,
-    ...styleTypes,
-    _searchInternal: {
-      ...pkg._searchInternal,
-      ...(download ? download!._searchInternal : {}),
-      ...hit._searchInternal,
+  return {
+    filelist,
+    metadata: {
+      ...changelog,
+      ...ts,
+      ...moduleTypes,
+      ...styleTypes,
     },
   };
+}
 
+export function getPopularAlternativeNames(pkg: FinalPkg): string[] {
   const hasFewDownloads =
-    final.downloadsLast30Days <= config.alternativeNamesNpmDownloadsThreshold &&
-    final.jsDelivrHits <= config.alternativeNamesJsDelivrHitsThreshold;
+    pkg.downloadsLast30Days <= config.alternativeNamesNpmDownloadsThreshold &&
+    pkg.jsDelivrHits <= config.alternativeNamesJsDelivrHitsThreshold;
 
   const addPopularAlternativeNames =
-    final.popular ||
-    (!final.isDeprecated && !final.isSecurityHeld && !hasFewDownloads);
+    pkg.popular ||
+    (!pkg.isDeprecated && !pkg.isSecurityHeld && !hasFewDownloads);
 
-  if (addPopularAlternativeNames) {
-    final._searchInternal.popularAlternativeNames =
-      final._searchInternal.alternativeNames;
-  }
-
-  datadog.timing('saveDocs.addMetaData.one', Date.now() - start);
-  return final;
+  return addPopularAlternativeNames ? pkg._searchInternal.alternativeNames : [];
 }

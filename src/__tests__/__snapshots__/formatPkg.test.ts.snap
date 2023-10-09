@@ -2,13 +2,13 @@
 
 exports[`deprecated log deprecated reason and flag 1`] = `
 Object {
+  "_revision": Any<Number>,
   "_searchInternal": Object {
     "alternativeNames": Array [
       "0",
       "0.js",
       "0js",
     ],
-    "expiresAt": Any<Number>,
     "popularAlternativeNames": Array [],
   },
   "bin": Object {},
@@ -83,6 +83,7 @@ Object {
 
 exports[`general transforms correctly: @atlaskit/input 1`] = `
 Object {
+  "_revision": Any<Number>,
   "_searchInternal": Object {
     "alternativeNames": Array [
       "atlaskitinput",
@@ -91,7 +92,6 @@ Object {
       "@atlaskit/inputjs",
       "@atlaskit/input",
     ],
-    "expiresAt": Any<Number>,
     "popularAlternativeNames": Array [],
   },
   "bin": Object {},
@@ -291,6 +291,7 @@ Are you in trouble? Read through our [contribution guidelines](https://bitbucket
 
 exports[`general transforms correctly: @atomic-package/tab 1`] = `
 Object {
+  "_revision": Any<Number>,
   "_searchInternal": Object {
     "alternativeNames": Array [
       "atomicpackagetab",
@@ -299,7 +300,6 @@ Object {
       "@atomic-package/tabjs",
       "@atomic-package/tab",
     ],
-    "expiresAt": Any<Number>,
     "popularAlternativeNames": Array [],
   },
   "bin": Object {},
@@ -421,6 +421,7 @@ Object {
 
 exports[`general transforms correctly: create-instantsearch-app 1`] = `
 Object {
+  "_revision": Any<Number>,
   "_searchInternal": Object {
     "alternativeNames": Array [
       "createinstantsearchapp",
@@ -429,7 +430,6 @@ Object {
       "create-instantsearch-appjs",
       "create-instantsearch-app",
     ],
-    "expiresAt": Any<Number>,
     "popularAlternativeNames": Array [],
   },
   "bin": Object {
@@ -557,13 +557,13 @@ Object {
 
 exports[`general transforms correctly: indexof 1`] = `
 Object {
+  "_revision": Any<Number>,
   "_searchInternal": Object {
     "alternativeNames": Array [
       "indexof",
       "indexof.js",
       "indexofjs",
     ],
-    "expiresAt": Any<Number>,
     "popularAlternativeNames": Array [],
   },
   "bin": Object {},
@@ -652,12 +652,12 @@ index(arr, obj);
 
 exports[`general transforms correctly: prismjs 1`] = `
 Object {
+  "_revision": Any<Number>,
   "_searchInternal": Object {
     "alternativeNames": Array [
       "prismjs",
       "prism",
     ],
-    "expiresAt": Any<Number>,
     "popularAlternativeNames": Array [],
   },
   "bin": Object {},
@@ -863,6 +863,7 @@ Thank you so much for contributing!!
 
 exports[`general truncates long readmes 1`] = `
 Object {
+  "_revision": Any<Number>,
   "_searchInternal": Object {
     "alternativeNames": Array [
       "longboy",
@@ -871,7 +872,6 @@ Object {
       "long-boyjs",
       "long-boy",
     ],
-    "expiresAt": Any<Number>,
     "popularAlternativeNames": Array [],
   },
   "bin": Object {},
@@ -1582,13 +1582,13 @@ QE+S
 
 exports[`security held log security held flag 1`] = `
 Object {
+  "_revision": Any<Number>,
   "_searchInternal": Object {
     "alternativeNames": Array [
       "0",
       "0.js",
       "0js",
     ],
-    "expiresAt": Any<Number>,
     "popularAlternativeNames": Array [],
   },
   "bin": Object {},
@@ -1660,13 +1660,13 @@ Object {
 
 exports[`security held only log security held flag for the correct repo 1`] = `
 Object {
+  "_revision": Any<Number>,
   "_searchInternal": Object {
     "alternativeNames": Array [
       "0",
       "0.js",
       "0js",
     ],
-    "expiresAt": Any<Number>,
     "popularAlternativeNames": Array [],
   },
   "bin": Object {},

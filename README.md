@@ -1,16 +1,26 @@
-# 🗿 npm-search ⛷ 🐌 🛰
+# npm-search
 
-[npm](https://www.npmjs.com/) ↔️ [Algolia](https://www.algolia.com/) replication tool.
+<a href="https://www.npmjs.com/">npm</a> ↔️ <a href="https://www.algolia.com/">Algolia</a> replication tool.
+Maintained by <a href="https://www.algolia.com/">Algolia</a> and <a href="https://www.jsdelivr.com/">jsDelivr</a>.
 
-[![CircleCI](https://circleci.com/gh/algolia/npm-search/tree/master.svg?style=svg)](https://circleci.com/gh/algolia/npm-search/tree/master) <a title="Public Status powered by Datadog" href="https://p.datadoghq.com/sb/2b51baa8-c54a-11eb-a5a4-da7ad0900002-4973ed88f5be0d93c350fcb0ea2e7f0c">
-  <img width="100" alt="Datadog Status" src="https://www.datocms-assets.com/2885/1611308816-datadog-horizontal-rgb.png?fit=max&fm=png&q=80" />
-</a>
+<h1 align="center">
+  <br/>
+  <a href="https://www.algolia.com/"><img src="algolia.png" alt="Algolia logo" height="40px"/></a>
+  &nbsp;&&nbsp;
+  <a href="https://www.jsdelivr.com/"><img src="jsdelivr.png" alt="jsDelivr logo" height="40px"/></a>
+  <br/>
+</h1>
 
----
+[//]: # ([![CircleCI]&#40;https://circleci.com/gh/algolia/npm-search/tree/master.svg?style=svg&#41;]&#40;https://circleci.com/gh/algolia/npm-search/tree/master&#41; <a title="Public Status powered by Datadog" href="https://p.datadoghq.com/sb/2b51baa8-c54a-11eb-a5a4-da7ad0900002-4973ed88f5be0d93c350fcb0ea2e7f0c">)
+
+[//]: # (  <img width="100" alt="Datadog Status" src="https://www.datocms-assets.com/2885/1611308816-datadog-horizontal-rgb.png?fit=max&fm=png&q=80" />)
+
+[//]: # (</a>)
+
+[//]: # (---)
 
 This is a failure resilient npm registry to Algolia index replication process.
 It will replicate all npm packages to an Algolia index and keep it up to date.
-
 The state of the replication is saved in Algolia index settings.
 
 The replication should always be running. **Only one instance per Algolia index must run at the same time**.
@@ -56,7 +66,7 @@ To be eligible your project must meet these requirements:
 - Non-commercial: The project cannot be used to promote a product or service; it has to provide something of value to the community at no cost. Applications for non-commercial projects backed by commercial entities will be reviewed on a case-by-base basis.
 
 
-You can also use the code or the [public docker image](https://hub.docker.com/r/algolia/npm-search) to run your own (as of September 2021 it will create ~3M records x2).
+You can also use the code or the [public docker image](https://hub.docker.com/r/algolia/npm-search) to run your own (as of September 2021 it will create ~3M records x4).
 
 ### Schema
 
@@ -154,10 +164,11 @@ For every single NPM package, we create a record in the Algolia index. The resul
   humanDependents: '3.3k',
   changelogFilename: null, // if babel-core had a changelog, it would be the raw GitHub url here
   objectID: 'babel-core',
+  // the following fields are considered internal and may change at any time
+  _downloadsMagnitude: 8,
+  _jsDelivrPopularity: 5,
+  _popularName: 'babel-core',
   _searchInternal: {
-    popularName: 'babel-core',
-    downloadsMagnitude: 8,
-    jsDelivrPopularity: 5,
     alternativeNames: [
       // alternative versions of this name, to show up on confused searches
     ],
@@ -175,7 +186,7 @@ If you want to learn more about how Algolia's ranking algorithm is working, you 
 
 We're restricting the search to use a subset of the attributes only:
 
-- `_searchInternal.popularName`
+- `_popularName`
 - `name`
 - `description`
 - `keywords`
@@ -204,7 +215,11 @@ For instance, search for `babel` with match both `babel-core` and `babel-message
 
 ##### Popular packages
 
-Some packages will be considered as popular if they have been downloaded "more" than others. We currently consider the packages having more than `0.005%` of the total number of downloads on the whole registry as the popular packages. This `popular` flag is also used to boost some records over non-popular ones.
+Some packages will be considered as popular if they have been downloaded "more" than others. We currently consider a package popular if it either:
+ - has more than `0.005%` of the total number of npm downloads, 
+ - is in the top thousand of packages at [jsDelivr](https://github.com/jsdelivr/data.jsdelivr.com).
+
+This `popular` flag is also used to boost some records over non-popular ones.
 
 ## Usage
 
@@ -216,7 +231,6 @@ apiKey=... yarn start
 ```
 
 ### Restart
-
 To restart from a particular point (or from the beginning):
 
 ```sh

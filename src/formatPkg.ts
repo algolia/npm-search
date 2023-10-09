@@ -21,7 +21,6 @@ import type {
 import { config } from './config';
 import type { GetPackage, GetUser, PackageRepo } from './npm/types';
 import { datadog } from './utils/datadog';
-import { getExpiresAt } from './utils/getExpiresAt';
 
 const defaultGravatar = 'https://www.gravatar.com/avatar/';
 
@@ -88,7 +87,7 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
 
   if (cleaned.repository) {
     let tmp = cleaned.repository;
-    if (Array.isArray(tmp)) {
+    if (Array.isArray(tmp) && tmp.length) {
       tmp = tmp[0] as PackageRepo;
     }
 
@@ -193,10 +192,10 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
     styleTypes,
     changelogFilename: null,
     lastCrawl: new Date().toISOString(),
+    _revision: Date.now(),
     _searchInternal: {
       alternativeNames,
       popularAlternativeNames: [],
-      expiresAt: getExpiresAt(),
     },
   };
 
@@ -503,17 +502,21 @@ export function getRepositoryInfo(
   /**
    * Get information using hosted-git-info.
    */
-  const repositoryInfo = hostedGitInfo.fromUrl(url);
+  try {
+    const repositoryInfo = hostedGitInfo.fromUrl(url);
 
-  if (repositoryInfo) {
-    const { project, user, domain } = repositoryInfo;
-    return {
-      url,
-      project,
-      user,
-      host: domain,
-      path: path.replace(/^[./]+/, ''),
-    };
+    if (repositoryInfo) {
+      const { project, user, domain } = repositoryInfo;
+      return {
+        url,
+        project,
+        user,
+        host: domain,
+        path: path.replace(/^[./]+/, ''),
+      };
+    }
+  } catch {
+    // Ignore.
   }
 
   /**

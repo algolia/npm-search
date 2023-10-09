@@ -1,4 +1,4 @@
-import { getChangelogs, baseUrlMap, getChangelog } from '../changelog';
+import { baseUrlMap, getChangelog, getChangelogBackground } from '../changelog';
 
 jest.mock('got', () => {
   const gotSnapshotUrls = new Set([
@@ -8,11 +8,16 @@ jest.mock('got', () => {
     'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md',
   ]);
 
-  return (url: string): Promise<{ url: string; redirectUrls: string[] }> => {
-    return gotSnapshotUrls.has(url)
-      ? Promise.resolve({ url, redirectUrls: [], statusCode: 200 })
-      : Promise.reject(new Error(`got mock does not exist for ${url}`));
-  };
+  return Object.assign(
+    (url: string): Promise<{ url: string; redirectUrls: string[] }> => {
+      return gotSnapshotUrls.has(url)
+        ? Promise.resolve({ url, redirectUrls: [], statusCode: 200 })
+        : Promise.reject(new Error(`got mock does not exist for ${url}`));
+    },
+    {
+      HTTPError: TypeError,
+    }
+  );
 });
 
 describe('should test baseUrlMap', () => {
@@ -41,15 +46,15 @@ describe('should test baseUrlMap', () => {
       head: 'master',
     };
 
-    expect(baseUrlMap.get('bitbucket.org')!(bitbucketRepo)).toBe(
+    expect(baseUrlMap.get('bitbucket.org')!.buildUrl(bitbucketRepo)).toBe(
       'https://bitbucket.org/user/project/raw/master/packages/project1'
     );
 
-    expect(baseUrlMap.get('gitlab.com')!(gitlabRepo)).toBe(
+    expect(baseUrlMap.get('gitlab.com')!.buildUrl(gitlabRepo)).toBe(
       'https://gitlab.com/user/project/raw/master/foo/bar'
     );
 
-    expect(baseUrlMap.get('github.com')!(githubRepo)).toBe(
+    expect(baseUrlMap.get('github.com')!.buildUrl(githubRepo)).toBe(
       'https://raw.githubusercontent.com/babel/babel/master/packages/babel-core'
     );
   });
@@ -79,15 +84,15 @@ describe('should test baseUrlMap', () => {
       branch: 'master',
     };
 
-    expect(baseUrlMap.get('bitbucket.org')!(bitbucketRepo)).toBe(
+    expect(baseUrlMap.get('bitbucket.org')!.buildUrl(bitbucketRepo)).toBe(
       'https://bitbucket.org/user/project/raw/master'
     );
 
-    expect(baseUrlMap.get('gitlab.com')!(gitlabRepo)).toBe(
+    expect(baseUrlMap.get('gitlab.com')!.buildUrl(gitlabRepo)).toBe(
       'https://gitlab.com/user/project/raw/master'
     );
 
-    expect(baseUrlMap.get('github.com')!(githubRepo)).toBe(
+    expect(baseUrlMap.get('github.com')!.buildUrl(githubRepo)).toBe(
       'https://raw.githubusercontent.com/babel/babel/master'
     );
   });
@@ -109,7 +114,7 @@ describe('hosts', () => {
       },
     };
 
-    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    const { changelogFilename } = await getChangelogBackground(pkg);
     expect(changelogFilename).toBeNull();
   });
 
@@ -128,7 +133,7 @@ describe('hosts', () => {
       },
     };
 
-    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    const { changelogFilename } = await getChangelogBackground(pkg);
     expect(changelogFilename).toBe(
       'https://raw.githubusercontent.com/algolia/algoliasearch-netlify/master/CHANGELOG.md'
     );
@@ -149,7 +154,7 @@ describe('hosts', () => {
       },
     };
 
-    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    const { changelogFilename } = await getChangelogBackground(pkg);
     expect(changelogFilename).toBe(
       'https://gitlab.com/janslow/gitlab-fetch/raw/master/CHANGELOG.md'
     );
@@ -170,7 +175,7 @@ describe('hosts', () => {
       },
     };
 
-    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    const { changelogFilename } = await getChangelogBackground(pkg);
     expect(changelogFilename).toBe(
       'https://bitbucket.org/atlassian/aui/raw/master/changelog.md'
     );
@@ -262,7 +267,7 @@ describe('filename', () => {
       },
     };
 
-    const [{ changelogFilename }] = await getChangelogs([pkg], []);
+    const { changelogFilename } = await getChangelogBackground(pkg);
     expect(changelogFilename).toBe(
       'https://raw.githubusercontent.com/expressjs/body-parser/master/HISTORY.md'
     );

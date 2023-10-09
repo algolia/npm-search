@@ -84,17 +84,17 @@ export interface RawPkg {
   humanDependents: string;
   changelogFilename: string | null;
   lastCrawl: string;
+  _revision: number;
   _searchInternal: {
-    expiresAt: number;
     alternativeNames: string[];
     popularAlternativeNames: string[];
   };
 }
 
 export type FinalPkg = RawPkg & {
-  _searchInternal: {
-    downloadsMagnitude?: number;
-    jsDelivrPopularity?: number;
-    popularName?: string;
-  };
+  _oneTimeDataToUpdateAt?: number;
+  _periodicDataUpdatedAt?: number;
+  _jsDelivrPopularity?: number;
+  _downloadsMagnitude?: number;
+  _popularName?: string;
 };

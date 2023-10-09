@@ -1,5 +1,8 @@
 import path from 'path';
 
+import { HTTPError } from 'got';
+import ms from 'ms';
+import PQueue from 'p-queue';
 import race from 'promise-rat-race';
 
 import type { RawPkg, Repo } from './@types/pkg';
@@ -7,34 +10,49 @@ import * as jsDelivr from './jsDelivr/index';
 import { datadog } from './utils/datadog';
 import { request } from './utils/request';
 
-export const baseUrlMap = new Map<
-  string,
-  (opts: Pick<Repo, 'branch' | 'path' | 'project' | 'user'>) => string
->();
-baseUrlMap.set(
-  'github.com',
-  ({ user, project, path: pathName, branch }): string => {
+type ChangelogResult = {
+  changelogFilename: string | null;
+};
+
+type HostObject = {
+  name: string;
+  queue: PQueue;
+  buildUrl: (
+    opts: Pick<Repo, 'branch' | 'path' | 'project' | 'user'>
+  ) => string;
+};
+
+export const baseUrlMap = new Map<string, HostObject>();
+
+baseUrlMap.set('github.com', {
+  name: 'github',
+  queue: new PQueue({ intervalCap: 20, interval: 1000 }),
+  buildUrl: ({ user, project, path: pathName, branch }): string => {
     return `https://raw.githubusercontent.com/${user}/${project}/${
       pathName ? '' : branch
-    }${`${pathName.replace('/tree/', '')}`}`;
-  }
-);
-baseUrlMap.set(
-  'gitlab.com',
-  ({ user, project, path: pathName, branch }): string => {
+    }${pathName.replace('/tree/', '')}`;
+  },
+});
+
+baseUrlMap.set('gitlab.com', {
+  name: 'gitlab',
+  queue: new PQueue({ intervalCap: 10, interval: 1000 }),
+  buildUrl: ({ user, project, path: pathName, branch }): string => {
     return `https://gitlab.com/${user}/${project}${
       pathName ? pathName.replace('tree', 'raw') : `/raw/${branch}`
     }`;
-  }
-);
-baseUrlMap.set(
-  'bitbucket.org',
-  ({ user, project, path: pathName, branch }): string => {
+  },
+});
+
+baseUrlMap.set('bitbucket.org', {
+  name: 'bitbucket',
+  queue: new PQueue({ intervalCap: 10, interval: 1000 }),
+  buildUrl: ({ user, project, path: pathName, branch }): string => {
     return `https://bitbucket.org/${user}/${project}${
       pathName ? pathName.replace('src', 'raw') : `/raw/${branch}`
     }`;
-  }
-);
+  },
+});
 
 const fileOptions = [
   'CHANGELOG.md',
@@ -82,14 +100,41 @@ async function handledGot(file: string): Promise<string> {
   return result.url;
 }
 
-async function raceFromPaths(files: string[]): Promise<{
-  changelogFilename: string | null;
-}> {
+async function raceFromPaths(
+  host: HostObject,
+  files: string[]
+): Promise<ChangelogResult> {
+  const start = Date.now();
+
   try {
-    const url = await race(files.map((file) => handledGot(file)));
+    const url = await race(
+      files.map((file) => {
+        return host.queue.add(() => {
+          datadog.increment(`changelogs.requests.${host.name}`);
+          return handledGot(file);
+        });
+      })
+    );
+
+    datadog.increment(`changelogs.success`);
     return { changelogFilename: url };
   } catch (e) {
+    if (
+      e instanceof HTTPError &&
+      (e.response.statusCode === 429 || e.response.statusCode >= 500)
+    ) {
+      datadog.increment(`changelogs.throttle.${host.name}`);
+
+      if (!host.queue.isPaused) {
+        host.queue.pause();
+        setTimeout(() => host.queue.start(), ms('1 minute')).unref();
+      }
+    }
+
+    datadog.increment(`changelogs.failure`);
     return { changelogFilename: null };
+  } finally {
+    datadog.timing('changelogs.getChangelog', Date.now() - start);
   }
 }
 
@@ -99,63 +144,43 @@ export async function getChangelog(
 ): Promise<{
   changelogFilename: string | null;
 }> {
-  const start = Date.now();
-  try {
-    for (const file of filelist) {
-      const name = path.basename(file.name);
-      if (!fileRegex.test(name)) {
-        continue;
-      }
-
-      datadog.increment('jsdelivr.getChangelog.hit');
-
-      return { changelogFilename: jsDelivr.getFullURL(pkg, file) };
+  for (const file of filelist) {
+    const name = path.basename(file.name);
+    if (!fileRegex.test(name)) {
+      continue;
     }
 
-    datadog.increment('jsdelivr.getChangelog.miss');
+    datadog.increment('jsdelivr.getChangelog.hit');
 
-    const { repository } = pkg;
-
-    if (repository === null || !repository.host) {
-      return { changelogFilename: null };
-    }
-
-    const host = repository.host || '';
-    const knownHost = baseUrlMap.get(host);
-
-    // No known git hosts
-    if (!knownHost) {
-      return { changelogFilename: null };
-    }
-
-    const baseUrl = knownHost(repository);
-    const files = fileOptions.map((file) =>
-      [baseUrl.replace(/\/$/, ''), file].join('/')
-    );
-
-    // Brute-force from git host
-    return await raceFromPaths([...files]);
-  } finally {
-    datadog.timing('changelogs.getChangelog', Date.now() - start);
+    return { changelogFilename: jsDelivr.getFullURL(pkg, file) };
   }
+
+  datadog.increment('jsdelivr.getChangelog.miss');
+  return { changelogFilename: null };
 }
 
-export async function getChangelogs(
-  pkgs: Array<Pick<RawPkg, 'name' | 'repository' | 'version'>>,
-  filelists: jsDelivr.File[][]
-): Promise<
-  Array<{
-    changelogFilename: string | null;
-  }>
-> {
-  const start = Date.now();
+export async function getChangelogBackground(
+  pkg: Pick<RawPkg, 'name' | 'repository' | 'version'>
+): Promise<ChangelogResult> {
+  const { repository } = pkg;
 
-  const all = await Promise.all(
-    pkgs.map((pkg, index) => {
-      return getChangelog(pkg, filelists[index] || []);
-    })
+  if (repository === null || !repository.host) {
+    return { changelogFilename: null };
+  }
+
+  const host = repository.host || '';
+  const knownHost = baseUrlMap.get(host);
+
+  // No known git hosts
+  if (!knownHost) {
+    return { changelogFilename: null };
+  }
+
+  const baseUrl = knownHost.buildUrl(repository);
+  const files = fileOptions.map((file) =>
+    [baseUrl.replace(/\/$/, ''), file].join('/')
   );
 
-  datadog.timing('changelogs.getChangelogs', Date.now() - start);
-  return all;
+  // Brute-force from git host
+  return raceFromPaths(knownHost, [...files]);
 }

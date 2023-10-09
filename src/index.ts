@@ -1,7 +1,10 @@
 /* eslint-disable no-process-exit */
+
+import 'elastic-apm-node/start';
+
 import type http from 'http';
 
-import { nextTick } from 'async';
+import ms from 'ms';
 
 import { version } from '../package.json';
 
@@ -11,18 +14,27 @@ import { createAPI } from './api';
 import { Bootstrap } from './bootstrap';
 import { config } from './config';
 import * as jsDelivr from './jsDelivr/index';
+import * as npm from './npm/index';
 import * as typescript from './typescript/index';
 import { datadog } from './utils/datadog';
 import { log } from './utils/log';
 import * as sentry from './utils/sentry';
 import { Watch } from './watch';
 
-const KILL_PROCESS_EVERY_MS = 1 * 60 * 60 * 1000; // every 1 hours
+const KILL_PROCESS_EVERY_MS = ms('4 hours');
 
 class Main {
   bootstrap: Bootstrap | undefined;
   watch: Watch | undefined;
   healthApi: http.Server | undefined;
+
+  async preload(): Promise<void> {
+    await Promise.all([
+      jsDelivr.loadHits(),
+      npm.loadTotalDownloads(),
+      typescript.loadTypesIndex(),
+    ]);
+  }
 
   async run(): Promise<void> {
     log.info('🗿 npm ↔️ Algolia replication starts ⛷ 🐌 🛰', { version });
@@ -34,7 +46,7 @@ class Main {
     setTimeout(() => {
       log.info('👋  Scheduled process cleaning');
       close();
-    }, KILL_PROCESS_EVERY_MS);
+    }, KILL_PROCESS_EVERY_MS).unref();
 
     this.healthApi = createAPI();
 
@@ -51,9 +63,22 @@ class Main {
     // Create State Manager that holds progression of indexing
     const stateManager = new StateManager(algoliaStore.mainIndex);
 
+    const scheduleRefresh = (delay = ms('1 hour')): void => {
+      setTimeout(() => {
+        this.preload()
+          .then(() => {
+            scheduleRefresh();
+          })
+          .catch(() => {
+            scheduleRefresh(ms('1 minute'));
+          });
+      }, delay).unref();
+    };
+
     // Preload some useful data
-    await jsDelivr.loadHits();
-    await typescript.loadTypesIndex();
+    await this.preload();
+    scheduleRefresh();
+
     this.bootstrap = new Bootstrap(stateManager, algoliaStore);
     this.watch = new Watch(stateManager, algoliaStore);
 
@@ -111,13 +136,13 @@ async function close(): Promise<void> {
   setTimeout(() => {
     // grace period in case a lot of jobs are pending
     process.exit(1);
-  }, 90000);
+  }, 90000).unref();
 
   // datadog.close();
   await sentry.drain();
   await main.stop();
 
-  nextTick(() => {
+  process.nextTick(() => {
     process.exit(0);
   });
 }

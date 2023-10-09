@@ -1,6 +1,9 @@
+import { PackageNotFoundError } from '../../errors';
+import type { DownloadsData } from '../index';
 import * as api from '../index';
+import { computeDownload } from '../index';
 
-jest.setTimeout(10000);
+jest.setTimeout(15000);
 
 describe('findAll()', () => {
   it('contains the correct keys', async () => {
@@ -22,6 +25,39 @@ describe('findAll()', () => {
         value: { rev: '11-61bb2c49ce3202a3e0ab9a65646b4b4d' },
       })
     );
+  });
+});
+
+describe('getDoc()', () => {
+  it('retrieves a single doc', async () => {
+    const doc = await api.getDoc(
+      'jsdelivr',
+      '8-734f30eea3baad0a62452a3bff1dd116'
+    );
+
+    expect(doc.name).toBe('jsdelivr');
+    expect(Object.keys(doc.versions)).toHaveLength(2);
+  });
+});
+
+describe('getDocFromRegistry()', () => {
+  it('retrieves a single doc', async () => {
+    const doc = await api.getDocFromRegistry('jsdelivr');
+
+    expect(doc.name).toBe('jsdelivr');
+    expect(Object.keys(doc.versions).length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('throws PackageNotFoundError for non-existent packages', async () => {
+    await expect(api.getDocFromRegistry('jsdelivrxxxx')).rejects.toBeInstanceOf(
+      PackageNotFoundError
+    );
+  });
+
+  it('throws PackageNotFoundError for packages without versions', async () => {
+    await expect(
+      api.getDocFromRegistry('ebay-app-meta')
+    ).rejects.toBeInstanceOf(PackageNotFoundError);
   });
 });
 
@@ -77,98 +113,86 @@ describe('getDependents()', () => {
 describe('fetchDownload()', () => {
   it('should download one package and return correct response', async () => {
     const dl = await api.fetchDownload('jest');
-    expect(dl.body).toHaveProperty('jest');
-    expect(dl.body.jest).toEqual({
-      downloads: expect.any(Number),
-      start: expect.any(String),
-      end: expect.any(String),
-      package: 'jest',
+    expect(dl).toHaveProperty('jest');
+    expect(dl.jest).toEqual({
+      packageNpmDownloads: expect.any(Number),
     });
   });
 
   it('should download one scoped package and return correct response', async () => {
     const dl = await api.fetchDownload('@angular/core');
-    expect(dl.body).toHaveProperty('@angular/core');
-    expect(dl.body['@angular/core']).toEqual({
-      downloads: expect.any(Number),
-      start: expect.any(String),
-      end: expect.any(String),
-      package: '@angular/core',
+    expect(dl).toHaveProperty('@angular/core');
+    expect(dl['@angular/core']).toEqual({
+      packageNpmDownloads: expect.any(Number),
     });
   });
 
   it('should download 2 packages and return correct response', async () => {
     const dl = await api.fetchDownload('jest,holmes.js');
-    expect(dl.body).toHaveProperty('jest');
-    expect(dl.body).toHaveProperty(['holmes.js']);
+    expect(dl).toHaveProperty('jest');
+    expect(dl).toHaveProperty(['holmes.js']);
   });
 });
 
 describe('getDownloads()', () => {
-  let downloads;
+  let downloads: Awaited<ReturnType<typeof api.getDownloads>>;
+
   beforeAll(async () => {
+    await api.loadTotalDownloads();
+
     downloads = await api.getDownloads([
       { name: 'jest' },
-      { name: '@angular/core' },
       { name: 'holmes.js' },
     ]);
+
+    downloads = {
+      ...downloads,
+      ...(await api.getDownloads([{ name: '@angular/core' }])),
+    };
   });
 
   it('contains the correct keys', () => {
-    expect(downloads).toEqual([
-      expect.objectContaining({
-        downloadsLast30Days: expect.any(Number),
-        downloadsRatio: expect.any(Number),
-        humanDownloadsLast30Days: expect.any(String),
-        popular: true,
-        _searchInternal: {
-          popularName: 'jest',
-          downloadsMagnitude: expect.any(Number),
-          expiresAt: expect.any(Number),
-        },
+    expect(downloads).toEqual({
+      jest: expect.objectContaining({
+        packageNpmDownloads: expect.any(Number),
+        totalNpmDownloads: expect.any(Number),
       }),
-      expect.objectContaining({
-        downloadsLast30Days: expect.any(Number),
-        downloadsRatio: expect.any(Number),
-        humanDownloadsLast30Days: expect.any(String),
-        popular: true,
-        _searchInternal: {
-          popularName: '@angular/core',
-          downloadsMagnitude: expect.any(Number),
-          expiresAt: expect.any(Number),
-        },
+      'holmes.js': expect.objectContaining({
+        packageNpmDownloads: expect.any(Number),
+        totalNpmDownloads: expect.any(Number),
       }),
-      expect.objectContaining({
-        downloadsLast30Days: expect.any(Number),
-        downloadsRatio: expect.any(Number),
-        humanDownloadsLast30Days: expect.any(String),
-        popular: false,
-        _searchInternal: {
-          downloadsMagnitude: expect.any(Number),
-          expiresAt: expect.any(Number),
-        },
+      '@angular/core': expect.objectContaining({
+        packageNpmDownloads: expect.any(Number),
+        totalNpmDownloads: expect.any(Number),
       }),
-    ]);
+    });
   });
 
   it('has the right approximate value for downloadsLast30Days', () => {
-    const [jest, angular, holmes] = downloads.map((pkg) =>
-      pkg.downloadsLast30Days.toString()
+    const [jest, holmes, angular] = Object.values(downloads).map((pkg) =>
+      pkg.packageNpmDownloads!.toString()
     );
 
-    expect(jest.length).toBeGreaterThanOrEqual(6);
-    expect(jest.length).toBeLessThanOrEqual(8);
+    expect(jest!.length).toBeGreaterThanOrEqual(6);
+    expect(jest!.length).toBeLessThanOrEqual(8);
 
-    expect(angular.length).toBeGreaterThanOrEqual(6);
-    expect(angular.length).toBeLessThanOrEqual(8);
+    expect(angular!.length).toBeGreaterThanOrEqual(6);
+    expect(angular!.length).toBeLessThanOrEqual(8);
 
-    expect(holmes.length).toBeGreaterThanOrEqual(2);
-    expect(holmes.length).toBeLessThanOrEqual(4);
+    expect(holmes!.length).toBeGreaterThanOrEqual(2);
+    expect(holmes!.length).toBeLessThanOrEqual(4);
   });
 
   it('has the right approximate value for downloadsMagnitude', () => {
-    const [jest, angular, holmes] = downloads.map(
-      (pkg) => pkg._searchInternal.downloadsMagnitude
+    const [jest, holmes, angular] = Object.entries<DownloadsData>(
+      downloads
+    ).map(
+      ([name, pkg]) =>
+        computeDownload(
+          { name },
+          pkg.packageNpmDownloads,
+          pkg.totalNpmDownloads
+        )?._downloadsMagnitude
     );
 
     expect(jest).toBeGreaterThanOrEqual(6);
@@ -179,5 +203,21 @@ describe('getDownloads()', () => {
 
     expect(holmes).toBeGreaterThanOrEqual(2);
     expect(holmes).toBeLessThanOrEqual(4);
+  });
+
+  it('validates package batching', async () => {
+    await expect(
+      api.getDownloads([{ name: '@scope/p-1' }, { name: '@scope/p-2' }])
+    ).rejects.toThrow('one at a time');
+  });
+
+  it('returns undefined for non-existent packages without failing the valid ones', async () => {
+    const result = await api.getDownloads([
+      { name: 'jsdelivr' },
+      { name: 'jsdelivrxxxx' },
+    ]);
+
+    expect(result.jsdelivr!.packageNpmDownloads).toBeGreaterThan(0);
+    expect(result.jsdelivrxxxx!.packageNpmDownloads).toBeUndefined();
   });
 });
