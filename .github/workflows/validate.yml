@@ -1,0 +1,31 @@
+name: Validate
+run-name: 🤖 Validating code on ${{ github.ref_name }}
+
+on:
+  push:
+
+jobs:
+  validate:
+    name: 🤖 Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.18'
+          cache: 'yarn'
+
+      - name: 📦 Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: 📝 Lint
+        run: yarn lint
+
+      - name: 🏗️ Build
+        run: yarn build
+
+      - name: 🚦 Test
+        run: yarn test
