@@ -1,0 +1,10 @@
+#!/bin/sh
+# Publish a new version on GitHub, including:
+# - Update package.json and CHANGELOG.md with new version and changes
+# - Tag the commit with the version number
+# - Release the source code on GitHub Releases (https://github.com/algolia/npm-search/releases)
+#
+# This script doesn't do anything if there is no new version to publish
+set -e
+
+yarn run semantic-release
