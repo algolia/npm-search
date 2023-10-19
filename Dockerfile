@@ -54,8 +54,6 @@ RUN true \
 # This image must have the minimum amount of layers
 FROM node:18.18.0-alpine as final
 
-LABEL org.opencontainers.image.source=https://github.com/algolia/npm-search
-
 ENV NODE_ENV production
 
 # Do not use root to run the app

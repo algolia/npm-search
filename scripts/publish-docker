@@ -16,9 +16,9 @@ echo "Publishing: $version"
 echo ""
 
 # Build the image
-# algolia/npm-search
 docker build \
 	--platform linux/amd64 \
+	--label "org.opencontainers.image.source=https://github.com/algolia/npm-search" \
 	--tag "ghcr.io/algolia/npm-search" \
 	--tag "ghcr.io/algolia/npm-search:${version}" \
 	.

@@ -35,7 +35,7 @@ jobs:
       - name: 📦 Install dependencies
         run: yarn install --frozen-lockfile
 
-      - name: ❓ Check if a new release is needed
+      - name: ❓ Check if a new version needs to be published
         id: publish-check
         continue-on-error: true
         run: yarn publish:check
@@ -45,4 +45,5 @@ jobs:
         run: yarn publish:github
 
       - name: 🐋 Publish Docker image
+        if: ${{ steps.publish-check.outcome == 'success' }}
         run: yarn publish:docker
