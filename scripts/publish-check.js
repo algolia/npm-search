@@ -2,11 +2,19 @@
 /* eslint-disable no-console */
 /* eslint-disable no-process-exit */
 /* eslint-disable @typescript-eslint/no-var-requires */
+const { Writable } = require('node:stream');
+
 const semanticRelease = require('semantic-release');
-const { WritableStreamBuffer } = require('stream-buffers');
 
 (async () => {
   console.log('Analyzing commits since last version...');
+
+  const stream = new Writable({
+    write(_chunk, _encoding, callback) {
+      setImmediate(callback);
+    },
+  });
+
   // Execute semantic-release with only the commit-analyzer step, to see if
   // a new release is needed
   const { nextRelease } = await semanticRelease(
@@ -25,8 +33,8 @@ const { WritableStreamBuffer } = require('stream-buffers');
     },
     // Redirect output to new streams, to make the script silent
     {
-      stdout: new WritableStreamBuffer(),
-      stderr: new WritableStreamBuffer(),
+      stdout: stream,
+      stderr: stream,
     }
   );
 
