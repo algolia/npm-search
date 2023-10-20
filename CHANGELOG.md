@@ -1,3 +1,15 @@
+# [1.8.0](https://github.com/algolia/npm-search/compare/v1.7.15...v1.8.0) (2023-10-20)
+
+
+### Bug Fixes
+
+* **ci:** Trigger CI checks on branch push, not only on PR creation ([#1143](https://github.com/algolia/npm-search/issues/1143)) ([9d99aa3](https://github.com/algolia/npm-search/commit/9d99aa33f053f1c64da5185b923600cafda43462))
+
+
+### Features
+
+* **ci:** Automate Docker image publication when merging on master ([#1142](https://github.com/algolia/npm-search/issues/1142)) ([f0208ba](https://github.com/algolia/npm-search/commit/f0208ba8469f6b8e7e6f9c78d67d16f94ed784a6))
+
 ## [1.7.15](https://github.com/algolia/npm-search/compare/v1.7.14...v1.7.15) (2023-02-13)
 
 
