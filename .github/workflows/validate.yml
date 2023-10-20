@@ -1,4 +1,4 @@
-name: Validate
+name: VALIDATE
 run-name: 🤖 Validating code on ${{ github.ref_name }}
 
 on:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   validate:
-    name: 🤖 Validate
+    name: '[🤖 Validate]'
     runs-on: ubuntu-latest
     steps:
       - name: 📁 Checkout code

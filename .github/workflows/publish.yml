@@ -1,4 +1,4 @@
-name: Publish
+name: PUBLISH
 run-name: 🚀 Commit on ${{ github.ref_name }}
 
 on:
@@ -8,10 +8,10 @@ on:
 
 jobs:
   validate:
-    name: 🤖 Validate
+    name: '[🤖 Validate]'
     uses: ./.github/workflows/validate.yml
   publish:
-    name: 📦 Publish
+    name: '[📦 Publish]'
     needs: validate
     runs-on: ubuntu-latest
     permissions:
