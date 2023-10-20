@@ -1,4 +1,4 @@
-name: Validate
+name: VALIDATE
 run-name: 🤖 Validating code on ${{ github.ref_name }}
 
 on:

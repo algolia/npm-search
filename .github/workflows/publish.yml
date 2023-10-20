@@ -1,4 +1,4 @@
-name: Publish
+name: PUBLISH
 run-name: 🚀 Commit on ${{ github.ref_name }}
 
 on:
