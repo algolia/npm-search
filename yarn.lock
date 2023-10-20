@@ -1649,10 +1649,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:4.14.184":
-  version: 4.14.184
-  resolution: "@types/lodash@npm:4.14.184"
-  checksum: 6d9a4d67f7f9d0ec3fd21174f3dd3d00629dc1227eb469450eace53adbc1f7e2330699c28d0fe093e5f0fef0f0e763098be1f779268857213224af082b62be21
+"@types/lodash@npm:4.14.200":
+  version: 4.14.200
+  resolution: "@types/lodash@npm:4.14.200"
+  checksum: 6471f8bb5da692a6ecf03a8da4935bfbc341e67ee9bcb4f5730bfacff0c367232548f0a01e8ac5ea18c6fe78fb085d502494e33ccb47a7ee87cbdee03b47d00d
   languageName: node
   linkType: hard
 
@@ -6809,7 +6809,7 @@ __metadata:
     "@types/escape-html": 1.0.2
     "@types/hosted-git-info": 3.0.2
     "@types/jest": 28.1.7
-    "@types/lodash": 4.14.184
+    "@types/lodash": 4.14.200
     "@types/ms": 0.7.31
     "@types/numeral": 2.0.2
     "@types/traverse": 0.6.32
