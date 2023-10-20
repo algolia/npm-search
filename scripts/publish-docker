@@ -1,0 +1,38 @@
+#!/bin/sh
+# Publish the project on GitHub Packages
+# See: https://github.com/algolia/npm-search/pkgs/container/npm-search
+#
+# This script will be automatically run from GitHub Actions on each commits on
+# the main branch that warrants a release (ie. feat() and fix() commits).
+#
+# You can also run the script locally, but you'll need a GITHUB_TOKEN with the
+# write:packages scope.
+# See: https://github.com/settings/tokens
+set -e
+
+# Get version from package.json
+version=$(node -e "console.log(require('./package.json').version)")
+echo "Publishing: $version"
+echo ""
+
+# Build the image
+docker build \
+	--platform linux/amd64 \
+	--label "org.opencontainers.image.source=https://github.com/algolia/npm-search" \
+	--tag "ghcr.io/algolia/npm-search" \
+	--tag "ghcr.io/algolia/npm-search:${version}" \
+	.
+
+# Login to ghcr.io
+echo "${GITHUB_TOKEN}" |
+	docker login ghcr.io \
+		--username $ \
+		--password-stdin
+
+# Push the image
+docker push "ghcr.io/algolia/npm-search"
+docker push "ghcr.io/algolia/npm-search:${version}"
+
+# Output
+echo "Version $version published"
+echo "https://github.com/algolia/npm-search/pkgs/container/npm-search"

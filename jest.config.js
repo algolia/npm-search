@@ -15,18 +15,4 @@ module.exports = {
 
   testEnvironment: 'node',
   modulePaths: ['src'],
-
-  // reporter for circleci
-  reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        outputDirectory: 'junit',
-        suiteNameTemplate: '{filepath}',
-        ancestorSeparator: ' › ',
-        addFileAttribute: 'true',
-      },
-    ],
-  ],
 };

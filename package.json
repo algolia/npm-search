@@ -17,8 +17,9 @@
     "start_new": "indexName=npm-search-new bootstrapIndexName=npm-search-new.tmp UV_THREADPOOL_SIZE=64 node --max-old-space-size=1500 dist/index.js",
     "test:watch": "jest --watchAll --no-watchman",
     "test": "jest --forceExit",
-    "docker:build": "./scripts/build.sh",
-    "docker:release": "VERSION=$(node -e \"console.log(require('./package.json').version)\") && echo \"Releasing $VERSION\" && docker push algolia/npm-search && docker push algolia/npm-search:$VERSION"
+    "publish:check": "node ./scripts/publish-check.js",
+    "publish:github": "./scripts/publish-github",
+    "publish:docker": "./scripts/publish-docker"
   },
   "license": "MIT",
   "dependencies": {
@@ -50,7 +51,6 @@
   "devDependencies": {
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/git": "10.0.1",
-    "@semantic-release/npm": "9.0.1",
     "@types/escape-html": "1.0.2",
     "@types/hosted-git-info": "3.0.2",
     "@types/jest": "28.1.7",

@@ -1434,7 +1434,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@semantic-release/npm@npm:9.0.1, @semantic-release/npm@npm:^9.0.0":
+"@semantic-release/npm@npm:^9.0.0":
   version: 9.0.1
   resolution: "@semantic-release/npm@npm:9.0.1"
   dependencies:
@@ -7415,7 +7415,6 @@ __metadata:
     "@algolia/requester-node-http": 4.14.2
     "@semantic-release/changelog": 6.0.1
     "@semantic-release/git": 10.0.1
-    "@semantic-release/npm": 9.0.1
     "@types/bluebird": ^3.5.39
     "@types/escape-html": 1.0.2
     "@types/hosted-git-info": 3.0.2

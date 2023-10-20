@@ -1,0 +1,49 @@
+name: Publish
+run-name: 🚀 Commit on ${{ github.ref_name }}
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  validate:
+    name: 🤖 Validate
+    uses: ./.github/workflows/validate.yml
+  publish:
+    name: 📦 Publish
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      # To commit on the repo and add the tag
+      contents: write
+      # To publish the Docker image to GitHub Packages
+      packages: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.18'
+          cache: 'yarn'
+
+      - name: 📦 Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: ❓ Check if a new version needs to be published
+        id: publish-check
+        continue-on-error: true
+        run: yarn publish:check
+
+      - name: 🆙 Bump version, tag commit, publish GitHub Release
+        if: ${{ steps.publish-check.outcome == 'success' }}
+        run: yarn publish:github
+
+      - name: 🐋 Publish Docker image
+        if: ${{ steps.publish-check.outcome == 'success' }}
+        run: yarn publish:docker
