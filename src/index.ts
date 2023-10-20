@@ -21,7 +21,7 @@ import { log } from './utils/log';
 import * as sentry from './utils/sentry';
 import { Watch } from './watch';
 
-const KILL_PROCESS_EVERY_MS = ms('4 hours');
+const KILL_PROCESS_EVERY_MS = ms("4 hours");
 
 class Main {
   bootstrap: Bootstrap | undefined;
