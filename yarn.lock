@@ -1494,10 +1494,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/async@npm:3.2.15":
-  version: 3.2.15
-  resolution: "@types/async@npm:3.2.15"
-  checksum: c0d9dae6cabc000abe3bb60ce1c7f3e6019aacf4f5f4ad659fef9f9f4d5dd2a59c6524da30d411dab67dab9f348c527bb18d59ae06d0a26f4a64ef3e6b2ec998
+"@types/async@npm:3.2.22":
+  version: 3.2.22
+  resolution: "@types/async@npm:3.2.22"
+  checksum: 2b3371563b1a87ec8c3d3b79c20e114260440460ead8636d5e937d1e670464229d9a73ff22c2c3c5077e842ae5bf4102b33c90853cde159961f5705bc9b3accb
   languageName: node
   linkType: hard
 
@@ -6812,7 +6812,7 @@ __metadata:
     "@semantic-release/git": 10.0.1
     "@semantic-release/npm": 9.0.1
     "@sentry/node": 7.11.1
-    "@types/async": 3.2.15
+    "@types/async": 3.2.22
     "@types/escape-html": 1.0.2
     "@types/hosted-git-info": 3.0.2
     "@types/jest": 28.1.7
