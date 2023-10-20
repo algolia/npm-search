@@ -8,10 +8,10 @@ on:
 
 jobs:
   validate:
-    name: '[🤖 Validate]'
+    name: 🤖 Validate
     uses: ./.github/workflows/validate.yml
   publish:
-    name: '[📦 Publish]'
+    name: 📦 Publish
     needs: validate
     runs-on: ubuntu-latest
     permissions:

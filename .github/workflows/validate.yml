@@ -9,7 +9,7 @@ on:
 
 jobs:
   validate:
-    name: '[🤖 Validate]'
+    name: 🤖 Validate
     runs-on: ubuntu-latest
     steps:
       - name: 📁 Checkout code
