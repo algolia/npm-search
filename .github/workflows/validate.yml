@@ -9,6 +9,7 @@ on:
   # on.workflow_call is required for this workflow to be re-used
   # See: https://docs.github.com/en/actions/using-workflows/reusing-workflows#creating-a-reusable-workflow
   workflow_call:
+
 jobs:
   validate:
     name: 🤖 Validate
