@@ -84,7 +84,7 @@
     "validator": "13.7.0"
   },
   "engines": {
-    "node": "16.17.0",
+    "node": "16.20.2",
     "yarn": "^1.22.0"
   },
   "repository": {
