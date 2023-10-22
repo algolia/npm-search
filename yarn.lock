@@ -7339,7 +7339,7 @@ __metadata:
     truncate-utf8-bytes: 1.0.2
     ts-jest: 28.0.8
     typescript: 4.9.5
-    validator: 13.7.0
+    validator: 13.11.0
   languageName: unknown
   linkType: soft
 
@@ -9782,10 +9782,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"validator@npm:13.7.0":
-  version: 13.7.0
-  resolution: "validator@npm:13.7.0"
-  checksum: 2b83283de1222ca549a7ef57f46e8d49c6669213348db78b7045bce36a3b5843ff1e9f709ebf74574e06223461ee1f264f8cc9a26a0060a79a27de079d8286ef
+"validator@npm:13.11.0":
+  version: 13.11.0
+  resolution: "validator@npm:13.11.0"
+  checksum: d1e0c27022681420756da25bc03eb08d5f0c66fb008f8ff02ebc95812b77c6be6e03d3bd05cf80ca702e23eeb73dadd66b4b3683173ea2a0bc7cc72820bee131
   languageName: node
   linkType: hard
 
