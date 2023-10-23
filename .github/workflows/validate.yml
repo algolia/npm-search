@@ -8,7 +8,9 @@ on:
       - '!master'
   pull_request:
     types:
-      # - opened
+      - opened
+      - edited
+      - reopened
       - synchronize
   # on.workflow_call is required for this workflow to be re-used
   # See: https://docs.github.com/en/actions/using-workflows/reusing-workflows#creating-a-reusable-workflow
