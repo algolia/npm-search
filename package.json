@@ -16,6 +16,7 @@
     "start": "UV_THREADPOOL_SIZE=64 node --max-old-space-size=1500 dist/index.js",
     "start_new": "indexName=npm-search-new bootstrapIndexName=npm-search-new.tmp UV_THREADPOOL_SIZE=64 node --max-old-space-size=1500 dist/index.js",
     "test:watch": "jest --watchAll --no-watchman",
+    "test:sanity-check": "./scripts/test-sanity-check",
     "test": "jest --forceExit",
     "publish:check": "node ./scripts/publish-check.js",
     "publish:github": "./scripts/publish-github",
