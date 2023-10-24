@@ -4,8 +4,8 @@
 # mocked) HTTP calls.
 #
 # As those tests are slow, and have a higher probability of flakiness because of
-# network issues or timeouts. We don't want to run them on each pre-commit hook
-# or CI commit, and only run them periodically from the CI, or manually.
+# network issues or timeouts, we don't want to run them on each pre-commit hook
+# or CI commit. They can instead be run manually, or periodically from the CI.
 #
 # When it fails on the CI, it will generate a GitHub issue with the failure details
 # as well as a link to the run.
@@ -31,11 +31,13 @@ echo "$output"
 # Stop on success
 if [ "$exitCode" = "0" ]; then
 	exit 0
-else
-	gh issue create \
-		--title "API Control failed" \
-		--body "\
-One of the external APIs we depend on failed to return coherent data in our daily test.
+fi
+
+# Create the issue on failure
+gh issue create \
+	--title "API Control failed" \
+	--body "\
+One of the external APIs we depend on failed to return coherent data in our periodic test.
 Maybe it's a temporary issue, maybe they changed their format.
 
 https://github.com/algolia/npm-search/actions/runs/$GITHUB_RUN_ID
@@ -43,5 +45,6 @@ https://github.com/algolia/npm-search/actions/runs/$GITHUB_RUN_ID
 \`\`\`
 $output
 \`\`\`"
-	exit 1
-fi
+
+# Still mark the job as failed
+exit 1

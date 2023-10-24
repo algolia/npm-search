@@ -1,6 +1,6 @@
 import * as api from '../../npm/index';
 
-jest.setTimeout(1500);
+jest.setTimeout(15000);
 
 describe('findAll()', () => {
   it('contains the correct keys', async () => {
