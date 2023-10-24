@@ -5,8 +5,8 @@ module.exports = {
   },
   testMatch: ['<rootDir>/src/**/*.test.[jt]s'],
   // By default, ignore the slow and flaky tests testing external APIs. Those
-  // will be run specifically with `yarn run test:sanity-check`
-  testPathIgnorePatterns: ['sanity-check'],
+  // will be run specifically with `yarn run test:api-control`
+  testPathIgnorePatterns: ['api-control'],
   globals: {
     'ts-jest': {
       diagnostics: false,

@@ -1,0 +1,25 @@
+name: API CONTROL
+on:
+  schedule:
+    # Everyday, at 10am
+    - cron: '0 10 * * *'
+
+jobs:
+  api-control:
+    name: 🛂 API Control
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.18'
+          cache: 'yarn'
+
+      - name: 📦 Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: 🛂 API Control
+        run: GITHUB_RUN_ID="${{ github.run_id }}" yarn test:api-control
