@@ -8,16 +8,13 @@ on:
 
 jobs:
   validate:
-    name: 🤖 Validate
+    name: ↪️ Validate
     uses: ./.github/workflows/validate.yml
   publish:
     name: 📦 Publish
     needs: validate
     runs-on: ubuntu-latest
     permissions:
-      # To commit on the repo and add the tag
-      contents: write
-      # To publish the Docker image to GitHub Packages
       packages: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
