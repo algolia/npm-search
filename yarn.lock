@@ -3844,13 +3844,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-algolia@npm:20.0.0":
-  version: 20.0.0
-  resolution: "eslint-config-algolia@npm:20.0.0"
+"eslint-config-algolia@npm:21.0.0":
+  version: 21.0.0
+  resolution: "eslint-config-algolia@npm:21.0.0"
   peerDependencies:
     eslint: ^5.16.0 || ^6.8.0 || ^7.2.0 || ^8.0.0
     prettier: ^2.2.1
-  checksum: d50b249f65c535c7f34dfd773d36b7057b2cfbd6406631af67550ac22e6d00018be38a499e11c8dbb8f163911098a4b0ab20a7933393eaaa17968b308dd726ef
+  checksum: ea3091982476d554ac25d3ca3b32ceb6bcad220d6d678208aba1521341dd626fbcd24372a854bbdeb07327b453183835c71cf53ec866dadf8568f3276118b7f4
   languageName: node
   linkType: hard
 
@@ -7424,7 +7424,7 @@ __metadata:
     elastic-apm-node: ^3.49.1
     escape-html: 1.0.3
     eslint: 8.22.0
-    eslint-config-algolia: 20.0.0
+    eslint-config-algolia: 21.0.0
     eslint-config-prettier: 8.5.0
     eslint-plugin-eslint-comments: 3.2.0
     eslint-plugin-import: 2.26.0
