@@ -42,7 +42,7 @@
     "nano": "^10.1.2",
     "nice-package": "3.1.2",
     "numeral": "2.0.6",
-    "object-sizeof": "1.6.3",
+    "object-sizeof": "2.6.3",
     "p-queue": "6.6.2",
     "promise-rat-race": "1.5.1",
     "throttled-queue": "^2.1.4",
