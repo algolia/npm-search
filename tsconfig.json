@@ -68,6 +68,12 @@
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "resolveJsonModule": true
   },
-  "include": ["*.js", "src/**/*.js", "src/**/*.ts", "package.json"],
+  "include": [
+    ".eslintrc.js",
+    "*.js",
+    "src/**/*.js",
+    "src/**/*.ts",
+    "package.json"
+  ],
   "exclude": ["node_modules"]
 }

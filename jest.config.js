@@ -7,13 +7,16 @@ module.exports = {
   // By default, ignore the slow and flaky tests testing external APIs. Those
   // will be run specifically with `yarn run test:api-control`
   testPathIgnorePatterns: ['api-control'],
-  globals: {
-    'ts-jest': {
+  transform: {
+    '^.+\\.tsx?$': ['ts-jest', {
       diagnostics: false,
       tsconfig: `tsconfig.json`,
-    },
+    }]
   },
-
   testEnvironment: 'node',
   modulePaths: ['src'],
+  snapshotFormat: {
+   escapeString: true,
+   printBasicPrototype: true
+  }
 };
