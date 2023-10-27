@@ -33,7 +33,6 @@ module.exports = {
         ...defaultRules,
         'consistent-return': 'off',
         'no-dupe-class-members': 'off',
-        '@typescript-eslint/sort-type-union-intersection-members': 'off',
       },
     },
   ],
