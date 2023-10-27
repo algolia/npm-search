@@ -1,0 +1,17 @@
+{
+  extends: ['algolia'],
+  baseBranches: ['chore/renovateBaseBranch'],
+  packageRules: [
+    {
+      groupName: 'Pinned dependencies',
+      description: "Packages we don't want to update ",
+      enabled: false,
+      /**
+       * hosted-git-info@2.7.1:
+       * Version 2.8 breaks parsing on GitLab URLs
+       * See: https://github.com/algolia/npm-search/pull/1150
+       **/
+      packageNames: ['hosted-git-info'],
+    },
+  ],
+}
