@@ -15,12 +15,9 @@ const defaultRules = {
   ],
 };
 module.exports = {
+  extends: ['algolia', 'algolia/jest'],
+  rules: defaultRules,
   overrides: [
-    {
-      files: ['**/*.js'],
-      extends: ['algolia', 'algolia/jest'],
-      rules: defaultRules,
-    },
     {
       files: ['**/*.ts'],
       extends: ['algolia', 'algolia/jest', 'algolia/typescript'],
