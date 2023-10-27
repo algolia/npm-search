@@ -50,7 +50,7 @@
     "truncate-utf8-bytes": "1.0.2"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "6.0.1",
+    "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "@types/escape-html": "1.0.2",
     "@types/hosted-git-info": "3.0.2",
