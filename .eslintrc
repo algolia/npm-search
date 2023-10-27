@@ -1,9 +1,10 @@
 {
-  "extends": [
-    "algolia",
-    "algolia/jest",
-    "algolia/typescript"
-  ],
+  "extends": ["algolia", "algolia/jest", "algolia/typescript"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
   "rules": {
     "no-continue": "off",
     "valid-jsdoc": "off",
@@ -21,16 +22,10 @@
   },
   "overrides": [
     {
-      "files": [
-        "**/*.ts"
-      ],
+      "files": ["**/*.ts"],
       "rules": {
-        "consistent-return": [
-          "off"
-        ],
-        "no-dupe-class-members": [
-          "off"
-        ],
+        "consistent-return": ["off"],
+        "no-dupe-class-members": ["off"]
       }
     }
   ]
