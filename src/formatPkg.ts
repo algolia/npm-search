@@ -64,7 +64,7 @@ export function formatPkg(pkg: GetPackage): RawPkg | undefined {
   const start = Date.now();
   // Be careful NicePackage modify the Object ref
   const cleaned: NicePackageType | undefined = new NicePackage(pkg);
-  if (!cleaned || !cleaned.name) {
+  if (!cleaned?.name) {
     return;
   }
 
