@@ -1,8 +1,12 @@
-/* eslint-disable import/no-commonjs, @typescript-eslint/no-var-requires */
+/* eslint-disable import/no-commonjs */
+import fs from 'node:fs/promises';
+
+const packageJson = JSON.parse(await fs.readFile('package.json'));
+
 module.exports = {
   active: true,
   serviceName: 'jsdelivr-npm-search',
-  serviceVersion: require('./package.json').version,
+  serviceVersion: packageJson.version,
   logLevel: 'fatal',
   centralConfig: false,
   captureExceptions: false,

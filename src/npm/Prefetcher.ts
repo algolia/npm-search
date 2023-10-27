@@ -19,15 +19,15 @@ export type PrefetchedPkg = Pick<
 > & { offset: number };
 
 export class Prefetcher {
+  private stateManager: StateManager;
+  private queueIndex: SearchIndex;
+
   #limit: number = config.bootstrapConcurrency;
   #ready: PrefetchedPkg[] = [];
   #nextKey: string | null = null;
   #running: boolean = false;
   #offset: number = 0;
   #finished: boolean = false;
-
-  private stateManager: StateManager;
-  private queueIndex: SearchIndex;
 
   constructor(
     stateManager: StateManager,
