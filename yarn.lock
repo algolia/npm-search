@@ -1797,10 +1797,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/hosted-git-info@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@types/hosted-git-info@npm:3.0.2"
-  checksum: b922a6f13c79d0388762a92e943d098cbc950be20754508de4946d3529ecab730e3be01ebdbe0a235b85ddcc3f7251d8df3073d98978d43018a76200b47e548d
+"@types/hosted-git-info@npm:3.0.4":
+  version: 3.0.4
+  resolution: "@types/hosted-git-info@npm:3.0.4"
+  checksum: a141ac194fb7e3c57310af9cc21639c2543479af8648d355148a2a821d6e2d5a436f4bc544726c95a21761abca123605e8817eb0bdf6f113b86d760abb63ddd9
   languageName: node
   linkType: hard
 
@@ -7989,7 +7989,7 @@ __metadata:
     "@semantic-release/git": 10.0.1
     "@types/bluebird": ^3.5.39
     "@types/escape-html": 1.0.3
-    "@types/hosted-git-info": 3.0.2
+    "@types/hosted-git-info": 3.0.4
     "@types/jest": 28.1.8
     "@types/lodash": 4.14.184
     "@types/ms": 0.7.31
