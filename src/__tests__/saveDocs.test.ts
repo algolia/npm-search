@@ -5,7 +5,7 @@ import { hits } from '../jsDelivr';
 import { cacheTotalDownloads } from '../npm';
 import { saveDoc } from '../saveDocs';
 
-import preact from './preact-simplified.json';
+import preact from './preact-simplified';
 
 jest.setTimeout(15000);
 
@@ -202,6 +202,8 @@ describe('saveDoc', () => {
   it('should always produce the same records', async () => {
     const client = algoliasearch('e', '');
     const index = client.initIndex('a');
+    const oneTimeDataIndex = client.initIndex('a');
+    const periodicDataIndex = client.initIndex('a');
     jest.spyOn(index, 'saveObject').mockImplementationOnce(() => {
       return true as any;
     });
@@ -225,7 +227,12 @@ describe('saveDoc', () => {
       popular: true,
     });
 
-    await saveDoc({ formatted: formatPkg(preact), index });
+    await saveDoc({
+      formatted: formatPkg(preact)!,
+      index,
+      oneTimeDataIndex,
+      periodicDataIndex,
+    });
 
     expect(index.saveObject).toHaveBeenCalledWith(clean);
   });
@@ -268,7 +275,7 @@ describe('saveDoc', () => {
     });
 
     await saveDoc({
-      formatted: formatPkg(preact),
+      formatted: formatPkg(preact)!,
       index,
       oneTimeDataIndex,
       periodicDataIndex,
@@ -280,6 +287,8 @@ describe('saveDoc', () => {
   it('should not add popular alternative names for non-popular packages', async () => {
     const client = algoliasearch('e', '');
     const index = client.initIndex('a');
+    const oneTimeDataIndex = client.initIndex('a');
+    const periodicDataIndex = client.initIndex('a');
     jest.spyOn(index, 'saveObject').mockImplementationOnce(() => {
       return true as any;
     });
@@ -325,8 +334,10 @@ describe('saveDoc', () => {
           ...preact.time,
           '1.0.0': '2019-08-02T18:34:23.572Z',
         },
-      }),
+      })!,
       index,
+      periodicDataIndex,
+      oneTimeDataIndex,
     });
 
     expect(index.saveObject).toHaveBeenCalledWith(clean);
@@ -335,6 +346,8 @@ describe('saveDoc', () => {
   it('should skip getting extra data for security held packages', async () => {
     const client = algoliasearch('e', '');
     const index = client.initIndex('a');
+    const oneTimeDataIndex = client.initIndex('a');
+    const periodicDataIndex = client.initIndex('a');
     jest.spyOn(index, 'saveObject').mockImplementationOnce(() => {
       return true as any;
     });
@@ -402,8 +415,10 @@ describe('saveDoc', () => {
           type: 'git',
           url: 'https://github.com/npm/security-holder',
         },
-      }),
+      })!,
       index,
+      oneTimeDataIndex,
+      periodicDataIndex,
     });
 
     expect(index.saveObject).toHaveBeenCalledWith(clean);
