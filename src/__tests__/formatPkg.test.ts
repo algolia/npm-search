@@ -10,8 +10,8 @@ import {
 } from '../formatPkg';
 import type { GetPackage, PackageRepo } from '../npm/types';
 
-import preact from './preact-simplified.json';
-import rawPackages from './rawPackages.json';
+import preact from './preact-simplified';
+import rawPackages from './rawPackages';
 
 const BASE: GetPackage = {
   _id: '0',
@@ -56,9 +56,9 @@ describe('nice-package', () => {
 describe('general', () => {
   it('transforms correctly', () => {
     rawPackages
-      .map(formatPkg)
+      .map((val) => formatPkg(val))
       .map((element) => {
-        expect(isISO8601(element.lastCrawl)).toBe(true);
+        expect(isISO8601(element?.lastCrawl)).toBe(true);
         return element;
       })
       .map((formattedPackage) =>
@@ -69,7 +69,7 @@ describe('general', () => {
             _revision: expect.any(Number),
             _searchInternal: {},
           },
-          formattedPackage.objectID
+          formattedPackage?.objectID
         )
       );
   });
@@ -77,8 +77,8 @@ describe('general', () => {
   it('keeps .bin intact', () => {
     const createInstantSearchApp = rawPackages.find(
       (pkg) => pkg.name === 'create-instantsearch-app'
-    );
-    const formatted = formatPkg(createInstantSearchApp);
+    )!;
+    const formatted = formatPkg(createInstantSearchApp)!;
     expect(formatted.bin).toMatchInlineSnapshot(`
   Object {
     "create-instantsearch-app": "src/cli/index.js",
@@ -92,7 +92,7 @@ describe('general', () => {
       name: 'long-boy',
       readme: 'Hello, World! '.repeat(40000),
     };
-    const formatted = formatPkg(pkg);
+    const formatted = formatPkg(pkg)!;
     const postfix = ' **TRUNCATED**';
     const ending = formatted.readme.substring(
       formatted.readme.length - postfix.length
@@ -120,7 +120,7 @@ describe('general', () => {
       keywords: ['hi'],
     };
 
-    const formatted = formatPkg(pkg);
+    const formatted = formatPkg(pkg)!;
     expect(formatted.keywords).toEqual(['hi']);
     expect(formatted.computedKeywords).toEqual(['angular-cli-schematic']);
     expect(formatted.computedMetadata).toEqual({
@@ -140,8 +140,8 @@ describe('general', () => {
       keywords: ['dogs'],
     };
 
-    const formattedDogs = formatPkg(pkg);
-    const formattedUnofficialDogs = formatPkg(unofficialDogs);
+    const formattedDogs = formatPkg(pkg)!;
+    const formattedUnofficialDogs = formatPkg(unofficialDogs)!;
 
     expect(formattedDogs.keywords).toEqual(['babel']);
     expect(formattedUnofficialDogs.keywords).toEqual(['dogs']);
@@ -166,9 +166,9 @@ describe('adds vue-cli plugins', () => {
   };
 
   it('should format correctly', () => {
-    const formattedDogs = formatPkg(pkg);
-    const formattedUnofficialDogs = formatPkg(unofficialDogs);
-    const formattedScopedDogs = formatPkg(scopedDogs);
+    const formattedDogs = formatPkg(pkg)!;
+    const formattedUnofficialDogs = formatPkg(unofficialDogs)!;
+    const formattedScopedDogs = formatPkg(scopedDogs)!;
 
     expect(formattedDogs.keywords).toEqual([]);
     expect(formattedUnofficialDogs.keywords).toEqual([]);
@@ -189,7 +189,7 @@ describe('adds yeoman generators', () => {
       name: 'generator-dogs',
       keywords: ['yeoman-generator'],
     };
-    const formattedDogs = formatPkg(pkg);
+    const formattedDogs = formatPkg(pkg)!;
     expect(formattedDogs.computedKeywords).toEqual(['yeoman-generator']);
   });
   it('should not add if does not start with generator-', () => {
@@ -198,7 +198,7 @@ describe('adds yeoman generators', () => {
       name: 'foo-dogs',
       keywords: ['yeoman-generator'],
     };
-    const formattedDogs = formatPkg(pkg);
+    const formattedDogs = formatPkg(pkg)!;
     expect(formattedDogs.computedKeywords).toEqual([]);
   });
   it('should not add if does not contain yeoman-generator as a keyword', () => {
@@ -207,7 +207,7 @@ describe('adds yeoman generators', () => {
       name: 'generator-dogs',
       keywords: ['foo'],
     };
-    const formattedDogs = formatPkg(pkg);
+    const formattedDogs = formatPkg(pkg)!;
     expect(formattedDogs.computedKeywords).toEqual([]);
   });
 });
@@ -218,7 +218,7 @@ describe('adds webpack scaffolds', () => {
       ...BASE,
       name: 'webpack-scaffold-cats',
     };
-    const formattedDogs = formatPkg(pkg);
+    const formattedDogs = formatPkg(pkg)!;
     expect(formattedDogs.computedKeywords).toEqual(['webpack-scaffold']);
   });
   it('should not add if does not start with generator-', () => {
@@ -226,7 +226,7 @@ describe('adds webpack scaffolds', () => {
       ...BASE,
       name: 'foo-dogs',
     };
-    const formattedDogs = formatPkg(pkg);
+    const formattedDogs = formatPkg(pkg)!;
     expect(formattedDogs.computedKeywords).toEqual([]);
   });
 });
@@ -410,6 +410,7 @@ describe('getRepositoryInfo', () => {
   it('should return null if it cannot get information', () => {
     expect(getRepositoryInfo('')).toBeNull();
     expect(getRepositoryInfo(undefined)).toBeNull();
+    // @ts-expect-error
     expect(getRepositoryInfo(null)).toBeNull();
     expect(getRepositoryInfo('aaaaaaaa')).toBeNull();
   });
@@ -421,7 +422,7 @@ describe('alternative names', () => {
       ...BASE,
       name: 'places',
     };
-    expect(formatPkg(pkg)._searchInternal.alternativeNames)
+    expect(formatPkg(pkg)!._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
       Array [
         "places",
@@ -436,7 +437,7 @@ describe('alternative names', () => {
       ...BASE,
       name: 'places.js',
     };
-    expect(formatPkg(pkg)._searchInternal.alternativeNames)
+    expect(formatPkg(pkg)!._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
             Array [
               "placesjs",
@@ -452,7 +453,7 @@ describe('alternative names', () => {
       ...BASE,
       name: 'prismjs',
     };
-    expect(formatPkg(pkg)._searchInternal.alternativeNames)
+    expect(formatPkg(pkg)!._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
       Array [
         "prismjs",
@@ -466,7 +467,7 @@ describe('alternative names', () => {
       ...BASE,
       name: '@algolia/places.js',
     };
-    expect(formatPkg(pkg)._searchInternal.alternativeNames)
+    expect(formatPkg(pkg)!._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
             Array [
               "algoliaplacesjs",
@@ -482,7 +483,7 @@ describe('alternative names', () => {
       ...BASE,
       name: 'this-is_a-dumb-name',
     };
-    expect(formatPkg(pkg)._searchInternal.alternativeNames)
+    expect(formatPkg(pkg)!._searchInternal.alternativeNames)
       .toMatchInlineSnapshot(`
       Array [
         "thisisadumbname",
