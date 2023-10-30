@@ -1,5 +1,5 @@
 # ---- Base ----
-FROM node:18.18.0-alpine AS base
+FROM node:20.9.0-alpine AS base
 
 # ------------------
 # package.json cache
@@ -52,7 +52,7 @@ RUN true \
 # ---- Final ----
 # Resulting new, minimal image
 # This image must have the minimum amount of layers
-FROM node:18.18.0-alpine as final
+FROM node:20.9.0-alpine as final
 
 ENV NODE_ENV production
 
