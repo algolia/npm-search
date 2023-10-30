@@ -59,7 +59,7 @@
     "@types/ms": "0.7.33",
     "@types/numeral": "2.0.2",
     "@types/traverse": "0.6.34",
-    "@types/truncate-utf8-bytes": "1.0.0",
+    "@types/truncate-utf8-bytes": "1.0.1",
     "@typescript-eslint/eslint-plugin": "5.33.1",
     "@typescript-eslint/parser": "5.33.1",
     "dotenv": "16.0.1",

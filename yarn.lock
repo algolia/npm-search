@@ -1941,10 +1941,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/truncate-utf8-bytes@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@types/truncate-utf8-bytes@npm:1.0.0"
-  checksum: df4d452de2f0c9c0811dfd965f2a2e2ed463a3a9836d5504cad766308a40f5e9d6fa14281ab0d960690d1ff2a16dd04b6bdd78b7ff2cb99febfe71cec900d391
+"@types/truncate-utf8-bytes@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@types/truncate-utf8-bytes@npm:1.0.1"
+  checksum: 65fd938388ee630f0930cde93b5e2d93336b00f39111201645b7740d26ddb6d406b5f53cd0adcdef3667af44fde99fa451d7d56706f9990d9e1fd05ac8e844c7
   languageName: node
   linkType: hard
 
@@ -7995,7 +7995,7 @@ __metadata:
     "@types/ms": 0.7.33
     "@types/numeral": 2.0.2
     "@types/traverse": 0.6.34
-    "@types/truncate-utf8-bytes": 1.0.0
+    "@types/truncate-utf8-bytes": 1.0.1
     "@typescript-eslint/eslint-plugin": 5.33.1
     "@typescript-eslint/parser": 5.33.1
     algoliasearch: 4.14.2
