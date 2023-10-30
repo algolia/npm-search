@@ -458,15 +458,17 @@ function getHomePage(pkg: NicePackageType): string | null {
 }
 
 /**
- * Get info from urls like this: (has multiple packages in one repo, like babel does)
+ * Get repository info from tree URLs.
+ * Tree URLs point to a specific folder or file instead of the root of the Git
+ * repo, common in monorepo setups.
+ *
+ * Examples:
  *  https://github.com/babel/babel/tree/master/packages/babel
  *  https://gitlab.com/user/repo/tree/master/packages/project1
  *  https://bitbucket.org/user/repo/src/ae8df4cd0e809a789e3f96fd114075191c0d5c8b/packages/project1/.
- *
- * This function is like getGitHubRepoInfo (above), but support github, gitlab and bitbucket.
  */
-function getRepositoryInfoFromHttpUrl(repository: string): Repo | null {
-  const result = repository.match(
+function getRepositoryInfoFromTreeUrl(url: string): Repo | null {
+  const result = url.match(
     /^https?:\/\/(?:www\.)?((?:github|gitlab|bitbucket)).((?:com|org))\/([^/]+)\/([^/]+)(\/.+)?$/
   );
 
@@ -474,10 +476,11 @@ function getRepositoryInfoFromHttpUrl(repository: string): Repo | null {
     return null;
   }
 
-  const [, domain, domainTld, user, project, path = ''] = result;
+  const [, domain, domainTld, user, rawProject, path = ''] = result;
+  const project = rawProject.replace(/\.git$/, '')
 
   return {
-    url: repository,
+    url,
     host: `${domain}.${domainTld}`,
     user: user!,
     project: project!,
@@ -485,53 +488,61 @@ function getRepositoryInfoFromHttpUrl(repository: string): Repo | null {
   };
 }
 
-export function getRepositoryInfo(
-  repository: GetPackage['repository'] | string
-): Repo | null {
-  if (!repository) {
-    return null;
-  }
-
-  const url = typeof repository === 'string' ? repository : repository.url;
-  const path = typeof repository === 'string' ? '' : repository.directory || '';
-
-  if (!url) {
-    return null;
-  }
-
-  /**
-   * Get information using hosted-git-info.
-   */
+/**
+ * Get respository information from host URLs.
+ * Git host URLs are the one you can clone from, that represent the root of
+ * a repo
+ *
+ * Examples:
+ * - https://github.com/facebook/react.git
+ * - git@github.com:facebook/react
+ * - git+https://github.com/facebook/react.git
+ **/
+function getRepositoryInfoFromHostUrl(url: string): Repo | null {
   try {
     const repositoryInfo = hostedGitInfo.fromUrl(url);
-
-    if (repositoryInfo) {
-      const { project, user, domain } = repositoryInfo;
-      return {
-        url,
-        project,
-        user,
-        host: domain,
-        path: path.replace(/^[./]+/, ''),
-      };
-    }
+    const { project, user, domain } = repositoryInfo;
+    return {
+      url,
+      project,
+      user,
+      host: domain,
+      path: '',
+    };
   } catch {
-    // Ignore.
-  }
-
-  /**
-   * Unfortunately, hosted-git-info can't handle URL like this: (has path)
-   *   https://github.com/babel/babel/tree/master/packages/babel-core
-   * so we need to do it.
-   */
-  const repositoryInfoFromUrl = getRepositoryInfoFromHttpUrl(url);
-  if (!repositoryInfoFromUrl) {
     return null;
   }
-  return {
-    ...repositoryInfoFromUrl,
-    path: path.replace(/^[./]+/, '') || repositoryInfoFromUrl.path,
-  };
+}
+
+/**
+ * Get normalized info from repository urls of the three major hosting platforms
+ * (GitHub, Gitlab and Bitbucket). Work with either a host URL (root of the
+ * repo) or a tree URL (point to a specific folder)
+ **/
+export function getRepositoryInfo(
+  urlOrOptions: GetPackage['repository'] | string
+): Repo | null {
+  if (!urlOrOptions) {
+    return null;
+  }
+
+  // Input can be passed a string (URL), or as an option object
+  const isOptionObject = typeof urlOrOptions === 'object';
+  const url = isOptionObject ? urlOrOptions.url : urlOrOptions;
+
+  // Repository info can be extracted from git host URLs through
+  // git-hosted-info. Unfortunately, git-hosted-info returns garbage when fed
+  // with tree URLs (that include path to a specific folder), so we first need
+  // to assume the URL is a tree URL and fallback to a host URL if that fails
+  const info = getRepositoryInfoFromTreeUrl(url) || getRepositoryInfoFromHostUrl(url);
+
+  // Overide path with the one passed as options
+  if (isOptionObject && urlOrOptions.directory) {
+    const optionPath = urlOrOptions.directory || '';
+    info.path = optionPath.replace(/^[./]+/, '');
+  }
+
+  return info;
 }
 
 function formatUser(user: GetUser): Owner {
