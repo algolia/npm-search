@@ -582,9 +582,7 @@ describe('moduleTypes', () => {
   });
 
   it('preact (esm & umd)', () => {
-    expect(formatPkg(preact as unknown as GetPackage)!.moduleTypes).toEqual([
-      'esm',
-    ]);
+    expect(formatPkg(preact)?.moduleTypes).toEqual(['esm']);
   });
 
   it('silly broken package', () => {
