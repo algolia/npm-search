@@ -57,7 +57,7 @@
     "@types/jest": "28.1.8",
     "@types/lodash": "4.14.184",
     "@types/ms": "0.7.33",
-    "@types/numeral": "2.0.2",
+    "@types/numeral": "2.0.4",
     "@types/traverse": "0.6.34",
     "@types/truncate-utf8-bytes": "1.0.0",
     "@typescript-eslint/eslint-plugin": "5.33.1",

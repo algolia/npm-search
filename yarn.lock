@@ -1904,10 +1904,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/numeral@npm:2.0.2":
-  version: 2.0.2
-  resolution: "@types/numeral@npm:2.0.2"
-  checksum: d8b778ef5d1b20cb5919fb2cf41108b324ccfaeccb0238caaf54bd9d4bffbbd57d7b860844f05831fb356a5dc0115b477891531325180a670076036ee1b4a8ca
+"@types/numeral@npm:2.0.4":
+  version: 2.0.4
+  resolution: "@types/numeral@npm:2.0.4"
+  checksum: 15bc75ac94f0041b016dbfa76fd38daa7c738e99834d17dd17157518244e33997103993f0c9d68ba53c874217fcf937dd714db515de79b19a69ae0192487cf29
   languageName: node
   linkType: hard
 
@@ -7993,7 +7993,7 @@ __metadata:
     "@types/jest": 28.1.8
     "@types/lodash": 4.14.184
     "@types/ms": 0.7.33
-    "@types/numeral": 2.0.2
+    "@types/numeral": 2.0.4
     "@types/traverse": 0.6.34
     "@types/truncate-utf8-bytes": 1.0.0
     "@typescript-eslint/eslint-plugin": 5.33.1
