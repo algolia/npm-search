@@ -19,16 +19,23 @@ export interface GetUser {
 
 export interface GetVersion {
   _from?: string;
-  _id: string;
+  _id?: string;
   _npmUser?: GetUser;
   _npmVersion?: string;
   _nodeVersion?: string;
   _npmOperationalInternal?: Record<string, string>;
+  _shasum?: string;
+  _resolved?: string;
   author?: GetUser;
-  description: string;
-  dist: {
+  description?: string;
+  dist?: {
     shasum: string;
     tarball: string;
+    integrity?: string;
+    [key: string]: any | undefined;
+  };
+  config?: {
+    access?: 'public';
   };
   license?: string;
 
@@ -37,7 +44,8 @@ export interface GetVersion {
   main?: string;
   exports?: PackageExports;
 
-  maintainers: GetUser[];
+  repository?: PackageRepo;
+  maintainers?: GetUser[];
   name: string;
   scripts?: Record<string, string>;
   version: string;
@@ -46,6 +54,17 @@ export interface GetVersion {
   types?: string;
   typings?: string;
   style?: string;
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+  peerDependencies?: Record<string, string>;
+  optionalDependencies?: Record<string, string>;
+  gitHead?: string;
+  bugs?: { url: string };
+  homepage?: string;
+  files?: string[];
+  keywords?: string[];
+
+  [key: string]: any;
 }
 
 export interface PackageRepo {
@@ -61,10 +80,13 @@ export interface PackageExports {
 export interface GetPackage {
   _id: string;
   _rev: string;
-  'dist-tags': Record<string, string>;
+  'dist-tags': { [key: string]: string };
   license?: string;
   maintainers: GetUser[];
   name: string;
+  description?: string;
+  homepage?: string;
+  bugs?: { url: string };
   readme: string;
   readmeFilename: string;
   time: {
@@ -78,6 +100,11 @@ export interface GetPackage {
   keywords?: string[] | string;
   contributors?: Array<{ name: string }>;
   repository?: PackageRepo;
+  schematics?: string;
+  types?: string;
+  typings?: string;
+
+  [key: string]: any;
 }
 
 export interface GetPackageLight {

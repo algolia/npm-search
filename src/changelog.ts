@@ -164,7 +164,7 @@ export async function getChangelogBackground(
 ): Promise<ChangelogResult> {
   const { repository } = pkg;
 
-  if (repository === null || !repository.host) {
+  if (!repository?.host) {
     return { changelogFilename: null };
   }
 

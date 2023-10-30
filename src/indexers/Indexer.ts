@@ -76,7 +76,7 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
   async *fetchRecords(): AsyncGenerator<TMainRecord[]> {
     const facets = await this.throttledFetchFacets();
 
-    if (!facets || !facets.length) {
+    if (!facets?.length) {
       return [];
     }
 

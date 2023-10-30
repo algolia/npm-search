@@ -1,4 +1,4 @@
-/* eslint-disable import/no-commonjs, @typescript-eslint/no-var-requires */
+/* eslint-disable import/no-commonjs */
 module.exports = {
   active: true,
   serviceName: 'jsdelivr-npm-search',
