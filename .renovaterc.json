@@ -1,0 +1,4 @@
+{
+  "extends": ["algolia"],
+  "baseBranches": ["chore/renovateBaseBranch"]
+}
