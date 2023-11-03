@@ -11,7 +11,9 @@ Maintained by <a href="https://www.algolia.com/">Algolia</a> and <a href="https:
   <br/>
 </h1>
 
-[//]: # ([![CircleCI]&#40;https://circleci.com/gh/algolia/npm-search/tree/master.svg?style=svg&#41;]&#40;https://circleci.com/gh/algolia/npm-search/tree/master&#41; <a title="Public Status powered by Datadog" href="https://p.datadoghq.com/sb/2b51baa8-c54a-11eb-a5a4-da7ad0900002-4973ed88f5be0d93c350fcb0ea2e7f0c">)
+[![Build status](https://github.com/algolia/npm-search/actions/workflows/publish.yml/badge.svg)](https://github.com/algolia/npm-search/actions/workflows/publish.yml)
+
+[//]: # (<a title="Public Status powered by Datadog" href="https://p.datadoghq.com/sb/2b51baa8-c54a-11eb-a5a4-da7ad0900002-4973ed88f5be0d93c350fcb0ea2e7f0c">)
 
 [//]: # (  <img width="100" alt="Datadog Status" src="https://www.datocms-assets.com/2885/1611308816-datadog-horizontal-rgb.png?fit=max&fm=png&q=80" />)
 
