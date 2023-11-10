@@ -1893,10 +1893,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/escape-html@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@types/escape-html@npm:1.0.3"
-  checksum: d6666f80cfb4c63665f39d9b27a51505c3f6c18206d9bbab9445b99e2f5ac4a47c9d38d3fd9e43a9fd1f770d4b87d288821df8e20a2c187062a5b984c7645022
+"@types/escape-html@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@types/escape-html@npm:1.0.4"
+  checksum: 61c1409df141268bdb2b40e511614193a9f2d3fed224788a14454ba9504787efa01bbd083826f163a6d33a97815b71e161ce1bdf6b77dd7b3569f3a885ad7722
   languageName: node
   linkType: hard
 
@@ -8262,7 +8262,7 @@ __metadata:
     "@semantic-release/changelog": 6.0.3
     "@semantic-release/git": 10.0.1
     "@types/bluebird": ^3.5.39
-    "@types/escape-html": 1.0.3
+    "@types/escape-html": 1.0.4
     "@types/hosted-git-info": 3.0.4
     "@types/jest": 28.1.8
     "@types/lodash": 4.14.184
