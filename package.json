@@ -58,7 +58,7 @@
     "@types/lodash": "4.14.184",
     "@types/ms": "0.7.34",
     "@types/numeral": "2.0.2",
-    "@types/traverse": "0.6.34",
+    "@types/traverse": "0.6.35",
     "@types/truncate-utf8-bytes": "1.0.0",
     "@typescript-eslint/eslint-plugin": "6.9.1",
     "@typescript-eslint/parser": "6.9.1",
