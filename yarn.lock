@@ -1875,9 +1875,9 @@ __metadata:
   linkType: hard
 
 "@types/bluebird@npm:^3.5.39":
-  version: 3.5.41
-  resolution: "@types/bluebird@npm:3.5.41"
-  checksum: e069e35e3f17d0721f77efdf7c7d5e5119eb474edf00ec9192bdc1bbde09f36abace1d0a2c6b535e499bf790db92d202e403078aeac6afd7dc8e5acb36e98549
+  version: 3.5.42
+  resolution: "@types/bluebird@npm:3.5.42"
+  checksum: bab9c7ee7cf05f241f119a1401d230def75981a71c2f4ea4d4ef7297bb10f2ae8b6ce7b249532faf994492d7e36e1f1f21f7a9895e466bf7b31b298b0537d8d0
   languageName: node
   linkType: hard
 
