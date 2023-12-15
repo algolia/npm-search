@@ -91,6 +91,7 @@ export class Prefetcher {
 
       await this.queueIndex.saveObjects(
         packages.map((pkg) => ({
+          name: pkg.id,
           objectID: pkg.id,
           retries: 0,
           pkg,

@@ -10,6 +10,7 @@ import { offsetToTimestamp } from '../utils/time';
 import { Indexer } from './Indexer';
 
 export type OneTimeDataObject = {
+  name: string;
   objectID: string;
   updatedAt: string;
   changelogFilename: string | null;
@@ -60,6 +61,7 @@ export class OneTimeBackgroundIndexer extends Indexer<FinalPkg> {
         : await getChangelogBackground(pkg);
 
       const data = {
+        name: `${pkg.name}@${pkg.version}`,
         objectID: `${pkg.name}@${pkg.version}`,
         updatedAt: new Date().toISOString(),
         changelogFilename,

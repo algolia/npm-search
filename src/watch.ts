@@ -134,6 +134,7 @@ export class Watch {
             await this.algoliaStore.mainQueueIndex.saveObjects(
               changes.map((change) => ({
                 seq: change.seq,
+                name: change.id,
                 objectID: change.id,
                 retries: 0,
                 change,
