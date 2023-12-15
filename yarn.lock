@@ -2053,10 +2053,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/traverse@npm:0.6.35":
-  version: 0.6.35
-  resolution: "@types/traverse@npm:0.6.35"
-  checksum: ab1086ffbbb513f7078c329e6ab785e721b7c22fe078c0c90036bc1bda4997d4ff2c9ea9ef0ea2b86c8194deac99ad51853d43c16476b6c326ccdddb6c6982d3
+"@types/traverse@npm:0.6.36":
+  version: 0.6.36
+  resolution: "@types/traverse@npm:0.6.36"
+  checksum: 2afa4d8cf4c01b8fa3efffc3c4789fd0ed0727d20d094aaf512065ca737b0bff03f47d45dfb44adbc2b85f1f4d0fa024a93ddab9137f8fece5b0c87fef050dd3
   languageName: node
   linkType: hard
 
@@ -8447,7 +8447,7 @@ __metadata:
     "@types/lodash": 4.14.184
     "@types/ms": 0.7.34
     "@types/numeral": 2.0.2
-    "@types/traverse": 0.6.35
+    "@types/traverse": 0.6.36
     "@types/truncate-utf8-bytes": 1.0.0
     "@typescript-eslint/eslint-plugin": 6.13.2
     "@typescript-eslint/parser": 6.13.2
