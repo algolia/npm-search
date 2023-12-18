@@ -18,7 +18,7 @@
     "test:watch": "jest --watchAll --no-watchman",
     "test:api-control": "./scripts/test-api-control",
     "test": "jest --forceExit",
-    "publish:check": "node ./scripts/publish-check.js",
+    "publish:check": "node ./scripts/publish-check.mjs",
     "publish:github": "./scripts/publish-github",
     "publish:docker": "./scripts/publish-docker"
   },
