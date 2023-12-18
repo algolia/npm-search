@@ -79,6 +79,7 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
 
         await this.algoliaStore.bootstrapNotFoundIndex
           .saveObject({
+            name: pkg.id,
             objectID: pkg.id,
             err: err instanceof Error ? err.toString() : err,
             date: new Date().toISOString(),

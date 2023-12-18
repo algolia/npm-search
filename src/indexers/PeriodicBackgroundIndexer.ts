@@ -16,6 +16,7 @@ import { offsetToTimestamp, round } from '../utils/time';
 import { Indexer } from './Indexer';
 
 export type PeriodicDataObject = DownloadsData & {
+  name: string;
   objectID: string;
   updatedAt: string;
 };
@@ -86,6 +87,7 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
         task.pkg,
         async (pkg) => {
           const data: PeriodicDataObject = {
+            name: pkg.name,
             objectID: pkg.name,
             updatedAt: new Date().toISOString(),
             totalNpmDownloads: downloads[pkg.name]?.totalNpmDownloads,
@@ -110,6 +112,7 @@ export class PeriodicBackgroundIndexer extends Indexer<FinalPkg, Task> {
                 datadog.increment('periodic.notFound');
 
                 await this.notFoundIndex.saveObject({
+                  name: pkg.name,
                   objectID: pkg.name,
                   date: new Date().toISOString(),
                   movedBy: 'periodicIndexer',

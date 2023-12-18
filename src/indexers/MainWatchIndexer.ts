@@ -14,6 +14,7 @@ import { MainIndexer } from './MainIndexer';
 
 type TaskType = {
   seq: number;
+  name: string;
   objectID: string;
   retries: number;
   change: DatabaseChangesResultItem;
@@ -118,6 +119,7 @@ export class MainWatchIndexer extends MainIndexer<TaskType> {
 
         await this.algoliaStore.mainNotFoundIndex
           .saveObject({
+            name: change.id,
             objectID: change.id,
             err: err instanceof Error ? err.toString() : err,
             date: new Date().toISOString(),
