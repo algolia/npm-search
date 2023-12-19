@@ -16,9 +16,11 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       packages: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RUN_ID: ${{ github.run_id }}
 
     steps:
       - name: 📁 Checkout code
@@ -34,7 +36,7 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: ❓ Check if a new version needs to be published
-        run: yarn publish:check
+        run: yarn publish:check || gh run cancel "$RUN_ID"
 
       # - name: 🆙 Bump version, tag commit, publish GitHub Release
       #   run: yarn publish:github
