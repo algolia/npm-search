@@ -1,0 +1,18 @@
+name: CANCEL curl
+
+on:
+  push:
+    branches:
+      - fix/issue-1233-docker-publishing
+
+jobs:
+  cancel:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Curl
+        run: curl -X POST -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/algolia/npm-search/actions/runs/${{ github.run_id }}/cancel"

@@ -1,0 +1,18 @@
+name: CANCEL GH
+
+on:
+  push:
+    branches:
+      - fix/issue-1233-docker-publishing
+
+jobs:
+  cancel:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: gh
+        run: gh run cancel ${{ github.run_id }}

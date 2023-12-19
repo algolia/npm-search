@@ -34,10 +34,10 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: ❓ Check if a new version needs to be published
-        run: yarn publish:check || gh run cancel ${{ github.run_id }}
+        run: yarn publish:check
 
-      - name: 🆙 Bump version, tag commit, publish GitHub Release
-        run: yarn publish:github
+      # - name: 🆙 Bump version, tag commit, publish GitHub Release
+      #   run: yarn publish:github
 
-      - name: 🐋 Publish Docker image
-        run: yarn publish:docker
+      # - name: 🐋 Publish Docker image
+      #   run: yarn publish:docker
