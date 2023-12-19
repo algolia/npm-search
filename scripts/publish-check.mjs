@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-/* eslint-disable no-process-exit */
 
 import { Writable } from 'node:stream';
 
@@ -36,12 +35,5 @@ const { nextRelease } = await semanticRelease(
   }
 );
 
-// Exit with 0 if a new version must be released, 1 if nothing to do
-if (nextRelease?.version) {
-  console.log(
-    `Commits analyzed warrant a release of version ${nextRelease.version}`
-  );
-  process.exit(0);
-}
-console.log('No new version to publish');
-process.exit(1);
+// Display yes if a new release should be published, or no otherwise
+console.info(nextRelease?.version ? 'yes' : 'no');
