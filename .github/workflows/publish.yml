@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+      - fix/issue-1233-docker-publishing
 
 jobs:
   validate:
@@ -33,14 +34,10 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: ❓ Check if a new version needs to be published
-        id: publish-check
-        continue-on-error: true
-        run: yarn publish:check
+        run: yarn publish:check || gh run cancel
 
       - name: 🆙 Bump version, tag commit, publish GitHub Release
-        if: ${{ steps.publish-check.outcome == 'success' }}
         run: yarn publish:github
 
       - name: 🐋 Publish Docker image
-        if: ${{ steps.publish-check.outcome == 'success' }}
         run: yarn publish:docker

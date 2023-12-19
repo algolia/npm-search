@@ -1,4 +1,3 @@
-
 /* eslint-disable no-console */
 /* eslint-disable no-process-exit */
 
@@ -46,4 +45,3 @@ if (nextRelease?.version) {
 }
 console.log('No new version to publish');
 process.exit(1);
-
