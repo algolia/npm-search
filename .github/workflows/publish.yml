@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - master
-      - fix/issue-1233-docker-publishing
 
 jobs:
   validate:
@@ -37,9 +36,7 @@ jobs:
 
       - name: ❓ Check if a new version needs to be published
         id: publish-check
-        run: >
-          SHOULD_PUBLISH="$(yarn publish:check)"
-          && echo "SHOULD_PUBLISH=$SHOULD_PUBLISH" >> "$GITHUB_OUTPUT"
+        run: echo "SHOULD_PUBLISH=$(yarn publish:check)" >> "$GITHUB_OUTPUT"
 
       - name: ⏹️ Cancel run
         if: ${{ steps.publish-check.outputs.SHOULD_PUBLISH == 'no' }}
