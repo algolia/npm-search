@@ -4,8 +4,6 @@ import { Writable } from 'node:stream';
 
 import semanticRelease from 'semantic-release';
 
-console.log('Analyzing commits since last version...');
-
 const stream = new Writable({
   write(_chunk, _encoding, callback) {
     setImmediate(callback);

@@ -37,8 +37,7 @@ jobs:
 
       - name: ❓ Check if a new version needs to be published
         id: publish-check
-        # run: echo "SHOULD_PUBLISH=$(yarn publish:check)" >> "$GITHUB_OUTPUT"
-        run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
+        run: echo "SHOULD_PUBLISH=$(yarn publish:check)" >> "$GITHUB_OUTPUT"
 
       - name: ⏹️ Cancel run
         if: ${{ steps.publish-check.outputs.SHOULD_PUBLISH == 'no' }}
