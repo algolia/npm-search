@@ -34,4 +34,7 @@ const { nextRelease } = await semanticRelease(
 );
 
 // Display yes if a new release should be published, or no otherwise
+// The output of this script is used by the publishing workflow, to
+// conditionally either cancel the run, or actually publish to Docker/GitHub.
+// Make sure it only ever output either yes or no
 console.info(nextRelease?.version ? 'yes' : 'no');
