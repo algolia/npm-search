@@ -9,6 +9,7 @@ jobs:
   cancel:
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       packages: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

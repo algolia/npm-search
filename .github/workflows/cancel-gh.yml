@@ -15,5 +15,7 @@ jobs:
       RUN_ID: ${{ github.run_id }}
 
     steps:
+      - name: 📁 Checkout code
+        uses: actions/checkout@v4
       - name: Curl
         run: gh run cancel "$RUN_ID"
