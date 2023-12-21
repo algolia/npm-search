@@ -1,12 +1,8 @@
-
 /* eslint-disable no-console */
-/* eslint-disable no-process-exit */
 
 import { Writable } from 'node:stream';
 
 import semanticRelease from 'semantic-release';
-
-console.log('Analyzing commits since last version...');
 
 const stream = new Writable({
   write(_chunk, _encoding, callback) {
@@ -37,13 +33,8 @@ const { nextRelease } = await semanticRelease(
   }
 );
 
-// Exit with 0 if a new version must be released, 1 if nothing to do
-if (nextRelease?.version) {
-  console.log(
-    `Commits analyzed warrant a release of version ${nextRelease.version}`
-  );
-  process.exit(0);
-}
-console.log('No new version to publish');
-process.exit(1);
-
+// Display yes if a new release should be published, or no otherwise
+// The output of this script is used by the publishing workflow, to
+// conditionally either cancel the run, or actually publish to Docker/GitHub.
+// Make sure it only ever output either yes or no
+console.info(nextRelease?.version ? 'yes' : 'no');

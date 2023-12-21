@@ -15,9 +15,11 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     permissions:
+      actions: write
       packages: write
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RUN_ID: ${{ github.run_id }}
 
     steps:
       - name: 📁 Checkout code
@@ -34,13 +36,16 @@ jobs:
 
       - name: ❓ Check if a new version needs to be published
         id: publish-check
-        continue-on-error: true
-        run: yarn publish:check
+        run: echo "SHOULD_PUBLISH=$(yarn publish:check)" >> "$GITHUB_OUTPUT"
+
+      - name: ⏹️ Cancel run
+        if: ${{ steps.publish-check.outputs.SHOULD_PUBLISH == 'no' }}
+        run: gh run cancel "$RUN_ID"
 
       - name: 🆙 Bump version, tag commit, publish GitHub Release
-        if: ${{ steps.publish-check.outcome == 'success' }}
+        if: ${{ steps.publish-check.outputs.SHOULD_PUBLISH == 'yes' }}
         run: yarn publish:github
 
       - name: 🐋 Publish Docker image
-        if: ${{ steps.publish-check.outcome == 'success' }}
+        if: ${{ steps.publish-check.outputs.SHOULD_PUBLISH == 'yes' }}
         run: yarn publish:docker
