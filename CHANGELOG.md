@@ -1,3 +1,12 @@
+## [1.8.1](https://github.com/algolia/npm-search/compare/v1.8.0...v1.8.1) (2023-12-21)
+
+
+### Bug Fixes
+
+* add package name to all records ([#1225](https://github.com/algolia/npm-search/issues/1225)) ([83cedb5](https://github.com/algolia/npm-search/commit/83cedb5e5018bd165e4eb2f25d9396e0d6884899))
+* fix publish check script path ([#1232](https://github.com/algolia/npm-search/issues/1232)) ([3beb2ec](https://github.com/algolia/npm-search/commit/3beb2eca67a33d08a1ac0cec8f4d84f2084ec21a))
+* update dependencies (typescript, jest, eslint) ([#1075](https://github.com/algolia/npm-search/issues/1075)) ([005801b](https://github.com/algolia/npm-search/commit/005801b00f42e8bedeb04772cae8aef17b650bab))
+
 # [1.8.0](https://github.com/algolia/npm-search/compare/v1.7.15...v1.8.0) (2023-10-20)
 
 
