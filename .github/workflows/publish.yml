@@ -36,7 +36,14 @@ jobs:
 
       - name: ❓ Check if a new version needs to be published
         id: publish-check
-        run: echo "SHOULD_PUBLISH=$(yarn publish:check)" >> "$GITHUB_OUTPUT"
+        # Note: We can't do:
+        # echo "SHOULD_PUBLISH=$(yarn publish:check)" >> "$GITHUB_OUTPUT"
+        # Because the echo command will always be considered a success, even if
+        # the yarn publish:check fails. This is why we need an intermediate
+        # variable.
+        run: >
+          SHOULD_PUBLISH="$(yarn publish:check)"
+          && echo "SHOULD_PUBLISH=$SHOULD_PUBLISH" >> "$GITHUB_OUTPUT"
 
       - name: ⏹️ Cancel run
         if: ${{ steps.publish-check.outputs.SHOULD_PUBLISH == 'no' }}
