@@ -15,8 +15,9 @@ jobs:
     needs: validate
     runs-on: ubuntu-latest
     permissions:
-      actions: write
-      packages: write
+      actions: write # To cancel the run
+      contents: write # To add a new tag and push a new release
+      packages: write # To add a new Docker package
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       RUN_ID: ${{ github.run_id }}
@@ -39,7 +40,7 @@ jobs:
         # Note: We can't do:
         # echo "SHOULD_PUBLISH=$(yarn publish:check)" >> "$GITHUB_OUTPUT"
         # Because the echo command will always be considered a success, even if
-        # the yarn publish:check fails. This is why we need an intermediate
+        # the $(yarn publish:check) fails. This is why we need an intermediate
         # variable.
         run: >
           SHOULD_PUBLISH="$(yarn publish:check)"
