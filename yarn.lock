@@ -8489,7 +8489,7 @@ __metadata:
     renovate-config-algolia: 2.1.10
     semantic-release: 22.0.12
     throttled-queue: ^2.1.4
-    traverse: 0.6.7
+    traverse: 0.6.8
     truncate-utf8-bytes: 1.0.2
     ts-jest: 29.1.1
     ts-node: 10.9.2
@@ -11027,10 +11027,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"traverse@npm:0.6.7":
-  version: 0.6.7
-  resolution: "traverse@npm:0.6.7"
-  checksum: 21018085ab72f717991597e12e2b52446962ed59df591502e4d7e1a709bc0a989f7c3d451aa7d882666ad0634f1546d696c5edecda1f2fc228777df7bb529a1e
+"traverse@npm:0.6.8":
+  version: 0.6.8
+  resolution: "traverse@npm:0.6.8"
+  checksum: ef22abfc73fe2052403093b6747febbfeb52dcf827db1ca0542a78932c918706b9b12c373ef27e1c3e07e3e92eb1c646b4fe97b936fe775d59cbce7da417e13b
   languageName: node
   linkType: hard
 
