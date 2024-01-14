@@ -4069,8 +4069,8 @@ __metadata:
   linkType: hard
 
 "elastic-apm-node@npm:^3.49.1":
-  version: 3.50.0
-  resolution: "elastic-apm-node@npm:3.50.0"
+  version: 3.51.0
+  resolution: "elastic-apm-node@npm:3.51.0"
   dependencies:
     "@elastic/ecs-pino-format": ^1.2.0
     "@opentelemetry/api": ^1.4.1
@@ -4110,7 +4110,7 @@ __metadata:
     sql-summary: ^1.0.1
     stream-chopper: ^3.0.1
     unicode-byte-truncate: ^1.0.0
-  checksum: 485b742d30202e4436286d50c019bad0115b92c40f49130494e7bc35affb1e1dd764c6a14b6d21c54acf333f1925396fe5ab2ef86ce3bd5edc954e38fdc4e64e
+  checksum: e6a801e731d6a5178e7450c76e88b9a519823129986365b2f59c4ee8e02c2a0e624deacebce6e85ae0964f6ea876a9f562901ca0b3538f4b0452a24d7f1b0303
   languageName: node
   linkType: hard
 
