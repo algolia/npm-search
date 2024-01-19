@@ -4035,10 +4035,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.0.1":
-  version: 16.0.1
-  resolution: "dotenv@npm:16.0.1"
-  checksum: f459ffce07b977b7f15d8cc4ee69cdff77d4dd8c5dc8c85d2d485ee84655352c2415f9dd09d42b5b5985ced3be186130871b34e2f3e2569ebc72fbc2e8096792
+"dotenv@npm:16.3.2":
+  version: 16.3.2
+  resolution: "dotenv@npm:16.3.2"
+  checksum: 917b27eeb654b95846484009326b1c52af7a7c25f7b09e2939ed49de8f98cb9895dcc04f13a39cdb078d247985e21147311ccb5bfbf2fd151afb20fa8f96de15
   languageName: node
   linkType: hard
 
@@ -8458,7 +8458,7 @@ __metadata:
     bunyan: 1.8.15
     bunyan-debug-stream: 2.0.1
     chalk: 4.1.2
-    dotenv: 16.0.1
+    dotenv: 16.3.2
     dtrace-provider: 0.8.8
     elastic-apm-node: ^3.49.1
     escape-html: 1.0.3
