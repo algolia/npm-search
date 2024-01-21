@@ -8483,7 +8483,7 @@ __metadata:
     nano: ^10.1.2
     nice-package: 3.1.2
     numeral: 2.0.6
-    object-sizeof: 2.6.3
+    object-sizeof: 2.6.4
     p-queue: 6.6.2
     pre-commit: 1.2.2
     prettier: 3.2.4
@@ -8671,12 +8671,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"object-sizeof@npm:2.6.3":
-  version: 2.6.3
-  resolution: "object-sizeof@npm:2.6.3"
+"object-sizeof@npm:2.6.4":
+  version: 2.6.4
+  resolution: "object-sizeof@npm:2.6.4"
   dependencies:
     buffer: ^6.0.3
-  checksum: b504e58be311bf4c0ce084a951555dc5fb4af2b6274fdd6b2b6420fbde4de5e4ac63c5c8390511e310de18ed5582cb6796358cf2219fa6320b2a899c08dadad0
+  checksum: 0d8767669b6bdfdfd4fe48381078567af53e5c1e35522eadc9641fed60ed45b661263b104384df9b3ea838b0c5ac8beff4ed740d54913b8d6b61387fe088cf02
   languageName: node
   linkType: hard
 
