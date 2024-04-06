@@ -24,9 +24,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@algolia/requester-node-http": "4.22.1",
+    "@algolia/requester-node-http": "4.23.2",
     "@types/bluebird": "^3.5.39",
-    "algoliasearch": "4.22.1",
+    "algoliasearch": "4.23.2",
     "bluebird": "^3.7.2",
     "bunyan": "1.8.15",
     "bunyan-debug-stream": "2.0.1",
