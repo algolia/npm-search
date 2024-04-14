@@ -46,7 +46,7 @@
     "p-queue": "6.6.2",
     "promise-rat-race": "1.5.1",
     "throttled-queue": "^2.1.4",
-    "traverse": "0.6.8",
+    "traverse": "0.6.9",
     "truncate-utf8-bytes": "1.0.2"
   },
   "devDependencies": {
