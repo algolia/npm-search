@@ -80,7 +80,7 @@
     "prettier": "3.3.3",
     "renovate-config-algolia": "2.1.10",
     "semantic-release": "22.0.12",
-    "ts-jest": "29.2.2",
+    "ts-jest": "29.2.3",
     "ts-node": "10.9.2",
     "typescript": "5.4.5",
     "validator": "13.12.0"
