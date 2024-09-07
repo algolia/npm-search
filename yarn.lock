@@ -6048,10 +6048,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hosted-git-info@npm:2.7.1":
-  version: 2.7.1
-  resolution: "hosted-git-info@npm:2.7.1"
-  checksum: 9213d70131437c942e1424a5ff06cae4698ec662bb89cc06a2837d57fd5389a8d3fe586b141986c2a1d2b2026a1dcd4a2c33a2db42a18f7cbd1327ed265c493c
+"hosted-git-info@npm:8.0.0":
+  version: 8.0.0
+  resolution: "hosted-git-info@npm:8.0.0"
+  dependencies:
+    lru-cache: ^10.0.1
+  checksum: a60ef7309eca210710ccab5334bec1c288eea91b0c9774b1b5180404fe94eeb8f5a4703a0d9d81300df28fe8309ba645807af1d6f25346a763374753df320aa4
   languageName: node
   linkType: hard
 
@@ -8911,7 +8913,7 @@ __metadata:
     eslint-plugin-react: 7.35.0
     got: 11.8.5
     gravatar-url: 3.1.0
-    hosted-git-info: 2.7.1
+    hosted-git-info: 8.0.0
     husky: 8.0.1
     jest: 29.7.0
     lint-staged: 13.0.3
