@@ -8924,7 +8924,7 @@ __metadata:
     renovate-config-algolia: 2.1.10
     semantic-release: 22.0.12
     throttled-queue: ^2.1.4
-    traverse: 0.6.9
+    traverse: 0.6.10
     truncate-utf8-bytes: 1.0.2
     ts-jest: 29.2.5
     ts-node: 10.9.2
@@ -11578,14 +11578,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"traverse@npm:0.6.9":
-  version: 0.6.9
-  resolution: "traverse@npm:0.6.9"
+"traverse@npm:0.6.10":
+  version: 0.6.10
+  resolution: "traverse@npm:0.6.10"
   dependencies:
     gopd: ^1.0.1
     typedarray.prototype.slice: ^1.0.3
     which-typed-array: ^1.1.15
-  checksum: e2f4b46caf849b6ea9006230995edc7376c1361f33c2110f425339a814b71b968f5c84a130ae21b4300d1849fff42cec6117c2aebde8a68d33c6871e9621a80f
+  checksum: ff25d30726db4867c01ff1f1bd8a5e3356b920c4d674ddf6c3764179bb54766cf1ad0158bbd65667e1f5fbde2d4efbd814d7b24d44149cc31255f0cfe2ab2095
   languageName: node
   linkType: hard
 
