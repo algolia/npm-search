@@ -78,7 +78,7 @@
     "lint-staged": "13.0.3",
     "pre-commit": "1.2.2",
     "prettier": "3.3.3",
-    "renovate-config-algolia": "2.1.10",
+    "renovate-config-algolia": "2.2.0",
     "semantic-release": "22.0.12",
     "ts-jest": "29.2.5",
     "ts-node": "10.9.2",
