@@ -54,7 +54,7 @@
     "@semantic-release/git": "10.0.1",
     "@types/escape-html": "1.0.4",
     "@types/hosted-git-info": "3.0.4",
-    "@types/jest": "28.1.8",
+    "@types/jest": "29.5.14",
     "@types/lodash": "4.14.184",
     "@types/ms": "0.7.34",
     "@types/numeral": "2.0.2",
