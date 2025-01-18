@@ -9352,7 +9352,7 @@ __metadata:
     pre-commit: 1.2.2
     prettier: 3.3.3
     promise-rat-race: 1.5.1
-    renovate-config-algolia: 2.1.10
+    renovate-config-algolia: 2.2.0
     semantic-release: 22.0.12
     throttled-queue: ^2.1.4
     traverse: 0.6.10
@@ -10677,10 +10677,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"renovate-config-algolia@npm:2.1.10":
-  version: 2.1.10
-  resolution: "renovate-config-algolia@npm:2.1.10"
-  checksum: 2fa9e541ce8672c2dd96b0719ae0ca054e9e4fcbc24c9a4b7aee9047cd22f0f7d48f45142b65b41a7bb7da7738deee40a02920ce7893c6eabd24d40c5828ed3e
+"renovate-config-algolia@npm:2.2.0":
+  version: 2.2.0
+  resolution: "renovate-config-algolia@npm:2.2.0"
+  checksum: f3514029c87c52186127cb2b8ee97ece3fcf7dab933cac63504d8f546c4c87d539a39ba53f166ac4c26cf64fc351aa7d2f0965645759fccad67e4bc688187019
   languageName: node
   linkType: hard
 
