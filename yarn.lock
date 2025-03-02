@@ -2021,10 +2021,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ms@npm:0.7.34":
-  version: 0.7.34
-  resolution: "@types/ms@npm:0.7.34"
-  checksum: f38d36e7b6edecd9badc9cf50474159e9da5fa6965a75186cceaf883278611b9df6669dc3a3cc122b7938d317b68a9e3d573d316fcb35d1be47ec9e468c6bd8a
+"@types/ms@npm:2.1.0":
+  version: 2.1.0
+  resolution: "@types/ms@npm:2.1.0"
+  checksum: 532d2ebb91937ccc4a89389715e5b47d4c66e708d15942fe6cc25add6dc37b2be058230a327dd50f43f89b8b6d5d52b74685a9e8f70516edfc9bdd6be910eff4
   languageName: node
   linkType: hard
 
@@ -9311,7 +9311,7 @@ __metadata:
     "@types/hosted-git-info": 3.0.4
     "@types/jest": 28.1.8
     "@types/lodash": 4.14.184
-    "@types/ms": 0.7.34
+    "@types/ms": 2.1.0
     "@types/numeral": 2.0.2
     "@types/traverse": 0.6.37
     "@types/truncate-utf8-bytes": 1.0.0
