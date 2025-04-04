@@ -34,7 +34,7 @@
     "dtrace-provider": "0.8.8",
     "elastic-apm-node": "^3.49.1",
     "escape-html": "1.0.3",
-    "got": "11.8.5",
+    "got": "14.4.7",
     "gravatar-url": "3.1.0",
     "hosted-git-info": "2.7.1",
     "lodash": "4.17.21",
