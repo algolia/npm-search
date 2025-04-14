@@ -1928,10 +1928,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/hosted-git-info@npm:3.0.4":
-  version: 3.0.4
-  resolution: "@types/hosted-git-info@npm:3.0.4"
-  checksum: a141ac194fb7e3c57310af9cc21639c2543479af8648d355148a2a821d6e2d5a436f4bc544726c95a21761abca123605e8817eb0bdf6f113b86d760abb63ddd9
+"@types/hosted-git-info@npm:3.0.5":
+  version: 3.0.5
+  resolution: "@types/hosted-git-info@npm:3.0.5"
+  checksum: c176be62d5982408c0b6062861529a7b27e754814a8312ae39a571afad014064e01e53e42de6f783ac1791212c341921a1d99e4cfcc3a84ec1912e4a454ca541
   languageName: node
   linkType: hard
 
@@ -6335,10 +6335,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hosted-git-info@npm:2.7.1":
-  version: 2.7.1
-  resolution: "hosted-git-info@npm:2.7.1"
-  checksum: 9213d70131437c942e1424a5ff06cae4698ec662bb89cc06a2837d57fd5389a8d3fe586b141986c2a1d2b2026a1dcd4a2c33a2db42a18f7cbd1327ed265c493c
+"hosted-git-info@npm:3.0.8":
+  version: 3.0.8
+  resolution: "hosted-git-info@npm:3.0.8"
+  dependencies:
+    lru-cache: ^6.0.0
+  checksum: 5af7a69581acb84206a7b8e009f4680c36396814e92c8a83973dfb3b87e44e44d1f7b8eaf3e4a953686482770ecb78406a4ce4666bfdfe447762434127871d8d
   languageName: node
   linkType: hard
 
@@ -9308,7 +9310,7 @@ __metadata:
     "@semantic-release/git": 10.0.1
     "@types/bluebird": ^3.5.39
     "@types/escape-html": 1.0.4
-    "@types/hosted-git-info": 3.0.4
+    "@types/hosted-git-info": 3.0.5
     "@types/jest": 28.1.8
     "@types/lodash": 4.14.184
     "@types/ms": 0.7.34
@@ -9338,7 +9340,7 @@ __metadata:
     eslint-plugin-react: 7.37.4
     got: 11.8.5
     gravatar-url: 3.1.0
-    hosted-git-info: 2.7.1
+    hosted-git-info: 3.0.8
     husky: 8.0.1
     jest: 29.7.0
     lint-staged: 13.0.3
