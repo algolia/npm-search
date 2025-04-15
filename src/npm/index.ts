@@ -1,11 +1,7 @@
 import { HTTPError } from 'got';
 import _ from 'lodash';
 import ms from 'ms';
-import type {
-  DocumentGetResponse,
-  DocumentListParams,
-  DocumentListResponse,
-} from 'nano';
+import type { DocumentListParams, DocumentListResponse } from 'nano';
 import nano from 'nano';
 import numeral from 'numeral';
 import PQueue from 'p-queue';
@@ -37,7 +33,7 @@ export const cacheTotalDownloads: { total?: number; date?: number } = {
   date: undefined,
 };
 
-const registry = nano({
+export const registry = nano({
   url: config.npmRegistryEndpoint,
   requestDefaults: {
     agent: httpsAgent,
@@ -47,6 +43,7 @@ const registry = nano({
       'Accept-Encoding': 'deflate, gzip',
       'content-type': 'application/json',
       accept: 'application/json',
+      'npm-replication-opt-in': 'true', // See https://github.com/orgs/community/discussions/152515
     },
   },
 });
@@ -72,28 +69,14 @@ async function findAll(
   return results;
 }
 
-async function getDoc(
-  name: string,
-  rev: string
-): Promise<DocumentGetResponse & GetPackage> {
-  const start = Date.now();
-
-  const doc = await registryQueue.add(() => db.get(name, { rev }));
-
-  datadog.timing('npm.getDoc.one', Date.now() - start);
-
-  return doc;
-}
-
-async function getDocFromRegistry(
-  name: string
-): Promise<DocumentGetResponse & GetPackage> {
+async function getDocFromRegistry(name: string): Promise<GetPackage> {
   const start = Date.now();
 
   try {
-    const doc = await request<DocumentGetResponse & GetPackage>(
-      `${config.npmRootEndpoint}/${name}`,
-      { responseType: 'json' }
+    const doc = await registryQueue.add(() =>
+      request<GetPackage>(`${config.npmRootEndpoint}/${name}`, {
+        responseType: 'json',
+      })
     );
 
     // Package without versions means it was unpublished.
@@ -122,9 +105,15 @@ async function getInfo(): Promise<{ nbDocs: number; seq: number }> {
 
   const {
     body: { doc_count: nbDocs, update_seq: seq },
-  } = await request<GetInfo>(config.npmRegistryEndpoint, {
-    responseType: 'json',
-  });
+  } = await request<GetInfo>(
+    `${config.npmRegistryEndpoint}/${config.npmRegistryDBName}/`,
+    {
+      headers: {
+        'npm-replication-opt-in': 'true', // See https://github.com/orgs/community/discussions/152515
+      },
+      responseType: 'json',
+    }
+  );
 
   datadog.timing('npm.info', Date.now() - start);
 
@@ -323,7 +312,6 @@ export {
   findAll,
   loadTotalDownloads,
   getInfo,
-  getDoc,
   getDocFromRegistry,
   getDependents,
   getDependent,

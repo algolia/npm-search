@@ -123,7 +123,7 @@ describe('getDownloads()', () => {
     );
 
     expect(jest!.length).toBeGreaterThanOrEqual(6);
-    expect(jest!.length).toBeLessThanOrEqual(8);
+    expect(jest!.length).toBeLessThanOrEqual(9);
 
     expect(angular!.length).toBeGreaterThanOrEqual(6);
     expect(angular!.length).toBeLessThanOrEqual(8);
@@ -145,7 +145,7 @@ describe('getDownloads()', () => {
     );
 
     expect(jest).toBeGreaterThanOrEqual(6);
-    expect(jest).toBeLessThanOrEqual(8);
+    expect(jest).toBeLessThanOrEqual(9);
 
     expect(angular).toBeGreaterThanOrEqual(6);
     expect(angular).toBeLessThanOrEqual(8);

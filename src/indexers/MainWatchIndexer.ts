@@ -2,9 +2,10 @@ import ms from 'ms';
 import type { DatabaseChangesResultItem } from 'nano';
 
 import type { AlgoliaStore } from '../algolia';
+import { PackageNotFoundError } from '../errors';
 import { formatPkg } from '../formatPkg';
 import * as npm from '../npm';
-import { isFailure } from '../npm/types';
+import type { GetPackage } from '../npm/types';
 import { saveDoc } from '../saveDocs';
 import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
@@ -85,10 +86,17 @@ export class MainWatchIndexer extends MainIndexer<TaskType> {
           return;
         }
 
-        const res = await npm.getDoc(change.id, change.changes[0]!.rev);
+        let res: GetPackage;
 
-        if (isFailure(res)) {
-          log.error('Got an error', res.error);
+        try {
+          res = await npm.getDocFromRegistry(change.id);
+        } catch (error) {
+          if (error instanceof PackageNotFoundError) {
+            log.warn('Package not found in the registry', error);
+          } else {
+            log.error('Got an error', error);
+          }
+
           await this.markAsProcessed(objectID, seq);
           return;
         }
