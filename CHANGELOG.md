@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/algolia/npm-search/compare/v1.8.1...v1.8.2) (2025-04-16)
+
+
+### Bug Fixes
+
+* empty commit for CI ([21046d8](https://github.com/algolia/npm-search/commit/21046d88d0f3933fefbea35ac58f748b7ca22c47))
+
 ## [1.8.1](https://github.com/algolia/npm-search/compare/v1.8.0...v1.8.1) (2023-12-21)
 
 
