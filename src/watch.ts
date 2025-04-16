@@ -64,8 +64,8 @@ export class Watch {
     });
 
     setInterval(() => {
-      npm.db
-        .info()
+      npm.registry
+        .request('')
         .then((info) => {
           this.totalSequence = Number(info.update_seq);
         })

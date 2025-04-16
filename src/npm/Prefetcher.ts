@@ -70,12 +70,10 @@ export class Prefetcher {
   private async queueOnePage(): Promise<void> {
     const options: Partial<DocumentListParams> = {
       limit: this.#limit,
-      include_docs: false,
     };
 
     if (this.#nextKey) {
       options.startkey = this.#nextKey;
-      options.skip = 1;
     }
 
     try {
@@ -87,6 +85,11 @@ export class Prefetcher {
         this.#offset = offset;
         log.info('[pf] done');
         return;
+      }
+
+      // Skip the first item as we already processed it on the previous page.
+      if (this.#nextKey && packages.at(0)?.id === this.#nextKey) {
+        packages.shift();
       }
 
       await this.queueIndex.saveObjects(

@@ -25,12 +25,9 @@ describe('findAll()', () => {
   });
 });
 
-describe('getDoc()', () => {
+describe('getDocFromRegistry()', () => {
   it('retrieves a single doc', async () => {
-    const doc = await api.getDoc(
-      'jsdelivr',
-      '8-734f30eea3baad0a62452a3bff1dd116'
-    );
+    const doc = await api.getDocFromRegistry('jsdelivr');
 
     expect(doc.name).toBe('jsdelivr');
     expect(Object.keys(doc.versions)).toHaveLength(2);

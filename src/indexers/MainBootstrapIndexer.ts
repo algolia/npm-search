@@ -1,8 +1,9 @@
 import type { AlgoliaStore } from '../algolia';
+import { PackageNotFoundError } from '../errors';
 import { formatPkg } from '../formatPkg';
 import * as npm from '../npm';
 import type { PrefetchedPkg } from '../npm/Prefetcher';
-import { isFailure } from '../npm/types';
+import { type GetPackage } from '../npm/types';
 import { saveDoc } from '../saveDocs';
 import { datadog } from '../utils/datadog';
 import { log } from '../utils/log';
@@ -45,10 +46,17 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
     try {
       datadog.increment('packages');
 
-      const res = await npm.getDoc(pkg.id, pkg.value.rev);
+      let res: GetPackage;
 
-      if (isFailure(res)) {
-        log.error('Got an error', res.error);
+      try {
+        res = await npm.getDocFromRegistry(pkg.id);
+      } catch (error) {
+        if (error instanceof PackageNotFoundError) {
+          log.warn('Package not found in the registry', error);
+        } else {
+          log.error('Got an error', error);
+        }
+
         await this.markAsProcessed(objectID);
         return;
       }

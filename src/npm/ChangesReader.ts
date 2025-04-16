@@ -48,17 +48,15 @@ export class ChangesReader extends EventEmitter {
         const { body } = await request<DatabaseChangesResponse>(
           `${config.npmRegistryEndpoint}/_changes`,
           {
-            method: 'POST',
             timeout: ms('60 seconds'), // Hard timeout after which the client aborts.
+            headers: {
+              'npm-replication-opt-in': 'true', // See https://github.com/orgs/community/discussions/152515
+            },
             searchParams: {
-              feed: 'longpoll',
-              timeout: ms('30 seconds'), // Soft timeout after which CouchDB should end the response.
-              include_docs: false,
               since: this.since,
               limit: 10,
             },
             responseType: 'json',
-            json: {},
           }
         );
 
@@ -74,6 +72,11 @@ export class ChangesReader extends EventEmitter {
           }
 
           this.emit('batch', body.results);
+        }
+
+        // If there are no results, retry in 30 seconds.
+        if (!body.results?.length) {
+          await setTimeout(ms('30 seconds'));
         }
       } catch (e) {
         this.emit('error', e);
