@@ -29,11 +29,11 @@ export class StateManager {
   }
 
   async check(): Promise<State> {
-    if (config.seq !== undefined) {
-      return this.reset();
-    }
-
     const state = await this.get();
+
+    if (config.seq !== undefined) {
+      return this.set({ ...state, seq: Number(config.seq) });
+    }
 
     if (state === undefined) {
       return this.reset();
