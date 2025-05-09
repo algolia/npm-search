@@ -12,7 +12,7 @@ export type State = {
 };
 
 const defaultState: State = {
-  seq: config.seq,
+  seq: config.seq ? Number(config.seq) : config.seq,
   bootstrapDone: false,
   bootstrapLastDone: null,
   bootstrapLastId: null,

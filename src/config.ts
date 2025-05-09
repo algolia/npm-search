@@ -194,7 +194,7 @@ export const config = {
 export type Config = typeof config;
 
 Object.entries(process.env).forEach(([key, value]) => {
-  if (typeof config[key] !== 'undefined') {
+  if (key in config) {
     config[key] =
       typeof config[key] === 'number' ? parseInt(value!, 10) : value;
   }
