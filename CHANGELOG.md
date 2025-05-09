@@ -1,3 +1,10 @@
+## [1.8.3](https://github.com/algolia/npm-search/compare/v1.8.2...v1.8.3) (2025-05-09)
+
+
+### Bug Fixes
+
+* seq config handling ([dcb1b5e](https://github.com/algolia/npm-search/commit/dcb1b5e8c8d371071c3d8347891eae46594c4e8d))
+
 ## [1.8.2](https://github.com/algolia/npm-search/compare/v1.8.1...v1.8.2) (2025-04-16)
 
 
