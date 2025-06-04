@@ -462,6 +462,36 @@ describe('alternative names', () => {
     `);
   });
 
+  it('name ending in .css', () => {
+    const pkg: GetPackage = {
+      ...BASE,
+      name: 'animate.css',
+    };
+    expect(formatPkg(pkg)!._searchInternal.alternativeNames)
+      .toMatchInlineSnapshot(`
+      Array [
+        "animatecss",
+        "animate css",
+        "animate",
+        "animate.css",
+      ]
+    `);
+  });
+
+  it('name ending in css', () => {
+    const pkg: GetPackage = {
+      ...BASE,
+      name: 'tailwindcss',
+    };
+    expect(formatPkg(pkg)!._searchInternal.alternativeNames)
+      .toMatchInlineSnapshot(`
+      Array [
+        "tailwindcss",
+        "tailwind",
+      ]
+    `);
+  });
+
   it('scoped package', () => {
     const pkg: GetPackage = {
       ...BASE,
