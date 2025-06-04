@@ -49,7 +49,7 @@ const indexSettings: Settings = {
     'custom',
   ],
   minProximity: 5,
-  optionalWords: ['js', 'javascript'],
+  optionalWords: ['js', 'javascript', 'css'],
   separatorsToIndex: '_',
   replaceSynonymsInHighlight: false,
   maxValuesPerFacet: 1000,

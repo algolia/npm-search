@@ -568,13 +568,10 @@ function getAlternativeNames(name: string): string[] {
   const splitName = name.replace(/[-/@_.]+/g, ' ');
   alternativeNames.add(splitName);
 
-  const isDotJs = name.endsWith('.js');
-  const isJsSuffix = name.match(/\.?js$/);
+  const suffixLength = name.match(/\.?(js|css)$/)?.[0].length;
 
-  if (isDotJs) {
-    alternativeNames.add(name.substring(0, name.length - 3));
-  } else if (isJsSuffix) {
-    alternativeNames.add(name.substring(0, name.length - 2));
+  if (suffixLength) {
+    alternativeNames.add(name.substring(0, name.length - suffixLength));
   } else {
     alternativeNames.add(`${name}.js`);
     alternativeNames.add(`${name}js`);
