@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/algolia/npm-search/compare/v1.8.4...v1.9.0) (2025-06-10)
+
+
+### Features
+
+* alternative names for css packages ([#1352](https://github.com/algolia/npm-search/issues/1352)) ([79dafe8](https://github.com/algolia/npm-search/commit/79dafe8035dea162924d35add9107f7a0af4c401))
+
 ## [1.8.4](https://github.com/algolia/npm-search/compare/v1.8.3...v1.8.4) (2025-05-09)
 
 
