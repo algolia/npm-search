@@ -4902,14 +4902,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:8.5.0":
-  version: 8.5.0
-  resolution: "eslint-config-prettier@npm:8.5.0"
+"eslint-config-prettier@npm:9.1.2":
+  version: 9.1.2
+  resolution: "eslint-config-prettier@npm:9.1.2"
   peerDependencies:
     eslint: ">=7.0.0"
   bin:
     eslint-config-prettier: bin/cli.js
-  checksum: 0d0f5c32e7a0ad91249467ce71ca92394ccd343178277d318baf32063b79ea90216f4c81d1065d60f96366fdc60f151d4d68ae7811a58bd37228b84c2083f893
+  checksum: e786b767331094fd024cb1b0899964a9da0602eaf4ebd617d6d9794752ccd04dbe997e3c14c17f256c97af20bee1c83c9273f69b74cb2081b6f514580d62408f
   languageName: node
   linkType: hard
 
@@ -9328,7 +9328,7 @@ __metadata:
     escape-html: 1.0.3
     eslint: 8.57.1
     eslint-config-algolia: 22.0.0
-    eslint-config-prettier: 8.5.0
+    eslint-config-prettier: 9.1.2
     eslint-plugin-eslint-comments: 3.2.0
     eslint-plugin-import: 2.31.0
     eslint-plugin-jasmine: 4.2.2
