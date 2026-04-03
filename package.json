@@ -43,7 +43,7 @@
     "nice-package": "3.1.2",
     "numeral": "2.0.6",
     "object-sizeof": "2.6.5",
-    "p-queue": "6.6.2",
+    "p-queue": "7.4.1",
     "promise-rat-race": "1.5.1",
     "throttled-queue": "^2.1.4",
     "traverse": "0.6.11",
