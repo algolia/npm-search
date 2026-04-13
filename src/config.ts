@@ -15,6 +15,7 @@ const indexSettings: Settings = {
     'searchable(keywords)',
     'searchable(computedKeywords)',
     'searchable(owner.name)',
+    'searchable(owners.name)',
     '_oneTimeDataToUpdateAt',
     '_periodicDataUpdatedAt',
     'deprecated',
