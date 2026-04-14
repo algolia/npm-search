@@ -1,3 +1,10 @@
+# [1.10.0](https://github.com/algolia/npm-search/compare/v1.9.0...v1.10.0) (2026-04-14)
+
+
+### Features
+
+* allow owners.name to be facetable ([#1357](https://github.com/algolia/npm-search/issues/1357)) ([efc89f3](https://github.com/algolia/npm-search/commit/efc89f35d2e6c35cd7beb12d9b3435ddd4651a6a))
+
 # [1.9.0](https://github.com/algolia/npm-search/compare/v1.8.4...v1.9.0) (2025-06-10)
 
 
