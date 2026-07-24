@@ -9350,7 +9350,7 @@ __metadata:
     object-sizeof: 2.6.5
     p-queue: 6.6.2
     pre-commit: 1.2.2
-    prettier: 3.4.2
+    prettier: 3.9.6
     promise-rat-race: 1.5.1
     renovate-config-algolia: 2.2.0
     semantic-release: 22.0.12
@@ -10203,12 +10203,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.4.2":
-  version: 3.4.2
-  resolution: "prettier@npm:3.4.2"
+"prettier@npm:3.9.6":
+  version: 3.9.6
+  resolution: "prettier@npm:3.9.6"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 061c84513db62d3944c8dc8df36584dad82883ce4e49efcdbedd8703dce5b173c33fd9d2a4e1725d642a3b713c932b55418342eaa347479bc4a9cca114a04cd0
+  checksum: 3fb6a3b6462b05afb825697a3fdcdd9bd1480c11d10d655b7ddbcaf2560beb695caffbe155b5020466005aa06bff74a61ba9c16e602bff849331b62f5db26cdf
   languageName: node
   linkType: hard
 
