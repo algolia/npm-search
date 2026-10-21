@@ -18,6 +18,7 @@ type TaskType = {
   name: string;
   objectID: string;
   retries: number;
+  nextAttemptAt?: number;
   change: DatabaseChangesResultItem;
 };
 
@@ -45,7 +46,9 @@ export class MainWatchIndexer extends MainIndexer<TaskType> {
   }
 
   async recordExecutor(record: TaskType): Promise<void> {
-    await this.queueTask(record);
+    if ((record.nextAttemptAt || 0) <= Date.now()) {
+      await this.queueTask(record);
+    }
   }
 
   override run(): void {
