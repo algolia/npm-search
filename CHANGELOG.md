@@ -1,3 +1,10 @@
+## [1.10.1](https://github.com/algolia/npm-search/compare/v1.10.0...v1.10.1) (2026-10-22)
+
+
+### Bug Fixes
+
+* delay initial registry lookups by one minute ([#1360](https://github.com/algolia/npm-search/issues/1360)) ([62a7647](https://github.com/algolia/npm-search/commit/62a7647c449cdddba81a6ad2cbd2f7e769f4e7b7))
+
 # [1.10.0](https://github.com/algolia/npm-search/compare/v1.9.0...v1.10.0) (2026-04-14)
 
 
