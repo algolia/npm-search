@@ -161,7 +161,7 @@ export const config = {
   npmRootEndpoint: 'https://registry.npmjs.org',
   jsDelivrHitsEndpoint:
     'https://data.jsdelivr.com/v1/stats/packages/all?period=month&type=npm',
-  jsDelivrPackageEndpoint: 'https://data.jsdelivr.com/v1/package/npm',
+  jsDelivrPackageEndpoint: 'https://data.jsdelivr.com/v1/packages/npm',
   typescriptTypesIndex: 'https://cdn.jsdelivr.net/npm/all-the-package-types',
   maxObjSize: 450000,
   popularDownloadsRatio: 0.005,

@@ -199,8 +199,8 @@ describe('jsDelivr', () => {
         },
       },
       [
-        { name: '/package.json', hash: '', time: '1', size: 1 },
-        { name: '/CHANGELOG.md', hash: '', time: '1', size: 1 },
+        { name: '/package.json', hash: '', size: 1 },
+        { name: '/CHANGELOG.md', hash: '', size: 1 },
       ]
     );
     expect(changelogFilename).toBe(
@@ -223,7 +223,7 @@ describe('jsDelivr', () => {
           branch: 'master',
         },
       },
-      [{ name: '/pkg/CHANGELOG.md', hash: '', time: '1', size: 1 }]
+      [{ name: '/pkg/CHANGELOG.md', hash: '', size: 1 }]
     );
     expect(changelogFilename).toBe(
       'https://cdn.jsdelivr.net/npm/foo@1.0.0/pkg/CHANGELOG.md'
@@ -245,7 +245,7 @@ describe('jsDelivr', () => {
           branch: 'master',
         },
       },
-      [{ name: '/dist/changelog.js', hash: '', time: '1', size: 1 }]
+      [{ name: '/dist/changelog.js', hash: '', size: 1 }]
     );
     expect(changelogFilename).toBeNull();
   });

@@ -81,6 +81,18 @@ describe('files', () => {
       expect(files).toMatchSnapshot();
     });
 
+    it('should get a flat list of files for a scoped package', async () => {
+      const files = await api.getFilesList({
+        name: '@types/jquery',
+        version: '3.5.14',
+      });
+      expect(files).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ name: '/index.d.ts' }),
+        ])
+      );
+    });
+
     it('should not get a files list for fake package', async () => {
       const files = await api.getFilesList({
         name: 'thispackagedoesnotexist',
