@@ -83,6 +83,11 @@ export class Bootstrap extends EventEmitter {
       log.info('⛷   Bootstrap: starting at doc %s', state.bootstrapLastId);
     }
 
+    const bootstrapSeq = (await this.stateManager.get()).seq;
+    if (bootstrapSeq === undefined) {
+      throw new Error('Missing bootstrap starting sequence');
+    }
+
     log.info('-----');
     log.info(chalk.yellowBright`Total packages: ${totalDocs}`);
     log.info('-----');
@@ -106,7 +111,10 @@ export class Bootstrap extends EventEmitter {
       this.algoliaStore.bootstrapNotFoundIndex
     );
 
-    this.mainBootstrapIndexer = new MainBootstrapIndexer(this.algoliaStore);
+    this.mainBootstrapIndexer = new MainBootstrapIndexer(
+      this.algoliaStore,
+      bootstrapSeq
+    );
 
     this.prefetcher.run();
     this.oneTimeIndexer.run();

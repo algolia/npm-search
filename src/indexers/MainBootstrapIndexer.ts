@@ -1,3 +1,5 @@
+import ms from 'ms';
+
 import type { AlgoliaStore } from '../algolia';
 import { PackageNotFoundError } from '../errors';
 import { formatPkg } from '../formatPkg';
@@ -16,7 +18,10 @@ type TaskType = { pkg: PrefetchedPkg; objectID: string; retries: number };
 export class MainBootstrapIndexer extends MainIndexer<TaskType> {
   protected facetField = 'retries';
 
-  constructor(algoliaStore: AlgoliaStore) {
+  constructor(
+    algoliaStore: AlgoliaStore,
+    private readonly seq: number
+  ) {
     super(algoliaStore, algoliaStore.bootstrapQueueIndex);
   }
 
@@ -39,7 +44,8 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
     await this.queueTask(record);
   }
 
-  async taskExecutor({ pkg, objectID, retries }): Promise<void> {
+  async taskExecutor(task: TaskType): Promise<void> {
+    const { pkg, objectID, retries } = task;
     log.info(`Start:`, pkg.id, retries);
     const start = Date.now();
 
@@ -57,7 +63,7 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
           log.error('Got an error', error);
         }
 
-        await this.markAsProcessed(objectID);
+        await this.scheduleRetry(task, error);
         return;
       }
 
@@ -116,5 +122,35 @@ export class MainBootstrapIndexer extends MainIndexer<TaskType> {
     } finally {
       datadog.timing('loop', Date.now() - start);
     }
+  }
+
+  private async scheduleRetry(task: TaskType, error: unknown): Promise<void> {
+    // Preserve an existing retry or newer feed job, including after a restart.
+    await this.algoliaStore.mainQueueIndex.partialUpdateObject(
+      {
+        objectID: task.objectID,
+        name: task.pkg.id,
+        seq: this.seq,
+        queueVersion: {
+          _operation: 'IncrementSet',
+          value: this.seq * 10 + 1,
+        },
+        isProcessed: 0,
+        retries: 0,
+        registryFailures: 1,
+        nextAttemptAt: Date.now() + ms('1 hour'),
+        registryError:
+          error instanceof Error ? error.toString() : String(error),
+        registryNotFound: error instanceof PackageNotFoundError,
+        change: {
+          id: task.pkg.id,
+          seq: this.seq,
+          changes: [{ rev: task.pkg.value.rev }],
+        },
+      },
+      { createIfNotExists: true }
+    );
+    // A failed enqueue leaves the bootstrap job available for another pass.
+    await this.markAsProcessed(task.objectID);
   }
 }
