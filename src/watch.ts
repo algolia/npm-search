@@ -134,17 +134,24 @@ export class Watch {
 
         const storeChanges = async (retry = 0): Promise<void> => {
           try {
-            await this.algoliaStore.mainQueueIndex.saveObjects(
+            await this.algoliaStore.mainQueueIndex.partialUpdateObjects(
               changes.map((change) => ({
                 seq: change.seq,
                 // Reserve a digit for six failures and acknowledgment.
-                queueVersion: Number(change.seq) * 10 + 1,
+                // Replays cannot reset this event's retries.
+                queueVersion: {
+                  _operation: 'IncrementSet',
+                  value: Number(change.seq) * 10 + 1,
+                },
                 name: change.id,
                 objectID: change.id,
+                isProcessed: 0,
                 retries: 0,
+                registryFailures: 0,
                 nextAttemptAt: change.deleted ? 0 : observedAt + ms('1 minute'),
                 change,
-              }))
+              })),
+              { createIfNotExists: true }
             );
           } catch (err) {
             const newRetry = retry + 1;
