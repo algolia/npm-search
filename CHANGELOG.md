@@ -1,3 +1,10 @@
+## [1.10.4](https://github.com/algolia/npm-search/compare/v1.10.3...v1.10.4) (2026-10-23)
+
+
+### Performance Improvements
+
+* increase watch change batch size ([#1364](https://github.com/algolia/npm-search/issues/1364)) ([d46b1af](https://github.com/algolia/npm-search/commit/d46b1af0be677df8e48360bc5a1c56a64840739c))
+
 ## [1.10.3](https://github.com/algolia/npm-search/compare/v1.10.2...v1.10.3) (2026-10-23)
 
 
