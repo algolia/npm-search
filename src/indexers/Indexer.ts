@@ -24,7 +24,7 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
   private isRunning: boolean = false;
   private readonly throttledFetchFacets: DebouncedFunc<() => Promise<string[]>>;
 
-  protected abstract readonly facetField: string;
+  protected abstract readonly facetField: string[] | string;
 
   get facetFilter(): string | undefined {
     return undefined;
@@ -57,9 +57,10 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
   }
 
   async fetchFacets(): Promise<string[]> {
+    const fields = _.castArray(this.facetField);
     const result = await this.mainIndex.search('', {
       filters: this.facetFilter,
-      facets: [this.facetField],
+      facets: fields,
       hitsPerPage: 0,
       maxValuesPerFacet: 1000,
       sortFacetValuesBy: 'alpha',
@@ -70,7 +71,19 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
       return [];
     }
 
-    return Object.keys(result.facets[this.facetField] || {}).sort();
+    let filters = [''];
+    for (const field of fields) {
+      const values = Object.keys(result.facets[field] || {});
+      if (fields.length === 1) {
+        values.sort();
+      }
+      filters = filters.flatMap((filter) =>
+        values.map(
+          (value) => `${filter ? `${filter} AND ` : ''}${field}:${value}`
+        )
+      );
+    }
+    return filters;
   }
 
   async *fetchRecords(): AsyncGenerator<TMainRecord[]> {
@@ -80,7 +93,7 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
       return [];
     }
 
-    for (const facet of facets) {
+    for (const filter of facets) {
       let cursor;
 
       while (this.isRunning) {
@@ -90,9 +103,9 @@ export abstract class Indexer<TMainRecord, TTask = TMainRecord> {
           method: 'GET',
           path: `/1/indexes/${this.mainIndex.indexName}/browse`,
           data: {
-            filters: `${this.facetFilter ? `${this.facetFilter} AND ` : ''}${
-              this.facetField
-            }:${facet}`,
+            filters: `${
+              this.facetFilter ? `${this.facetFilter} AND ` : ''
+            }${filter}`,
             ...(cursor ? { cursor } : {}),
           },
           cacheable: false,
