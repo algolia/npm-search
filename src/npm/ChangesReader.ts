@@ -54,7 +54,7 @@ export class ChangesReader extends EventEmitter {
             },
             searchParams: {
               since: this.since,
-              limit: 10,
+              limit: 1000,
             },
             responseType: 'json',
           }
