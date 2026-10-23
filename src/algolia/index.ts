@@ -106,7 +106,7 @@ export async function prepare(config: Config): Promise<AlgoliaStore> {
   await mainIndex.setSettings({}).wait();
   await mainQueueIndex
     .setSettings({
-      attributesForFaceting: ['isProcessed', 'retries'],
+      attributesForFaceting: ['isProcessed', 'registryFailures', 'retries'],
     })
     .wait();
   await bootstrapIndex.setSettings({}).wait();

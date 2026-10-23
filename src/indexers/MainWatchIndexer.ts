@@ -29,7 +29,7 @@ type TaskType = {
 };
 
 export class MainWatchIndexer extends MainIndexer<TaskType> {
-  protected facetField = 'retries';
+  protected facetField = ['registryFailures', 'retries'];
   protected cleanupInterval: NodeJS.Timer | undefined;
 
   override get facetFilter(): string {
