@@ -1,3 +1,10 @@
+## [1.10.2](https://github.com/algolia/npm-search/compare/v1.10.1...v1.10.2) (2026-10-23)
+
+
+### Bug Fixes
+
+* retry failed registry lookups ([#1361](https://github.com/algolia/npm-search/issues/1361)) ([aad190a](https://github.com/algolia/npm-search/commit/aad190ac696c41c4172761c7d9359453bea806c3))
+
 ## [1.10.1](https://github.com/algolia/npm-search/compare/v1.10.0...v1.10.1) (2026-10-22)
 
 
