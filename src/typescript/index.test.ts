@@ -107,8 +107,8 @@ describe('getTypeScriptSupport()', () => {
           version: '1.0',
         },
         [
-          { name: 'index.js', hash: '', time: '', size: 0 },
-          { name: 'index.d.ts', hash: '', time: '', size: 0 },
+          { name: 'index.js', hash: '', size: 0 },
+          { name: 'index.d.ts', hash: '', size: 0 },
         ]
       );
       expect(atTypesSupport).toEqual({
@@ -126,9 +126,9 @@ describe('getTypeScriptSupport()', () => {
           version: '1.0',
         },
         [
-          { name: 'index.js', hash: '', time: '', size: 0 },
-          { name: 'index.ts', hash: '', time: '', size: 0 },
-          { name: 'index.md', hash: '', time: '', size: 0 },
+          { name: 'index.js', hash: '', size: 0 },
+          { name: 'index.ts', hash: '', size: 0 },
+          { name: 'index.md', hash: '', size: 0 },
         ]
       );
       expect(atTypesSupport).toEqual({

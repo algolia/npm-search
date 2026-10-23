@@ -8,7 +8,7 @@ import { request } from '../utils/request';
 import * as sentry from '../utils/sentry';
 
 type Hit = { type: 'npm'; name: string; hits: number };
-export type File = { name: string; hash: string; time: string; size: number };
+export type File = { name: string; hash: string; size: number };
 export type GetHit = {
   popular: boolean;
   jsDelivrHits: number;
@@ -84,7 +84,7 @@ export async function getFilesList(
   }
 
   let files: File[] = [];
-  const url = `${config.jsDelivrPackageEndpoint}/${pkg.name}@${pkg.version}/flat`;
+  const url = `${config.jsDelivrPackageEndpoint}/${pkg.name}@${pkg.version}?structure=flat`;
   try {
     const response = await request<{ default: string; files: File[] }>(url, {
       responseType: 'json',

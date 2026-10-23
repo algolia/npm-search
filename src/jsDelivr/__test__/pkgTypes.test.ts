@@ -5,7 +5,6 @@ const BASE_FILE: File = {
   name: '0',
   hash: 'sha256:',
   size: 0,
-  time: '1985-10-26T08:15:00.000Z',
 };
 
 describe('package module/style types', () => {
