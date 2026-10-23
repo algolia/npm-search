@@ -1,3 +1,10 @@
+## [1.10.5](https://github.com/algolia/npm-search/compare/v1.10.4...v1.10.5) (2026-10-23)
+
+
+### Bug Fixes
+
+* prioritize initial registry attempts over retries ([#1365](https://github.com/algolia/npm-search/issues/1365)) ([00f7a66](https://github.com/algolia/npm-search/commit/00f7a6610c7208768e5c2347870808301d5a14f0))
+
 ## [1.10.4](https://github.com/algolia/npm-search/compare/v1.10.3...v1.10.4) (2026-10-23)
 
 
