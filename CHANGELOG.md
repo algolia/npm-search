@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/algolia/npm-search/compare/v1.10.2...v1.10.3) (2026-10-23)
+
+
+### Bug Fixes
+
+* use current jsDelivr package API ([#1362](https://github.com/algolia/npm-search/issues/1362)) ([532e2f9](https://github.com/algolia/npm-search/commit/532e2f95a56e5bc1d286b377c9f178f44731eccd))
+
 ## [1.10.2](https://github.com/algolia/npm-search/compare/v1.10.1...v1.10.2) (2026-10-23)
 
 
